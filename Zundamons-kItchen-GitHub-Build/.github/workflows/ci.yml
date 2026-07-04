@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required directories exist
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d source || (echo "Missing source/" && exit 1)
+          test -d docs || (echo "Missing docs/" && exit 1)
+
+      - name: Validate at least one exported place/model file exists (rbxlx/rbxmx)
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s globstar nullglob
+          matches=(source/**/*.rbxlx source/**/*.rbxmx)
+          if [ ${#matches[@]} -eq 0 ]; then
+            echo "No rbxlx/rbxmx files found under source/."
+            echo "Export the place/models as text-friendly rbxlx/rbxmx and commit them."
+            exit 1
+          fi
+
+      - name: Validate git hygiene (no workspace/) 
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files | grep -q '^workspace/'; then
+            echo "workspace/ is committed. Remove it from git." 
+            exit 1
+          fi
+
+      - name: Success
+        run: echo "Repo structure looks correct for GitHub build workflow."
+

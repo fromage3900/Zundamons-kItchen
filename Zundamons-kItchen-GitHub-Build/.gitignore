@@ -1,0 +1,16 @@
+# Local build outputs
+/workspace/
+
+# Roblox/Studio misc (best-effort)
+*.rbxl
+*.rbxmx
+*.rbxlx
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# CI artifacts
+/artifacts/
+
