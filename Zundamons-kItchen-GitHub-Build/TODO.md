@@ -19,10 +19,15 @@
 - [x] Add style guide (`docs/style-guide.md`)
 
 ## Step 4: “clean commit when ready”
-- [ ] Ensure scaffold is committed as the first commit
+- [x] Ensure scaffold is committed as the first commit
 - [ ] Provide exact git commands to run locally
+  - git status
+  - git branch -M main
+  - git remote add origin <YOUR_GITHUB_REPO_URL>
+  - git push -u origin main
 
 ## Step 5: First export + first comprehensive review
+
 - [ ] Export current experience from Studio into `source/`
 - [ ] Commit exports
 - [ ] Perform a comprehensive code/architecture review using `docs/review-checklist.md`
