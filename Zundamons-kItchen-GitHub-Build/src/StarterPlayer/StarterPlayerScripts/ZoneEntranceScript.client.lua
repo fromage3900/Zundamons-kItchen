@@ -6,6 +6,7 @@ local RunService = game:GetService("RunService")
 
 local player     = Players.LocalPlayer
 local character  = player.Character or player.CharacterAdded:Wait()
+local RS         = game:GetService("ReplicatedStorage")
 
 -- Wait for unified VN API
 local deadline = tick() + 8
@@ -14,6 +15,13 @@ while not _G.ZundaVN and tick() < deadline do task.wait(0.15) end
 -- Wait for ShowZoneVN BindableEvent in PlayerGui
 local pg = player:WaitForChild("PlayerGui")
 local showZoneVN = pg:WaitForChild("ShowZoneVN", 10)
+local zoneVisitedEv = RS:WaitForChild("RemoteEvents"):WaitForChild("ZoneVisited", 10)
+
+local function reportZoneVisit(zoneName)
+	if zoneVisitedEv then
+		zoneVisitedEv:FireServer(zoneName)
+	end
+end
 
 -- Build a map of ClickDetectors → zone keys from the Zones folder
 local function buildZoneMap()
@@ -39,6 +47,7 @@ for cd, zoneName in pairs(zoneMap) do
         if showZoneVN then
             showZoneVN:Fire(zoneName)
         end
+        reportZoneVisit(zoneName)
     end)
 end
 
@@ -55,6 +64,7 @@ if zonesFolder then
                 desc.MouseClick:Connect(function(clicker)
                     if clicker ~= player then return end
                     if showZoneVN then showZoneVN:Fire(obj.Name) end
+                    reportZoneVisit(obj.Name)
                 end)
             end
         end

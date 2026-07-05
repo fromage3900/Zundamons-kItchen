@@ -56,23 +56,8 @@ PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
     end
 end)
 
-MarketplaceService.ProcessReceipt = function(receiptInfo)
-    local uid = receiptInfo.PlayerId
-    local pid = receiptInfo.ProductId
-    local compType = pending[uid] and pending[uid][pid] or productToComp[pid]
-    if not compType then
-        return Enum.ProductPurchaseDecision.NotProcessedYet
-    end
-    local plr = Players:GetPlayerByUserId(uid)
-    if not plr then
-        return Enum.ProductPurchaseDecision.NotProcessedYet
-    end
-	local data = PlayerDataService.getOrCreate(plr)
-	data["companion_owned_" .. compType] = true
-    CompanionOwnedSync:FireClient(plr, compType, true)
-    if pending[uid] then pending[uid][pid] = nil end
-    return Enum.ProductPurchaseDecision.PurchaseGranted
-end
+-- Premium companion receipts: register DevProduct IDs in RobuxStoreServer PRODUCTS.
+-- Do not assign MarketplaceService.ProcessReceipt here — RobuxStoreServer owns the handler.
 
 GetCompanionCatalog.OnServerInvoke = function(player)
     return shared.ZundaCompanionCatalog

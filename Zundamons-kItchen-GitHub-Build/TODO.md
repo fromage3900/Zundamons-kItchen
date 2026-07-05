@@ -19,8 +19,9 @@
 - [x] `docs/zunda-design-bible.md` — asset catalog, gameplay loop, expansion playbook
 
 ## Next steps
-- [ ] Wire `zones_visited` + unify zone keys (see `docs/zunda-design-bible.md`)
+- [ ] Wire `zones_visited` + unify zone keys (see `docs/zunda-design-bible.md`) — **zones_visited wired** (ZoneVisitConfig + Teleporter + lore entrances)
 - [ ] `DecorationPlacer` service for `DecorationConfig` catalog
+- [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
 - [ ] Move `RewardCore` remote wiring to `ServerScriptService/`

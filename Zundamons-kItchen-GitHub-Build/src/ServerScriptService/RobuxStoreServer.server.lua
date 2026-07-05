@@ -40,7 +40,7 @@ MPS.ProcessReceipt = function(info)
     local prod = PRODUCTS[info.ProductId]
     if not prod then
         warn("[RobuxStore] Unknown product: "..info.ProductId)
-        return Enum.ProductPurchaseDecision.PurchaseGranted
+        return Enum.ProductPurchaseDecision.NotProcessedYet
     end
 
     -- Grant item

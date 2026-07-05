@@ -5,6 +5,7 @@
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local TeleporterConfig = require(game.ReplicatedStorage.ConfigurationFiles.TeleporterConfig)
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 -- Track player teleportation state
 local playerTeleporting = {}
@@ -59,6 +60,7 @@ local function teleportToZone(player, fromPadName, toZoneName)
     
     -- Teleport
     humanoidRootPart.CFrame = CFrame.new(destPos + Vector3.new(0, 3, 0))
+    PlayerDataService.recordZoneVisit(player, toZoneName)
     
     -- Fade in
     fadePlayer(humanoidRootPart, false)

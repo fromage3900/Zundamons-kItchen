@@ -52,6 +52,7 @@ local function createDefaultData(): { [string]: any }
 		owned_clothing = {},
 		owned_decorations = {},
 		owned_plot = nil,
+		zones_visited = {},
 		recipes_unlocked_count = 0,
 		recipes_served_count = {},
 		Apple = 5,
@@ -90,6 +91,26 @@ local function backfillLoadedData(loaded: { [string]: any })
 	if loaded.owned_plot == nil then
 		loaded.owned_plot = nil
 	end
+	if loaded.zones_visited == nil then
+		loaded.zones_visited = {}
+	end
+end
+
+function PlayerDataService.recordZoneVisit(player: Player, rawZoneKey: string)
+	local ZoneVisitConfig = require(game.ReplicatedStorage.ConfigurationFiles.ZoneVisitConfig)
+	local canonical = ZoneVisitConfig.resolve(rawZoneKey)
+	if not canonical then
+		return
+	end
+	local data = PlayerDataService.getOrCreate(player)
+	if not data.zones_visited then
+		data.zones_visited = {}
+	end
+	if data.zones_visited[canonical] then
+		return
+	end
+	data.zones_visited[canonical] = true
+	print("[PlayerDataService] " .. player.Name .. " visited zone: " .. canonical)
 end
 
 function PlayerDataService.loadPlayer(player: Player)

@@ -370,8 +370,8 @@ Ideas ranked by **implementation cost** (S = small, M = medium).
 
 | Priority | Item | Type | Why |
 |----------|------|------|-----|
-| P0 | Zone name unification doc → code | Tiny code | Quests and teleporters disagree today |
-| P0 | `zones_visited` writer on teleport/enter | Tiny code | Explore quests never complete |
+| P0 | Zone name unification doc → code | Tiny code | **Partial** — `ZoneVisitConfig` maps lore/quest → canonical keys |
+| P0 | `zones_visited` writer on teleport/enter | Tiny code | **Done** — `ZoneVisitServer`, teleporter + lore entrances |
 | P1 | `DecorationPlacer` service | Small feature | Catalog exists, players can't place |
 | P1 | Edamame / Pea Flower gather nodes | Studio + maybe code | Recipes reference missing sources |
 | P1 | Skybox + sakura petal assets | Studio art | Atmosphere phase 1/3 |
