@@ -1,0 +1,8 @@
+# Repo root hygiene
+source/
+*.rbxl
+*.rbxlx
+*.rbxmx
+extract_scripts.py
+rojo.zip
+.idea/

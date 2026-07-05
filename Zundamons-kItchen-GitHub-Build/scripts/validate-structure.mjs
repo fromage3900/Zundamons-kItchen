@@ -1,10 +1,26 @@
 #!/usr/bin/env node
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { join } from "node:path";
 import { toolPath, withRokitPath } from "./ensure-rokit.mjs";
 
-const root = new URL("..", import.meta.url).pathname;
+function countLuaFiles(dir) {
+  let count = 0;
+  const files = readdirSync(dir);
+  for (const file of files) {
+    const full = join(dir, file);
+    if (statSync(full).isDirectory()) {
+      count += countLuaFiles(full);
+    } else if (file.endsWith(".lua")) {
+      count++;
+    }
+  }
+  return count;
+}
+
+import { fileURLToPath } from "node:url";
+const __filename = fileURLToPath(import.meta.url);
+const root = join(__filename, "../..");
 const errors = [];
 
 function requirePath(relativePath, kind = "path") {
@@ -20,9 +36,12 @@ requirePath("src/ServerScriptService", "directory");
 requirePath("src/ReplicatedStorage/ConfigurationFiles", "directory");
 requirePath("src/StarterPlayer/StarterPlayerScripts", "directory");
 
-const luaCount = Number(
-  execSync('find src -name "*.lua" | wc -l', { cwd: root, encoding: "utf8" }).trim()
-);
+let luaCount = 0;
+try {
+  luaCount = countLuaFiles(join(root, "src"));
+} catch (e) {
+  errors.push(`Error counting Lua files: ${e.message}`);
+}
 
 if (luaCount < 1) {
   errors.push("No .lua files found under src/");
@@ -34,7 +53,8 @@ if (existsSync(join(root, "source"))) {
 
 const rojo = toolPath("rojo");
 try {
-  execSync(`${rojo} build default.project.json -o /tmp/zundamon-rojo-test.rbxl`, {
+  const outputPath = join(root, "rojo-build-test.rbxl");
+  execSync(`${rojo} build default.project.json -o "${outputPath}"`, {
     cwd: root,
     stdio: "pipe",
     env: withRokitPath(),

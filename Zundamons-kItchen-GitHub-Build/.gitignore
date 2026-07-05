@@ -24,3 +24,4 @@ sourcemap.json
 *.lock
 extract_scripts.py
 rojo.zip
+rojo-build-test.rbxl
