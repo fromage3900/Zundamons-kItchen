@@ -6,7 +6,7 @@
   "scripts": {
     "validate": "node scripts/validate-structure.mjs",
     "lint": "npm run lint:stylua && npm run lint:selene",
-    "lint:stylua": "npx stylua --check src",
+    "lint:stylua": "npx stylua-bin --check src",
     "lint:selene": "node scripts/lint-selene.mjs",
     "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
     "rojo:serve": "rojo serve default.project.json"
