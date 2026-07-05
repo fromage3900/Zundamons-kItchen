@@ -39,18 +39,28 @@ Verify: `~/.rokit/bin/rojo --version` → **7.7.0**
 
 ### 3. Start Rojo serve from the correct folder
 
+Open a **terminal** on your computer (PowerShell, cmd, or Terminal). **Leave it running** while Studio is connected.
+
 ```bash
-cd Zundamons-kItchen-GitHub-Build
+cd path/to/Zundamons-kItchen/Zundamons-kItchen-GitHub-Build
+rokit trust rojo-rbx/rojo JohnnyMorganz/StyLua Kampfkarren/selene
+rokit install
 npm run rojo:serve
 ```
+
+**Windows (PowerShell)** — same commands; if `rokit` is not found, install Rokit from https://github.com/rojo-rbx/rokit#installation then retry.
 
 You should see:
 
 ```
+Starting Rojo server...
+  connect Studio plugin to localhost:34872
 Rojo server listening on port 34872
 ```
 
-**Common mistake:** running `rojo serve` from the repo root (no `default.project.json` there). Use the nested folder or `npm run rojo:serve` from repo root (wrapper script).
+**Only after** that terminal shows "listening", go to Studio → **Plugins → Rojo → Connect**.
+
+If Studio says *"Couldn't connect to the Rojo server"* → the terminal is not running, wrong port, or firewall blocked `localhost:34872`.
 
 ### 4. Open the RIGHT place in Studio
 

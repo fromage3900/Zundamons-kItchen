@@ -9,8 +9,8 @@
     "lint:stylua": "node scripts/lint-stylua.mjs",
     "lint:selene": "node scripts/lint-selene.mjs",
     "sourcemap": "node scripts/sourcemap.mjs",
-    "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
-    "rojo:serve": "rojo serve default.project.json",
+    "rojo:build": "node scripts/rojo-build.mjs",
+    "rojo:serve": "node scripts/rojo-serve.mjs",
     "rokit:install": "node scripts/install-rokit-ci.mjs"
   }
 }
