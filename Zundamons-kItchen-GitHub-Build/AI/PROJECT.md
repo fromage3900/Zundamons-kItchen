@@ -3,6 +3,9 @@
 ## Overview
 Zundamon's Kitchen is a Roblox cooperative kitchen and life-simulation game. Players manage a kitchen, cook dishes for guests, farm ingredients, and explore the world.
 
+## Design Vision
+The project follows a **"Kawaii/Cozy"** aesthetic, featuring the mascots **Zundamon** and **Zundapal**. The core gameplay revolves around social cooking, ingredient gathering, and progression in a whimsical, nature-focused world.
+
 ## Repository Structure
 - `src/`: Source code for the game.
     - `ReplicatedStorage/ConfigurationFiles/`: Shared configurations and data modules.
@@ -18,4 +21,4 @@ Zundamon's Kitchen is a Roblox cooperative kitchen and life-simulation game. Pla
 - **VNController**: Visual Novel-style dialogue system.
 
 ## Status
-The project has recently migrated to a Rojo-first workflow. Hardening and security audits are ongoing.
+The project has recently migrated to a Rojo-first workflow. Hardening, security audits, and design standardization are ongoing.

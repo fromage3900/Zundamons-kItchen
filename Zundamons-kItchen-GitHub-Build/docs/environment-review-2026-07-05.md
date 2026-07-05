@@ -30,8 +30,20 @@ During the review on 2026-07-05, several architectural "leaks" were identified t
 1. **Update `docs/rojo-workflow.md`**: Clarify that `ConfigurationFiles/` must remain side-effect free.
 2. **Update `AI/ARCHITECTURE.md`**: Add the new `MarketplaceService` pattern as the standard for monetization.
 
-## 3. Environment Stability Check
+## 3. Zundamon Design Review
+A specific audit of the "Zunda" thematic elements was conducted to ensure mascot consistency and aesthetic cohesion.
+
+### Findings:
+- **Visual Consistency**: The `ZundaFrameAnim.client.lua` successfully implements the signature pink/lavender breathing effect, which should be the standard for all primary UI frames.
+- **Narrative Tone**: The `VNDialogueData.lua` captures the "supportive guide" persona of Zundapal. However, Zundamon's dialogue is currently underrepresented.
+- **Emoji Usage**: The system uses a consistent set of emojis (`🍙`, `🍡`, `✨`) which effectively communicates game state without heavy text.
+- **Action Items**:
+    - [ ] Create Zundamon-specific dialogue trees for the "Kitchen Master" role.
+    - [ ] Standardize particle effects for gathering to match the lavender accent color.
+
+## 4. Environment Stability Check
 - [x] Cross-platform build scripts (Windows/Linux)
 - [x] Linting coverage (Selene/StyLua) for all `src/`
 - [x] Payload validation on critical remotes (`AdvancedRewards`)
+- [x] **NEW**: AI Guidance system established in `AI/`
 - [ ] **NEXT**: Fix `MarketplaceService` conflict.
