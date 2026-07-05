@@ -1,0 +1,11 @@
+{
+  "name": "zundamons-kitchen",
+  "private": true,
+  "description": "Repo root wrapper — run Rojo commands from here or from Zundamons-kItchen-GitHub-Build/",
+  "scripts": {
+    "rojo:serve": "npm run rojo:serve --prefix Zundamons-kItchen-GitHub-Build",
+    "rojo:build": "npm run rojo:build --prefix Zundamons-kItchen-GitHub-Build",
+    "validate": "npm run validate --prefix Zundamons-kItchen-GitHub-Build",
+    "lint": "npm run lint --prefix Zundamons-kItchen-GitHub-Build"
+  }
+}

@@ -71,9 +71,13 @@ To recover world-only content from an old export, use `rojo syncback` against a 
 
 ## Troubleshooting
 
+See **[`rojo-sync-troubleshooting.md`](rojo-sync-troubleshooting.md)** for the full checklist.
+
 | Problem | Fix |
 |---|---|
-| `require` fails for config | Ensure module is under `ConfigurationFiles/` and Rojo is connected |
-| Script changes not appearing | Restart `rojo serve`, reconnect Studio plugin |
-| `RemoteEvents` not found | Create folders in Studio; they are not in `src/` yet |
+| Nothing appears in Studio | Run `rojo serve` from **`Zundamons-kItchen-GitHub-Build/`**, not repo root |
+| Opened wrong place | Use published experience **108617605497926**, not empty `rojo build` rbxl |
+| `require` fails for config | Connect Rojo plugin before Play |
+| Script changes not appearing | Restart `rojo serve`, reconnect plugin; look for `[ROJO SYNC OK]` in Output |
+| Expected new map art | Rojo syncs **code only** — world art is Studio/MCP |
 | CI fails `rojo build` | Run `npm run validate` locally; check `default.project.json` |

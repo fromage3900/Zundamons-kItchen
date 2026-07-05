@@ -83,6 +83,8 @@ See [`docs/procedural-building-tools.md`](docs/procedural-building-tools.md) for
 
 See [`docs/zunda-design-bible.md`](docs/zunda-design-bible.md) for the Zunda asset catalog, gameplay loop, zone map, expansion playbook, and content backlog.
 
+**Rojo not syncing?** See [`docs/rojo-sync-troubleshooting.md`](docs/rojo-sync-troubleshooting.md).
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). Default branch: **`main`**.
