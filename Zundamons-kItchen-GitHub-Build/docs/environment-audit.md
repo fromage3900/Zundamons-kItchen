@@ -6,6 +6,8 @@
 
 This document maps what the **code expects in Workspace**, which systems are **procedural or config-driven**, and where **gaps** exist for a production world-building pipeline.
 
+**See also:** [`zunda-design-bible.md`](zunda-design-bible.md) — full asset catalog, gameplay loop, zone alignment map, and expansion playbook.
+
 ---
 
 ## Executive summary

@@ -16,9 +16,11 @@
 - [x] Security fixes: ServingSystem, InventoryServer, ToolManager, LootModule
 - [x] Filename cleanup (`SprintOnShift.server.lua`, DoubleJump → legacy-notes)
 - [x] CI: validate + stylua check on `src/`
+- [x] `docs/zunda-design-bible.md` — asset catalog, gameplay loop, expansion playbook
 
 ## Next steps
-- [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
+- [ ] Wire `zones_visited` + unify zone keys (see `docs/zunda-design-bible.md`)
+- [ ] `DecorationPlacer` service for `DecorationConfig` catalog
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
 - [ ] Move `RewardCore` remote wiring to `ServerScriptService/`

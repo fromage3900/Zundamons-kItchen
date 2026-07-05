@@ -81,6 +81,8 @@ See [`docs/environment-audit.md`](docs/environment-audit.md) for the Studio Work
 
 See [`docs/procedural-building-tools.md`](docs/procedural-building-tools.md) for Studio plugins and GitHub tools for world building (BlenderSync, WorldLoader, ProceduralModel, etc.).
 
+See [`docs/zunda-design-bible.md`](docs/zunda-design-bible.md) for the Zunda asset catalog, gameplay loop, zone map, expansion playbook, and content backlog.
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md).
