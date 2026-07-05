@@ -33,6 +33,9 @@ SkyConfig.sky = {
 	sun_angular_size = 24,
 	moon_angular_size = 16,
 	star_count = 5500,
+	-- Upload a 6-face skybox to Creator, then paste rbxassetid:// URLs here.
+	-- Horizon colors should match Atmosphere.Color at golden hour (see docs/atmosphere-polish-plan.md).
+	-- Toolbox search: "anime skybox", "pastel sky", "japanese sunset skybox"
 	skybox_bk = "",
 	skybox_dn = "",
 	skybox_ft = "",
@@ -43,13 +46,18 @@ SkyConfig.sky = {
 	moon_texture = "",
 }
 
+SkyConfig.particles = {
+	mobile_rate_multiplier = 0.55,
+}
+
 -- ============================================================
 -- ATMOSPHERE BASE
 -- ============================================================
 SkyConfig.atmosphere = {
-	decay = Color3.fromRGB(106, 112, 125),
-	glare = 0.22,
-	haze = 1.3,
+	decay = Color3.fromRGB(118, 108, 128),
+	glare = 0.20,
+	haze = 1.25,
+	offset = 0.15,
 }
 
 -- ============================================================
@@ -101,19 +109,19 @@ SkyConfig.keyframes = {
 		Color3.fromRGB(110, 90, 165),
 		-0.22,
 	},
-	-- Dawn 6am: rose and amber blush
+	-- Dawn 6am: soft 生成り wash (和風 morning)
 	{
 		6,
-		Color3.fromRGB(165, 105, 95),
-		Color3.fromRGB(220, 155, 130),
-		Color3.fromRGB(255, 160, 110),
-		Color3.fromRGB(250, 130, 100),
-		Color3.fromRGB(255, 190, 165),
+		Color3.fromRGB(155, 108, 98),
+		Color3.fromRGB(250, 247, 242),
+		Color3.fromRGB(255, 176, 144),
+		Color3.fromRGB(245, 138, 108),
+		Color3.fromRGB(255, 198, 172),
 		145,
 		900,
-		0.32,
-		Color3.fromRGB(255, 185, 160),
-		0.05,
+		0.31,
+		Color3.fromRGB(255, 192, 168),
+		0.04,
 	},
 	-- Golden hour 7am: warm orange-gold
 	{
@@ -157,19 +165,19 @@ SkyConfig.keyframes = {
 		Color3.fromRGB(210, 225, 248),
 		0.16,
 	},
-	-- Noon: peak brightness, slight cyan
+	-- Noon: peak brightness, soft summer haze (desaturated 和)
 	{
 		12,
-		Color3.fromRGB(172, 172, 178),
-		Color3.fromRGB(255, 255, 252),
-		Color3.fromRGB(255, 252, 242),
-		Color3.fromRGB(242, 242, 238),
-		Color3.fromRGB(242, 248, 255),
+		Color3.fromRGB(168, 172, 178),
+		Color3.fromRGB(232, 240, 248),
+		Color3.fromRGB(248, 246, 238),
+		Color3.fromRGB(238, 238, 232),
+		Color3.fromRGB(228, 236, 248),
 		305,
 		1850,
-		0.25,
-		Color3.fromRGB(202, 222, 248),
-		0.18,
+		0.24,
+		Color3.fromRGB(198, 216, 238),
+		0.16,
 	},
 	-- Afternoon 15:00: warm drift
 	{
@@ -199,19 +207,19 @@ SkyConfig.keyframes = {
 		Color3.fromRGB(255, 185, 152),
 		0.10,
 	},
-	-- Sunset 18:30: deep orange-crimson
+	-- Sunset 18:30: warm orange with purple 余韻 rim
 	{
 		18.5,
-		Color3.fromRGB(148, 88, 78),
-		Color3.fromRGB(235, 148, 118),
-		Color3.fromRGB(255, 125, 85),
-		Color3.fromRGB(240, 100, 80),
-		Color3.fromRGB(248, 148, 125),
+		Color3.fromRGB(142, 86, 78),
+		Color3.fromRGB(228, 142, 118),
+		Color3.fromRGB(255, 118, 82),
+		Color3.fromRGB(235, 98, 82),
+		Color3.fromRGB(242, 142, 122),
 		175,
 		1100,
-		0.36,
-		Color3.fromRGB(255, 148, 125),
-		0.04,
+		0.35,
+		Color3.fromRGB(200, 128, 148),
+		0.03,
 	},
 	-- Dusk 20:00: purple twilight
 	{
@@ -368,16 +376,22 @@ SkyConfig.weather_types = {
 		emoji = "🌸",
 		particle_enabled = true,
 		particle_texture = "rbxasset://textures/particles/leaf.png",
-		particle_color = Color3.fromRGB(255, 182, 200),
-		particle_color2 = Color3.fromRGB(255, 220, 230),
-		particle_size = 1.2,
-		particle_rate = 35,
-		particle_lifetime = 5,
-		particle_speed = 8,
-		atmosphere_haze = 1.4,
+		particle_color = Color3.fromRGB(244, 198, 204),
+		particle_color2 = Color3.fromRGB(253, 239, 244),
+		particle_size = 0.85,
+		particle_rate = 42,
+		particle_lifetime = 6,
+		particle_speed = 6,
+		particle_drag = 1.2,
+		particle_light_emission = 0.28,
+		particle_rotation_min = 0,
+		particle_rotation_max = 360,
+		particle_rot_speed_min = -45,
+		particle_rot_speed_max = 45,
+		atmosphere_haze = 1.35,
 		atmosphere_density_mult = 1.0,
 		fog_mult = 1.0,
-		wind = Vector3.new(2, 0, 0.5),
+		wind = Vector3.new(2.2, 0, 0.6),
 	},
 	rain = {
 		display_name = "Rain",

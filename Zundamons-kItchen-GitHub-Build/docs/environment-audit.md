@@ -288,6 +288,6 @@ After world changes in Studio:
 
 - [`rojo-workflow.md`](rojo-workflow.md) — code vs Studio split
 - [`toolchain.md`](toolchain.md) — Rokit, lint, sourcemap
-- [`atmosphere-polish-plan.md`](atmosphere-polish-plan.md) — 和風 atmosphere roadmap, post-FX, resource links
+- [`procedural-building-tools.md`](procedural-building-tools.md) — Studio plugins & GitHub world-gen tools for environment artists
 - [`remotes.md`](remotes.md) — networking surface
 - [`legacy-notes.md`](legacy-notes.md) — vendor scripts (`qTexture`, `Package`, etc.)

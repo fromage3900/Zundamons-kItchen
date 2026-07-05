@@ -79,6 +79,8 @@ See [`docs/project-review.md`](docs/project-review.md) for scorecard and links t
 
 See [`docs/environment-audit.md`](docs/environment-audit.md) for the Studio Workspace contract, CollectionService tags, procedural sky/weather systems, and artist recommendations.
 
+See [`docs/procedural-building-tools.md`](docs/procedural-building-tools.md) for Studio plugins and GitHub tools for world building (BlenderSync, WorldLoader, ProceduralModel, etc.).
+
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md).

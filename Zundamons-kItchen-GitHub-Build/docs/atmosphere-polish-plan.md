@@ -61,9 +61,12 @@ Define a **Zunda palette** (low saturation, 引き算の美):
 
 ---
 
-### Phase 1 — Skybox & atmosphere art (Studio)
+### Phase 1 — Skybox & atmosphere art (Studio) 🟡
 
-**Deliverables:**
+**Code support added:** `DayNightSky` applies non-empty `SkyConfig.sky.skybox_*` / sun / moon asset IDs (`rbxassetid://` or raw numeric string).
+
+**Still Studio-side:** Upload 6-face skybox; paste IDs into `SkyConfig.sky`. Toolbox search terms documented in config comments.
+
 1. Commission or source a **6-face + sun/moon** skybox set (anime-soft or painterly; horizon colors must match `Atmosphere.Color` at golden hour).
 2. Upload to Creator; fill `SkyConfig.sky.skybox_*` and `sun_texture` / `moon_texture` asset IDs.
 3. Set Studio **Technology → Future**, **LightingStyle → Realistic**, **PrioritizeLightingQuality → true** (document in place; optionally mirror in `SkyConfig.lighting`).
@@ -118,11 +121,15 @@ Define a **Zunda palette** (low saturation, 引き算の美):
 
 ---
 
-### Phase 3 — Sakura & mist particles (Studio + config)
+### Phase 3 — Sakura & mist particles (Studio + config) ✅ partial
 
-1. Upload **custom petal** `rbxassetid` (soft pink alpha); set `SkyConfig.weather_types.cherry_blossom.particle_texture`.
-2. Add **ground mist** billboards or low-rate smoke particles in `GameplayLoopArea` for `fog` weather (Studio-placed; script toggles via attribute).
-3. Tune `CloudController` `colorMap.cherry_blossom` toward `#FFD2E0` wash.
+**Done in config/code:**
+- Sakura palette (`#F4C6CC` / `#FDEFF4`), drag, rotation, mobile `particle_rate` scale
+- `CloudController` storm/fog + pink cherry cloud wash
+- `WeatherClient` reads extended particle fields from `SkyConfig`
+
+**Still Studio-side:** Upload custom petal `rbxassetid` → set `cherry_blossom.particle_texture` in `SkyConfig`
+
 
 **Japanese craft reference:** [landho_roblox — 背景制作・ライティング](https://zenn.dev/landho_roblox/articles/514ee32e8cf2e1) (spot/point lights on transparent anchored parts for “sky lights”).
 
@@ -142,20 +149,12 @@ For **god-rays through torii / cafe windows** without HLSL:
 
 ---
 
-### Phase 5 — SkyConfig 和風 pass (config-only)
+### Phase 5 — SkyConfig 和風 pass (config-only) ✅
 
-Adjust existing keyframes toward reference palettes (no new systems):
+- Softer dawn (`生成り` outdoor ambient), desaturated noon haze, sunset purple atmosphere rim
+- `Atmosphere.offset` + tuned decay/glare in `SkyConfig.atmosphere`
+- See commit on `cursor/toolchain-env-audit-594f`
 
-- **Dawn 6h:** push `colorShift_Top` toward `#FFB090`, reduce saturation vs current harsh orange.
-- **Midday:** slightly desaturate ambient (`#E8F0F8` outdoor) — Japanese summer haze, not tropical neon.
-- **Evening:** purple rim `#9080B8` in `atmosphereColor` keyframe slot.
-- **`cherry_blossom` weather:** lower `particle_rate` on mobile; increase `wind` for petal drift.
-
-Extend `SkyConfig` with optional block:
-```lua
-SkyConfig.postfx = { ... }  -- if merged with PostFXConfig
-SkyConfig.lighting.technology = "Future"  -- documentation only unless applied at runtime
-```
 
 ---
 

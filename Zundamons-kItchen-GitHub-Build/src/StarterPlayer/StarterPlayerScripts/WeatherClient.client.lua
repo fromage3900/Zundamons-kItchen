@@ -2,15 +2,26 @@
 -- WeatherClient: spawns weather particles in a follow-the-camera emitter.
 -- Receives WeatherChanged from the server and updates emitter properties.
 
-local RS         = game:GetService("ReplicatedStorage")
-local Players    = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local Tween      = game:GetService("TweenService")
+local Tween = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local SkyConfig = require(RS:WaitForChild("ConfigurationFiles"):WaitForChild("SkyConfig"))
 
 local player = Players.LocalPlayer
-local cam    = workspace.CurrentCamera
+local cam = workspace.CurrentCamera
 
 local WeatherRE = RS:WaitForChild("RemoteEvents"):WaitForChild("WeatherChanged")
+
+local function particleRateScale()
+	local mobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+	if mobile then
+		return (SkyConfig.particles and SkyConfig.particles.mobile_rate_multiplier) or 0.55
+	end
+	return 1
+end
 
 -- ============================================================
 -- Build an invisible "emitter rig" that follows the camera.
@@ -18,7 +29,7 @@ local WeatherRE = RS:WaitForChild("RemoteEvents"):WaitForChild("WeatherChanged")
 -- ============================================================
 local rig = Instance.new("Part")
 rig.Name = "WeatherEmitterRig"
-rig.Size = Vector3.new(60, 1, 60)   -- wide spawn area
+rig.Size = Vector3.new(60, 1, 60) -- wide spawn area
 rig.Transparency = 1
 rig.Anchored = true
 rig.CanCollide = false
@@ -44,12 +55,12 @@ emitter.Parent = rig
 
 -- Per-weather ambient sound (rain / wind etc.)
 local WEATHER_SOUNDS = {
-    rain         = "rbxasset://sounds/rain.mp3",
-    storm        = "rbxasset://sounds/rain.mp3",
-    snow         = "rbxasset://sounds/wind.mp3",
-    cherry_blossom = "rbxasset://sounds/wind.mp3",
-    aurora       = "rbxasset://sounds/wind.mp3",
-    fog          = "rbxasset://sounds/wind.mp3",
+	rain = "rbxasset://sounds/rain.mp3",
+	storm = "rbxasset://sounds/rain.mp3",
+	snow = "rbxasset://sounds/wind.mp3",
+	cherry_blossom = "rbxasset://sounds/wind.mp3",
+	aurora = "rbxasset://sounds/wind.mp3",
+	fog = "rbxasset://sounds/wind.mp3",
 }
 local ambient = Instance.new("Sound")
 ambient.Name = "WeatherSound"
@@ -85,13 +96,13 @@ auroraFrame.BorderSizePixel = 0
 auroraFrame.ZIndex = -10
 local auroraGrad = Instance.new("UIGradient", auroraFrame)
 auroraGrad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(110, 200, 180)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(170, 130, 230)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(220, 140, 200)),
+	ColorSequenceKeypoint.new(0, Color3.fromRGB(110, 200, 180)),
+	ColorSequenceKeypoint.new(0.5, Color3.fromRGB(170, 130, 230)),
+	ColorSequenceKeypoint.new(1, Color3.fromRGB(220, 140, 200)),
 })
 auroraGrad.Transparency = NumberSequence.new({
-    NumberSequenceKeypoint.new(0, 0.5),
-    NumberSequenceKeypoint.new(1, 1),
+	NumberSequenceKeypoint.new(0, 0.5),
+	NumberSequenceKeypoint.new(1, 1),
 })
 auroraGrad.Rotation = 0
 
@@ -99,15 +110,15 @@ auroraGrad.Rotation = 0
 -- Camera follow loop — keep rig above the camera so particles "fall" onto the player
 -- ============================================================
 RunService.RenderStepped:Connect(function()
-    if cam then
-        local p = cam.CFrame.Position
-        rig.CFrame = CFrame.new(p.X, p.Y + 35, p.Z)
-    end
+	if cam then
+		local p = cam.CFrame.Position
+		rig.CFrame = CFrame.new(p.X, p.Y + 35, p.Z)
+	end
 end)
 
 -- Cam can change (e.g. CharacterAdded) so reassign
 workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
-    cam = workspace.CurrentCamera
+	cam = workspace.CurrentCamera
 end)
 
 -- ============================================================
@@ -115,44 +126,53 @@ end)
 -- ============================================================
 local currentSpin
 local function applyWeather(weatherKey, weatherData, transitionSec)
-    transitionSec = transitionSec or 0.5
+	transitionSec = transitionSec or 0.5
 
-    -- Aurora special-case: animate the gradient at night
-    if weatherKey == "aurora" then
-        Tween:Create(auroraGrad, TweenInfo.new(transitionSec), {Rotation = 30}):Play()
-        Tween:Create(auroraFrame, TweenInfo.new(transitionSec), {BackgroundTransparency = 0.3}):Play()
-    else
-        Tween:Create(auroraFrame, TweenInfo.new(transitionSec), {BackgroundTransparency = 1}):Play()
-    end
+	-- Aurora special-case: animate the gradient at night
+	if weatherKey == "aurora" then
+		Tween:Create(auroraGrad, TweenInfo.new(transitionSec), { Rotation = 30 }):Play()
+		Tween:Create(auroraFrame, TweenInfo.new(transitionSec), { BackgroundTransparency = 0.3 }):Play()
+	else
+		Tween:Create(auroraFrame, TweenInfo.new(transitionSec), { BackgroundTransparency = 1 }):Play()
+	end
 
-    -- Update particle emitter
-    if not weatherData.particle_enabled then
-        -- Fade rate to 0 then disable
-        Tween:Create(emitter, TweenInfo.new(transitionSec), {Rate = 0}):Play()
-        task.delay(transitionSec, function()
-            if not weatherData.particle_enabled then
-                emitter.Enabled = false
-            end
-        end)
-    else
-        emitter.Texture        = weatherData.particle_texture
-        emitter.Color          = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, weatherData.particle_color),
-            ColorSequenceKeypoint.new(1, weatherData.particle_color2 or weatherData.particle_color),
-        })
-        emitter.Size           = NumberSequence.new(weatherData.particle_size or 1)
-        emitter.Lifetime       = NumberRange.new(weatherData.particle_lifetime or 4)
-        emitter.Speed          = NumberRange.new(weatherData.particle_speed or 8)
-        -- Apply wind via Acceleration X/Z
-        local wind = weatherData.wind or Vector3.new(0, 0, 0)
-        emitter.Acceleration   = Vector3.new(wind.X, -math.max(5, weatherData.particle_speed or 8), wind.Z)
-        emitter.Transparency   = NumberSequence.new({
-            NumberSequenceKeypoint.new(0, 0.1),
-            NumberSequenceKeypoint.new(1, 1),
-        })
-        emitter.Enabled = true
-        Tween:Create(emitter, TweenInfo.new(transitionSec), {Rate = weatherData.particle_rate}):Play()
-    end
+	-- Update particle emitter
+	if not weatherData.particle_enabled then
+		-- Fade rate to 0 then disable
+		Tween:Create(emitter, TweenInfo.new(transitionSec), { Rate = 0 }):Play()
+		task.delay(transitionSec, function()
+			if not weatherData.particle_enabled then
+				emitter.Enabled = false
+			end
+		end)
+	else
+		emitter.Texture = weatherData.particle_texture
+		emitter.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, weatherData.particle_color),
+			ColorSequenceKeypoint.new(1, weatherData.particle_color2 or weatherData.particle_color),
+		})
+		emitter.Size = NumberSequence.new(weatherData.particle_size or 1)
+		emitter.Lifetime = NumberRange.new(weatherData.particle_lifetime or 4)
+		emitter.Speed = NumberRange.new(weatherData.particle_speed or 8)
+		emitter.Drag = weatherData.particle_drag or 0
+		emitter.LightEmission = weatherData.particle_light_emission or 0.1
+		if weatherData.particle_rotation_min and weatherData.particle_rotation_max then
+			emitter.Rotation = NumberRange.new(weatherData.particle_rotation_min, weatherData.particle_rotation_max)
+		end
+		if weatherData.particle_rot_speed_min and weatherData.particle_rot_speed_max then
+			emitter.RotSpeed = NumberRange.new(weatherData.particle_rot_speed_min, weatherData.particle_rot_speed_max)
+		end
+		-- Apply wind via Acceleration X/Z
+		local wind = weatherData.wind or Vector3.new(0, 0, 0)
+		emitter.Acceleration = Vector3.new(wind.X, -math.max(5, weatherData.particle_speed or 8), wind.Z)
+		emitter.Transparency = NumberSequence.new({
+			NumberSequenceKeypoint.new(0, 0.1),
+			NumberSequenceKeypoint.new(1, 1),
+		})
+		emitter.Enabled = true
+		local targetRate = (weatherData.particle_rate or 0) * particleRateScale()
+		Tween:Create(emitter, TweenInfo.new(transitionSec), { Rate = targetRate }):Play()
+	end
 end
 
 -- Lightning flash routine: fires a quick double-strobe during storm/rain only
@@ -162,60 +182,68 @@ thunderSound.SoundId = "rbxasset://sounds/Halt.wav"
 thunderSound.Volume = 0.4
 
 local function lightningStrobe()
-    lightningFrame.BackgroundTransparency = 0.2
-    task.wait(0.06)
-    lightningFrame.BackgroundTransparency = 0.7
-    task.wait(0.08)
-    lightningFrame.BackgroundTransparency = 0.05
-    task.wait(0.05)
-    Tween:Create(lightningFrame, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 1 }):Play()
-    task.wait(math.random(2, 5) * 0.1)
-    pcall(function() thunderSound:Play() end)
+	lightningFrame.BackgroundTransparency = 0.2
+	task.wait(0.06)
+	lightningFrame.BackgroundTransparency = 0.7
+	task.wait(0.08)
+	lightningFrame.BackgroundTransparency = 0.05
+	task.wait(0.05)
+	Tween:Create(
+		lightningFrame,
+		TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+		{ BackgroundTransparency = 1 }
+	):Play()
+	task.wait(math.random(2, 5) * 0.1)
+	pcall(function()
+		thunderSound:Play()
+	end)
 end
 
 task.spawn(function()
-    while true do
-        task.wait(math.random(8, 25))
+	while true do
+		task.wait(math.random(8, 25))
 		if currentWeatherKey == "storm" or (currentWeatherKey == "rain" and math.random() < 0.25) then
 			lightningStrobe()
 		end
-    end
+	end
 end)
 
 -- Storm = stronger rain + camera shake
 local stormShakeConn
 local function setStormShake(active)
-    if stormShakeConn then stormShakeConn:Disconnect(); stormShakeConn = nil end
-    if not active then return end
-    stormShakeConn = RunService.RenderStepped:Connect(function()
-        if cam then
-            local jitter = CFrame.new(
-                (math.random() - 0.5) * 0.06,
-                (math.random() - 0.5) * 0.06,
-                0
-            )
-            cam.CFrame = cam.CFrame * jitter
-        end
-    end)
+	if stormShakeConn then
+		stormShakeConn:Disconnect()
+		stormShakeConn = nil
+	end
+	if not active then
+		return
+	end
+	stormShakeConn = RunService.RenderStepped:Connect(function()
+		if cam then
+			local jitter = CFrame.new((math.random() - 0.5) * 0.06, (math.random() - 0.5) * 0.06, 0)
+			cam.CFrame = cam.CFrame * jitter
+		end
+	end)
 end
 
 local originalApplyWeather = applyWeather
 applyWeather = function(weatherKey, weatherData, transitionSec)
-    currentWeatherKey = weatherKey
-    originalApplyWeather(weatherKey, weatherData, transitionSec)
-    -- Audio swap
-    local newSound = WEATHER_SOUNDS[weatherKey]
-    if newSound then
-        if ambient.SoundId ~= newSound then
-            ambient.SoundId = newSound
-            ambient:Play()
-        end
-        Tween:Create(ambient, TweenInfo.new(transitionSec or 0.5), { Volume = (weatherKey == "storm") and 0.5 or 0.25 }):Play()
-    else
-        Tween:Create(ambient, TweenInfo.new(transitionSec or 0.5), { Volume = 0 }):Play()
-    end
-    -- Storm shake
-    setStormShake(weatherKey == "storm")
+	currentWeatherKey = weatherKey
+	originalApplyWeather(weatherKey, weatherData, transitionSec)
+	-- Audio swap
+	local newSound = WEATHER_SOUNDS[weatherKey]
+	if newSound then
+		if ambient.SoundId ~= newSound then
+			ambient.SoundId = newSound
+			ambient:Play()
+		end
+		Tween:Create(ambient, TweenInfo.new(transitionSec or 0.5), { Volume = (weatherKey == "storm") and 0.5 or 0.25 })
+			:Play()
+	else
+		Tween:Create(ambient, TweenInfo.new(transitionSec or 0.5), { Volume = 0 }):Play()
+	end
+	-- Storm shake
+	setStormShake(weatherKey == "storm")
 end
 
 WeatherRE.OnClientEvent:Connect(applyWeather)
@@ -225,35 +253,38 @@ WeatherRE.OnClientEvent:Connect(applyWeather)
 -- ============================================================
 local hud = sg:WaitForChild("ZundaHUD", 10)
 if hud then
-    local statBar = hud:FindFirstChild("StatBar")
-    if statBar then
-        local existing = statBar:FindFirstChild("WeatherPill")
-        if not existing then
-            local pill = Instance.new("Frame", statBar)
-            pill.Name = "WeatherPill"
-            pill.Size = UDim2.new(0, 150, 0, 30)
-            pill.Position = UDim2.new(0, 116, 0, 52)
-            pill.BackgroundColor3 = Color3.fromRGB(245, 210, 215)
-            pill.BorderSizePixel = 0
-            local cr = Instance.new("UICorner", pill); cr.CornerRadius = UDim.new(0, 15)
-            local st = Instance.new("UIStroke", pill); st.Thickness = 1.5
-            st.Color = Color3.fromRGB(255,255,255); st.Transparency = 0.4
-            local lbl = Instance.new("TextLabel", pill)
-            lbl.Name = "WeatherText"
-            lbl.Size = UDim2.new(1, -12, 1, 0)
-            lbl.Position = UDim2.new(0, 6, 0, 0)
-            lbl.BackgroundTransparency = 1
-            lbl.Text = "\u{2600}\u{FE0F} Clear"
-            lbl.Font = Enum.Font.FredokaOne
-            lbl.TextColor3 = Color3.fromRGB(68,52,78)
-            lbl.TextSize = 14
+	local statBar = hud:FindFirstChild("StatBar")
+	if statBar then
+		local existing = statBar:FindFirstChild("WeatherPill")
+		if not existing then
+			local pill = Instance.new("Frame", statBar)
+			pill.Name = "WeatherPill"
+			pill.Size = UDim2.new(0, 150, 0, 30)
+			pill.Position = UDim2.new(0, 116, 0, 52)
+			pill.BackgroundColor3 = Color3.fromRGB(245, 210, 215)
+			pill.BorderSizePixel = 0
+			local cr = Instance.new("UICorner", pill)
+			cr.CornerRadius = UDim.new(0, 15)
+			local st = Instance.new("UIStroke", pill)
+			st.Thickness = 1.5
+			st.Color = Color3.fromRGB(255, 255, 255)
+			st.Transparency = 0.4
+			local lbl = Instance.new("TextLabel", pill)
+			lbl.Name = "WeatherText"
+			lbl.Size = UDim2.new(1, -12, 1, 0)
+			lbl.Position = UDim2.new(0, 6, 0, 0)
+			lbl.BackgroundTransparency = 1
+			lbl.Text = "\u{2600}\u{FE0F} Clear"
+			lbl.Font = Enum.Font.FredokaOne
+			lbl.TextColor3 = Color3.fromRGB(68, 52, 78)
+			lbl.TextSize = 14
 
-            -- Listen for weather changes and update label
-            WeatherRE.OnClientEvent:Connect(function(_, wData)
-                lbl.Text = (wData.emoji or "") .. " " .. (wData.display_name or "")
-            end)
-        end
-    end
+			-- Listen for weather changes and update label
+			WeatherRE.OnClientEvent:Connect(function(_, wData)
+				lbl.Text = (wData.emoji or "") .. " " .. (wData.display_name or "")
+			end)
+		end
+	end
 end
 
 print("[WeatherClient] Ready - listening for weather updates")
