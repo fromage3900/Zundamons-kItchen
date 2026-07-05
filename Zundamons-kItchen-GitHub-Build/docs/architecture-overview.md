@@ -1,19 +1,71 @@
-# Architecture Overview
+# Architecture Overview — Zundamon's kItchen
 
-## Current systems
-*(Fill this in after the first export scan/structure review.)*
+## Game Systems
 
-## Proposed module map
-- Networking layer
-- Game rules / state management
-- UI layer
-- Persistence
-- Audio/FX
+### Harvesting System
+The harvesting system consists of multiple layers that work together:
 
-## Data flow (template)
-- Client input -> request -> server validate -> server state -> replication -> client presentation
+| Layer | Script | Location | Purpose |
+|---|---|---|---|
+| **Config** | `HarvestConfig.lua` | ReplicatedStorage.Shared.Config | Central tuning: distances, timings, cooldowns, visuals |
+| **Client Controller** | `HarvestController.client.lua` | StarterPlayer.Controllers | Progress bar, animations, sounds, particles, cancel-on-move |
+| **Server Gather** | `ZundaGatherServer.server.lua` | ServerScriptService | Click-to-gather for forest plants, mystery loot, respawn logic |
+| **Server Planters** | `Planters.server.lua` | ServerScriptService | Planter box planting, seed consumption, growth stages |
+| **Server Mineable** | `Mineable.server.lua` | ServerScriptService | Mining/harvesting with health-based depletion, loot tiers |
+| **Server Validation** | `HarvestValidator.server.lua` | ServerScriptService.Validation | Distance checks, rate limiting, cooldowns, exploit prevention |
+| **Loot Module** | `LootModule.lua` | ReplicatedStorage.Shared.Modules | Item granting, code-based loot delivery, sell handling |
+| **Config: Plants** | `PlantConfig.lua` | ReplicatedStorage.Shared.Modules | Plant growth times, sprout mappings |
+| **Config: Mineables** | `MineableConfig.lua` | ReplicatedStorage.Shared.Modules | Mineable health, respawn, loot tables |
+| **Config: Items** | `ItemConfig.lua` | ReplicatedStorage.Shared.Modules | Item definitions and properties |
 
-## How to extend
-- Add a new system via a dedicated ModuleScript folder.
-- Update docs + style guide notes if conventions change.
+### Harvest Flow
+```
+1. Player clicks harvestable node (ClickDetector)
+2. HarvestController.client.lua intercepts click
+   - Shows progress bar (2.5s hold)
+   - Plays harvest animation
+   - Plays sound effect
+   - Spawns particles
+3. During hold, controller checks:
+   - Distance to node (cancel if out of range)
+   - Player movement (cancel if moved >1.5 studs)
+   - Movement keys pressed (cancel)
+   - Node availability
+4. On completion:
+   - Fires ClickDetector:MouseClick(player)
+   - Server-side handler (ZundaGatherServer/Planters/Mineable) processes loot
+5. Server validation (HarvestValidator):
+   - Distance check (server-authoritative)
+   - Rate limiting (max 5 harvests/sec)
+   - Node cooldown (1s per node)
+   - Node availability check
+6. LootModule grants items via code-based delivery
+7. Client receives notification + inventory update
+```
 
+### Other Systems
+- **Inventory** — `InventoryServer.server.lua` + `InventoryController.client.lua` + `MaterialsScript.client.lua`
+- **Crafting** — `CraftManager.server.lua` + `CraftingScript.client.lua`
+- **Quests** — `QuestManager.server.lua` + `QuestConfig.lua`
+- **Companions** — `CompanionManager.server.lua` + `CompanionBuffServer.server.lua`
+- **Fishing** — `FishingServer.server.lua` + `FishingMinigameScript.client.lua`
+- **Building** — `BuildingManager.server.lua` + `PlotManager.server.lua`
+- **Weather** — `WeatherSystem.server.lua` + `WeatherClient.client.lua`
+- **Day/Night** — `DayNightSky.server.lua` + `SkySync.server.lua`
+- **Serving** — `ServingSystem.server.lua` + `GuestDetector.client.lua`
+- **Data Persistence** — `DataManager.server.lua` (DataStore-backed)
+- **Economy** — `RewardCore.lua` + `ShopConfig.lua` + `StoreScript.client.lua`
+
+## Data Flow
+```
+Client Input → HarvestController (client) → ClickDetector → Server Handler
+  → HarvestValidator (server) → LootModule → DataManager → DataStore
+  → RemoteEvent notification → Client UI update
+```
+
+## How to Extend
+1. Add new harvestable types in `MineableConfig.lua` or `PlantConfig.lua`
+2. Add new items in `ItemConfig.lua`
+3. Tune interaction in `HarvestConfig.lua`
+4. Add new nodes in Studio with CollectionService tags: `Mineable`, `Planter`, or `ResourceType` attribute
+5. For new visual effects, extend `HarvestController.client.lua`

@@ -1,34 +1,24 @@
-# TODO - Zundamon's kItchen (GitHub Build) Bootstrap
+# TODO — Zundamon's kItchen (GitHub Build)
 
-## Step 0: Decision (chosen)
-- [x] Use **text-friendly** Roblox exports for GitHub builds: rbxlx/rbxmx + code-as-text (diffable)
+## Completed
+- [x] Create GitHub repo (fromage3900/Zundamons-kItchen)
+- [x] Fix .gitignore — removed `*.rbxlx`/`*.rbxmx` so exports can be tracked
+- [x] Branch renamed: `master` → `main`
+- [x] Remote origin configured
+- [x] `.vscode/settings.json` with keyword highlighting & tool config
+- [x] `default.project.json` for Rojo
+- [x] `source/beantown.rbxlx` — exported from Studio (48 MB text format)
+- [x] 113 scripts extracted from .rbxlx into `src/`
+- [x] Folder structure created for Workspace (Kitchen, Forest, Houses, Characters, NPCs, Companions)
 
-## Step 1: Repository scaffolding
-- [x] Create repo directory structure plan
-- [x] Add root docs (`README.md`, `CONTRIBUTING.md`)
-- [x] Add `.github/` templates and CI workflow
+## Harvesting System Polish
+- [x] `HarvestConfig.lua` — central tuning (distances, timings, cooldowns, visuals)
+- [x] `HarvestController.client.lua` — progress bar, animations, sounds, particles, cancel-on-move
+- [x] `HarvestValidator.server.lua` — distance checks, rate limiting, cooldowns, exploit prevention
+- [x] Arquitecture docs updated in `docs/architecture-overview.md`
 
-## Step 2: Roblox source export readiness
-- [ ] Create `source/` folder and document expected export mapping
-- [ ] Add `.gitignore` rules to ignore `workspace/` outputs (done)
-
-## Step 3: Cooperative dev hygiene
-- [x] Add PR checklist in `.github/pull_request_template.md`
-- [x] Add coding + architecture review checklist (`docs/review-checklist.md`)
-- [x] Add patch notes template
-- [x] Add style guide (`docs/style-guide.md`)
-
-## Step 4: “clean commit when ready”
-- [x] Ensure scaffold is committed as the first commit
-- [ ] Provide exact git commands to run locally
-  - git status
-  - git branch -M main
-  - git remote add origin <YOUR_GITHUB_REPO_URL>
-  - git push -u origin main
-
-## Step 5: First export + first comprehensive review
-
-- [ ] Export current experience from Studio into `source/`
-- [ ] Commit exports
-- [ ] Perform a comprehensive code/architecture review using `docs/review-checklist.md`
-
+## Next Steps
+- [ ] Install VS Code extensions (Rojo, Luau LSP, StyLua, Selene, Error Lens, etc.)
+- [ ] Install Rojo CLI for Studio sync
+- [ ] Add `.gitkeep` files to empty environment folders
+- [ ] Push to GitHub and verify CI passes

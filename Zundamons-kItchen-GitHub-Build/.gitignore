@@ -1,16 +1,18 @@
 # Local build outputs
 /workspace/
 
-# Roblox/Studio misc (best-effort)
+# Roblox binary place files (ignore binary, keep text format)
 *.rbxl
-*.rbxmx
-*.rbxlx
+# NOTE: *.rbxlx and *.rbxmx are NOT ignored — they are the text-format exports we commit
 
 # OS/editor
 .DS_Store
-.vscode/
 .idea/
 
 # CI artifacts
 /artifacts/
 
+# Temp / generated files
+*.lock
+extract_scripts.py
+rojo.zip
