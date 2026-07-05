@@ -1,34 +1,25 @@
-# TODO - Zundamon's kItchen (GitHub Build) Bootstrap
+# TODO — Zundamon's kItchen (Rojo Build)
 
-## Step 0: Decision (chosen)
-- [x] Use **text-friendly** Roblox exports for GitHub builds: rbxlx/rbxmx + code-as-text (diffable)
+## Completed
+- [x] GitHub repo created (fromage3900/Zundamons-kItchen)
+- [x] Rojo project (`default.project.json`) configured
+- [x] 98 scripts under `src/`
+- [x] Harvesting system polish
+- [x] **Committed to Rojo** — removed `source/beantown.rbxlx`
+- [x] Merged Rojo migration to `main`
+- [x] `.vscode/extensions.json` with 11 recommended extensions
+- [x] `docs/project-review.md` scorecard (8/10 overall)
+- [x] `docs/remotes.md` remote catalog
+- [x] `docs/security-audit.md` applied fixes
+- [x] `PlayerDataService` replaces `_G.data` on server
+- [x] Planters fixes (1Hz grow loop, nil guards, deduped plantEvent)
+- [x] Security fixes: ServingSystem, InventoryServer, ToolManager, LootModule
+- [x] Filename cleanup (`SprintOnShift.server.lua`, DoubleJump → legacy-notes)
+- [x] CI: validate + stylua check on `src/`
 
-## Step 1: Repository scaffolding
-- [x] Create repo directory structure plan
-- [x] Add root docs (`README.md`, `CONTRIBUTING.md`)
-- [x] Add `.github/` templates and CI workflow
-
-## Step 2: Roblox source export readiness
-- [ ] Create `source/` folder and document expected export mapping
-- [ ] Add `.gitignore` rules to ignore `workspace/` outputs (done)
-
-## Step 3: Cooperative dev hygiene
-- [x] Add PR checklist in `.github/pull_request_template.md`
-- [x] Add coding + architecture review checklist (`docs/review-checklist.md`)
-- [x] Add patch notes template
-- [x] Add style guide (`docs/style-guide.md`)
-
-## Step 4: “clean commit when ready”
-- [x] Ensure scaffold is committed as the first commit
-- [ ] Provide exact git commands to run locally
-  - git status
-  - git branch -M main
-  - git remote add origin <YOUR_GITHUB_REPO_URL>
-  - git push -u origin main
-
-## Step 5: First export + first comprehensive review
-
-- [ ] Export current experience from Studio into `source/`
-- [ ] Commit exports
-- [ ] Perform a comprehensive code/architecture review using `docs/review-checklist.md`
-
+## Next steps
+- [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
+- [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
+- [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
+- [ ] Move `RewardCore` remote wiring to `ServerScriptService/`
+- [ ] Bootstrap remotes in Rojo (optional future)

@@ -1,16 +1,20 @@
 # Local build outputs
 /workspace/
-
-# Roblox/Studio misc (best-effort)
 *.rbxl
-*.rbxmx
 *.rbxlx
+*.rbxmx
 
 # OS/editor
 .DS_Store
-.vscode/
 .idea/
 
 # CI artifacts
 /artifacts/
 
+# Node
+node_modules/
+
+# Temp / generated files
+*.lock
+extract_scripts.py
+rojo.zip

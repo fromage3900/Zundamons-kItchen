@@ -6,13 +6,13 @@
     "placeVersion": null
   },
   "repo": {
-    "sourceOfTruth": "rbxlx/rbxmx exports + text-friendly code representation",
-    "sourceDirs": ["source/"],
+    "sourceOfTruth": "Rojo sync from src/ via default.project.json",
+    "sourceDirs": ["src/"],
     "ignoredDirs": ["workspace/", "artifacts/"]
   },
   "contribution": {
     "recommendedBranchPattern": "feature/<short-name>",
-    "requiredExports": true
+    "requiredExports": false,
+    "syncTool": "rojo"
   }
 }
-
