@@ -3,7 +3,7 @@
 ## Completed
 - [x] GitHub repo created (fromage3900/Zundamons-kItchen)
 - [x] Rojo project (`default.project.json`) configured
-- [x] 98 scripts under `src/`
+- [x] 106+ scripts under `src/`
 - [x] Harvesting system polish
 - [x] **Committed to Rojo** — removed `source/beantown.rbxlx`
 - [x] Merged Rojo migration to `main`
@@ -17,13 +17,21 @@
 - [x] Filename cleanup (`SprintOnShift.server.lua`, DoubleJump → legacy-notes)
 - [x] CI: validate + stylua check on `src/`
 - [x] `docs/zunda-design-bible.md` — asset catalog, gameplay loop, expansion playbook
-
-## Next steps
-- [ ] Wire `zones_visited` + unify zone keys (see `docs/zunda-design-bible.md`) — **zones_visited wired** (ZoneVisitConfig + Teleporter + lore entrances)
+- [x] Rokit toolchain (`rokit.toml`, lint scripts, `docs/toolchain.md`)
+- [x] Atmosphere phases (PostFX, SkyConfig, weather/cloud tuning)
+- [x] Zone visit tracking (`ZoneVisitConfig`, teleporter + lore entrances)
 - [x] `DecorationPlacer` service for `DecorationConfig` catalog
 - [x] Gather handlers for Edamame Pod, Zunda Leaf, Sweet Pea, Pea Flower
+- [x] Remotes in Rojo (`default.project.json` + `RemoteBootstrap` + `RemoteManifest`)
+- [x] `LootModule` / `RewardCore` ServerScriptService shims for Rojo sync
+
+## Next steps (Studio / product — not blocking git)
 - [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
+- [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
+- [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
+- [ ] Replace Robux DevProduct IDs and clothing `assetId` placeholders
+- [ ] Wire `QuestManager` → `QuestConfig` (30+ quests dormant)
+- [ ] Decoration shop client UI (server remotes ready)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
-- [ ] Move `RewardCore` remote wiring to `ServerScriptService/`
-- [ ] Bootstrap remotes in Rojo (optional future)
+- [ ] Bootstrap remaining Studio-only UI in Rojo (optional future)

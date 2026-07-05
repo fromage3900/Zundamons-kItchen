@@ -8,8 +8,9 @@ This project uses **Rojo 7** as the sole source-control workflow for game code. 
 |---|---|
 | Server scripts (`*.server.lua`) | Workspace map, buildings, NPCs |
 | Client scripts (`*.client.lua`) | ScreenGuis, LocalScripts wired in Studio |
-| Config modules (`ConfigurationFiles/`) | `RemoteEvents` / `RemoteFunctions` folders |
-| `default.project.json` | Meshes, animations, sounds, particles |
+| Config modules (`ConfigurationFiles/`) | Meshes, animations, sounds, particles |
+| **RemoteEvents / RemoteFunctions** (via `default.project.json` + bootstrap) | UI ScreenGuis tied to Studio instances |
+| `default.project.json` | `ServerStorage` models (Plants, Decorations, shop) |
 
 The published experience (ID `108617605497926`) is the **world container**. This repo is the **code container**.
 
@@ -48,13 +49,10 @@ If you add a new top-level service mapping, update `default.project.json`.
 
 ## Adding a new RemoteEvent / RemoteFunction
 
-Remotes are **Studio-managed** today. When adding one:
-
-1. Create the instance under `ReplicatedStorage.RemoteEvents` or `RemoteFunctions` in Studio
-2. Document the name and payload schema in the server handler
-3. Note it in your PR under "Studio-only dependencies"
-
-Future improvement: define remotes in Rojo using `init.meta.json` or a small bootstrap script.
+1. Add the name to `ConfigurationFiles/RemoteManifest.lua`
+2. Add the instance under the correct folder in `default.project.json`
+3. Document payload schema in this file (`docs/remotes.md`)
+4. Implement the server handler with type checks and server authority
 
 ## Building a local place file (optional)
 

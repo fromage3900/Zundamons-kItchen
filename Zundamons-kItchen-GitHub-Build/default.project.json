@@ -6,6 +6,75 @@
       "$className": "ReplicatedStorage",
       "ConfigurationFiles": {
         "$path": "src/ReplicatedStorage/ConfigurationFiles"
+      },
+      "Loot": {
+        "$className": "Folder"
+      },
+      "RemoteEvents": {
+        "$className": "Folder",
+        "NotifyPlayer": { "$className": "RemoteEvent" },
+        "UpdateQuests": { "$className": "RemoteEvent" },
+        "QuestCompleted": { "$className": "RemoteEvent" },
+        "PurchaseCompanion": { "$className": "RemoteEvent" },
+        "CompanionOwnedSync": { "$className": "RemoteEvent" },
+        "SetCompanion": { "$className": "RemoteEvent" },
+        "WeatherChanged": { "$className": "RemoteEvent" },
+        "MakeLootEvent": { "$className": "RemoteEvent" },
+        "RemoveCode": { "$className": "RemoteEvent" },
+        "ShowPlantingMenu": { "$className": "RemoteEvent" },
+        "plantEvent": { "$className": "RemoteEvent" },
+        "CookingResult": { "$className": "RemoteEvent" },
+        "OpenCompanionVN": { "$className": "RemoteEvent" },
+        "ZoneVisited": { "$className": "RemoteEvent" },
+        "PurchaseResult": { "$className": "RemoteEvent" }
+      },
+      "RemoteFunctions": {
+        "$className": "Folder",
+        "RequestData": { "$className": "RemoteFunction" },
+        "ServeGuest": { "$className": "RemoteFunction" },
+        "EquipTool": { "$className": "RemoteFunction" },
+        "CraftFunction": { "$className": "RemoteFunction" },
+        "GiveLoot": { "$className": "RemoteFunction" },
+        "sellLoot": { "$className": "RemoteFunction" },
+        "ClaimPlot": { "$className": "RemoteFunction" },
+        "BuyDecoration": { "$className": "RemoteFunction" },
+        "PlaceDecoration": { "$className": "RemoteFunction" },
+        "GetDecorationState": { "$className": "RemoteFunction" },
+        "GetCompanionCatalog": { "$className": "RemoteFunction" },
+        "GetOwnedCompanions": { "$className": "RemoteFunction" },
+        "GetActiveCompanionBuff": { "$className": "RemoteFunction" },
+        "PromptRobuxPurchase": { "$className": "RemoteFunction" }
+      },
+      "RewardEvents": {
+        "$className": "Folder",
+        "PopupEvent": { "$className": "RemoteEvent" },
+        "ChefLevelUpdate": { "$className": "RemoteEvent" },
+        "ComboUpdate": { "$className": "RemoteEvent" },
+        "LevelUpEvent": { "$className": "RemoteEvent" },
+        "NotifyAction": { "$className": "RemoteEvent" },
+        "DailyUpdate": { "$className": "RemoteEvent" },
+        "LoginBonusEvent": { "$className": "RemoteEvent" },
+        "AchievementUnlocked": { "$className": "RemoteEvent" },
+        "PowerupUpdate": { "$className": "RemoteEvent" },
+        "RequestRewardSync": { "$className": "RemoteFunction" },
+        "UsePowerup": { "$className": "RemoteFunction" },
+        "UpgradeTool": { "$className": "RemoteFunction" },
+        "GetCompendium": { "$className": "RemoteFunction" }
+      },
+      "ToolRemotes": {
+        "$className": "Folder",
+        "ConnectFunction": { "$className": "RemoteFunction" },
+        "FishingCast": { "$className": "RemoteFunction" }
+      },
+      "InventoryReplicatedStorage": {
+        "$className": "Folder",
+        "RemoteEvents": {
+          "$className": "Folder",
+          "Equip": { "$className": "RemoteEvent" },
+          "Drop": { "$className": "RemoteEvent" },
+          "ToHotbar": { "$className": "RemoteEvent" },
+          "ToInventory": { "$className": "RemoteEvent" }
+        }
       }
     },
     "ServerScriptService": {

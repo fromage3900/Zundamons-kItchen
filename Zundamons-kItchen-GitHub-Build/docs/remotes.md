@@ -1,6 +1,6 @@
 # Remote API Reference
 
-Studio-managed folders (not synced by Rojo). Handlers live in `src/`.
+Networking instances are defined in **`default.project.json`** (Rojo sync) and ensured at runtime by **`00_RemoteBootstrap.server.lua`** if missing from a legacy place. Canonical name list: `RemoteManifest.lua`.
 
 See also: [`rojo-workflow.md`](rojo-workflow.md)
 
