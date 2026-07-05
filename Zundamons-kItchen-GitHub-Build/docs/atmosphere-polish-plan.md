@@ -82,13 +82,11 @@ Define a **Zunda palette** (low saturation, 引き算の美):
 
 ---
 
-### Phase 2 — Post-processing module (Rojo)
+### Phase 2 — Post-processing module (Rojo) ✅
 
-**New files (proposed):**
-```
-src/ReplicatedStorage/ConfigurationFiles/PostFXConfig.lua
-src/StarterPlayer/StarterPlayerScripts/AtmospherePostFX.client.lua
-```
+**Implemented:**
+- `src/ReplicatedStorage/ConfigurationFiles/PostFXConfig.lua` — hour bands + weather modifiers
+- `src/StarterPlayer/StarterPlayerScripts/AtmospherePostFX.client.lua` — Bloom, SunRays, ColorCorrection under `Lighting`
 
 **Behavior:**
 - Create (once) under `Lighting`: `BloomEffect`, `SunRaysEffect`, `ColorCorrectionEffect` (optional light `DepthOfField` for cinematics only).

@@ -13,6 +13,7 @@ This document maps what the **code expects in Workspace**, which systems are **p
 | Area | Maturity | Artist action |
 |------|----------|---------------|
 | Sky / day-night / weather | **Strong** — config + runtime spawn | Tune `SkyConfig.lua`; place `Terrain` with `Clouds` |
+| Post-FX (bloom / sun rays / grade) | **New** — `PostFXConfig` + `AtmospherePostFX` | Tune presets; test mobile quality gates |
 | Gather / mine / plant respawns | **Medium** — Studio-placed nodes + tags | Tag nodes; set attributes; models in `ServerStorage` |
 | Zones / teleporters / buildings | **Medium** — named instances + config | Follow naming contract below |
 | Plots / decorations | **Weak** — config exists, placement thin | Signs required; decoration shop not fully wired |
