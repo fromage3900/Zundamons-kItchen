@@ -14,6 +14,12 @@
 # Node
 node_modules/
 
+# Rokit (binaries live in ~/.rokit/bin; tool-storage is global cache)
+.rokit/
+
+# Luau LSP sourcemap (generated locally)
+sourcemap.json
+
 # Temp / generated files
 *.lock
 extract_scripts.py

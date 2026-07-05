@@ -9,8 +9,8 @@ local HarvestConfig = {
 	MIN_INTERACTION_DISTANCE = 2,
 
 	-- Harvest timing (seconds)
-	HARVEST_DURATION = 2.5,          -- Base time to hold interaction
-	HARVEST_COOLDOWN = 1.0,          -- Per-node cooldown after harvest
+	HARVEST_DURATION = 2.5, -- Base time to hold interaction
+	HARVEST_COOLDOWN = 1.0, -- Per-node cooldown after harvest
 
 	-- Progress bar
 	PROGRESS_BAR_WIDTH = 200,
@@ -27,7 +27,7 @@ local HarvestConfig = {
 	HARVEST_ANIMATION_PRIORITY = Enum.AnimationPriority.Action,
 
 	-- Sound
-	HARVEST_SOUND_ID = "rbxassetid://9120384731",     -- Replace with actual sound ID
+	HARVEST_SOUND_ID = "rbxassetid://9120384731", -- Replace with actual sound ID
 	HARVEST_SOUND_VOLUME = 0.6,
 	HARVEST_SOUND_PITCH_MIN = 0.9,
 	HARVEST_SOUND_PITCH_MAX = 1.1,
@@ -40,8 +40,8 @@ local HarvestConfig = {
 
 	-- Server validation
 	SERVER_VALIDATION_ENABLED = true,
-	MAX_HARVEST_RATE = 5,            -- Max harvests per second per player
-	RATE_LIMIT_WINDOW = 1.0,         -- Rate limit window in seconds
+	MAX_HARVEST_RATE = 5, -- Max harvests per second per player
+	RATE_LIMIT_WINDOW = 1.0, -- Rate limit window in seconds
 
 	-- Exploit prevention
 	ENABLE_DISTANCE_CHECK = true,

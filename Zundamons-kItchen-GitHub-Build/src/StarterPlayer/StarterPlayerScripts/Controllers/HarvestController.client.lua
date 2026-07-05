@@ -148,9 +148,13 @@ end
 -- Play harvest animation on character
 local function playHarvestAnimation()
 	local character = player.Character
-	if not character then return end
+	if not character then
+		return
+	end
 	local humanoid = character:FindFirstChildOfClass("Humanoid")
-	if not humanoid then return end
+	if not humanoid then
+		return
+	end
 
 	local animator = humanoid:FindFirstChildOfClass("Animator")
 	if not animator then
@@ -180,14 +184,18 @@ end
 
 -- Show progress bar
 local function showProgressBar()
-	if not progressContainer then createProgressBar() end
+	if not progressContainer then
+		createProgressBar()
+	end
 	progressContainer.Visible = true
 	progressFill.Size = UDim2.new(0, 0, 1, -4)
 end
 
 -- Update progress bar
 local function updateProgressBar(progress: number)
-	if not progressFill then return end
+	if not progressFill then
+		return
+	end
 	local clampedProgress = math.clamp(progress, 0, 1)
 	local width = (progressContainer.AbsoluteSize.X - 4) * clampedProgress
 	progressFill.Size = UDim2.new(0, width, 1, -4)
@@ -203,11 +211,17 @@ end
 
 -- Check if player moved too far from start position
 local function hasMovedTooFar(): boolean
-	if not harvestStartPosition then return false end
+	if not harvestStartPosition then
+		return false
+	end
 	local character = player.Character
-	if not character then return true end
+	if not character then
+		return true
+	end
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
-	if not rootPart then return true end
+	if not rootPart then
+		return true
+	end
 	local distance = (rootPart.Position - harvestStartPosition).Magnitude
 	return distance > MOVE_THRESHOLD
 end
@@ -215,16 +229,22 @@ end
 -- Check distance to target node
 local function isInRange(node: Instance): boolean
 	local character = player.Character
-	if not character then return false end
+	if not character then
+		return false
+	end
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
-	if not rootPart then return false end
+	if not rootPart then
+		return false
+	end
 	local distance = (rootPart.Position - node.Position).Magnitude
 	return distance <= MAX_DISTANCE
 end
 
 -- Cancel current harvest
 local function cancelHarvest(reason: string?)
-	if not isHarvesting then return end
+	if not isHarvesting then
+		return
+	end
 	isHarvesting = false
 	harvestTargetNode = nil
 	harvestStartPosition = nil
@@ -244,7 +264,9 @@ end
 
 -- Complete harvest
 local function completeHarvest()
-	if not isHarvesting or not harvestTargetNode then return end
+	if not isHarvesting or not harvestTargetNode then
+		return
+	end
 	isHarvesting = false
 
 	hideProgressBar()
@@ -279,7 +301,10 @@ local function startHarvest(node: Instance)
 
 	isHarvesting = true
 	harvestTargetNode = node
-	harvestStartPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.HumanoidRootPart.Position or nil
+	harvestStartPosition = player.Character
+			and player.Character:FindFirstChild("HumanoidRootPart")
+			and player.Character.HumanoidRootPart.Position
+		or nil
 
 	showProgressBar()
 	playHarvestAnimation()
@@ -294,28 +319,36 @@ local function startHarvest(node: Instance)
 	local heartbeatConn
 	heartbeatConn = RunService.Heartbeat:Connect(function()
 		if not isHarvesting then
-			if heartbeatConn then heartbeatConn:Disconnect() end
+			if heartbeatConn then
+				heartbeatConn:Disconnect()
+			end
 			return
 		end
 
 		-- Check if moved too far
 		if hasMovedTooFar() then
 			cancelHarvest("Player moved too far")
-			if heartbeatConn then heartbeatConn:Disconnect() end
+			if heartbeatConn then
+				heartbeatConn:Disconnect()
+			end
 			return
 		end
 
 		-- Check if still in range
 		if not isInRange(node) then
 			cancelHarvest("Node out of range")
-			if heartbeatConn then heartbeatConn:Disconnect() end
+			if heartbeatConn then
+				heartbeatConn:Disconnect()
+			end
 			return
 		end
 
 		-- Check if node is still available
 		if node:GetAttribute("Available") == false then
 			cancelHarvest("Node no longer available")
-			if heartbeatConn then heartbeatConn:Disconnect() end
+			if heartbeatConn then
+				heartbeatConn:Disconnect()
+			end
 			return
 		end
 
@@ -327,7 +360,9 @@ local function startHarvest(node: Instance)
 		-- Complete
 		if elapsed >= duration then
 			completeHarvest()
-			if heartbeatConn then heartbeatConn:Disconnect() end
+			if heartbeatConn then
+				heartbeatConn:Disconnect()
+			end
 		end
 	end)
 end
@@ -335,13 +370,17 @@ end
 -- Wire up ClickDetectors to use the harvest controller
 local function bindNode(node: Instance)
 	local clickDetector = node:FindFirstChildOfClass("ClickDetector")
-	if not clickDetector then return end
+	if not clickDetector then
+		return
+	end
 
 	-- Override the click to use our harvest system
 	-- We connect to MouseClick but intercept it
 	local originalClick = clickDetector.MouseClick
 	clickDetector.MouseClick:Connect(function(clickingPlayer)
-		if clickingPlayer ~= player then return end
+		if clickingPlayer ~= player then
+			return
+		end
 		if isHarvesting then
 			cancelHarvest("Re-clicked")
 			return
@@ -394,7 +433,9 @@ end)
 
 -- Cancel on key press (movement keys)
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
-	if gameProcessed then return end
+	if gameProcessed then
+		return
+	end
 	if isHarvesting then
 		local moveKeys = {
 			[Enum.KeyCode.W] = true,

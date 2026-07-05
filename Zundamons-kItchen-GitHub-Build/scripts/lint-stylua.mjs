@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import { toolPath, withRokitPath } from "./ensure-rokit.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -10,20 +8,10 @@ const targets = [
   "src/ServerScriptService/Validation",
   "src/ReplicatedStorage/ConfigurationFiles",
   "src/StarterPlayer/StarterPlayerScripts/Controllers",
-  "src/ServerScriptService",
-  "src/StarterPlayer/StarterPlayerScripts",
-  "src/ReplicatedStorage",
 ];
 
-for (const target of targets) {
-  if (!existsSync(join(root, target))) {
-    console.error("Selene lint target missing:", target);
-    process.exit(1);
-  }
-}
-
-const selene = toolPath("selene");
-execSync(`${selene} --allow-warnings ${targets.join(" ")}`, {
+const stylua = toolPath("stylua");
+execSync(`${stylua} --check ${targets.join(" ")}`, {
   cwd: root,
   stdio: "inherit",
   env: withRokitPath(),

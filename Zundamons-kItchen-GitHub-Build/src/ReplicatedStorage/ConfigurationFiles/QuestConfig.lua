@@ -20,7 +20,7 @@ local QuestConfig = {
 		--   difficulty = 1 -- 1-5 scale
 		-- }
 	},
-	
+
 	-- Default quests to initialize on player join
 	default_quests = {
 		{
@@ -33,9 +33,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 25,
 				tier_points = 5,
-				items = {}
+				items = {},
 			},
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_cafe_master",
@@ -47,9 +47,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 100,
 				tier_points = 20,
-				items = {}
+				items = {},
 			},
-			difficulty = 2
+			difficulty = 2,
 		},
 		-- NEW ZUNDA-THEMED QUESTS
 		{
@@ -63,9 +63,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 50,
 				tier_points = 10,
-				items = {"Zunda Mochi"}
+				items = { "Zunda Mochi" },
 			},
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_edamame_harvest",
@@ -78,9 +78,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 75,
 				tier_points = 15,
-				items = {}
+				items = {},
 			},
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_zunda_mochi_master",
@@ -93,9 +93,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 150,
 				tier_points = 30,
-				items = {"Sweet Pea"}
+				items = { "Sweet Pea" },
 			},
-			difficulty = 3
+			difficulty = 3,
 		},
 		{
 			id = "quest_pea_flower_garden",
@@ -108,9 +108,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 100,
 				tier_points = 20,
-				items = {}
+				items = {},
 			},
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_zunda_paradise",
@@ -123,9 +123,9 @@ local QuestConfig = {
 			rewards = {
 				gold = 500,
 				tier_points = 100,
-				items = {}
+				items = {},
 			},
-			difficulty = 5
+			difficulty = 5,
 		},
 
 		-- ─────────────────────────────────────────────────────
@@ -142,7 +142,7 @@ local QuestConfig = {
 			target = 20,
 			target_item = "Apple",
 			rewards = { gold = 80, tier_points = 15, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_wheat_field",
@@ -153,7 +153,7 @@ local QuestConfig = {
 			target = 30,
 			target_item = "Wheat",
 			rewards = { gold = 60, tier_points = 12, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_sweet_pea_search",
@@ -164,7 +164,7 @@ local QuestConfig = {
 			target = 12,
 			target_item = "Sweet Pea",
 			rewards = { gold = 120, tier_points = 20, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_zunda_leaf_walk",
@@ -175,7 +175,7 @@ local QuestConfig = {
 			target = 15,
 			target_item = "Zunda Leaf",
 			rewards = { gold = 90, tier_points = 18, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_gold_prospector",
@@ -186,7 +186,7 @@ local QuestConfig = {
 			target = 5,
 			target_item = "Gold",
 			rewards = { gold = 200, tier_points = 30, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 
 		-- COOKING quests
@@ -199,7 +199,7 @@ local QuestConfig = {
 			target = 5,
 			target_item = "Bread",
 			rewards = { gold = 100, tier_points = 18, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_apple_pie_party",
@@ -210,7 +210,7 @@ local QuestConfig = {
 			target = 4,
 			target_item = "Apple Pie",
 			rewards = { gold = 160, tier_points = 24, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_pea_flower_tea",
@@ -221,7 +221,7 @@ local QuestConfig = {
 			target = 3,
 			target_item = "Pea Flower Tea",
 			rewards = { gold = 180, tier_points = 28, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_royal_stew",
@@ -232,7 +232,7 @@ local QuestConfig = {
 			target = 2,
 			target_item = "Royal Stew",
 			rewards = { gold = 240, tier_points = 35, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 		{
 			id = "quest_perfect_cook_streak",
@@ -242,7 +242,7 @@ local QuestConfig = {
 			type = "cook_perfect",
 			target = 5,
 			rewards = { gold = 300, tier_points = 45, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 
 		-- SERVING / GUEST quests
@@ -254,7 +254,7 @@ local QuestConfig = {
 			type = "serve",
 			target = 3,
 			rewards = { gold = 90, tier_points = 18, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_dinner_rush",
@@ -264,7 +264,7 @@ local QuestConfig = {
 			type = "serve",
 			target = 15,
 			rewards = { gold = 220, tier_points = 32, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 		{
 			id = "quest_legendary_host",
@@ -274,7 +274,7 @@ local QuestConfig = {
 			type = "serve",
 			target = 50,
 			rewards = { gold = 500, tier_points = 80, items = {} },
-			difficulty = 4
+			difficulty = 4,
 		},
 
 		-- ECONOMY quests
@@ -286,7 +286,7 @@ local QuestConfig = {
 			type = "earn_gold",
 			target = 100,
 			rewards = { gold = 25, tier_points = 8, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_gold_hoard",
@@ -296,7 +296,7 @@ local QuestConfig = {
 			type = "earn_gold",
 			target = 1000,
 			rewards = { gold = 150, tier_points = 35, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 		{
 			id = "quest_master_economist",
@@ -306,7 +306,7 @@ local QuestConfig = {
 			type = "earn_gold",
 			target = 5000,
 			rewards = { gold = 500, tier_points = 80, items = {} },
-			difficulty = 5
+			difficulty = 5,
 		},
 
 		-- EXPLORATION quests (uses zone visit / building entry)
@@ -319,7 +319,7 @@ local QuestConfig = {
 			target = 1,
 			target_zone = "Kitchen",
 			rewards = { gold = 30, tier_points = 5, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_visit_pagoda",
@@ -330,7 +330,7 @@ local QuestConfig = {
 			target = 1,
 			target_zone = "Pagoda",
 			rewards = { gold = 60, tier_points = 10, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_visit_ruins",
@@ -341,7 +341,7 @@ local QuestConfig = {
 			target = 1,
 			target_zone = "AncientRuins",
 			rewards = { gold = 100, tier_points = 18, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 		{
 			id = "quest_visit_all_zones",
@@ -351,7 +351,7 @@ local QuestConfig = {
 			type = "visit_zones_unique",
 			target = 5,
 			rewards = { gold = 350, tier_points = 55, items = {} },
-			difficulty = 3
+			difficulty = 3,
 		},
 
 		-- COMPANION / SOCIAL quests
@@ -363,7 +363,7 @@ local QuestConfig = {
 			type = "companion_chat",
 			target = 5,
 			rewards = { gold = 50, tier_points = 12, items = {} },
-			difficulty = 1
+			difficulty = 1,
 		},
 		{
 			id = "quest_meet_elder",
@@ -374,7 +374,7 @@ local QuestConfig = {
 			target = 1,
 			target_npc = "Elder",
 			rewards = { gold = 75, tier_points = 14, items = {} },
-			difficulty = 2
+			difficulty = 2,
 		},
 
 		-- MASTERY quests (long-running)
@@ -384,9 +384,9 @@ local QuestConfig = {
 			description = "Cook every recipe at least once",
 			icon = "\u{1F4D6}",
 			type = "cook_unique",
-			target = 12,  -- matches CraftConfig recipe count
+			target = 12, -- matches CraftConfig recipe count
 			rewards = { gold = 600, tier_points = 90, items = {} },
-			difficulty = 4
+			difficulty = 4,
 		},
 		{
 			id = "quest_zunda_grand_master",
@@ -396,9 +396,9 @@ local QuestConfig = {
 			type = "cook_unique_zunda",
 			target = 6,
 			rewards = { gold = 700, tier_points = 120, items = {} },
-			difficulty = 5
+			difficulty = 5,
 		},
-	}
+	},
 }
 
 return QuestConfig

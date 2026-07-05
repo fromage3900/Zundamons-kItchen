@@ -17,16 +17,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: npm
-          cache-dependency-path: Zundamons-kItchen-GitHub-Build/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Rokit toolchain
+        run: node scripts/install-rokit-ci.mjs
 
       - name: Validate Rojo project structure
         run: npm run validate
 
-      - name: Lint (StyLua + Selene on Services)
+      - name: Lint (StyLua + Selene)
         run: npm run lint
 
       - name: Validate git hygiene (no workspace/ or place exports)

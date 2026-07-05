@@ -109,7 +109,12 @@ function assignLoot(player, lootname, myloot)
 		if extraChance > 0 and math.random() < extraChance then
 			data[lootname] = (data[lootname] or 0) + value
 			if popupEvt then
-				popupEvt:FireClient(player, "bonus", "✨ " .. lootname .. " ×2 (Antimon!)", Color3.fromRGB(180, 240, 200))
+				popupEvt:FireClient(
+					player,
+					"bonus",
+					"✨ " .. lootname .. " ×2 (Antimon!)",
+					Color3.fromRGB(180, 240, 200)
+				)
 			end
 		end
 		RewardCore.notify(player, "gather", { item = lootname, count = value })

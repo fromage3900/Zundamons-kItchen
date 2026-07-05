@@ -73,4 +73,8 @@ promptRF.OnServerInvoke = function(player, productId)
     return true
 end
 
-print("[RobuxStoreServer] Ready — "..#(function() local t={} for k in pairs(PRODUCTS) do t[#t+1]=k end return t end()).." products")
+local productCount = 0
+for _ in pairs(PRODUCTS) do
+	productCount = productCount + 1
+end
+print("[RobuxStoreServer] Ready — " .. productCount .. " products")

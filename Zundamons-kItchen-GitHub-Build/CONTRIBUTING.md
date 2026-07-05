@@ -27,16 +27,17 @@ All gameplay **code and config modules** are committed under `src/` and synced v
 
 ```bash
 cd Zundamons-kItchen-GitHub-Build
-npm install
-npm run rojo:serve
+rokit trust rojo-rbx/rojo JohnnyMorganz/StyLua Kampfkarren/selene
+rokit install
+rojo serve default.project.json
 ```
 
-Connect Roblox Studio via the Rojo plugin. See `docs/rojo-workflow.md`.
+See `docs/toolchain.md` for CI parity and `docs/rojo-workflow.md` for Studio sync.
 
 ## PR checklist
 
 - [ ] `src/` changes included for any code/config edits
-- [ ] `npm run validate` passes locally
+- [ ] `npm run validate` and `npm run lint` pass locally
 - [ ] Playtested in Studio with Rojo connected
 - [ ] No `workspace/` or place export files committed
 - [ ] Patch notes included (if user-facing changes)
@@ -46,6 +47,8 @@ Connect Roblox Studio via the Rojo plugin. See `docs/rojo-workflow.md`.
 See:
 
 - `docs/rojo-workflow.md`
+- `docs/toolchain.md`
+- `docs/environment-audit.md`
 - `docs/style-guide.md`
 - `docs/review-checklist.md`
 - `docs/code-review.md` (known issues and improvement backlog)

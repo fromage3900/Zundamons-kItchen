@@ -17,6 +17,7 @@ We use **[Rojo](https://rojo.space/)** to sync Lua source from `src/` into Roblo
 ```
 Zundamons-kItchen-GitHub-Build/
 ├── default.project.json     # Rojo project map (Studio ↔ filesystem)
+├── rokit.toml               # Pinned CLI tools (rojo, stylua, selene)
 ├── src/
 │   ├── ReplicatedStorage/ConfigurationFiles/   # shared configs + modules
 │   ├── ServerScriptService/                    # server scripts
@@ -31,16 +32,23 @@ Zundamons-kItchen-GitHub-Build/
 ### Prerequisites
 
 1. [Roblox Studio](https://www.roblox.com/create)
-2. [Rojo](https://rojo.space/docs/v7/getting-started/installation/) — `npm install` in this folder, or install via Rokit
+2. [Rokit](https://github.com/rojo-rbx/rokit) — pins `rojo`, `stylua`, `selene` (see [`docs/toolchain.md`](docs/toolchain.md))
 3. VS Code extensions: open this folder in VS Code and install recommendations from [`.vscode/extensions.json`](.vscode/extensions.json) (Luau LSP, StyLua, Selene, Rojo, etc.)
-4. Rojo CLI: `npm install` in this folder (uses `package.json`), **or** [manual install](https://rojo.space/docs/v7/getting-started/installation/) + `rojo plugin install` for Studio
+
+### One-time toolchain setup
+
+```bash
+cd Zundamons-kItchen-GitHub-Build
+rokit trust rojo-rbx/rojo JohnnyMorganz/StyLua Kampfkarren/selene
+rokit install
+rojo plugin install
+```
 
 ### Daily workflow
 
 ```bash
 cd Zundamons-kItchen-GitHub-Build
-npm install
-npm run rojo:serve        # starts Rojo sync server
+rojo serve default.project.json   # or: npm run rojo:serve
 ```
 
 In Studio: connect the Rojo plugin to `localhost:34872`, then edit scripts in `src/`.
@@ -49,6 +57,8 @@ In Studio: connect the Rojo plugin to `localhost:34872`, then edit scripts in `s
 
 ```bash
 npm run validate          # checks layout + runs rojo build
+npm run lint              # StyLua + Selene
+npm run sourcemap         # Luau LSP sourcemap (sourcemap.json)
 ```
 
 ## What stays in Studio (not in git)
@@ -64,6 +74,10 @@ See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) for the full split and onbo
 ## Project review
 
 See [`docs/project-review.md`](docs/project-review.md) for scorecard and links to architecture, remotes, and security docs.
+
+## World building & environment
+
+See [`docs/environment-audit.md`](docs/environment-audit.md) for the Studio Workspace contract, CollectionService tags, procedural sky/weather systems, and artist recommendations.
 
 ## Contributing
 
