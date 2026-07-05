@@ -85,4 +85,4 @@ See [`docs/zunda-design-bible.md`](docs/zunda-design-bible.md) for the Zunda ass
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). Default branch: **`main`**.

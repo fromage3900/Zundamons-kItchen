@@ -24,9 +24,10 @@
 - [x] Gather handlers for Edamame Pod, Zunda Leaf, Sweet Pea, Pea Flower
 - [x] Remotes in Rojo (`default.project.json` + `RemoteBootstrap` + `RemoteManifest`)
 - [x] `LootModule` / `RewardCore` ServerScriptService shims for Rojo sync
+- [x] GitHub default branch set to `main` (PR #3 merged)
 
 ## Next steps (Studio / product — not blocking git)
-- [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
+- [ ] Delete stale `master` branch on GitHub (optional cleanup; 19 commits behind `main`)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
 - [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
