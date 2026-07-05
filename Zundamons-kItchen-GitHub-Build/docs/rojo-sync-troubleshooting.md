@@ -56,10 +56,13 @@ Rojo server listening on port 34872
 
 | ✅ Correct | ❌ Wrong |
 |-----------|---------|
-| Published experience **108617605497926** | Empty place from `rojo build` (code-only, no world) |
-| Your team's full kitchen map | A new blank Baseplate |
+| Published experience **108617605497926** | **`beantown.rbxlx`** (legacy 48 MB export — scripts live in git now) |
+| Your team's full kitchen map from Creator Hub | Empty place from `rojo build` (code-only, no world) |
+| Edit via Creator Hub → Zundamon's kItchen | Old local `source/beantown.rbxlx` file |
 
 Creator Hub → Zundamon's kItchen → **Edit in Studio**.
+
+> **Do not open `beantown.rbxlx`.** That was the old workflow before Rojo. All scripts were extracted to `src/`; the file was removed from git. Opening it loads stale embedded scripts and Rojo won't replace your workflow cleanly.
 
 ### 5. Connect the Rojo plugin
 
