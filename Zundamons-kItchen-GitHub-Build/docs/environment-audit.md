@@ -121,7 +121,7 @@ Under `Workspace.TeleporterPads`, each pad is a **Model** named per `TeleporterC
 
 **Gather nodes:** use `ClickDetector` + attributes on parts under `GatheringNodes`:
 
-- `ResourceType` — e.g. `ZundaFlower`, `ZundaPea`, `MysteryNode`
+- `ResourceType` — e.g. `ZundaFlower`, `ZundaPea`, `EdamamePod`, `ZundaLeaf`, `SweetPea`, `PeaFlower`, `MysteryNode`
 - `Available` — boolean gate
 - `Yield` — optional stack size
 
@@ -219,7 +219,7 @@ Under `Workspace.TeleporterPads`, each pad is a **Model** named per `TeleporterC
 | Feature | Config | Server placement | Status |
 |---------|--------|------------------|--------|
 | Plot claim | — | `PlotManager` + signs | **Works** |
-| Garden/cottage decor | `DecorationConfig` | — | **Catalog only** — `owned_decorations` in `PlayerDataService`, no placer script found |
+| Garden/cottage decor | `DecorationConfig` | `DecorationPlacer.server.lua` | **Buy + place** — models in `ServerStorage.Decorations` |
 | Shop kitchen equipment | `ShopConfig` | — | Model names referenced; Studio assets |
 
 **Recommendation:** add `DecorationPlacer` service that clones models from `ServerStorage.Decorations` (or `ReplicatedStorage`) by `modelName`, with plot bounds from `PLOT_CENTERS`.

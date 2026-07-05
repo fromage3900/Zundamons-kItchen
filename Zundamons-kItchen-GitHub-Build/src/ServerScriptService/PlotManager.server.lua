@@ -7,17 +7,13 @@ local Players           = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+local PlotConfig = require(ReplicatedStorage.ConfigurationFiles.PlotConfig)
 
 local RE = ReplicatedStorage:WaitForChild("RemoteEvents")
 local notifyRE = RE:WaitForChild("NotifyPlayer")
 
-local PLOT_REQUIREMENTS = {1, 10, 25, 50}  -- guests_served needed per plot
-local PLOT_CENTERS = {
-    [1] = Vector3.new(145, -509, -420),
-    [2] = Vector3.new(165, -509, -420),
-    [3] = Vector3.new(145, -509, -440),
-    [4] = Vector3.new(165, -509, -440),
-}
+local PLOT_REQUIREMENTS = PlotConfig.PLOT_REQUIREMENTS
+local PLOT_CENTERS = PlotConfig.PLOT_CENTERS
 
 -- Track which plots are claimed: plotNum -> playerName
 local claimedPlots = {}
@@ -79,6 +75,9 @@ local function claimPlot(player, plotNum)
 
     updatePlotSigns()
     notifyRE:FireClient(player, "unlock", "🏠 You claimed Plot " .. plotNum .. "!")
+    if shared.ZundaDecorationPlacer and shared.ZundaDecorationPlacer.restore then
+        shared.ZundaDecorationPlacer.restore(player)
+    end
     print("[PlotManager] " .. player.Name .. " claimed plot " .. plotNum)
     return true, "Plot " .. plotNum .. " is now yours!"
 end

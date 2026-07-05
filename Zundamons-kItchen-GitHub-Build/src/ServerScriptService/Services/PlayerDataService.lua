@@ -51,6 +51,7 @@ local function createDefaultData(): { [string]: any }
 		locations_unlocked = {},
 		owned_clothing = {},
 		owned_decorations = {},
+		decoration_placements = {},
 		owned_plot = nil,
 		zones_visited = {},
 		recipes_unlocked_count = 0,
@@ -87,6 +88,9 @@ local function backfillLoadedData(loaded: { [string]: any })
 	end
 	if loaded.owned_decorations == nil then
 		loaded.owned_decorations = {}
+	end
+	if loaded.decoration_placements == nil then
+		loaded.decoration_placements = {}
 	end
 	if loaded.owned_plot == nil then
 		loaded.owned_plot = nil

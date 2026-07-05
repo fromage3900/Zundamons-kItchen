@@ -20,6 +20,10 @@ local RESPAWN_MUSHROOM   = 25
 local RESPAWN_BERRY      = 20
 local RESPAWN_ROOT       = 22
 local RESPAWN_MYSTERY    = 90
+local RESPAWN_EDAMAME    = 30
+local RESPAWN_LEAF       = 22
+local RESPAWN_SWEET_PEA  = 28
+local RESPAWN_PEA_FLOWER = 30
 
 -- Mystery loot table
 local MYSTERY_LOOT = {
@@ -134,6 +138,46 @@ local function bindNode(node)
             grantItems(player, items)
             notify(player, "\xf0\x9f\x92\x90 +" .. yield .. " Salted Pea Bouquet")
             consumeNode(node, RESPAWN_BOUQUET)
+
+        elseif rtype == "EdamamePod" then
+            local yield = node:GetAttribute("Yield") or 2
+            local items = {}
+            for i = 1, yield do
+                table.insert(items, "Edamame Pod")
+            end
+            grantItems(player, items)
+            notify(player, "🫛 +" .. yield .. " Edamame Pod")
+            consumeNode(node, RESPAWN_EDAMAME)
+
+        elseif rtype == "ZundaLeaf" then
+            local yield = node:GetAttribute("Yield") or 3
+            local items = {}
+            for i = 1, yield do
+                table.insert(items, "Zunda Leaf")
+            end
+            grantItems(player, items)
+            notify(player, "🍃 +" .. yield .. " Zunda Leaf")
+            consumeNode(node, RESPAWN_LEAF)
+
+        elseif rtype == "SweetPea" then
+            local yield = node:GetAttribute("Yield") or 2
+            local items = {}
+            for i = 1, yield do
+                table.insert(items, "Sweet Pea")
+            end
+            grantItems(player, items)
+            notify(player, "🫛 +" .. yield .. " Sweet Pea")
+            consumeNode(node, RESPAWN_SWEET_PEA)
+
+        elseif rtype == "PeaFlower" then
+            local yield = node:GetAttribute("Yield") or 2
+            local items = {}
+            for i = 1, yield do
+                table.insert(items, "Pea Flower")
+            end
+            grantItems(player, items)
+            notify(player, "🌸 +" .. yield .. " Pea Flower")
+            consumeNode(node, RESPAWN_PEA_FLOWER)
         end
     end)
 end

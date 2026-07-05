@@ -20,7 +20,8 @@
 
 ## Next steps
 - [ ] Wire `zones_visited` + unify zone keys (see `docs/zunda-design-bible.md`) — **zones_visited wired** (ZoneVisitConfig + Teleporter + lore entrances)
-- [ ] `DecorationPlacer` service for `DecorationConfig` catalog
+- [x] `DecorationPlacer` service for `DecorationConfig` catalog
+- [x] Gather handlers for Edamame Pod, Zunda Leaf, Sweet Pea, Pea Flower
 - [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean

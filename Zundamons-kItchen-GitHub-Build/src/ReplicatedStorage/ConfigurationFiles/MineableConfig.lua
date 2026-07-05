@@ -19,6 +19,10 @@ mineableConfig.priceLists = {
 	["Zunda Mushroom"] = 25,
 	["Zunda Berry"] = 20,
 	["Zunda Root"] = 22,
+	["Edamame Pod"] = 14,
+	["Zunda Leaf"] = 10,
+	["Sweet Pea"] = 16,
+	["Pea Flower"] = 18,
 }
 
 mineableConfig.Mineables = {

@@ -84,10 +84,14 @@ Place under `Workspace.GameplayLoopArea.GatheringNodes`. Each node needs `BasePa
 | `Zunda Root` | Zunda Root | 3 | 22 |
 | `MysteryLoot` | Random from mystery table | 2–3 items | 90 |
 | `SaltedPeaBouquet` | Salted Pea Bouquet | 1 | 45 |
+| `EdamamePod` | Edamame Pod | 2 | 30 |
+| `ZundaLeaf` | Zunda Leaf | 3 | 22 |
+| `SweetPea` | Sweet Pea | 2 | 28 |
+| `PeaFlower` | Pea Flower | 2 | 30 |
 
 **Mystery loot pool:** Zunda Flower, Zunda Pea, Gold Ore, Marble Rock, Apple, Wheat.
 
-**Additional gather items** (referenced in recipes/quests, not in `ZundaGatherServer` ResourceType enum): Edamame Pod, Zunda Leaf, Sweet Pea, Pea Flower — add nodes or mineable/planter sources in Studio.
+Studio: add nodes under `GatheringNodes` with matching `ResourceType` attributes.
 
 ### Mineables (`MineableConfig.lua` + `Mineable` tag)
 
@@ -141,7 +145,7 @@ Sell prices for Zunda items are in `mineableConfig.priceLists` (e.g. Zunda Mochi
 | fancy_bed | Fancy Bed | 180 | FancyBed |
 | trophy_shelf | Trophy Shelf | 250 | TrophyShelf |
 
-**Gap:** `owned_decorations` persists in `PlayerDataService`; **no `DecorationPlacer` service** yet — catalog is ready, placement is not.
+**Gap:** placement works via server remotes; **Studio models** must exist under `ServerStorage.Decorations`. Shop UI still optional.
 
 ### Shop (`ShopConfig.lua`)
 
@@ -202,7 +206,8 @@ Models **must exist in the published place** (not in git). Names are contractual
 | `ServerStorage.ShopModels.Kitchen.FancyOven` | Kitchen shop |
 | `ServerStorage.ShopModels.Kitchen.FlowerVase` | Kitchen shop |
 | `ServerStorage.ShopModels.Kitchen.ChalkboardMenu` | Kitchen shop |
-| Decoration `modelName`s from `DecorationConfig` | Future placer / shop |
+| `ServerStorage.Decorations.*` | `DecorationPlacer` (modelName per `DecorationConfig`) |
+| Decoration `modelName`s from `DecorationConfig` | Decoration placer |
 
 ### Workspace (critical paths)
 
@@ -372,8 +377,8 @@ Ideas ranked by **implementation cost** (S = small, M = medium).
 |----------|------|------|-----|
 | P0 | Zone name unification doc → code | Tiny code | **Partial** — `ZoneVisitConfig` maps lore/quest → canonical keys |
 | P0 | `zones_visited` writer on teleport/enter | Tiny code | **Done** — `ZoneVisitServer`, teleporter + lore entrances |
-| P1 | `DecorationPlacer` service | Small feature | Catalog exists, players can't place |
-| P1 | Edamame / Pea Flower gather nodes | Studio + maybe code | Recipes reference missing sources |
+| P1 | `DecorationPlacer` service | Small feature | **Done** — buy/place remotes; needs `ServerStorage.Decorations` models |
+| P1 | Edamame / Pea Flower gather nodes | Studio + code | **Handlers done** — place nodes in Studio with ResourceType attrs |
 | P1 | Skybox + sakura petal assets | Studio art | Atmosphere phase 1/3 |
 | P2 | `QuestManager` → `QuestConfig` merge | Refactor | Single quest source of truth |
 | P2 | Gather respawn → `HarvestConfig` | Config move | Designer tuning without code |

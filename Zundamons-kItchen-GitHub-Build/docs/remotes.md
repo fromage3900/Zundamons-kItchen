@@ -23,7 +23,7 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `plantEvent` | C→S | `(plantName, planter)` | `Planters.server.lua` | Data + planter state |
 | `CookingResult` | S→C | result table | `CraftManager.server.lua` | N/A |
 | `OpenCompanionVN` | S→C | `(compType, emoji)` | `CompanionManager.server.lua` | N/A |
-| `PurchaseResult` | S→C | `(name, type)` | `RobuxStoreServer.server.lua` | N/A |
+| `ZoneVisited` | C→S | `(zoneName: string)` | `ZoneVisitServer.server.lua` | Mapped via `ZoneVisitConfig` |
 
 ---
 
@@ -38,6 +38,9 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `GiveLoot` | C→S | `(lootName, genCode)` | `boolean` | `LootModule.lua` | Server-stored code |
 | `sellLoot` | C→S | `(itemKey)` | gold or `false` | `LootModule.lua` | `priceLists` whitelist + rate limit |
 | `ClaimPlot` | C→S | `(plotNum)` | `{success, message}` | `PlotManager.server.lua` | Guest count + availability |
+| `BuyDecoration` | C→S | `(decorationId)` | `{success, message, ...}` | `DecorationPlacer.server.lua` | Gold + catalog whitelist |
+| `PlaceDecoration` | C→S | `(decorationId, slotIndex?)` | `{success, message, slot?}` | `DecorationPlacer.server.lua` | Plot ownership + slot |
+| `GetDecorationState` | C→S | — | owned/placements/catalog | `DecorationPlacer.server.lua` | — |
 | `GetCompanionCatalog` | C→S | — | catalog | `CompanionShopServer.server.lua` | — |
 | `GetOwnedCompanions` | C→S | — | owned table | `CompanionShopServer.server.lua` | — |
 | `GetActiveCompanionBuff` | C→S | `(stat)` | `number` | `CompanionBuffServer.server.lua` | — |
