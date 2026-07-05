@@ -237,24 +237,28 @@ local function buildCompanion(player, compType)
 end
 
 -- ── Player lifecycle ───────────────────────────────────────────
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 local function onPlayerAdded(player)
-    player.CharacterAdded:Connect(function()
-        task.wait(2)
-        if not _G.data then _G.data = {} end
-        if not _G.data[player.Name] then _G.data[player.Name] = {} end
-        buildCompanion(player, _G.data[player.Name].active_companion or "zundamon")
-    end)
+	player.CharacterAdded:Connect(function()
+		task.wait(2)
+		local data = PlayerDataService.getOrCreate(player)
+		buildCompanion(player, data.active_companion or "zundamon")
+	end)
 end
 
 setCompEv.OnServerEvent:Connect(function(player, compType)
-    if not COMPANIONS[compType] then return end
-    if not _G.data then _G.data = {} end
-    if not _G.data[player.Name] then _G.data[player.Name] = {} end
-    local def = COMPANIONS[compType]
-    local isFree = def and def.free
-    if not isFree and not _G.data[player.Name]["companion_owned_"..compType] then return end
-    _G.data[player.Name].active_companion = compType
-    buildCompanion(player, compType)
+	if not COMPANIONS[compType] then
+		return
+	end
+	local data = PlayerDataService.getOrCreate(player)
+	local def = COMPANIONS[compType]
+	local isFree = def and def.free
+	if not isFree and not data["companion_owned_" .. compType] then
+		return
+	end
+	data.active_companion = compType
+	buildCompanion(player, compType)
 end)
 
 Players.PlayerAdded:Connect(onPlayerAdded)

@@ -8,6 +8,7 @@ local CS = game:GetService("CollectionService")
 
 local RewardCore = require(SSS:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
+local PlayerDataService = require(SSS.Services.PlayerDataService)
 
 -- Player invokes FishingCast(action, payload). Two actions:
 --   "begin" -> server picks a fish, returns { fishName, rarity, value, color, difficulty }
@@ -44,10 +45,9 @@ FishingCast.OnServerInvoke = function(player, action, payload)
             local goldAwarded = RewardCore.addGold(player, fish.value, "serve")
             RewardCore.addXP(player, fish.xp, "craft")
             -- Add to inventory (track count)
-            _G.data = _G.data or {}
-            _G.data[player.Name] = _G.data[player.Name] or {}
-            local key = "Fish_" .. fish.name
-            _G.data[player.Name][key] = (_G.data[player.Name][key] or 0) + 1
+			local data = PlayerDataService.getOrCreate(player)
+			local key = "Fish_" .. fish.name
+			data[key] = (data[key] or 0) + 1
             -- Notify popup
             local popup = RS:FindFirstChild("RewardEvents") and RS.RewardEvents:FindFirstChild("PopupEvent")
             if popup then

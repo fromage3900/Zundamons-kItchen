@@ -1,14 +1,18 @@
 {
   "name": "zundamons-kitchen-roblox-build",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Rojo-based GitHub build for Zundamon's kItchen Roblox experience",
   "scripts": {
     "validate": "node scripts/validate-structure.mjs",
+    "lint": "npm run lint:stylua && npm run lint:selene",
+    "lint:stylua": "stylua --check src/ServerScriptService/Services src/ServerScriptService/Validation",
+    "lint:selene": "node scripts/lint-selene.mjs",
     "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
     "rojo:serve": "rojo serve default.project.json"
   },
   "devDependencies": {
+    "@johnnymorganz/stylua-bin": "2.5.2",
     "rojo": "1.0.3-rojo7.6.1"
   }
 }

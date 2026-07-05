@@ -26,6 +26,9 @@ jobs:
       - name: Validate Rojo project structure
         run: npm run validate
 
+      - name: Lint (StyLua + Selene on Services)
+        run: npm run lint
+
       - name: Validate git hygiene (no workspace/ or place exports)
         shell: bash
         run: |

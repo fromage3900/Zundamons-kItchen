@@ -31,6 +31,8 @@ if not purchaseEv then
     purchaseEv = Instance.new("RemoteEvent"); purchaseEv.Name="PurchaseResult"; purchaseEv.Parent=RE
 end
 
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 MPS.ProcessReceipt = function(info)
     local player = Players:GetPlayerByUserId(info.PlayerId)
     if not player then return Enum.ProductPurchaseDecision.NotProcessedYet end
@@ -42,9 +44,7 @@ MPS.ProcessReceipt = function(info)
     end
 
     -- Grant item
-    if not _G.data then _G.data = {} end
-    if not _G.data[player.Name] then _G.data[player.Name] = {} end
-    local d = _G.data[player.Name]
+	local d = PlayerDataService.getOrCreate(player)
 
     if prod.type == "companion" then
         d["companion_owned_"..prod.key] = true

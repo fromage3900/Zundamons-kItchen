@@ -10,6 +10,7 @@ local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
 local AchievementConfig = require(RS.ConfigurationFiles.AchievementConfig)
 local DailyQuestConfig = require(RS.ConfigurationFiles.DailyQuestConfig)
 local PowerupConfig = require(RS.ConfigurationFiles.PowerupConfig)
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 local rewardEvents = RS:WaitForChild("RewardEvents")
 local NotifyAction = rewardEvents:WaitForChild("NotifyAction")
@@ -37,7 +38,7 @@ local function dayNumber()
 end
 
 local function handleLogin(player)
-    local d = _G.data[player.Name]
+    local d = PlayerDataService.get(player)
     if not d then return end
     local today = dayNumber()
     if d.daily.lastClaimDay == today then return end
@@ -65,7 +66,7 @@ end
 -- Subsystem trackers (all hooked from NotifyAction)
 ------------------------------------------------------------------
 local function unlockAchievement(player, ach)
-    local d = _G.data[player.Name]
+    local d = PlayerDataService.get(player)
     if d.achievements[ach.id] then return end
     d.achievements[ach.id] = true
     AchievementUnlocked:FireClient(player, ach.name, ach.desc, ach.icon)
@@ -74,7 +75,7 @@ local function unlockAchievement(player, ach)
 end
 
 local function checkAchievements(player, metrics)
-    local d = _G.data[player.Name]
+    local d = PlayerDataService.get(player)
     for _, ach in ipairs(AchievementConfig) do
         if not d.achievements[ach.id] then
             local val = metrics[ach.metric]
@@ -126,7 +127,7 @@ end
 -- Daily quest progress
 ------------------------------------------------------------------
 local function progressDaily(player, metric, amount)
-    local d = _G.data[player.Name]
+    local d = PlayerDataService.get(player)
     if not d.daily.todayQuestId or d.daily.todayClaimed then return end
     local q
     for _, p in ipairs(DailyQuestConfig.pool) do
@@ -151,7 +152,7 @@ end
 -- Subscribe to NotifyAction
 ------------------------------------------------------------------
 NotifyAction.Event:Connect(function(player, action, payload)
-    local d = _G.data[player.Name]
+    local d = PlayerDataService.get(player)
     if not d then return end
     payload = payload or {}
 
@@ -218,7 +219,7 @@ end)
 -- Power-up usage
 ------------------------------------------------------------------
 UsePowerup.OnServerInvoke = function(player, key)
-    local d = _G.data[player.Name]; if not d then return false, "no data" end
+    local d = PlayerDataService.get(player); if not d then return false, "no data" end
     local cfg = PowerupConfig[key]; if not cfg then return false, "unknown powerup" end
     local cost = cfg.cost.Gold or 0
     if (d.gold or 0) < cost then return false, "not enough gold" end
@@ -235,7 +236,7 @@ end
 -- Tool upgrade
 ------------------------------------------------------------------
 UpgradeTool.OnServerInvoke = function(player, toolType)
-    local d = _G.data[player.Name]; if not d then return false, "no data" end
+    local d = PlayerDataService.get(player); if not d then return false, "no data" end
     local cur = d.toolTiers[toolType] or 1
     if cur >= 3 then return false, "already max" end
     local cost = (cur == 1) and 300 or 900
@@ -264,7 +265,7 @@ end
 -- Compendium sync
 ------------------------------------------------------------------
 GetCompendium.OnServerInvoke = function(player)
-    local d = _G.data[player.Name] or {}
+    local d = PlayerDataService.get(player) or {}
     return {
         achievements = AchievementConfig,
         unlocked = d.achievements or {},
@@ -285,8 +286,7 @@ end
 Players.PlayerAdded:Connect(function(player)
     player.CharacterAdded:Connect(function()
         task.wait(1.5)
-        _G.data[player.Name] = _G.data[player.Name] or {}
-        local d = _G.data[player.Name]
+		local d = PlayerDataService.getOrCreate(player)
         d.daily = d.daily or { lastClaimDay = 0, streak = 0, todayQuestId = nil, todayProgress = 0, todayClaimed = false }
         d.achievements = d.achievements or {}
         d.mastery = d.mastery or {}

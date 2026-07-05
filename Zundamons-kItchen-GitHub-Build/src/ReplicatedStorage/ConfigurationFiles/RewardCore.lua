@@ -11,13 +11,10 @@ local RequestRewardSync= rewardEvents:WaitForChild("RequestRewardSync")
 local NotifyAction     = rewardEvents:WaitForChild("NotifyAction")
 
 local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
-
-_G.data = _G.data or {}
+local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
 local function ensureProfile(player)
-    local key = player.Name
-    _G.data[key] = _G.data[key] or {}
-    local d = _G.data[key]
+	local d = PlayerDataService.getOrCreate(player)
     d.inventory = d.inventory or {}
     d.gold = d.gold or 0
     d.chef = d.chef or { level = 1, xp = 0 }
@@ -46,9 +43,12 @@ local function popup(player, kind, text, color)
     PopupEvent:FireClient(player, kind, text, color)
 end
 
--- Companion buff lookup: reads active companion from _G.data
+-- Companion buff lookup: reads active companion from player data
 local function companionBuff(player, stat)
-    local d = _G.data[player.Name]; if not d then return 0 end
+	local d = PlayerDataService.get(player)
+	if not d then
+		return 0
+	end
     local active = d.active_companion
     if not active then return 0 end
     local cat = shared.ZundaCompanionCatalog
@@ -157,8 +157,8 @@ end
 task.spawn(function()
     while true do
         task.wait(1)
-        for _, player in ipairs(game.Players:GetPlayers()) do
-            local d = _G.data and _G.data[player.Name]
+		for _, player in ipairs(game.Players:GetPlayers()) do
+			local d = PlayerDataService.get(player)
             if d and d.combo and d.combo.count > 0 then
                 if os.clock() - d.combo.lastActionAt > COMBO_WINDOW then
                     RewardCore.breakCombo(player)

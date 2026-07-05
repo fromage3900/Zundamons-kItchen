@@ -26,18 +26,26 @@ local playerHarvestTimestamps: { [string]: { [number]: number } } = {}
 
 --- Validate that the player is close enough to the target node
 local function validateDistance(player: Player, node: Instance): boolean
-	if not ENABLE_DISTANCE_CHECK then return true end
+	if not ENABLE_DISTANCE_CHECK then
+		return true
+	end
 	local character = player.Character
-	if not character then return false end
+	if not character then
+		return false
+	end
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
-	if not rootPart then return false end
+	if not rootPart then
+		return false
+	end
 	local distance = (rootPart.Position - node.Position).Magnitude
 	return distance <= MAX_DISTANCE
 end
 
 --- Validate rate limit for the player
 local function validateRateLimit(player: Player): boolean
-	if not ENABLE_RATE_LIMIT then return true end
+	if not ENABLE_RATE_LIMIT then
+		return true
+	end
 	local now = tick()
 	local timestamps = playerHarvestTimestamps[player.Name] or {}
 
@@ -62,16 +70,24 @@ end
 
 --- Validate the node is available for harvest
 local function validateNode(node: Instance): boolean
-	if not node or not node.Parent then return false end
-	if node:GetAttribute("Available") == false then return false end
-	if node:GetAttribute("Seeded") == false then return false end
+	if not node or not node.Parent then
+		return false
+	end
+	if node:GetAttribute("Available") == false then
+		return false
+	end
+	if node:GetAttribute("Seeded") == false then
+		return false
+	end
 	return true
 end
 
 --- Validate cooldown on a node
 local function validateCooldown(node: Instance): boolean
 	local lastHarvested = node:GetAttribute("LastHarvested")
-	if not lastHarvested then return true end
+	if not lastHarvested then
+		return true
+	end
 	local timeSinceHarvest = tick() - lastHarvested
 	return timeSinceHarvest >= HARVEST_COOLDOWN
 end
@@ -117,7 +133,9 @@ local HarvestValidator = {
 -- Intercept ClickDetector clicks on Mineable/Planter/GatheringNode tagged parts
 local function bindValidation(node: Instance)
 	local clickDetector = node:FindFirstChildOfClass("ClickDetector")
-	if not clickDetector then return end
+	if not clickDetector then
+		return
+	end
 
 	-- Wrap the MouseClick to run validation before the original handler
 	local connections = clickDetector.MouseClick:GetConnections()

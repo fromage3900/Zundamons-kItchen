@@ -6,6 +6,8 @@
 local Players           = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 local RE = ReplicatedStorage:WaitForChild("RemoteEvents")
 local notifyRE = RE:WaitForChild("NotifyPlayer")
 
@@ -51,7 +53,7 @@ end
 
 -- Attempt to claim a plot for a player
 local function claimPlot(player, plotNum)
-    local data = _G.data and _G.data[player.Name]
+	local data = PlayerDataService.get(player)
     if not data then return false, "Data not ready" end
 
     -- Check if player already has a plot
@@ -124,7 +126,7 @@ updatePlotSigns()
 Players.PlayerAdded:Connect(function(player)
     -- Wait for DataManager to load data
     task.wait(3)
-    local data = _G.data and _G.data[player.Name]
+    local data = PlayerDataService.get(player)
     if data and data.owned_plot then
         claimedPlots[data.owned_plot] = player.Name
         updatePlotSigns()

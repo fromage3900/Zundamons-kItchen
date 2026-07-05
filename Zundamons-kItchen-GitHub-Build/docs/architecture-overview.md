@@ -70,6 +70,12 @@ Client Input → HarvestController (client) → ClickDetector → Server Handler
 4. Add new nodes in Studio with CollectionService tags: `Mineable`, `Planter`, or `ResourceType` attribute
 5. For new visual effects, extend `HarvestController.client.lua`
 
+## Related docs
+
+- [`remotes.md`](remotes.md) — RemoteEvent/RemoteFunction catalog
+- [`project-review.md`](project-review.md) — Scorecard and review summary
+- [`security-audit.md`](security-audit.md) — Applied security fixes
+
 ## Rojo sync map
 
 Scripts and config modules under `src/` map to Studio via `default.project.json`:

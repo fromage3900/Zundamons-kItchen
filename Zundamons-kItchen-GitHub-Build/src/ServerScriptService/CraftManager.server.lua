@@ -30,10 +30,10 @@ local QUALITY_BONUS = {
     ok      = { gold = 0,  extraChance = 0.0  },
 }
 
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 local function ensureDataBucket(player)
-    if not _G.data then _G.data = {} end
-    if not _G.data[player.Name] then _G.data[player.Name] = {} end
-    return _G.data[player.Name]
+	return PlayerDataService.getOrCreate(player)
 end
 
 local function craftItem(player, item, position, quality)

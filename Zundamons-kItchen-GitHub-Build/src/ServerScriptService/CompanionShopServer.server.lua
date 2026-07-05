@@ -29,12 +29,14 @@ for k, v in pairs(DEVPRODUCT_IDS) do if v ~= 0 then productToComp[v] = k end end
 -- Pending purchases per player so we can credit on success
 local pending = {}
 
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
     local cat = shared.ZundaCompanionCatalog
     if not cat then return end
     local def = cat[compType]
     if not def or def.free then return end
-    if _G.data and _G.data[player.Name] and _G.data[player.Name]["companion_owned_"..compType] then
+	if PlayerDataService.get(player) and PlayerDataService.get(player)["companion_owned_" .. compType] then
         return  -- already owned
     end
     local pid = DEVPRODUCT_IDS[compType]
@@ -47,9 +49,8 @@ PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
         if not ok then warn("[CompanionShop] prompt failed:", err) end
     else
         -- TEST MODE: grant immediately so dev/playtest flow works without real Robux products
-        _G.data = _G.data or {}
-        _G.data[player.Name] = _G.data[player.Name] or {}
-        _G.data[player.Name]["companion_owned_"..compType] = true
+		local data = PlayerDataService.getOrCreate(player)
+		data["companion_owned_" .. compType] = true
         CompanionOwnedSync:FireClient(player, compType, true)
         print(string.format("[CompanionShop] TEST grant: %s -> %s", player.Name, compType))
     end
@@ -66,9 +67,8 @@ MarketplaceService.ProcessReceipt = function(receiptInfo)
     if not plr then
         return Enum.ProductPurchaseDecision.NotProcessedYet
     end
-    _G.data = _G.data or {}
-    _G.data[plr.Name] = _G.data[plr.Name] or {}
-    _G.data[plr.Name]["companion_owned_"..compType] = true
+	local data = PlayerDataService.getOrCreate(plr)
+	data["companion_owned_" .. compType] = true
     CompanionOwnedSync:FireClient(plr, compType, true)
     if pending[uid] then pending[uid][pid] = nil end
     return Enum.ProductPurchaseDecision.PurchaseGranted
@@ -79,16 +79,19 @@ GetCompanionCatalog.OnServerInvoke = function(player)
 end
 
 GetOwnedCompanions.OnServerInvoke = function(player)
-    local owned = { zundamon = true, zundacat = true, zundabunny = true, tantanmon = true }
-    if _G.data and _G.data[player.Name] then
-        for k, v in pairs(_G.data[player.Name]) do
-            if v == true then
-                local pre, name = string.match(k, "(companion_owned_)(.+)")
-                if pre then owned[name] = true end
-            end
-        end
-        owned.__active = _G.data[player.Name].active_companion or "zundamon"
-    end
+	local owned = { zundamon = true, zundacat = true, zundabunny = true, tantanmon = true }
+	local data = PlayerDataService.get(player)
+	if data then
+		for k, v in pairs(data) do
+			if v == true then
+				local pre, name = string.match(k, "(companion_owned_)(.+)")
+				if pre then
+					owned[name] = true
+				end
+			end
+		end
+		owned.__active = data.active_companion or "zundamon"
+	end
     return owned
 end
 

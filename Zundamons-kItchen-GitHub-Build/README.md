@@ -32,7 +32,8 @@ Zundamons-kItchen-GitHub-Build/
 
 1. [Roblox Studio](https://www.roblox.com/create)
 2. [Rojo](https://rojo.space/docs/v7/getting-started/installation/) — `npm install` in this folder, or install via Rokit
-3. VS Code extensions: Rojo, Luau LSP, StyLua, Selene (see `.vscode/settings.json`)
+3. VS Code extensions: open this folder in VS Code and install recommendations from [`.vscode/extensions.json`](.vscode/extensions.json) (Luau LSP, StyLua, Selene, Rojo, etc.)
+4. Rojo CLI: `npm install` in this folder (uses `package.json`), **or** [manual install](https://rojo.space/docs/v7/getting-started/installation/) + `rojo plugin install` for Studio
 
 ### Daily workflow
 
@@ -59,6 +60,10 @@ These are **not** synced by Rojo and must exist in the published place:
 - UI ScreenGuis, sounds, animations, and 3D assets
 
 See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) for the full split and onboarding checklist.
+
+## Project review
+
+See [`docs/project-review.md`](docs/project-review.md) for scorecard and links to architecture, remotes, and security docs.
 
 ## Contributing
 

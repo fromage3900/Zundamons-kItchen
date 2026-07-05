@@ -3,19 +3,23 @@
 ## Completed
 - [x] GitHub repo created (fromage3900/Zundamons-kItchen)
 - [x] Rojo project (`default.project.json`) configured
-- [x] 98 scripts under `src/` (extracted from Studio export)
-- [x] Harvesting system polish (config, client controller, server validator)
-- [x] Architecture + code review docs
-- [x] **Committed to Rojo** — removed `source/beantown.rbxlx` (~48 MB)
-- [x] Aligned `ConfigurationFiles` filesystem paths with Studio runtime
-- [x] CI validates `rojo build` instead of rbxlx exports
+- [x] 98 scripts under `src/`
+- [x] Harvesting system polish
+- [x] **Committed to Rojo** — removed `source/beantown.rbxlx`
+- [x] Merged Rojo migration to `main`
+- [x] `.vscode/extensions.json` with 11 recommended extensions
+- [x] `docs/project-review.md` scorecard (8/10 overall)
+- [x] `docs/remotes.md` remote catalog
+- [x] `docs/security-audit.md` applied fixes
+- [x] `PlayerDataService` replaces `_G.data` on server
+- [x] Planters fixes (1Hz grow loop, nil guards, deduped plantEvent)
+- [x] Security fixes: ServingSystem, InventoryServer, ToolManager, LootModule
+- [x] Filename cleanup (`SprintOnShift.server.lua`, DoubleJump → legacy-notes)
+- [x] CI: validate + stylua check on `src/`
 
 ## Next steps
-- [ ] Merge Rojo migration to `main`; set `main` as default branch (retire `master` scaffold)
-- [ ] `npm run validate` green in GitHub Actions
-- [ ] Document remotes in `docs/remotes.md`
+- [ ] Set `main` as GitHub default branch (requires repo admin; `master` is still default)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
-- [ ] Security audit: ServingSystem, InventoryServer, ToolManager, LootModule
-- [ ] Replace `_G.data` with PlayerDataService module
-- [ ] Add Selene + StyLua to CI
-- [ ] Rename scripts with spaces in filenames
+- [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
+- [ ] Move `RewardCore` remote wiring to `ServerScriptService/`
+- [ ] Bootstrap remotes in Rojo (optional future)

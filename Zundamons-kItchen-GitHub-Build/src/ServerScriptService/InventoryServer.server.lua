@@ -5,6 +5,40 @@ local hotbarSlots = 9
 local rs = game:GetService("ReplicatedStorage"):WaitForChild("InventoryReplicatedStorage")
 local remotes = rs:WaitForChild("RemoteEvents")
 
+local function playerIsAlive(plr: Player): boolean
+	return plr.Character ~= nil
+		and plr.Character:FindFirstChild("Humanoid") ~= nil
+		and plr.Character.Humanoid.Health > 0
+end
+
+local function playerOwnsTool(plr: Player, tool: Tool): boolean
+	if not tool or not tool:IsA("Tool") then
+		return false
+	end
+	local backpack = plr:FindFirstChild("Backpack")
+	local inventory = plr:FindFirstChild("Inventory")
+	local character = plr.Character
+	if tool.Parent == backpack or tool.Parent == character then
+		return true
+	end
+	if inventory then
+		for _, toolVal in ipairs(inventory:GetChildren()) do
+			if toolVal.Value == tool then
+				return true
+			end
+		end
+	end
+	local hotbar = plr:FindFirstChild("Hotbar")
+	if hotbar then
+		for _, slot in ipairs(hotbar:GetChildren()) do
+			if slot.Value == tool then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 
 game.Players.PlayerAdded:Connect(function(plr:Player)
 
@@ -137,15 +171,19 @@ game.Players.PlayerAdded:Connect(function(plr:Player)
 end)
 
 
-remotes.Equip.OnServerEvent:Connect(function(plr:Player, toolToEquip:Tool)
-	
-	if not plr.Character or not plr.Character:FindFirstChild("Humanoid") or plr.Character.Humanoid.Health == 0 then return end
+remotes.Equip.OnServerEvent:Connect(function(plr: Player, toolToEquip: Tool)
+	if not playerIsAlive(plr) then
+		return
+	end
 	
 	local hotbar = plr.Hotbar
 	local equippedVal = plr.Equipped
 	
 	if toolToEquip and toolToEquip:IsA("Tool") then
-		
+		if not playerOwnsTool(plr, toolToEquip) then
+			return
+		end
+
 		if toolToEquip.Parent == plr.Backpack then
 
 			if equippedVal.Value then
@@ -205,14 +243,15 @@ remotes.Equip.OnServerEvent:Connect(function(plr:Player, toolToEquip:Tool)
 	end
 end)
 
-remotes.Drop.OnServerEvent:Connect(function(plr:Player, toolToDrop:Tool)
-
-	if not plr.Character or not plr.Character:FindFirstChild("Humanoid") or plr.Character.Humanoid.Health == 0 then return end
+remotes.Drop.OnServerEvent:Connect(function(plr: Player, toolToDrop: Tool)
+	if not playerIsAlive(plr) then
+		return
+	end
 
 	local backpack = plr.Backpack
 	local inventory = plr.Inventory
 	
-	if toolToDrop and toolToDrop:IsA("Tool") and toolToDrop.Parent == backpack then
+	if toolToDrop and toolToDrop:IsA("Tool") and playerOwnsTool(plr, toolToDrop) and toolToDrop.Parent == plr.Backpack then
 		
 		for _, toolVal in pairs(inventory:GetChildren()) do
 			if toolVal.Value == toolToDrop then
@@ -227,15 +266,16 @@ remotes.Drop.OnServerEvent:Connect(function(plr:Player, toolToDrop:Tool)
 end)
 
 
-remotes.ToHotbar.OnServerEvent:Connect(function(plr:Player, toolToHotbar:Tool)
-	
-	if not plr.Character or not plr.Character:FindFirstChild("Humanoid") or plr.Character.Humanoid.Health == 0 then return end
+remotes.ToHotbar.OnServerEvent:Connect(function(plr: Player, toolToHotbar: Tool)
+	if not playerIsAlive(plr) then
+		return
+	end
 	
 	local backpack = plr.Backpack
 	local hotbar = plr.Hotbar
 	local inventory = plr.Inventory
 	
-	if toolToHotbar and toolToHotbar:IsA("Tool") and toolToHotbar.Parent == backpack then
+	if toolToHotbar and toolToHotbar:IsA("Tool") and playerOwnsTool(plr, toolToHotbar) and toolToHotbar.Parent == plr.Backpack then
 		
 		local firstFreeSlot = nil
 		for slotNum, slot in pairs(hotbar:GetChildren()) do
@@ -272,15 +312,21 @@ remotes.ToHotbar.OnServerEvent:Connect(function(plr:Player, toolToHotbar:Tool)
 	end
 end)
 
-remotes.ToInventory.OnServerEvent:Connect(function(plr:Player, toolToInventory:Tool)
-	
-	if not plr.Character or not plr.Character:FindFirstChild("Humanoid") or plr.Character.Humanoid.Health == 0 then return end
+remotes.ToInventory.OnServerEvent:Connect(function(plr: Player, toolToInventory: Tool)
+	if not playerIsAlive(plr) then
+		return
+	end
 	
 	local backpack = plr.Backpack
 	local hotbar = plr.Hotbar
 	local inventory = plr.Inventory
 	
-	if toolToInventory and toolToInventory:IsA("Tool") and (toolToInventory.Parent == backpack or toolToInventory.Parent == plr.Character) then
+	if
+		toolToInventory
+		and toolToInventory:IsA("Tool")
+		and playerOwnsTool(plr, toolToInventory)
+		and (toolToInventory.Parent == plr.Backpack or toolToInventory.Parent == plr.Character)
+	then
 		
 		if toolToInventory.Parent == plr.Character then
 			toolToInventory.Parent = backpack

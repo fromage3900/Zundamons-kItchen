@@ -36,10 +36,14 @@ local QUESTS = {
           return c, 4 end },
 }
 
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 local rewarded = {}
 local function eval(player)
-    if not _G.data or not _G.data[player.Name] then return end
-    local d = _G.data[player.Name]
+	local d = PlayerDataService.get(player)
+	if not d then
+		return
+	end
     local prog = {}
     for _, q in ipairs(QUESTS) do
         local cur, goal = q.check(d)

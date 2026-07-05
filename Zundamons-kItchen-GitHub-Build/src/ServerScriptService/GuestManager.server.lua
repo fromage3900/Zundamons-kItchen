@@ -225,8 +225,10 @@ local function guestTimeoutLoop()
 	end
 end
 
+local GuestService = require(script.Parent.Services.GuestService)
+
 -- Expose for ServingSystem to call when guest is served
-_G.removeGuestByInstance = removeGuest
+GuestService.setRemoveGuestCallback(removeGuest)
 
 -- Start loops
 spawn(guestSpawnLoop)
