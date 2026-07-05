@@ -1,0 +1,18 @@
+{
+  "name": "Zundamon's kItchen",
+  "roblox": {
+    "experienceId": 108617605497926,
+    "placeId": null,
+    "placeVersion": null
+  },
+  "repo": {
+    "sourceOfTruth": "rbxlx/rbxmx exports + text-friendly code representation",
+    "sourceDirs": ["source/"],
+    "ignoredDirs": ["workspace/", "artifacts/"]
+  },
+  "contribution": {
+    "recommendedBranchPattern": "feature/<short-name>",
+    "requiredExports": true
+  }
+}
+

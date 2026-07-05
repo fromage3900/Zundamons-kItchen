@@ -1,0 +1,6 @@
+{
+  "extends": ["config:base"],
+  "labels": ["dependencies"],
+  "timezone": "America/Los_Angeles"
+}
+

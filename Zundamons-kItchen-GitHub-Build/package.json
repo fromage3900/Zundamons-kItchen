@@ -1,0 +1,10 @@
+{
+  "name": "zundamons-kitchen-roblox-build",
+  "private": true,
+  "version": "0.0.1",
+  "description": "GitHub build scaffolding for Roblox experience",
+  "scripts": {
+    "validate:structure": "node -e \"console.log('No local validator configured yet. CI validates directory + exports on GitHub.');\""
+  }
+}
+
