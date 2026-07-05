@@ -10,6 +10,8 @@ local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
 local AchievementConfig = require(RS.ConfigurationFiles.AchievementConfig)
 local DailyQuestConfig = require(RS.ConfigurationFiles.DailyQuestConfig)
 local PowerupConfig = require(RS.ConfigurationFiles.PowerupConfig)
+local ToolManager = require(SSS:WaitForChild("ToolManager", 10) or SSS.ToolManager)
+local ToolsConfig = require(RS.ConfigurationFiles.ToolsConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 local rewardEvents = RS:WaitForChild("RewardEvents")
@@ -29,6 +31,18 @@ local PowerupUpdate = ensureRemote("PowerupUpdate", "RemoteEvent")
 local UsePowerup = ensureRemote("UsePowerup", "RemoteFunction")
 local UpgradeTool = ensureRemote("UpgradeTool", "RemoteFunction")
 local GetCompendium = ensureRemote("GetCompendium", "RemoteFunction")
+
+-- Debounce table for rate limiting
+local remoteDebounce = {}
+local function isSpamming(player, action, interval)
+    local now = os.clock()
+    local key = player.UserId .. "_" .. action
+    if remoteDebounce[key] and (now - remoteDebounce[key]) < (interval or 1) then
+        return true
+    end
+    remoteDebounce[key] = now
+    return false
+end
 
 ------------------------------------------------------------------
 -- Daily login
@@ -219,16 +233,23 @@ end)
 -- Power-up usage
 ------------------------------------------------------------------
 UsePowerup.OnServerInvoke = function(player, key)
+    if typeof(key) ~= "string" then return false, "invalid key type" end
+    if isSpamming(player, "UsePowerup", 0.5) then return false, "rate limit" end
+
     local d = PlayerDataService.get(player); if not d then return false, "no data" end
     local cfg = PowerupConfig[key]; if not cfg then return false, "unknown powerup" end
-    local cost = cfg.cost.Gold or 0
+    
+    local cost = cfg.cost and cfg.cost.Gold or 0
     if (d.gold or 0) < cost then return false, "not enough gold" end
+    
     d.gold = d.gold - cost
     d.powerups[key] = os.time() + cfg.duration
     bumpStat(d, "powerupsUsed", 1)
+    
     PowerupUpdate:FireClient(player, key, d.powerups[key])
     PopupEvent:FireClient(player, "bonus", cfg.icon .. " " .. cfg.name .. "!", Color3.fromRGB(180, 240, 200))
     checkAchievements(player, gatherMetrics(d))
+    
     return true, d.gold
 end
 
@@ -236,13 +257,24 @@ end
 -- Tool upgrade
 ------------------------------------------------------------------
 UpgradeTool.OnServerInvoke = function(player, toolType)
+    if typeof(toolType) ~= "string" then return false, "invalid toolType" end
+    if isSpamming(player, "UpgradeTool", 1.0) then return false, "rate limit" end
+
+    -- Whitelist validation
+    if not ToolsConfig.tools[toolType] then
+        return false, "invalid tool type"
+    end
+
     local d = PlayerDataService.get(player); if not d then return false, "no data" end
     local cur = d.toolTiers[toolType] or 1
     if cur >= 3 then return false, "already max" end
+    
     local cost = (cur == 1) and 300 or 900
     if (d.gold or 0) < cost then return false, "not enough gold (need " .. cost .. ")" end
+    
     d.gold = d.gold - cost
     d.toolTiers[toolType] = cur + 1
+    
     -- Apply to live tool in character
     if player.Character then
         for _, item in pairs(player.Character:GetChildren()) do
@@ -256,6 +288,7 @@ UpgradeTool.OnServerInvoke = function(player, toolType)
             end
         end
     end
+    
     PopupEvent:FireClient(player, "bonus", "🔨 " .. toolType .. " → Tier " .. (cur + 1), Color3.fromRGB(255, 220, 150))
     checkAchievements(player, gatherMetrics(d))
     return true, d.gold

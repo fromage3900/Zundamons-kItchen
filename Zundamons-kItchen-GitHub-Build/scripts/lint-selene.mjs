@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
-const target = join(root, "src/ServerScriptService/Services");
+const target = join(root, "src");
 const seleneBin = "/tmp/selene-bin/selene";
 
 if (!existsSync(target)) {
