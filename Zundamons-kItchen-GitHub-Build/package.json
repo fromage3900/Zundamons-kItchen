@@ -1,10 +1,14 @@
 {
   "name": "zundamons-kitchen-roblox-build",
   "private": true,
-  "version": "0.0.1",
-  "description": "GitHub build scaffolding for Roblox experience",
+  "version": "0.1.0",
+  "description": "Rojo-based GitHub build for Zundamon's kItchen Roblox experience",
   "scripts": {
-    "validate:structure": "node -e \"console.log('No local validator configured yet. CI validates directory + exports on GitHub.');\""
+    "validate": "node scripts/validate-structure.mjs",
+    "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
+    "rojo:serve": "rojo serve default.project.json"
+  },
+  "devDependencies": {
+    "rojo": "1.0.3-rojo7.6.1"
   }
 }
-

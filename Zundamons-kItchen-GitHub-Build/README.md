@@ -1,35 +1,65 @@
-# Zundamon's kItchen — GitHub Build (Roblox)
+# Zundamon's kItchen — GitHub Build (Roblox + Rojo)
 
-This repository is the collaboration hub and build source of truth for the Roblox experience **"Zundamon's kItchen"**.
+This repository is the collaboration hub and **source of truth for game code** in the Roblox experience **"Zundamon's kItchen"**.
 
-## Core goals
-- **Cooperative game dev**: clear structure, repeatable exports, predictable PRs.
-- **GitHub build readiness**: CI validates that the repository contains valid exported Roblox source artifacts.
-- **Maintainability**: documented architecture, style guide, and review checklist.
+## Workflow: Rojo-first
 
-## Recommended Roblox source format (chosen)
-For GitHub builds, this repo targets **text-friendly Roblox exports**:
-- Studio exports in **rbxlx/rbxmx** format (text, diffable)
-- `ModuleScript` / code extracted into text form (either via Studio export or a repo-friendly mirror)
+We use **[Rojo](https://rojo.space/)** to sync Lua source from `src/` into Roblox Studio. This gives us:
 
-Why this decision:
-- Enables code review (diffs) and reduces merge pain.
-- Works better for CI validation and deterministic artifacts.
+- Reviewable diffs on every PR (no 48 MB place exports)
+- Fast iteration in VS Code with Luau LSP, StyLua, and Selene
+- Deterministic CI via `rojo build`
 
-> If your current workflow exports only `.rbxl` binaries, the first milestone is to switch to text exports so the repo becomes “reviewable”.
+**World geometry, models, and UI instances** live in Roblox Studio (the published place). **Scripts and config modules** live in this repo under `src/`.
 
-## Repository layout (high level)
-- `source/` — exported place/model + code artifacts (text)
-- `assets/` — images/audio/etc you manage in-repo
-- `workspace/` — local build outputs (ignored by git)
-- `.github/` — GitHub Actions + PR/Issue templates
-- `docs/` — architecture + review checklist + style guide
+## Repository layout
+
+```
+Zundamons-kItchen-GitHub-Build/
+├── default.project.json     # Rojo project map (Studio ↔ filesystem)
+├── src/
+│   ├── ReplicatedStorage/ConfigurationFiles/   # shared configs + modules
+│   ├── ServerScriptService/                    # server scripts
+│   └── StarterPlayer/StarterPlayerScripts/     # client scripts
+├── docs/                    # architecture, style guide, review checklist
+├── scripts/validate-structure.mjs
+└── workspace/               # local Rojo build output (gitignored)
+```
 
 ## Getting started
-1. Export the current experience from Roblox Studio using the repo’s conventions (see `docs/style-guide.md`).
-2. Commit exports into `source/`.
-3. Open a PR; CI should validate repository structure.
+
+### Prerequisites
+
+1. [Roblox Studio](https://www.roblox.com/create)
+2. [Rojo](https://rojo.space/docs/v7/getting-started/installation/) — `npm install` in this folder, or install via Rokit
+3. VS Code extensions: Rojo, Luau LSP, StyLua, Selene (see `.vscode/settings.json`)
+
+### Daily workflow
+
+```bash
+cd Zundamons-kItchen-GitHub-Build
+npm install
+npm run rojo:serve        # starts Rojo sync server
+```
+
+In Studio: connect the Rojo plugin to `localhost:34872`, then edit scripts in `src/`.
+
+### Validate locally
+
+```bash
+npm run validate          # checks layout + runs rojo build
+```
+
+## What stays in Studio (not in git)
+
+These are **not** synced by Rojo and must exist in the published place:
+
+- `ReplicatedStorage.RemoteEvents` and `ReplicatedStorage.RemoteFunctions`
+- Workspace map (Kitchen, Forest, Houses, NPCs, harvest nodes, etc.)
+- UI ScreenGuis, sounds, animations, and 3D assets
+
+See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) for the full split and onboarding checklist.
 
 ## Contributing
-See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
+See [`CONTRIBUTING.md`](CONTRIBUTING.md).

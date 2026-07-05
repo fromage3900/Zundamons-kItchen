@@ -7,16 +7,16 @@ The harvesting system consists of multiple layers that work together:
 
 | Layer | Script | Location | Purpose |
 |---|---|---|---|
-| **Config** | `HarvestConfig.lua` | ReplicatedStorage.Shared.Config | Central tuning: distances, timings, cooldowns, visuals |
+| **Config** | `HarvestConfig.lua` | ReplicatedStorage.ConfigurationFiles | Central tuning: distances, timings, cooldowns, visuals |
 | **Client Controller** | `HarvestController.client.lua` | StarterPlayer.Controllers | Progress bar, animations, sounds, particles, cancel-on-move |
 | **Server Gather** | `ZundaGatherServer.server.lua` | ServerScriptService | Click-to-gather for forest plants, mystery loot, respawn logic |
 | **Server Planters** | `Planters.server.lua` | ServerScriptService | Planter box planting, seed consumption, growth stages |
 | **Server Mineable** | `Mineable.server.lua` | ServerScriptService | Mining/harvesting with health-based depletion, loot tiers |
 | **Server Validation** | `HarvestValidator.server.lua` | ServerScriptService.Validation | Distance checks, rate limiting, cooldowns, exploit prevention |
-| **Loot Module** | `LootModule.lua` | ReplicatedStorage.Shared.Modules | Item granting, code-based loot delivery, sell handling |
-| **Config: Plants** | `PlantConfig.lua` | ReplicatedStorage.Shared.Modules | Plant growth times, sprout mappings |
-| **Config: Mineables** | `MineableConfig.lua` | ReplicatedStorage.Shared.Modules | Mineable health, respawn, loot tables |
-| **Config: Items** | `ItemConfig.lua` | ReplicatedStorage.Shared.Modules | Item definitions and properties |
+| **Loot Module** | `LootModule.lua` | ReplicatedStorage.ConfigurationFiles | Item granting, code-based loot delivery, sell handling |
+| **Config: Plants** | `PlantConfig.lua` | ReplicatedStorage.ConfigurationFiles | Plant growth times, sprout mappings |
+| **Config: Mineables** | `MineableConfig.lua` | ReplicatedStorage.ConfigurationFiles | Mineable health, respawn, loot tables |
+| **Config: Items** | `ItemConfig.lua` | ReplicatedStorage.ConfigurationFiles | Item definitions and properties |
 
 ### Harvest Flow
 ```
@@ -69,3 +69,15 @@ Client Input → HarvestController (client) → ClickDetector → Server Handler
 3. Tune interaction in `HarvestConfig.lua`
 4. Add new nodes in Studio with CollectionService tags: `Mineable`, `Planter`, or `ResourceType` attribute
 5. For new visual effects, extend `HarvestController.client.lua`
+
+## Rojo sync map
+
+Scripts and config modules under `src/` map to Studio via `default.project.json`:
+
+| Filesystem | Studio |
+|---|---|
+| `src/ReplicatedStorage/ConfigurationFiles/` | `ReplicatedStorage.ConfigurationFiles` |
+| `src/ServerScriptService/` | `ServerScriptService` |
+| `src/StarterPlayer/StarterPlayerScripts/` | `StarterPlayer.StarterPlayerScripts` |
+
+**Not synced** (must exist in the published place): `RemoteEvents`, `RemoteFunctions`, Workspace map, UI, audio, animations.

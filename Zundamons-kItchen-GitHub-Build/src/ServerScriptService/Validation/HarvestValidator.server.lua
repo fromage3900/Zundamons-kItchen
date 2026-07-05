@@ -9,9 +9,8 @@ local CollectionService = game:GetService("CollectionService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Load config
-local configModule = ReplicatedStorage:FindFirstChild("Shared")
-	and ReplicatedStorage.Shared:FindFirstChild("Config")
-	and ReplicatedStorage.Shared.Config:FindFirstChild("HarvestConfig")
+local configModule = ReplicatedStorage:FindFirstChild("ConfigurationFiles")
+	and ReplicatedStorage.ConfigurationFiles:FindFirstChild("HarvestConfig")
 
 local Config = configModule and require(configModule) or nil
 

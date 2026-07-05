@@ -1,21 +1,21 @@
 ## Summary
 
-## What changed (Studio export mapping)
-- Source files changed:
+## What changed
+- Systems touched:
   - 
-- Any new/removed ModuleScripts:
+- `src/` files changed:
   - 
 
 ## How to verify
-- [ ] Run the experience in Studio
-- [ ] Confirm key interactions / systems affected
+- [ ] `npm run validate` passes
+- [ ] Rojo connected in Studio (`npm run rojo:serve`)
+- [ ] Playtest affected systems in the published place
 
 ## Testing
-- Describe any playtest, repro steps for bugs, and results.
+- Describe playtest steps, repro for bugs, and results.
 
 ## Notes for reviewers
-- Any performance/security concerns:
+- Performance/security concerns:
   - 
-- Any known limitations:
+- Studio-only dependencies (remotes, instances):
   - 
-

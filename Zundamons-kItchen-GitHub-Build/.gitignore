@@ -1,9 +1,8 @@
 # Local build outputs
 /workspace/
-
-# Roblox binary place files (ignore binary, keep text format)
 *.rbxl
-# NOTE: *.rbxlx and *.rbxmx are NOT ignored — they are the text-format exports we commit
+*.rbxlx
+*.rbxmx
 
 # OS/editor
 .DS_Store
@@ -11,6 +10,9 @@
 
 # CI artifacts
 /artifacts/
+
+# Node
+node_modules/
 
 # Temp / generated files
 *.lock

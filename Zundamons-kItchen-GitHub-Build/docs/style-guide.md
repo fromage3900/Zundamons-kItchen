@@ -31,8 +31,9 @@ This style guide focuses on consistency across cooperative development and makin
 - Prefer event-driven updates.
 
 ## Export/diff rules
-- Prefer `rbxlx/rbxmx` exports for reviewable diffs.
-- Avoid committing large binary assets when possible.
+- **Rojo + `src/`** is the source of truth for scripts and config modules.
+- Do not commit place exports (`*.rbxl`, `*.rbxlx`, `rbxmx`).
+- World content and remotes stay in Studio; document Studio-only deps in PRs.
 
 ## Comments and documentation
 - Use comments for “why”, not “what”.

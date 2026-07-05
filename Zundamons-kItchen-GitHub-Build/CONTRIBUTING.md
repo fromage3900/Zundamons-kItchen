@@ -3,28 +3,53 @@
 Thanks for helping build **Zundamon's kItchen**!
 
 ## Development model
-- Use **feature branches**: `feature/<short-name>`
+
+- Use **feature branches**: `feature/<short-name>` or `cursor/<descriptive-name>-<id>`
 - Open a **Pull Request** targeting `main`
-- Prefer small PRs with a clear Studio export mapping.
+- Prefer small PRs with clear system notes and playtest steps
 
-## Export rule (critical)
-This repo assumes the following source-of-truth items are committed:
-- Roblox place/model exports in **rbxlx/rbxmx** under `source/`
-- Any relevant ModuleScript/code artifacts in repo-friendly text form
+## Source of truth: Rojo + `src/`
 
-If you cannot export in text form yet, note it in the PR description and label it clearly.
+All gameplay **code and config modules** are committed under `src/` and synced via Rojo.
 
-## PR checklist (what reviewers expect)
-- [ ] Exported `source/` changes are included
-- [ ] Any new dependencies/references are documented
-- [ ] No accidental `workspace/` outputs are committed
+**Do not commit:**
+
+- `*.rbxl`, `*.rbxlx`, `*.rbxmx` place/model exports
+- `workspace/` build outputs
+
+**Do commit:**
+
+- Changes to `.lua` files under `src/`
+- Updates to `default.project.json` when the Studio hierarchy changes
+- Docs when conventions or architecture change
+
+## Local setup
+
+```bash
+cd Zundamons-kItchen-GitHub-Build
+npm install
+npm run rojo:serve
+```
+
+Connect Roblox Studio via the Rojo plugin. See `docs/rojo-workflow.md`.
+
+## PR checklist
+
+- [ ] `src/` changes included for any code/config edits
+- [ ] `npm run validate` passes locally
+- [ ] Playtested in Studio with Rojo connected
+- [ ] No `workspace/` or place export files committed
 - [ ] Patch notes included (if user-facing changes)
 
 ## Code & architecture standards
+
 See:
+
+- `docs/rojo-workflow.md`
 - `docs/style-guide.md`
 - `docs/review-checklist.md`
+- `docs/code-review.md` (known issues and improvement backlog)
 
 ## Reporting issues
-Use the GitHub issue templates in `.github/`.
 
+Use GitHub Issues with repro steps and which systems are affected.
