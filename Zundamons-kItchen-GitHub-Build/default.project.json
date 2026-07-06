@@ -13,6 +13,10 @@
       "RemoteEvents": {
         "$path": "src/ReplicatedStorage/RemoteEvents"
       },
+      "Models": {
+        "$className": "Folder",
+        "$path": "src/ReplicatedStorage/Models"
+      },
       "Shared": {
         "$className": "Folder",
         "Config": {
