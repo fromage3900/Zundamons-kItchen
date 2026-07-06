@@ -93,6 +93,31 @@ local function destroyHeuristicVignettes(root: Instance)
 	end
 end
 
+-- Destroy full-screen Studio placeholder frames (default grey, blocks view on play).
+local function isStudioGreyFullscreen(frame: Frame): boolean
+	if not frame:IsA("Frame") then
+		return false
+	end
+	if frame.Size ~= UDim2.fromScale(1, 1) and frame.Size ~= UDim2.new(1, 0, 1, 0) then
+		return false
+	end
+	if frame.BackgroundTransparency > 0.05 then
+		return false
+	end
+	local c = frame.BackgroundColor3
+	-- Roblox default part/gui grey ~ (163, 162, 165)
+	return c.R >= 150 and c.R <= 175 and c.G >= 150 and c.G <= 175 and c.B >= 150 and c.B <= 175
+end
+
+local function destroyStudioGreyFullscreen(root: Instance)
+	for _, inst in ipairs(root:GetDescendants()) do
+		if isStudioGreyFullscreen(inst) then
+			inst:Destroy()
+			logRemoved("grey fullscreen " .. inst:GetFullName())
+		end
+	end
+end
+
 local function cleanupScreenGui(gui: ScreenGui)
 	if destroyOverlayGui(gui) then
 		return
@@ -100,6 +125,7 @@ local function cleanupScreenGui(gui: ScreenGui)
 	if destroyLegacyStarterShell(gui) then
 		return
 	end
+	destroyStudioGreyFullscreen(gui)
 	destroyNamedDescendants(gui)
 	destroyHeuristicVignettes(gui)
 end

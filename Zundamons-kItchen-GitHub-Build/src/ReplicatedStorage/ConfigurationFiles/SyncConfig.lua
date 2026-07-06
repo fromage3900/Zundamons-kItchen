@@ -2,6 +2,6 @@
 -- Bump `label` when verifying a fresh sync after git pull.
 
 return {
-	label = "main-2026-07-05-rojo-remotes",
+	label = "main-2026-07-06-legacy-ui-deletion",
 	experienceId = "108617605497926",
 }

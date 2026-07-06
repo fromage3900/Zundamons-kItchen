@@ -144,7 +144,9 @@ local function setOpen(state)
     panel.Visible = state
 end
 
-closeBtn.MouseButton1Click:Connect(function()
+setOpen(false)
+
+closeBtn.MouseButton1Click:Connect(function())
     setOpen(false)
 end)
 
