@@ -17,14 +17,14 @@
 - [ ] Update `docs/architecture-overview.md` with flow diagrams
 
 ## 🔵 Low (Nice to Have)
-- [ ] QuestConfig.lua — daily/weekly quest data module
+- [x] QuestConfig.lua — canonical at `ConfigurationFiles/QuestConfig.lua` (duplicate RS root removed)
 - [ ] Patch notes template
 
 ---
 
 ## Files to Create Today
 ```
-src/ReplicatedStorage/QuestConfig.lua          (NEW)
+src/ReplicatedStorage/ConfigurationFiles/QuestConfig.lua  (canonical)
 src/ReplicatedStorage/HarvestNodeVariants.lua  (DONE - already exists)
 docs/testing-plan.md                         (NEW)
 docs/asset-checklist.md                      (NEW)

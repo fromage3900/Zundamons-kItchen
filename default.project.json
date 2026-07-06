@@ -4,9 +4,6 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
-      "QuestConfig": {
-        "$path": "src/ReplicatedStorage/QuestConfig.lua"
-      },
       "ConfigurationFiles": {
         "$path": "src/ReplicatedStorage/ConfigurationFiles"
       },

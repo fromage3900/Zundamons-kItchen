@@ -1,6 +1,6 @@
 # Canonical workspace (all agents)
 
-**Last updated:** July 2026
+**Last updated:** 2026-07-06 (org review) · Sync: `main-2026-07-06-org-review`
 
 ## Windows — primary dev machine
 
@@ -19,6 +19,7 @@ All agents (Cursor, Cline, OpenCode) should assume commands run from **`G:\Zunda
 G:
 cd G:\Zundamons-kItchen
 git pull origin main
+npm run security
 npm run rojo:serve
 ```
 

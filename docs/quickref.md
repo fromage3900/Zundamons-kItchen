@@ -34,7 +34,7 @@ git push
 | Harvest Config              | `src/ReplicatedStorage/Shared/Config/HarvestConfig.lua`                           |
 | Harvest Controller (Client) | `src/StarterPlayer/StarterPlayerScripts/Controllers/HarvestController.client.lua` |
 | Craft Config                | `src/ReplicatedStorage/Shared/Modules/CraftConfig.lua`                            |
-| Quest Config                | `src/ReplicatedStorage/QuestConfig.lua`                                           |
+| Quest Config                | `src/ReplicatedStorage/ConfigurationFiles/QuestConfig.lua`                        |
 | UI Assets                   | `src/ReplicatedStorage/Shared/Config/UIAssets.lua`                                |
 | Security Validator          | `src/ServerScriptService/Validation/HarvestValidator.server.lua`                  |
 
