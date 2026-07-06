@@ -28,13 +28,14 @@
 - [x] QuestManager wired to QuestConfig via QuestProgress
 - [x] VNDialogueData LocalPlayer race fixed
 - [x] Multi-agent coordination (AI/WORK_QUEUE, opencode/cline prompts)
+- [x] Zundapal LLM free chat Phase 1 (see AI/ZUNDAPAL_LLM_PLAN.md)
 
 ## Next steps (Studio / product — not blocking git)
 - [ ] Delete stale `master` branch on GitHub (optional cleanup; 19 commits behind `main`)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
 - [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
-- [ ] Replace Robux DevProduct IDs and clothing `assetId` placeholders
+- [ ] Studio: add `ServerStorage.ZundapalLLMSecrets.ApiKey` + enable HttpService for DeepSeek
 - [ ] Decoration shop client UI (server remotes ready — see AI/WORK_QUEUE O1)
 - [ ] Wire companion_chat / npc_chat quest stat hooks (see AI/WORK_QUEUE C2)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean

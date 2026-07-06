@@ -24,8 +24,12 @@
         "ShowPlantingMenu": { "$className": "RemoteEvent" },
         "plantEvent": { "$className": "RemoteEvent" },
         "CookingResult": { "$className": "RemoteEvent" },
-        "OpenCompanionVN": { "$className": "RemoteEvent" },
-        "ZoneVisited": { "$className": "RemoteEvent" },
+		"OpenCompanionVN": { "$className": "RemoteEvent" },
+		"ZundapalChatSend": { "$className": "RemoteEvent" },
+		"ZundapalChatReply": { "$className": "RemoteEvent" },
+		"ZundapalChatError": { "$className": "RemoteEvent" },
+		"ZundapalChatStatus": { "$className": "RemoteEvent" },
+		"ZoneVisited": { "$className": "RemoteEvent" },
         "PurchaseResult": { "$className": "RemoteEvent" }
       },
       "RemoteFunctions": {

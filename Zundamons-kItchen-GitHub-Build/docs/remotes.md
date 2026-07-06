@@ -23,6 +23,10 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `plantEvent` | C→S | `(plantName, planter)` | `Planters.server.lua` | Data + planter state |
 | `CookingResult` | S→C | result table | `CraftManager.server.lua` | N/A |
 | `OpenCompanionVN` | S→C | `(compType, emoji)` | `CompanionManager.server.lua` | N/A |
+| `ZundapalChatSend` | C→S | `(message: string)` | `ZundapalChatServer.server.lua` | Type, length, cooldown, TextService filter |
+| `ZundapalChatReply` | S→C | `{ text, speaker?, fallback? }` | `ZundapalChatServer.server.lua` | N/A |
+| `ZundapalChatError` | S→C | `(message: string)` | `ZundapalChatServer.server.lua` | N/A |
+| `ZundapalChatStatus` | S→C | `"thinking" \| "ready"` | `ZundapalChatServer.server.lua` | N/A |
 | `ZoneVisited` | C→S | `(zoneName: string)` | `ZoneVisitServer.server.lua` | Mapped via `ZoneVisitConfig` |
 
 ---

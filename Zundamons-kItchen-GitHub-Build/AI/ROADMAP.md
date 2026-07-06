@@ -8,7 +8,8 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 - [x] Single `ProcessReceipt` owner (`RobuxStoreServer`)
 - [x] Zone visit tracking wired to quests
 - [x] `QuestManager` reads `QuestConfig` via `QuestProgress`
-- [x] Multi-agent coordination docs (`AGENT_COORDINATION.md`, WORK_QUEUE, prompts)
+- [x] Zundapal LLM free chat Phase 1 (server proxy + VN UI)
+- [ ] Zundapal LLM Phase 2: player context injection
 
 ## Priority 1: Hardening & Stabilization
 

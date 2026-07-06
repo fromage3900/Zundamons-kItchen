@@ -17,6 +17,10 @@ RemoteManifest.remoteEvents = {
 	"plantEvent",
 	"CookingResult",
 	"OpenCompanionVN",
+	"ZundapalChatSend",
+	"ZundapalChatReply",
+	"ZundapalChatError",
+	"ZundapalChatStatus",
 	"ZoneVisited",
 	"PurchaseResult",
 }
