@@ -86,6 +86,15 @@ local function cleanupPlayerGui()
 		end
 	end
 
+	for _, shellName in ipairs(LegacyGuiConfig.destroyLegacyBootstrapShells or {}) do
+		local legacy = playerGui:FindFirstChild(shellName)
+		if legacy and legacy:IsA("ScreenGui") then
+			legacy.Enabled = false
+			legacy:Destroy()
+			logRemoved("ScreenGui " .. shellName .. " (Studio bootstrap duplicate)")
+		end
+	end
+
 	for _, child in ipairs(playerGui:GetChildren()) do
 		if child:IsA("ScreenGui") then
 			cleanupScreenGui(child)

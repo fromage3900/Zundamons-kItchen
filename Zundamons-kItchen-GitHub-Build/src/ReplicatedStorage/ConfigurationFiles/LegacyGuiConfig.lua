@@ -20,4 +20,10 @@ LegacyGuiConfig.destroyDescendantNames = {
 -- Legacy VN shell from Studio; VNController builds ZundaVNGui in code.
 LegacyGuiConfig.destroyLegacyVnShell = true
 
+-- Studio StarterGui shells replaced by Rojo bootstrap (names may differ from code-built guis).
+LegacyGuiConfig.destroyLegacyBootstrapShells = {
+	"CompanionShop",
+	"ZundaShop",
+}
+
 return LegacyGuiConfig

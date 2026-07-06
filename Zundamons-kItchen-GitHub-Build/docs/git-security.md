@@ -33,7 +33,8 @@ npm run security    # secret scan + git hygiene
 | `scripts/check-secrets.mjs` | API keys, Bearer tokens, private key blocks in tracked files |
 | `scripts/check-git-hygiene.mjs` | Place exports, `workspace/` commits, `_G.data[` on server |
 | `scripts/check-remote-sync.mjs` | `RemoteManifest.lua` drift from `default.project.json` |
-| `scripts/check-publish-readiness.mjs` | Unguarded TEST grants; placeholder DevProduct IDs (`STRICT_PUBLISH=1`) |
+| `scripts/check-publish-readiness.mjs` | Unguarded TEST grants; placeholder IDs in `MarketplaceConfig.lua` (`STRICT_PUBLISH=1`) |
+| `scripts/check-git-history.mjs` | Full history scan via gitleaks (`STRICT_HISTORY=1` if missing) |
 
 CI runs these on every PR and push to `main`.
 

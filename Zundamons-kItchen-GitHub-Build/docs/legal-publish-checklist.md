@@ -56,6 +56,21 @@ Use description text that mentions optional AI mentor chat. Example snippet:
 
 > Optional AI mentor chat (Zundapal & Master Chef Zunda) uses a third-party service. Replies may be inaccurate. Do not share personal information. See creator privacy policy.
 
+### Experience description template (copy to Creator Hub)
+
+```
+Zundamon's kItchen — a cozy kitchen life-sim in a pastel village.
+
+Gather ingredients, craft recipes, serve guests, decorate your plot, and befriend companions.
+
+Optional AI mentor chat (Zundapal & Master Chef Zunda) uses a third-party AI service.
+• Replies are AI-generated and may be wrong
+• Do not share personal information
+• Scripted dialogue and quests work without AI
+
+Play solo or with friends. Family-friendly cooking adventure.
+```
+
 - [ ] Thumbnail and title match claimed maturity
 - [ ] Link or reference [`PRIVACY.md`](../PRIVACY.md) if repo is public
 

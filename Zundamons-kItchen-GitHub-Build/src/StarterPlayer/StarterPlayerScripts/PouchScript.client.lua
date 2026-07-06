@@ -7,7 +7,8 @@ local Tween   = game:GetService("TweenService")
 local UIS     = game:GetService("UserInputService")
 
 local player  = Players.LocalPlayer
-local gui     = script.Parent
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+local gui     = ClientGuiBootstrap.createScreenGui(player, "ZundaPouch", 22)
 local RF      = RS:WaitForChild("RemoteFunctions")
 local reqData = RF:WaitForChild("RequestData")
 

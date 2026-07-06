@@ -1,84 +1,20 @@
--- [[Script] RobuxStoreServer (ref: RBX8323588801564DE18ADA95D1FA09CE8C)]]
--- RobuxStoreServer: processes Robux DevProduct purchases and grants items/companions.
--- ⚠️  Replace placeholder product IDs with real ones from the Roblox Creator Dashboard.
-local MPS     = game:GetService("MarketplaceService")
-local Players = game:GetService("Players")
-local RS      = game:GetService("ReplicatedStorage")
+-- [[Script] RobuxStoreServer]]
+-- Wires MarketplaceService as the sole ProcessReceipt owner.
+local RS = game:GetService("ReplicatedStorage")
+local MarketplaceService = require(script.Parent.Services.MarketplaceService)
 
--- ── PRODUCT CATALOGUE ────────────────────────────────────────────────────────
--- Format: [productId] = { type, key, displayName }
--- type: "companion" | "recipe" | "accessory"
--- key:  companion → PlayerDataService companion_owned[key]; recipe → unlocked_recipes
-local PRODUCTS = {
-    -- COMPANIONS  (replace IDs!)
-    [1111111101] = { type="companion",  key="zundacat",     name="ZundaCat Companion"  },
-    [1111111102] = { type="companion",  key="zundabunny",   name="ZundaBunny Companion"},
-    [1111111103] = { type="companion",  key="tantanmon",    name="TantanMon Companion" },
-    -- PREMIUM RECIPES
-    [1111111104] = { type="recipe",     key="Premium Ramen",name="Premium Ramen Recipe"},
-    [1111111105] = { type="recipe",     key="Party Cake",   name="Party Cake Recipe"   },
-    [1111111106] = { type="recipe",     key="Truffle Soup", name="Truffle Soup Recipe" },
-    -- ACCESSORIES (cosmetic flags)
-    [1111111107] = { type="accessory",  key="crown",        name="Gold Crown"          },
-    [1111111108] = { type="accessory",  key="bow",          name="Pink Bow"            },
-    [1111111109] = { type="accessory",  key="chefhat",      name="Chef Hat"            },
-}
-
--- Notify client of purchase result
-local RE      = RS:WaitForChild("RemoteEvents")
-local purchaseEv = RE:FindFirstChild("PurchaseResult")
-if not purchaseEv then
-    purchaseEv = Instance.new("RemoteEvent"); purchaseEv.Name="PurchaseResult"; purchaseEv.Parent=RE
-end
-
-local PlayerDataService = require(script.Parent.Services.PlayerDataService)
-
-MPS.ProcessReceipt = function(info)
-    local player = Players:GetPlayerByUserId(info.PlayerId)
-    if not player then return Enum.ProductPurchaseDecision.NotProcessedYet end
-
-    local prod = PRODUCTS[info.ProductId]
-    if not prod then
-        warn("[RobuxStore] Unknown product: "..info.ProductId)
-        return Enum.ProductPurchaseDecision.NotProcessedYet
-    end
-
-    -- Grant item
-	local d = PlayerDataService.getOrCreate(player)
-
-    if prod.type == "companion" then
-        d["companion_owned_"..prod.key] = true
-    elseif prod.type == "recipe" then
-        if not d.recipes_unlocked then d.recipes_unlocked={} end
-        d.recipes_unlocked[prod.key] = true
-    elseif prod.type == "accessory" then
-        d["accessory_"..prod.key] = true
-    end
-
-    -- Notify client
-    purchaseEv:FireClient(player, prod.name, prod.type)
-
-    print("[RobuxStore] "..player.Name.." purchased "..prod.name)
-    return Enum.ProductPurchaseDecision.PurchaseGranted
-end
-
--- Client requests a purchase prompt
 local RF = RS:WaitForChild("RemoteFunctions")
 local promptRF = RF:FindFirstChild("PromptRobuxPurchase")
 if not promptRF then
-    promptRF = Instance.new("RemoteFunction"); promptRF.Name="PromptRobuxPurchase"; promptRF.Parent=RF
-end
-promptRF.OnServerInvoke = function(player, productId)
-	if typeof(productId) ~= "number" or not PRODUCTS[productId] then
-		warn("[RobuxStore] Rejected unlisted product prompt from", player.Name, productId)
-		return false
-	end
-	MPS:PromptProductPurchase(player, productId)
-	return true
+	promptRF = Instance.new("RemoteFunction")
+	promptRF.Name = "PromptRobuxPurchase"
+	promptRF.Parent = RF
 end
 
-local productCount = 0
-for _ in pairs(PRODUCTS) do
-	productCount = productCount + 1
+MarketplaceService.init()
+
+promptRF.OnServerInvoke = function(player, productId)
+	return MarketplaceService.promptPurchase(player, productId)
 end
-print("[RobuxStoreServer] Ready — " .. productCount .. " products")
+
+print("[RobuxStoreServer] Delegating to MarketplaceService")

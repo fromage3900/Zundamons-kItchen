@@ -12,30 +12,12 @@ local SetCompanionRE = RE:WaitForChild("SetCompanion")
 local GetCompanionCatalog = RF:WaitForChild("GetCompanionCatalog")
 local GetOwnedCompanions = RF:WaitForChild("GetOwnedCompanions")
 
--- Placeholder DevProduct IDs (replace with real IDs after creating in Roblox Studio's Asset Manager)
--- Pattern: each companion has its own DevProduct.
--- If you don't set these yet, the shop falls back to a "test purchase" path
--- that grants ownership immediately so the system can be developed without Robux.
-local DEVPRODUCT_IDS = {
-	ankomon = 0,
-	cardamon = 0,
-	antimon = 0,
-	sakuradamon = 0,
-}
-
--- Map productId -> compType (built reverse)
-local productToComp = {}
-for k, v in pairs(DEVPRODUCT_IDS) do
-	if v ~= 0 then
-		productToComp[v] = k
-	end
-end
-
--- Pending purchases per player so we can credit on success
-local pending = {}
-
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 local CompanionConfig = require(RS.ConfigurationFiles.CompanionConfig)
+local MarketplaceConfig = require(RS.ConfigurationFiles.MarketplaceConfig)
+
+-- Premium companion DevProduct IDs (single catalog — edit MarketplaceConfig.lua)
+local DEVPRODUCT_IDS = MarketplaceConfig.companionDevProductIds
 
 PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
 	local def = CompanionConfig.companions[compType]

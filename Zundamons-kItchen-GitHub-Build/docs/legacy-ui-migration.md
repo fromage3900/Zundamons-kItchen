@@ -9,6 +9,7 @@ Studio `StarterGui` copies and Rojo-synced scripts can both create UI. This doc 
 - Destroys ScreenGuis: `ZundaFX`, `PostProcessOverlay`
 - Removes descendants named `WatercolourBleed`, `Vignette`, `GrainLayer`, `NoiseImage`
 - Destroys legacy `PlayerGui.ZundaVN` (replaced by `ZundaVNGui` from code)
+- Destroys Studio duplicate shells: `CompanionShop`, `ZundaShop` (before bootstrap scripts run)
 
 Config: [`LegacyGuiConfig.lua`](../src/ReplicatedStorage/ConfigurationFiles/LegacyGuiConfig.lua)
 
@@ -23,10 +24,11 @@ In place `108617605497926`, delete from **StarterGui**:
 | `ZundaFX` | Watercolour vignette / grain overlay (replaced by cleanup + AtmospherePostFX) |
 | `FXController` (if under ZundaFX) | Orphaned animator; removed from git |
 | `ZundaVN` | VN panel now built as `ZundaVNGui` in `VNController.client.lua` |
+| `ZundaPouch`, `QuestPanel`, `CompanionShop` | Rojo bootstrap recreates these in `PlayerGui` |
 
 **Keep for now** (HUD not fully Rojo-bootstrapped):
 
-- `ZundaHUD`, `ZundaPouch`, `QuestPanel`, `CraftingPanel`, `DataGUI`, `SellLoot`
+- `ZundaHUD`, `CraftingPanel`, `DataGUI`, `SellLoot`
 
 ## Rojo-bootstrapped UI (canonical)
 
@@ -35,18 +37,23 @@ In place `108617605497926`, delete from **StarterGui**:
 | `ZundaVNGui` | `VNController.client.lua` |
 | `DecorationShopGui` | `DecorationShop.client.lua` |
 | `PlantingMenuGui` | `PlantingMenu.client.lua` |
+| `CompanionShopGui` | `CompanionShopScript.client.lua` |
+| `ZundaPouch` | `PouchScript.client.lua` |
+| `QuestPanel` | `QuestScript.client.lua` |
+| `ZundaShopGui` | `StoreScript.client.lua` |
 | `HarvestProgressGui` | `HarvestController.client.lua` |
 | `CookingMinigame` | `TimedCookingScript.client.lua` |
+| `LlmDisclaimerGui` | `DisclaimerGate.client.lua` |
+
+Bootstrap helper: [`ClientGuiBootstrap.lua`](../src/ReplicatedStorage/ConfigurationFiles/ClientGuiBootstrap.lua)
 
 ## Still `script.Parent` = Studio GUI (migrate later)
 
-These expect a parent ScreenGui in Studio when not using Rojo-only bootstrap:
-
-- `CompanionShopScript`, `PouchScript`, `QuestScript`, `CraftingScript`, `MaterialsScript`, `StoreScript`, `ButtonScript`, `InventoryController`, etc.
-
-Under flat Rojo sync they parent to `StarterPlayerScripts` — **duplicate risk** if matching StarterGui copies exist.
+- `CraftingScript`, `MaterialsScript`, `ButtonScript`, `InventoryController`, `KeybindsScript`, `HudScript`, etc.
 
 ## Playtest verification
+
+See [`studio-playtest-smoke.md`](studio-playtest-smoke.md).
 
 1. Output: `[LegacyOverlayCleanup] Done — N legacy overlay item(s) removed`
 2. No dark corner vignette boxes during play

@@ -76,7 +76,7 @@ See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) for the full split and onbo
 See [`docs/project-review.md`](docs/project-review.md) for scorecard and links to architecture, remotes, and security docs.
 
 **Documentation index:** [`docs/README.md`](docs/README.md)  
-**Privacy & security:** [`PRIVACY.md`](PRIVACY.md) · [`SECURITY.md`](SECURITY.md)
+**Privacy & security:** [`PRIVACY.md`](PRIVACY.md) · [`SECURITY.md`](SECURITY.md) · [`LICENSE`](LICENSE)
 
 ## World building & environment
 

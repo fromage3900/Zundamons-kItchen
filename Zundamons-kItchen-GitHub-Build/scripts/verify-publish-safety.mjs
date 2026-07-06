@@ -11,6 +11,9 @@ const root = join(fileURLToPath(new URL("..", import.meta.url)));
 
 const requiredFiles = [
 	"src/ReplicatedStorage/ConfigurationFiles/DisclaimerConfig.lua",
+	"src/ReplicatedStorage/ConfigurationFiles/MarketplaceConfig.lua",
+	"src/ReplicatedStorage/ConfigurationFiles/ClientGuiBootstrap.lua",
+	"src/ServerScriptService/Services/MarketplaceService.lua",
 	"src/StarterPlayer/StarterPlayerScripts/DisclaimerGate.client.lua",
 	"src/StarterPlayer/StarterPlayerScripts/000_LegacyOverlayCleanup.client.lua",
 	"src/ServerScriptService/LlmDisclaimerServer.server.lua",
@@ -27,6 +30,16 @@ const requiredPatterns = [
 		file: "src/ServerScriptService/CompanionShopServer.server.lua",
 		pattern: /RunService:IsStudio\(\)/,
 		label: "Companion test grant Studio-gated",
+	},
+	{
+		file: "src/ServerScriptService/RobuxStoreServer.server.lua",
+		pattern: /MarketplaceService/,
+		label: "RobuxStore delegates to MarketplaceService",
+	},
+	{
+		file: "src/StarterPlayer/StarterPlayerScripts/CompanionShopScript.client.lua",
+		pattern: /ClientGuiBootstrap/,
+		label: "CompanionShop Rojo bootstrap",
 	},
 	{
 		file: "src/ServerScriptService/Services/ZundapalLLMService.lua",

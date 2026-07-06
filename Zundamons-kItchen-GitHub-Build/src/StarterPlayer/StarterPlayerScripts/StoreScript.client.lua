@@ -2,31 +2,17 @@
 local Players=game:GetService("Players"); local RS=game:GetService("ReplicatedStorage")
 local Tween=game:GetService("TweenService"); local UIS=game:GetService("UserInputService")
 local MPS=game:GetService("MarketplaceService")
-local player=Players.LocalPlayer; local gui=script.Parent
+local player=Players.LocalPlayer
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+local MarketplaceConfig = require(RS.ConfigurationFiles.MarketplaceConfig)
+local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaShopGui", 26)
 
 local RF=RS:WaitForChild("RemoteFunctions"); local RE=RS:WaitForChild("RemoteEvents")
 local promptRF=RF:WaitForChild("PromptRobuxPurchase",10)
 local purchaseEv=RE:WaitForChild("PurchaseResult",10)
 local compEv=RE:WaitForChild("SetCompanion",10)
 
--- ── CATALOGUE ───────────────────────────────────────────────────────────────
-local PRODUCTS = {
-    companions = {
-        { id=1111111101, name="ZundaCat",      emoji="🐱", desc="A playful feline companion", robux=80,  key="zundacat"  },
-        { id=1111111102, name="ZundaBunny",    emoji="🐰", desc="Fluffy bunny bestie",         robux=80,  key="zundabunny"},
-        { id=1111111103, name="TantanMon",     emoji="🌶️", desc="Spicy & spirited companion",  robux=100, key="tantanmon" },
-    },
-    recipes = {
-        { id=1111111104, name="Premium Ramen", emoji="🍜", desc="Exclusive ramen recipe",       robux=60  },
-        { id=1111111105, name="Party Cake",    emoji="🎂", desc="Fancy celebration cake",       robux=60  },
-        { id=1111111106, name="Truffle Soup",  emoji="🍲", desc="Ultra-rare truffle recipe",    robux=80  },
-    },
-    accessories = {
-        { id=1111111107, name="Gold Crown",    emoji="👑", desc="Wear royalty on your head",    robux=40  },
-        { id=1111111108, name="Pink Bow",      emoji="🎀", desc="Cute bow accessory",           robux=40  },
-        { id=1111111109, name="Chef Hat",      emoji="🍽️", desc="Professional chef headwear",   robux=50  },
-    },
-}
+local PRODUCTS = MarketplaceConfig.storeDisplay
 
 local C={bg=Color3.fromRGB(252,248,240),border=Color3.fromRGB(255,180,80),
          text=Color3.fromRGB(68,52,78),sub=Color3.fromRGB(140,120,140),

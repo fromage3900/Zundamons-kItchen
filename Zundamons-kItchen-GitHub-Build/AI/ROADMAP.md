@@ -20,11 +20,13 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 - [x] Publish safety — atmosphere audit, LLM disclaimer, daily cap, publish-readiness script
 - [x] Docs index (`docs/README.md`), `PRIVACY.md`, `SECURITY.md`, legal publish checklist
 - [x] Studio smoke playtest confirmed (see `docs/studio-playtest-smoke.md`)
-- [ ] Real DevProduct IDs + `STRICT_PUBLISH=1` CI (Cline C3)
+- [x] Marketplace catalog consolidated (`MarketplaceConfig` + `MarketplaceService`)
+- [x] Client UI bootstrap — CompanionShop, Pouch, Quest, Zunda Shop
+- [ ] Replace placeholder DevProduct IDs in `MarketplaceConfig.lua` + `STRICT_PUBLISH=1` CI
 
 ## Priority 1: Hardening & Stabilization
 
-- [ ] Consolidate `MarketplaceService.ProcessReceipt` + product catalogs (Cline — WORK_QUEUE C3)
+- [x] Marketplace catalog consolidated (`MarketplaceConfig` + `MarketplaceService`)
 - [ ] Standardize economy fields (`Gold` / `current_gold` / `gold`)
 - [ ] Move `RewardCore` remote wiring fully to `ServerScriptService`
 - [ ] Audit remaining remotes for payload validation
@@ -32,7 +34,7 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 ## Priority 2: Refactoring
 
 - [ ] Adopt `UIComponents` in client menus (OpenCode — WORK_QUEUE O2)
-- [ ] Client UI Rojo bootstrap (reduce Studio ScreenGui dependency)
+- [ ] Client UI Rojo bootstrap — remaining: Crafting, HUD, Keybinds (CompanionShop/Pouch/Quest done)
 - [ ] Wire or remove unused `ItemConfig` / `ShopConfig`
 
 ## Priority 3: New Features / Studio

@@ -10,7 +10,7 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | C1 | Migrate Planters off _G.data to PlayerDataService | Cursor | done | cursor/publish-blockers-594f | Planters.server.lua, PlantingMenu.client |
 | O1 | Decoration shop client UI | Cursor | done | cursor/publish-blockers-594f | DecorationShop.client.lua, DecorationPlacer |
 | C2 | Add companion_chat / npc_chat stat hooks | Cursor | done | cursor/zundapal-llm-594f | CompanionConfig, CompanionStats, CompanionInteractionServer, VNController, ZundapalChatServer |
-| C3 | Implement MarketplaceService from proposal | Cline | pending | cline/marketplace-service | Services/MarketplaceService.lua, RobuxStoreServer, CompanionShopServer |
+| C3 | Implement MarketplaceService from proposal | Cursor | done | cursor/plan-completion-594f | MarketplaceConfig, Services/MarketplaceService.lua, RobuxStoreServer |
 | L1 | Zundapal LLM free chat Phase 1 | Cursor | done | cursor/zundapal-llm-594f | ZundapalLLMConfig, ZundapalLLMService, ZundapalChatServer, VNController, ZundapalChat.client |
 | L2 | LLM player context injection | Cursor | done | cursor/zundapal-llm-594f | ZundapalContextBuilder, ZundapalLLMService, ZundapalHintsServer |
 | L4 | Companion system + LLM integration | Cursor | done | cursor/zundapal-llm-594f | CompanionConfig, CompanionStats, RecordNpcChat, sparkle VFX, audit doc |
@@ -23,8 +23,8 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | G1 | Consolidate click-gather vs tool-mine overlap | Cursor | done | cursor/gather-consolidation-594f | GatherConfig, ZundaGatherServer, MineableConfig |
 | P4 | Publish safety plan (atmosphere, LLM disclaimer, legal docs) | Cursor | done | cursor/publish-safety-594f | DisclaimerGate, check-publish-readiness, PRIVACY.md, legal-publish-checklist |
 | P5 | Studio smoke playtest + delete StarterGui.ZundaFX | Human | done | main | docs/studio-playtest-smoke.md |
-| P6 | Real DevProduct IDs + STRICT_PUBLISH CI | Cline | pending | cline/marketplace-service | MarketplaceService, RobuxStoreServer, CompanionShopServer |
-| P7 | Client UI Rojo bootstrap (CompanionShop, Pouch, Quest) | OpenCode | pending | opencode/ui-bootstrap | CompanionShopScript, PouchScript, QuestScript |
+| P6 | Real DevProduct IDs + STRICT_PUBLISH CI | Human | pending | main | Replace IDs in MarketplaceConfig.lua only |
+| P7 | Client UI Rojo bootstrap (CompanionShop, Pouch, Quest) | Cursor | done | cursor/plan-completion-594f | ClientGuiBootstrap, CompanionShopScript, PouchScript, QuestScript, StoreScript |
 
 ## Status values
 
