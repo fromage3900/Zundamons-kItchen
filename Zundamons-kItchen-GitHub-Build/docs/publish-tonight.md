@@ -25,6 +25,8 @@ In Studio:
 2. Plugins → Rojo → Connect `localhost:34872`
 3. Confirm Output shows `[ROJO SYNC OK]`
 4. Play solo — no red errors in Output
+5. Output shows `[LegacyOverlayCleanup]` — no `ZundaFX` vignette under `PlayerGui`
+6. Delete **StarterGui → ZundaFX** in Studio if it still exists (see [`legacy-ui-migration.md`](legacy-ui-migration.md))
 
 **Branches:** All publish work is on `main` as of July 2026. Pull `main` before Rojo sync.
 

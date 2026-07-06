@@ -17,7 +17,16 @@ local ProgressionConfig = require(RS.ConfigurationFiles:WaitForChild("Progressio
 local SPEAKERS = VNDialogueData.SPEAKERS
 
 local player = Players.LocalPlayer
-local gui = script.Parent
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ZundaVNGui"
+screenGui.ResetOnSpawn = false
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.DisplayOrder = 40
+screenGui.Parent = playerGui
+
+local gui = screenGui
 
 -- Expose side dialogues for other scripts to trigger (player name resolved lazily)
 local SIDE_DIALOGUES = VNDialogueData.resolveSideDialogues(player.Name)
@@ -961,14 +970,12 @@ if qcRE then
 	end)
 end
 
--- Zone entry lore  (BindableEvent fired by client zone ClickDetector handler)
-local RE2 = player:WaitForChild("PlayerGui"):WaitForChild("ZundaVN", 30)
--- Use a BindableEvent in PlayerGui for cross-LocalScript signalling
-local showZoneVNBindable = player.PlayerGui:FindFirstChild("ShowZoneVN")
+-- Zone entry lore (BindableEvent fired by client zone ClickDetector handler)
+local showZoneVNBindable = playerGui:FindFirstChild("ShowZoneVN")
 if not showZoneVNBindable then
 	showZoneVNBindable = Instance.new("BindableEvent")
 	showZoneVNBindable.Name = "ShowZoneVN"
-	showZoneVNBindable.Parent = player.PlayerGui
+	showZoneVNBindable.Parent = playerGui
 end
 showZoneVNBindable.Event:Connect(function(zoneKey)
 	local ok, loreCfg = pcall(function()
