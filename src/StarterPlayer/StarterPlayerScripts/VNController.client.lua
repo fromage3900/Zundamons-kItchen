@@ -528,16 +528,23 @@ _G.ZundaVN = {
     end,
     isOpen = function() return isOpen end,
     enterFreeChat = function()
-        freeChatActive = true
-        openPanel()
-        setSpeaker("zundapal")
-        dlgText.Text = "Free chat mode~ Ask me about recipes, quests, or the village! 🍡"
-        typing = false
-        advArrow.Visible = false
-        setChatBarVisible(true)
-        task.defer(function()
-            chatInput:CaptureFocus()
-        end)
+        local function startFreeChat()
+            freeChatActive = true
+            openPanel()
+            setSpeaker("zundapal")
+            dlgText.Text = "Free chat mode~ Ask me about recipes, quests, or the village! 🍡"
+            typing = false
+            advArrow.Visible = false
+            setChatBarVisible(true)
+            task.defer(function()
+                chatInput:CaptureFocus()
+            end)
+        end
+        if _G.ZundaLlmDisclaimer and _G.ZundaLlmDisclaimer.ensureAccepted then
+            _G.ZundaLlmDisclaimer.ensureAccepted(startFreeChat)
+        else
+            startFreeChat()
+        end
     end,
     exitFreeChat = function()
         freeChatActive = false
