@@ -1,13 +1,17 @@
 -- [[Script] Mineable (ref: RBXF2522A122CFA49CEA3F2FD0377BB82F8)]]
+-- Mineable rocks/trees with harvest validator integration
 local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
-local SSS = game.ServerScriptService
-local lms = SSS:WaitForChild("LootModule")
-local loot_module = require(lms)
-local RS = game.ReplicatedStorage
-local configFiles = RS:WaitForChild("ConfigurationFiles")
-local mineableConfig = require(configFiles:WaitForChild("MineableConfig"))
+local SSS = game:GetService("ServerScriptService")
+local RS = game:GetService("ReplicatedStorage")
+
+local loot_module = require(SSS:WaitForChild("LootModule"))
+local mineableConfig = require(RS:WaitForChild("ConfigurationFiles"):WaitForChild("MineableConfig"))
 local mineableList = mineableConfig.Mineables
+
+-- HarvestValidator for distance + rate check
+local HarvestValidator = SSS:FindFirstChild("Validation") and SSS.Validation:FindFirstChild("HarvestValidator")
+local validateHarvest = HarvestValidator and require(HarvestValidator).validateHarvest
 
 function hasWildcardTag(instance, prefix)
 	local tags = CollectionService:GetTags(instance)
@@ -36,26 +40,50 @@ function itemEvent(item)
 	item:GetAttributeChangedSignal("Health"):Connect(function()
 		local health = item:GetAttribute("Health")
 		local mined = item:GetAttribute("Mined")
-		if health <=0 and not mined then
+		if health <= 0 and not mined then
 			item:SetAttribute("Mined", true)
 
 			for _, player in pairs(Players:GetPlayers()) do
-				local tag = hasWildcardTag(item, player.Name.."|")
+				local tag = hasWildcardTag(item, player.Name .. "|")
 				if tag then
+					-- Validate harvest before giving loot
+					if validateHarvest then
+						local valid, err = validateHarvest(player, item)
+						if not valid then
+							continue
+						end
+					else
+						-- Fallback: basic distance check
+						local char = player.Character
+						if not char then
+							continue
+						end
+						local rootpart = char:FindFirstChild("HumanoidRootPart")
+						if not rootpart then
+							continue
+						end
+						local dist = (rootpart.Position - item.Position).Magnitude
+						if dist > 16 then
+							continue
+						end
+					end
+
 					local split_tag = string.split(tag, "|")
 					local loottable = mineableList[item:GetAttribute("Type")].loot[split_tag[2]]
-					local tags = CollectionService:GetTags(item)
-					local rootpart = player.Character:FindFirstChild("HumanoidRootPart")
+					local rootpart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 					if rootpart then
-						loot_module.generateLoot(player, loottable, Vector3.new(item.Position.X, rootpart.Position.Y, item.Position.Z))	
+						loot_module.generateLoot(
+							player,
+							loottable,
+							Vector3.new(item.Position.X, rootpart.Position.Y, item.Position.Z)
+						)
 					end
 				end
 			end
-			
 
 			local model = item:FindFirstAncestorOfClass("Model")
 			local obj = model or item
-			
+
 			if item:HasTag("Destroy") then
 				item.Parent:SetAttribute("Seeded", false)
 				item:Destroy()
@@ -70,7 +98,7 @@ function itemEvent(item)
 				item:SetAttribute("Mined", false)
 				obj.Parent = parent
 			end
-		end	
+		end
 	end)
 end
 
@@ -86,12 +114,7 @@ function addEvent()
 	end
 end
 
-function assigner(item)
-	itemAttributes(item)
-	itemEvent(item)
-end
-
 addAttributes()
 addEvent()
 
-CollectionService:GetInstanceAddedSignal("Mineable"):Connect(assigner)
+CollectionService:GetInstanceAddedSignal("Mineable"):Connect(addAttributes)

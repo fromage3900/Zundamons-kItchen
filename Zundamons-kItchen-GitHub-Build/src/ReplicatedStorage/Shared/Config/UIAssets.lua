@@ -7,6 +7,7 @@
 local UIAssets = {
 	icons = {
 		-- Item icons (inventory, crafting panel)
+		-- All icons use emoji fallback via UIHelper until real decals are uploaded
 		Wheat = "rbxassetid://FILL_ICON_WHEAT",
 		["Zunda Flower"] = "rbxassetid://FILL_ICON_ZUNDA_FLOWER",
 		["Zunda Pea"] = "rbxassetid://FILL_ICON_ZUNDA_PEA",
@@ -26,26 +27,28 @@ local UIAssets = {
 	},
 
 	sounds = {
-		-- Audio feedback (use Roblox library or upload custom)
-		harvest_start = "rbxassetid://FILL_SOUND_HARVEST_START",
-		harvest_complete = "rbxassetid://FILL_SOUND_HARVEST_COMPLETE",
-		craft_start = "rbxassetid://FILL_SOUND_CRAFT_START",
-		craft_perfect = "rbxassetid://FILL_SOUND_CRAFT_PERFECT", -- sparkly chime
-		serve_success = "rbxassetid://FILL_SOUND_SERVE_SUCCESS", -- coin sound
-		level_up = "rbxassetid://FILL_SOUND_LEVEL_UP", -- fanfare
-		gather_fail = "rbxassetid://FILL_SOUND_GATHER_FAIL", -- soft error
-		ui_click = "rbxassetid://FILL_SOUND_UI_CLICK",
+		-- Built-in Roblox engine sounds — no upload needed
+		-- Set pitch/volume in calling scripts for variety
+		harvest_start = "rbxasset://sounds/hit.wav",
+		harvest_complete = "rbxasset://sounds/snap.mp3",
+		craft_start = "rbxasset://sounds/snap.mp3",
+		craft_perfect = "rbxasset://sounds/electronicpingshort.wav",
+		serve_success = "rbxasset://sounds/uiclick.wav",
+		level_up = "rbxasset://sounds/electronicpingshort.wav",
+		gather_fail = "rbxasset://sounds/hit.wav",
+		ui_click = "rbxasset://sounds/uiclick.wav",
 	},
 
 	particles = {
-		-- Particle textures (sparkle effects)
-		harvest_sparkle = "rbxassetid://FILL_TEX_SPARKLE_GREEN",
-		craft_magic = "rbxassetid://FILL_TEX_SPARKLE_LAVENDER",
-		serve_stars = "rbxassetid://FILL_TEX_SPARKLE_GOLD",
+		-- Built-in Roblox particle texture — always available
+		harvest_sparkle = "rbxasset://textures/particles/sparkle_main.dds",
+		craft_magic = "rbxasset://textures/particles/sparkle_main.dds",
+		serve_stars = "rbxasset://textures/particles/sparkle_main.dds",
 	},
 
 	gui = {
-		-- GUI assets (9-slice or custom)
+		-- GUI image assets (need Studio upload for real 9-slice textures)
+		-- UIHelper fallback creates colored frames with rounded corners
 		progress_bar_fill = "rbxassetid://FILL_GUI_PROGRESS_FILL",
 		progress_bar_border = "rbxassetid://FILL_GUI_PROGRESS_BORDER",
 		combo_badge = "rbxassetid://FILL_GUI_COMBO_BADGE",
@@ -54,6 +57,7 @@ local UIAssets = {
 	},
 
 	animations = {
+		-- Animation assets (need Blender + FBX import pipeline)
 		harvest_loop = "rbxassetid://FILL_ANIM_HARVEST",
 		cook_victory = "rbxassetid://FILL_ANIM_COOK_VICTORY",
 		cook_fail = "rbxassetid://FILL_ANIM_COOK_FAIL",

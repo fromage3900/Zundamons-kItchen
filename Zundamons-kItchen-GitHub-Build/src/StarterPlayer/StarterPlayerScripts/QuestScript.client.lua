@@ -2,6 +2,7 @@
 local Players=game:GetService("Players"); local RS=game:GetService("ReplicatedStorage")
 local Tween=game:GetService("TweenService"); local UIS=game:GetService("UserInputService")
 local player=Players.LocalPlayer; local gui=script.Parent
+local UIHelper = require(RS.Shared.Modules.UIHelper)
 local RE=RS:WaitForChild("RemoteEvents"); local ev=RE:WaitForChild("UpdateQuests",15)
 local C={bg=Color3.fromRGB(252,248,240),border=Color3.fromRGB(130,195,120),
          text=Color3.fromRGB(68,52,78),sub=Color3.fromRGB(140,120,140),
@@ -122,6 +123,44 @@ local function updateCards(quests,progress)
     end
 end
 if ev then ev.OnClientEvent:Connect(updateCards) end
+
+-- Handle batch quest completions
+local qcBatch = RE:FindFirstChild("QuestCompletedBatch")
+if qcBatch then
+	qcBatch.OnClientEvent:Connect(function(completions)
+		for _, q in ipairs(completions) do
+			spawnPopup("quest_complete", q.title, Color3.fromRGB(160, 210, 150))
+			UIHelper.spawnSparkles(panel, panel.AbsolutePosition.X + 200, panel.AbsolutePosition.Y + 60,
+				Color3.fromRGB(180, 150, 110), 8)
+		end
+	end)
+end
+
+-- Popup helper (matches QuestScript's style)
+local function spawnPopup(kind, text, color)
+	local lbl = Instance.new("TextLabel")
+	lbl.Size = UDim2.new(0, 300, 0, 40)
+	lbl.Position = UDim2.new(0.5, -150, 0, math.random(100, 180))
+	lbl.BackgroundTransparency = 0.1
+	lbl.BackgroundColor3 = Color3.fromRGB(255, 248, 235)
+	lbl.Text = text
+	lbl.Font = Enum.Font.FredokaOne
+	lbl.TextSize = 18
+	lbl.TextColor3 = color or Color3.fromRGB(100, 185, 100)
+	lbl.TextStrokeTransparency = 0.3
+	lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+	lbl.Parent = gui
+	Instance.new("UICorner", lbl).CornerRadius = UDim.new(0, 12)
+	local bs = Instance.new("UIStroke", lbl); bs.Color = Color3.fromRGB(180, 150, 110); bs.Thickness = 2
+
+	local upTween = Tween:Create(lbl, TweenInfo.new(1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		Position = lbl.Position - UDim2.new(0, 0, 0, 80),
+	})
+	local fadeTween = Tween:Create(lbl, TweenInfo.new(0.6), { BackgroundTransparency = 1, TextTransparency = 1 })
+	upTween:Play()
+	task.delay(0.8, function() fadeTween:Play() end)
+	task.delay(1.6, function() lbl:Destroy() end)
+end
 
 local open=false
 local function toggle()

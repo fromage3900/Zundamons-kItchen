@@ -9,10 +9,8 @@ local craftfunction = RF:WaitForChild("CraftFunction")
 local configFiles = RS:WaitForChild("ConfigurationFiles")
 local craftConfig = require(configFiles:WaitForChild("CraftConfig"))
 local craftData = craftConfig.recipes
-local SSS = game.ServerScriptService
-local lms = SSS:WaitForChild("LootModule")
-local loot_module = require(lms)
-local RewardCore = require(SSS:WaitForChild("RewardCore"))
+local loot_module = require(configFiles:WaitForChild("LootModule"))
+local RewardCore = require(configFiles:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(configFiles:WaitForChild("ChefLevelConfig"))
 
 -- Optional: notify clients of cooking results so VN/HUD can react
@@ -73,8 +71,7 @@ local function craftItem(player, item, position, quality)
     -- Bonus gold for great/perfect timing (combo-multiplied)
     if bonus.gold > 0 then
         RewardCore.bumpCombo(player)
-        local awarded = RewardCore.addGold(player, bonus.gold, quality == "perfect" and "perfect" or "craft")
-        bucket.Gold = (bucket.Gold or 0) + awarded
+        RewardCore.addGold(player, bonus.gold, quality == "perfect" and "perfect" or "craft")
     elseif quality == "ok" then
         RewardCore.breakCombo(player)
     end
@@ -91,6 +88,22 @@ local function craftItem(player, item, position, quality)
             quality = quality,
             bonusGold = bonus.gold,
         })
+    end)
+
+    -- Track cooking quality for quest system
+    PlayerDataService.update(player, function(d)
+        if quality == "perfect" then
+            d.perfect_cooks = (d.perfect_cooks or 0) + 1
+            d.cooking_streak = (d.cooking_streak or 0) + 1
+            d.max_cooking_streak = math.max(d.max_cooking_streak or 0, d.cooking_streak)
+        elseif quality == "great" then
+            d.great_cooks = (d.great_cooks or 0) + 1
+            d.cooking_streak = (d.cooking_streak or 0) + 1
+        else
+            d.cooking_streak = 0
+        end
+        if not d.recipes_served_count then d.recipes_served_count = {} end
+        d.recipes_served_count[item] = (d.recipes_served_count[item] or 0) + 1
     end)
 
     return "Success"

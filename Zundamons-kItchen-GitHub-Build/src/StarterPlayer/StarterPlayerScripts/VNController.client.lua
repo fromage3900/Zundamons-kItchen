@@ -18,19 +18,27 @@ local SIDE_DIALOGUES = VNDialogueData.SIDE_DIALOGUES
 local player = Players.LocalPlayer
 local gui    = script.Parent
 
+local UIHelper = require(RS.Shared.Modules.UIHelper)
+
 -- Expose side dialogues for other scripts to trigger
 _G.ZundaSideDialogues = SIDE_DIALOGUES
 
--- ── Build UI ──────────────────────────────────────────────────
+-- ── Build UI (Animal Crossing inspired) ─────────────────────────
 local PANEL_W = 780
 local PANEL_H = 185
-local PORT_W  = 120
+local PORT_W  = 110
 
--- Subtle full-screen dimmer (appears behind panel, very light)
+local C_cream = Color3.fromRGB(255, 248, 235)
+local C_border = Color3.fromRGB(180, 150, 110)
+local C_text = Color3.fromRGB(80, 55, 35)
+local C_textLight = Color3.fromRGB(140, 110, 80)
+local C_close = Color3.fromRGB(200, 140, 120)
+
+-- Very subtle dimmer
 local dimmer = Instance.new("Frame", gui)
 dimmer.Name = "Dimmer"
 dimmer.Size = UDim2.new(1, 0, 1, 0)
-dimmer.BackgroundColor3 = RGB(10, 6, 20)
+dimmer.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 dimmer.BackgroundTransparency = 1
 dimmer.BorderSizePixel = 0
 dimmer.ZIndex = 9
@@ -41,146 +49,111 @@ local panel = Instance.new("Frame", gui)
 panel.Name = "VNPanel"
 panel.Size = UDim2.new(0, PANEL_W, 0, PANEL_H)
 panel.AnchorPoint = Vector2.new(0.5, 1)
-panel.Position = UDim2.new(0.5, 0, 1, 20)     -- start off-screen below
-panel.BackgroundColor3 = RGB(16, 11, 26)
-panel.BackgroundTransparency = 0.04
+panel.Position = UDim2.new(0.5, 0, 1, 20)
+panel.BackgroundColor3 = C_cream
 panel.BorderSizePixel = 0
 panel.ZIndex = 10
 panel.Active = true
-Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 18)
+Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 24)
 local pStroke = Instance.new("UIStroke", panel)
-pStroke.Color = RGB(180, 140, 255); pStroke.Thickness = 2.2
+pStroke.Color = C_border; pStroke.Thickness = 3
 
--- Gradient on panel background
-local pGrad = Instance.new("UIGradient", panel)
-pGrad.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0,   RGB(30, 20, 50)),
-    ColorSequenceKeypoint.new(0.5, RGB(16, 11, 28)),
-    ColorSequenceKeypoint.new(1,   RGB(10,  6, 20)),
-})
-pGrad.Rotation = 90
-
--- Portrait box (left side)
+-- Portrait box
 local portrait = Instance.new("Frame", panel)
 portrait.Name = "Portrait"
 portrait.Size = UDim2.new(0, PORT_W, 1, 0)
-portrait.BackgroundColor3 = RGB(45, 90, 50)   -- default, updated per speaker
-portrait.BackgroundTransparency = 0.05
+portrait.BackgroundColor3 = Color3.fromRGB(180, 220, 170)
 portrait.BorderSizePixel = 0
 portrait.ZIndex = 11
 Instance.new("UICorner", portrait).CornerRadius = UDim.new(0, 18)
 
--- Clip right side of portrait to blend into panel
-local pClipR = Instance.new("Frame", portrait)
-pClipR.Size = UDim2.new(0, 22, 1, 0)
-pClipR.Position = UDim2.new(1, -22, 0, 0)
-pClipR.BackgroundColor3 = RGB(16, 11, 26)
-pClipR.BackgroundTransparency = 0.04
-pClipR.BorderSizePixel = 0
-pClipR.ZIndex = 12
-
--- Portrait glow ring
-local pRing = Instance.new("Frame", portrait)
-pRing.Size = UDim2.new(0.72, 0, 0.72, 0)
-pRing.AnchorPoint = Vector2.new(0.5, 0.5)
-pRing.Position = UDim2.new(0.46, 0, 0.46, 0)
-pRing.BackgroundColor3 = RGB(200, 180, 255)
-pRing.BackgroundTransparency = 0.7
-pRing.BorderSizePixel = 0
-pRing.ZIndex = 11
-Instance.new("UICorner", pRing).CornerRadius = UDim.new(0.5, 0)
-
 -- Portrait emoji
 local pEmoji = Instance.new("TextLabel", portrait)
 pEmoji.Name = "Emoji"
-pEmoji.Size = UDim2.new(0.88, 0, 0.65, 0)
+pEmoji.Size = UDim2.new(0.9, 0, 0.7, 0)
 pEmoji.AnchorPoint = Vector2.new(0.5, 0.5)
-pEmoji.Position = UDim2.new(0.45, 0, 0.44, 0)
+pEmoji.Position = UDim2.new(0.5, 0, 0.5, 0)
 pEmoji.BackgroundTransparency = 1
 pEmoji.Text = "🍙"
 pEmoji.Font = Enum.Font.GothamBold
-pEmoji.TextSize = 50
+pEmoji.TextSize = 52
 pEmoji.ZIndex = 13
 
 -- Text area
 local textArea = Instance.new("Frame", panel)
 textArea.Name = "TextArea"
-textArea.Size = UDim2.new(1, -(PORT_W + 12), 1, -14)
-textArea.Position = UDim2.new(0, PORT_W + 8, 0, 7)
+textArea.Size = UDim2.new(1, -(PORT_W + 16), 1, -16)
+textArea.Position = UDim2.new(0, PORT_W + 12, 0, 8)
 textArea.BackgroundTransparency = 1
 textArea.ZIndex = 11
 
--- Speaker name banner
+-- Speaker name banner (tab style)
 local nameBanner = Instance.new("Frame", textArea)
 nameBanner.Name = "NameBanner"
-nameBanner.Size = UDim2.new(0, 180, 0, 28)
+nameBanner.Size = UDim2.new(0, 160, 0, 26)
 nameBanner.Position = UDim2.new(0, 0, 0, 0)
-nameBanner.BackgroundColor3 = RGB(120, 200, 130)
-nameBanner.BackgroundTransparency = 0.08
+nameBanner.BackgroundColor3 = Color3.fromRGB(160, 210, 150)
 nameBanner.BorderSizePixel = 0
 nameBanner.ZIndex = 12
-Instance.new("UICorner", nameBanner).CornerRadius = UDim.new(0.3, 0)
+Instance.new("UICorner", nameBanner).CornerRadius = UDim.new(0, 8)
 local nameLabel = Instance.new("TextLabel", nameBanner)
-nameLabel.Size = UDim2.new(1, -10, 1, 0)
-nameLabel.Position = UDim2.new(0, 5, 0, 0)
+nameLabel.Size = UDim2.new(1, -12, 1, 0)
+nameLabel.Position = UDim2.new(0, 6, 0, 0)
 nameLabel.BackgroundTransparency = 1
 nameLabel.Text = "Zundamon"
 nameLabel.Font = Enum.Font.FredokaOne
-nameLabel.TextSize = 16
-nameLabel.TextColor3 = RGB(255, 252, 245)
+nameLabel.TextSize = 15
+nameLabel.TextColor3 = Color3.fromRGB(60, 40, 20)
 nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 nameLabel.ZIndex = 13
 
 -- Main dialogue text
 local dlgText = Instance.new("TextLabel", textArea)
 dlgText.Name = "DialogueText"
-dlgText.Size = UDim2.new(1, -10, 0, 105)
-dlgText.Position = UDim2.new(0, 4, 0, 32)
+dlgText.Size = UDim2.new(1, -8, 0, 100)
+dlgText.Position = UDim2.new(0, 4, 0, 30)
 dlgText.BackgroundTransparency = 1
 dlgText.Text = ""
 dlgText.Font = Enum.Font.GothamMedium
-dlgText.TextSize = 15
-dlgText.TextColor3 = RGB(238, 232, 255)
+dlgText.TextSize = 16
+dlgText.TextColor3 = C_text
 dlgText.TextXAlignment = Enum.TextXAlignment.Left
 dlgText.TextYAlignment = Enum.TextYAlignment.Top
 dlgText.TextWrapped = true
 dlgText.ZIndex = 12
+dlgText.LineHeight = 1.15
 
--- ▼ Advance indicator
+-- Advance indicator
 local advArrow = Instance.new("TextLabel", textArea)
 advArrow.Name = "AdvArrow"
-advArrow.Size = UDim2.new(0, 24, 0, 20)
+advArrow.Size = UDim2.new(0, 20, 0, 18)
 advArrow.AnchorPoint = Vector2.new(1, 1)
-advArrow.Position = UDim2.new(1, -4, 1, -2)
+advArrow.Position = UDim2.new(1, -2, 1, -2)
 advArrow.BackgroundTransparency = 1
 advArrow.Text = "▼"
 advArrow.Font = Enum.Font.GothamBold
-advArrow.TextSize = 13
-advArrow.TextColor3 = RGB(210, 175, 255)
+advArrow.TextSize = 12
+advArrow.TextColor3 = C_textLight
 advArrow.ZIndex = 12
 advArrow.Visible = false
 
--- Close button (positioned outside panel for better clickability)
+-- Close button
 local closeBtn = Instance.new("TextButton", panel)
 closeBtn.Name = "CloseBtn"
-closeBtn.Size = UDim2.new(0, 32, 0, 32)
+closeBtn.Size = UDim2.new(0, 30, 0, 30)
 closeBtn.AnchorPoint = Vector2.new(1, 0)
 closeBtn.Position = UDim2.new(1, -4, 0, -4)
-closeBtn.BackgroundColor3 = RGB(200, 80, 100)
-closeBtn.BackgroundTransparency = 0
+closeBtn.BackgroundColor3 = C_close
 closeBtn.BorderSizePixel = 0
 closeBtn.Text = "✕"
 closeBtn.Font = Enum.Font.GothamBold
-closeBtn.TextSize = 16
-closeBtn.TextColor3 = RGB(255, 255, 255)
+closeBtn.TextSize = 14
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.ZIndex = 100
 closeBtn.Active = true
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0.5, 0)
-local closeStroke = Instance.new("UIStroke", closeBtn)
-closeStroke.Color = RGB(255, 255, 255)
-closeStroke.Thickness = 2
 
--- Invisible click-advance button over text area
+-- Invisible advance button
 local advBtn = Instance.new("TextButton", panel)
 advBtn.Name = "AdvBtn"
 advBtn.Size = UDim2.new(1, -(PORT_W + 50), 1, -42)
@@ -212,7 +185,7 @@ choiceFrame.ZIndex = 15
 choiceFrame.Visible = false
 local choiceLayout = Instance.new("UIListLayout", choiceFrame)
 choiceLayout.FillDirection = Enum.FillDirection.Vertical
-choiceLayout.Padding = UDim.new(0, 4)
+choiceLayout.Padding = UDim.new(0, 6)
 choiceLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 
 local function setSpeaker(key)
@@ -220,28 +193,24 @@ local function setSpeaker(key)
     pEmoji.Text = sp.emoji
     portrait.BackgroundColor3 = sp.portrait
     nameBanner.BackgroundColor3 = sp.accent
-    pRing.BackgroundColor3 = sp.accent
-    pStroke.Color = sp.accent
+    pStroke.Color = C_border
     if sp.name == "" then
         nameBanner.Visible = false
     else
         nameBanner.Visible = true
         nameLabel.Text = sp.name
     end
-    -- Tint dlgText slightly per speaker
-    dlgText.TextColor3 = RGB(235, 228, 255)
+    dlgText.TextColor3 = C_text
 end
 
 local function openPanel()
     isOpen = true
     panel.Visible = true
     dimmer.Visible = true
-    TweenS:Create(dimmer, TweenInfo.new(0.2), {BackgroundTransparency = 0.75}):Play()
+    TweenS:Create(dimmer, TweenInfo.new(0.25), {BackgroundTransparency = 0.85}):Play()
     panel.Position = HIDE_POS
     TweenS:Create(panel, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
         {Position = SHOW_POS}):Play()
-    TweenS:Create(pRing, TweenInfo.new(0.9, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true),
-        {BackgroundTransparency = 0.5}):Play()
 end
 
 -- closePanel(force): when called from a user dismiss action (close X or Escape),
@@ -255,7 +224,6 @@ local function closePanel(force)
         typeThread = nil
     end
     advArrow.Visible = false
-    -- Hide choice UI immediately
     for _, c in ipairs(choiceFrame:GetChildren()) do
         if c:IsA("TextButton") then c:Destroy() end
     end
@@ -368,31 +336,30 @@ showChoicesUI = function(choices, onPick)
     for i, c in ipairs(choices) do
         local btn = Instance.new("TextButton", choiceFrame)
         btn.Name = "Choice" .. i
-        btn.Size = UDim2.new(1, -6, 0, 28)
-        btn.BackgroundColor3 = RGB(40, 28, 68)
-        btn.BackgroundTransparency = 0.1
+        btn.Size = UDim2.new(1, -6, 0, 30)
+        btn.BackgroundColor3 = Color3.fromRGB(245, 235, 215)
         btn.BorderSizePixel = 0
         btn.Text = "  \u{276F} " .. (c.text or "...")
         btn.Font = Enum.Font.GothamBold
         btn.TextSize = 14
-        btn.TextColor3 = RGB(238, 232, 255)
+        btn.TextColor3 = C_text
         btn.TextXAlignment = Enum.TextXAlignment.Left
         btn.ZIndex = 16
         btn.AutoButtonColor = false
-        Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+        Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 10)
         local stk = Instance.new("UIStroke", btn)
-        stk.Color = RGB(180, 140, 255); stk.Thickness = 1.5; stk.Transparency = 0.4
+        stk.Color = C_border; stk.Thickness = 1.5
         btn.MouseEnter:Connect(function()
-            btn.BackgroundColor3 = RGB(70, 50, 120)
+            btn.BackgroundColor3 = Color3.fromRGB(235, 210, 180)
         end)
         btn.MouseLeave:Connect(function()
-            btn.BackgroundColor3 = RGB(40, 28, 68)
+            btn.BackgroundColor3 = Color3.fromRGB(245, 235, 215)
         end)
         btn.MouseButton1Click:Connect(function()
             clearChoices()
             if onPick then pcall(onPick, i, c) end
         end)
-        h = h + 32
+        h = h + 34
     end
     choiceFrame.Size = UDim2.new(1, -(PORT_W + 50), 0, h)
     choiceFrame.Visible = true
@@ -462,9 +429,17 @@ _G.ZundaVN = {
 }
 
 -- ── Input handlers ────────────────────────────────────────────
-advBtn.MouseButton1Click:Connect(advanceLine)
--- Force-close on X click (drops the queue so it stays closed)
-closeBtn.MouseButton1Click:Connect(function() if isOpen then closePanel(true) end end)
+advBtn.MouseButton1Click:Connect(function()
+    advanceLine()
+    local pos = advBtn.AbsolutePosition
+    local sz = advBtn.AbsoluteSize
+    UIHelper.spawnSparkles(panel, pos.X + sz.X / 2, pos.Y + sz.Y / 2, Color3.fromRGB(180, 150, 110), 3)
+end)
+closeBtn.MouseButton1Click:Connect(function()
+    if isOpen then closePanel(true) end
+    local pos = closeBtn.AbsolutePosition
+    UIHelper.spawnSparkles(panel, pos.X + 15, pos.Y + 15, Color3.fromRGB(200, 140, 120), 4)
+end)
 UIS.InputBegan:Connect(function(inp, gpe)
     if gpe then return end
     if not isOpen then return end

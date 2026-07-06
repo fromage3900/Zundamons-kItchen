@@ -37,7 +37,7 @@ local function updateUI()
     end)
     if not ok or not data then return end
     
-    local gold = data.current_gold or 0
+    local gold = data.gold or 0
     local guests = data.guests_served or 0
     
     if gold == lastGold and guests == lastGuests then return end

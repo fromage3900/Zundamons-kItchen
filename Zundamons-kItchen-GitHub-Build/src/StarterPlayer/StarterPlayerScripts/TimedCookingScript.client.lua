@@ -14,7 +14,17 @@ local RS = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local UIAssets = require(RS.Shared.Config.UIAssets)
+local UIHelper = require(RS.Shared.Modules.UIHelper)
 local GetCompanionBuff = RS:WaitForChild("RemoteFunctions"):WaitForChild("GetActiveCompanionBuff")
+
+local function getSoundId(assetKey, fallback)
+	local id = UIAssets.sounds[assetKey]
+	if typeof(id) == "string" and not id:match("FILL_") and not id:match("rbxassetid://0$") then
+		return id
+	end
+	return fallback
+end
 
 -- Per-recipe difficulty: { noteCount, noteSpeed (sec to cross track) }
 local RECIPES = {
@@ -64,14 +74,14 @@ panel.ZIndex = 2
 local panelCorner = Instance.new("UICorner", panel); panelCorner.CornerRadius = UDim.new(0, 28)
 local panelStroke = Instance.new("UIStroke", panel)
 panelStroke.Thickness = 4
-panelStroke.Color = Color3.fromRGB(232, 152, 168)
+panelStroke.Color = Color3.fromRGB(120, 200, 130)
 
 -- Subtle gradient backdrop
 local gradient = Instance.new("UIGradient", panel)
 gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 250, 245)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(248, 240, 250)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(240, 248, 235)),
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(245, 255, 240)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 250, 245)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(230, 250, 220)),
 })
 gradient.Rotation = 30
 
@@ -100,7 +110,7 @@ recipeTitle.Name = "RecipeTitle"
 recipeTitle.Size = UDim2.new(1, -40, 0, 56)
 recipeTitle.Position = UDim2.new(0, 20, 0, 18)
 recipeTitle.BackgroundTransparency = 1
-recipeTitle.Text = "🍳 Cooking..."
+recipeTitle.Text = "🫛  Zunda Kitchen"
 recipeTitle.Font = Enum.Font.FredokaOne
 recipeTitle.TextSize = 36
 recipeTitle.TextColor3 = Color3.fromRGB(68, 52, 78)
@@ -127,7 +137,7 @@ scoreLabel.BackgroundTransparency = 1
 scoreLabel.Text = ""
 scoreLabel.Font = Enum.Font.GothamBold
 scoreLabel.TextSize = 22
-scoreLabel.TextColor3 = Color3.fromRGB(232, 152, 168)
+scoreLabel.TextColor3 = Color3.fromRGB(120, 200, 130)
 scoreLabel.TextXAlignment = Enum.TextXAlignment.Right
 scoreLabel.ZIndex = 3
 
@@ -136,18 +146,18 @@ local trackContainer = Instance.new("Frame", panel)
 trackContainer.Name = "TrackContainer"
 trackContainer.Size = UDim2.new(1, -80, 0, 130)
 trackContainer.Position = UDim2.new(0, 40, 0, 130)
-trackContainer.BackgroundColor3 = Color3.fromRGB(255, 244, 230)
+trackContainer.BackgroundColor3 = Color3.fromRGB(235, 255, 225)
 trackContainer.BorderSizePixel = 0
 trackContainer.ZIndex = 3
 local tcCorner = Instance.new("UICorner", trackContainer); tcCorner.CornerRadius = UDim.new(0, 22)
-local tcStroke = Instance.new("UIStroke", trackContainer); tcStroke.Color = Color3.fromRGB(220, 190, 210); tcStroke.Thickness = 2; tcStroke.Transparency = 0.4
+local tcStroke = Instance.new("UIStroke", trackContainer); tcStroke.Color = Color3.fromRGB(140, 210, 130); tcStroke.Thickness = 2; tcStroke.Transparency = 0.4
 
 -- Decorative track line (where peas roll along)
 local trackLine = Instance.new("Frame", trackContainer)
 trackLine.Name = "TrackLine"
 trackLine.Size = UDim2.new(1, -40, 0, 4)
 trackLine.Position = UDim2.new(0, 20, 0.5, -2)
-trackLine.BackgroundColor3 = Color3.fromRGB(220, 200, 210)
+trackLine.BackgroundColor3 = Color3.fromRGB(160, 220, 150)
 trackLine.BorderSizePixel = 0
 trackLine.ZIndex = 4
 local tlCorner = Instance.new("UICorner", trackLine); tlCorner.CornerRadius = UDim.new(1, 0)
@@ -158,12 +168,12 @@ local hitRing = Instance.new("Frame", trackContainer)
 hitRing.Name = "HitRing"
 hitRing.Size = UDim2.new(0, 80, 0, 80)
 hitRing.Position = UDim2.new(TARGET_X, -40, 0.5, -40)
-hitRing.BackgroundColor3 = Color3.fromRGB(255, 220, 230)
+hitRing.BackgroundColor3 = Color3.fromRGB(180, 245, 190)
 hitRing.BackgroundTransparency = 0.5
 hitRing.BorderSizePixel = 0
 hitRing.ZIndex = 4
 local hrCorner = Instance.new("UICorner", hitRing); hrCorner.CornerRadius = UDim.new(1, 0)
-local hrStroke = Instance.new("UIStroke", hitRing); hrStroke.Color = Color3.fromRGB(232, 152, 168); hrStroke.Thickness = 4
+local hrStroke = Instance.new("UIStroke", hitRing); hrStroke.Color = Color3.fromRGB(100, 200, 110); hrStroke.Thickness = 4
 
 -- Inner perfect ring
 local perfectRing = Instance.new("Frame", hitRing)
@@ -181,7 +191,7 @@ local clickBtn = Instance.new("TextButton", panel)
 clickBtn.Name = "CookButton"
 clickBtn.Size = UDim2.new(0, 360, 0, 78)
 clickBtn.Position = UDim2.new(0.5, -180, 0, 290)
-clickBtn.BackgroundColor3 = Color3.fromRGB(232, 152, 168)
+clickBtn.BackgroundColor3 = Color3.fromRGB(100, 195, 110)
 clickBtn.Text = "🫛  COOK!  🫛"
 clickBtn.Font = Enum.Font.FredokaOne
 clickBtn.TextSize = 38
@@ -190,7 +200,7 @@ clickBtn.BorderSizePixel = 0
 clickBtn.AutoButtonColor = false
 clickBtn.ZIndex = 4
 local cbCorner = Instance.new("UICorner", clickBtn); cbCorner.CornerRadius = UDim.new(0, 22)
-local cbStroke = Instance.new("UIStroke", clickBtn); cbStroke.Color = Color3.fromRGB(190, 110, 130); cbStroke.Thickness = 3
+local cbStroke = Instance.new("UIStroke", clickBtn); cbStroke.Color = Color3.fromRGB(60, 155, 70); cbStroke.Thickness = 3
 
 -- Result banner
 local resultLabel = Instance.new("TextLabel", panel)
@@ -374,15 +384,14 @@ local function judgeFirstUnhitNote()
     }):Play()
     task.delay(0.35, function() if n.note and n.note.Parent then n.note:Destroy() end end)
 
-    -- Sound feedback
     if tag == "perfect" then
-        playSound("rbxasset://sounds/electronicpingshort.wav", 0.6, 1.4)
+        playSound(getSoundId("craft_perfect", "rbxasset://sounds/electronicpingshort.wav"), 0.6, 1.4)
     elseif tag == "great" then
-        playSound("rbxasset://sounds/electronicpingshort.wav", 0.5, 1.2)
+        playSound(getSoundId("craft_perfect", "rbxasset://sounds/electronicpingshort.wav"), 0.5, 1.2)
     elseif tag == "good" then
-        playSound("rbxasset://sounds/button-09.mp3", 0.5, 1.0)
+        playSound(getSoundId("ui_click", "rbxasset://sounds/button-09.mp3"), 0.5, 1.0)
     else
-        playSound("rbxasset://sounds/button-09.mp3", 0.4, 0.7)
+        playSound(getSoundId("gather_fail", "rbxasset://sounds/button-09.mp3"), 0.4, 0.7)
     end
 
     -- Update score label
@@ -469,6 +478,7 @@ local function startCooking(recipeName, onComplete)
     scoreLabel.Text = ("Perfect 0/%d"):format(totalNotesPlanned)
     backdrop.Visible = true
     panel.Visible = true
+    playSound(getSoundId("craft_start", "rbxasset://sounds/electronicpingshort.wav"), 0.4, 1.0)
     panel.BackgroundTransparency = 1
     panel.Size = UDim2.new(0, 740, 0, 460)
     TweenService:Create(panel, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -531,7 +541,12 @@ end
 
 -- ── INPUT ───────────────────────────────────────────────────────────────
 clickBtn.MouseButton1Click:Connect(function()
-    if isCooking then judgeFirstUnhitNote() end
+    if isCooking then
+        judgeFirstUnhitNote()
+        local pos = clickBtn.AbsolutePosition
+        local sz = clickBtn.AbsoluteSize
+        UIHelper.spawnSparkles(clickBtn.Parent, pos.X + sz.X / 2, pos.Y + sz.Y / 2, Color3.fromRGB(120, 255, 140), 6)
+    end
 end)
 
 UIS.InputBegan:Connect(function(input, processed)

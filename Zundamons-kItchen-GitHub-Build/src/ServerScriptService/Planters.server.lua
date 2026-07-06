@@ -11,6 +11,7 @@ local plantingEvent = RE:WaitForChild("plantEvent")
 local configFiles = RS:WaitForChild("ConfigurationFiles")
 local plantsConfig = require(configFiles:WaitForChild("PlantConfig"))
 local plantsList = plantsConfig.items
+local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
 local function clonePlant(item, plant)
 	local newPlant = plant:Clone()
@@ -25,11 +26,12 @@ local function activvateClickDetector()
 		local clickDetector = item:FindFirstChild("ClickDetector")
 		if clickDetector then
 			clickDetector.MouseClick:Connect(function(player)
-				if not _G.data or not _G.data[player.Name] then return end
+				local data = PlayerDataService.get(player)
+				if not data then return end
 				local myplantables = {}
 				for _, plant in ipairs(plantable) do
-					if _G.data[player.Name][plant.Name] then
-						myplantables[plant.Name] = _G.data[player.Name][plant.Name]
+					if data[plant.Name] then
+						myplantables[plant.Name] = data[plant.Name]
 					end
 				end
 				if next(myplantables) ~= nil and not item:GetAttribute("Seeded") then
@@ -42,15 +44,17 @@ end
 
 -- Plant seed via RemoteEvent (player selects seed from menu)
 plantingEvent.OnServerEvent:Connect(function(player, seedName, planter)
-	if not _G.data or not _G.data[player.Name] then return end
+	local data = PlayerDataService.get(player)
+	if not data then return end
 	if not planter or planter:GetAttribute("Seeded") == true then return end
-	if not _G.data[player.Name][seedName] or _G.data[player.Name][seedName] <= 0 then return end
+	if not data[seedName] or data[seedName] <= 0 then return end
 
-	-- Consume seed
-	_G.data[player.Name][seedName] -= 1
-	if _G.data[player.Name][seedName] == 0 then
-		_G.data[player.Name][seedName] = nil
-	end
+	PlayerDataService.update(player, function(d)
+		d[seedName] = d[seedName] - 1
+		if d[seedName] == 0 then
+			d[seedName] = nil
+		end
+	end)
 
 	-- Find and clone the plant model
 	for _, plant in ipairs(plantable) do

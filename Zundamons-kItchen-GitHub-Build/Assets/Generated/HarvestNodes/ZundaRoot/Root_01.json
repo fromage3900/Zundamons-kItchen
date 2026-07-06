@@ -1,0 +1,12 @@
+{
+  "type": "root",
+  "length": 0.8,
+  "twist": 0.3,
+  "segments": 4,
+  "vertices": 46,
+  "triangles": 34,
+  "color": "#8B6514",
+  "id": "Root_01",
+  "description": "Short gnarled root",
+  "export_path": "HarvestNodes/ZundaRoot/"
+}

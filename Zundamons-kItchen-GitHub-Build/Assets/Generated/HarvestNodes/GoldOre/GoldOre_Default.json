@@ -1,0 +1,12 @@
+{
+  "type": "rock",
+  "roughness": 0.5,
+  "size": 1.0,
+  "crystal": true,
+  "vertices": 66,
+  "triangles": 116,
+  "color": "#8B4513",
+  "id": "GoldOre_Default",
+  "description": "Gold vein rock",
+  "export_path": "HarvestNodes/GoldOre/"
+}

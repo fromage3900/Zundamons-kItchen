@@ -1,0 +1,12 @@
+{
+  "type": "rock",
+  "roughness": 0.7,
+  "size": 1.0,
+  "crystal": false,
+  "vertices": 42,
+  "triangles": 80,
+  "color": "#808080",
+  "id": "Rock_Common",
+  "description": "Grey rounded rock",
+  "export_path": "HarvestNodes/Rock/"
+}

@@ -4,18 +4,16 @@ local Players    = game:GetService("Players")
 local Tween      = game:GetService("TweenService")
 local RS         = game:GetService("ReplicatedStorage")
 
--- ── Zundapal mesh template (clone at runtime) ─────────────────
--- MeshPart.MeshId is read-only; must clone an existing MeshPart
-local TEMPLATE_PATH = {
-    "GameplayLoopArea","GatheringNodes","Loop_AppleTree_1","mesh","zundapal"
-}
-local function getTemplateMesh()
-    local obj = workspace
-    for _, part in ipairs(TEMPLATE_PATH) do
-        obj = obj:FindFirstChild(part)
-        if not obj then return nil end
-    end
-    return obj:FindFirstChildOfClass("MeshPart")
+-- ── Zundapal mesh template (from NPCConfig) ────────────────────
+local NPCConfig = require(RS.Shared.Config.NPCConfig)
+
+local function getCompanionMesh()
+    local def = NPCConfig.getCompanion("Zundapal")
+    if not def then return nil end
+    -- Try loading from InsertService, or find in workspace
+    local mesh = Instance.new("MeshPart")
+    mesh.MeshId = def.modelId
+    return mesh
 end
 
 -- ── Companion catalog ──────────────────────────────────────────
@@ -87,22 +85,18 @@ local function buildCompanion(player, compType)
     model.Name = name
     model.Parent = workspace
 
-    -- ── Body: try to clone real zundapal mesh, else sphere fallback ──
+    -- ── Body: load from NPCConfig model, else sphere fallback ──
     local body
-    local templateMesh = getTemplateMesh()
+    local companionMesh = getCompanionMesh()
 
-    if templateMesh then
-        body = templateMesh:Clone()
+    if companionMesh and companionMesh.MeshId ~= "rbxassetid://FILL_COMPANION_ZUNDAPAL" then
+        body = companionMesh
         body.Name = "Body"
         body.Size = body.Size * 0.85
         body.Anchored = false
         body.CanCollide = false
         body.CastShadow = false
         body.Massless = true
-        -- Remove any existing children from template (Humanoid, etc.)
-        for _, c in ipairs(body:GetChildren()) do
-            if not c:IsA("SurfaceAppearance") then c:Destroy() end
-        end
     else
         -- Fallback: smooth sphere
         body = Instance.new("Part")

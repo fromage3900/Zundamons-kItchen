@@ -114,6 +114,9 @@ local function buildRecipeCard(recipe)
 	Instance.new("UICorner", craftBtn).CornerRadius = UDim.new(0, 6)
 
 	craftBtn.MouseButton1Click:Connect(function()
+		local pos = craftBtn.AbsolutePosition
+		local sz = craftBtn.AbsoluteSize
+		UIHelper.spawnSparkles(craftBtn.Parent, pos.X + sz.X / 2, pos.Y + sz.Y / 2, Color3.fromRGB(120, 200, 120), 5)
 		local char = player.Character
 		local hrp = char and char:FindFirstChild("HumanoidRootPart")
 		if not hrp then
@@ -135,9 +138,11 @@ local function buildRecipeCard(recipe)
 				if quality == "perfect" then
 					craftBtn.Text = "PERFECT \u{2728}"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(255, 200, 80)
+					UIHelper.spawnSparkles(craftBtn.Parent, pos.X + sz.X / 2, pos.Y, Color3.fromRGB(255, 220, 80), 12)
 				elseif quality == "great" then
 					craftBtn.Text = "Great \u{2713}"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(80, 200, 80)
+					UIHelper.spawnSparkles(craftBtn.Parent, pos.X + sz.X / 2, pos.Y, Color3.fromRGB(120, 255, 120), 8)
 				else
 					craftBtn.Text = "OK \u{2713}"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(160, 200, 120)

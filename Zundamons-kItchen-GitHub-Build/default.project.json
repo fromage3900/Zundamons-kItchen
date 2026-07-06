@@ -4,8 +4,22 @@
     "$className": "DataModel",
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
+      "QuestConfig": {
+        "$path": "src/ReplicatedStorage/QuestConfig.lua"
+      },
       "ConfigurationFiles": {
         "$path": "src/ReplicatedStorage/ConfigurationFiles"
+      },
+      "Shared": {
+        "$className": "Folder",
+        "Config": {
+          "$className": "Folder",
+          "$path": "src/ReplicatedStorage/Shared/Config"
+        },
+        "Modules": {
+          "$className": "Folder",
+          "$path": "src/ReplicatedStorage/Shared/Modules"
+        }
       }
     },
     "ServerScriptService": {
@@ -17,6 +31,10 @@
       "StarterPlayerScripts": {
         "$path": "src/StarterPlayer/StarterPlayerScripts"
       }
+    },
+    "Workspace": {
+      "$className": "Workspace",
+      "$path": "src/Workspace"
     }
   }
 }

@@ -10,56 +10,9 @@ local player  = Players.LocalPlayer
 local gui     = script.Parent
 local RF      = RS:WaitForChild("RemoteFunctions")
 local reqData = RF:WaitForChild("RequestData")
-
--- ─── ITEM METADATA ────────────────────────────────────────
-local ITEM_META = {
-    -- Forage
-    ["Zunda Flower"]    = { emoji="🌸", cat="forage",  color=Color3.fromRGB(255,182,200) },
-    ["ZundaFlower"]     = { emoji="🌸", cat="forage",  color=Color3.fromRGB(255,182,200) },
-    ["Zunda Pea"]       = { emoji="🫛", cat="forage",  color=Color3.fromRGB(130,200,100) },
-    ["ZundaPea"]        = { emoji="🫛", cat="forage",  color=Color3.fromRGB(130,200,100) },
-    ["Zunda Berry"]     = { emoji="🫐", cat="forage",  color=Color3.fromRGB(130,100,200) },
-    ["Zunda Mushroom"]  = { emoji="🍄", cat="forage",  color=Color3.fromRGB(200,120,80)  },
-    ["Zunda Root"]      = { emoji="🌱", cat="forage",  color=Color3.fromRGB(150,120,80)  },
-    ["Zunda Leaf"]      = { emoji="🌿", cat="forage",  color=Color3.fromRGB(80,180,90)   },
-    ["SaltedPeaBouquet"]= { emoji="💐", cat="forage",  color=Color3.fromRGB(200,230,100) },
-    ["MysteryLoot"]     = { emoji="✨", cat="forage",  color=Color3.fromRGB(200,180,255) },
-    ["Apple"]           = { emoji="🍎", cat="forage",  color=Color3.fromRGB(220,60,60)   },
-    ["Pine Cone"]       = { emoji="🌲", cat="forage",  color=Color3.fromRGB(100,150,80)  },
-    ["Wheat"]           = { emoji="🌾", cat="forage",  color=Color3.fromRGB(230,200,100) },
-    ["WheatSeed"]       = { emoji="🫘", cat="forage",  color=Color3.fromRGB(180,160,80)  },
-    -- NEW Zunda-themed items
-    ["Edamame Pod"]     = { emoji="🫛", cat="forage",  color=Color3.fromRGB(90,160,70)   },
-    ["Sweet Pea"]       = { emoji="🍬", cat="forage",  color=Color3.fromRGB(200,230,150) },
-    ["Pea Flower"]      = { emoji="🌸", cat="forage",  color=Color3.fromRGB(255,200,220) },
-    -- Mining
-    ["Rock"]            = { emoji="🪨", cat="mining",  color=Color3.fromRGB(180,170,160) },
-    ["Iron Ore"]        = { emoji="🔩", cat="mining",  color=Color3.fromRGB(150,140,130) },
-    ["Gold Ore"]        = { emoji="💛", cat="mining",  color=Color3.fromRGB(255,200,50)  },
-    ["Marble Rock"]     = { emoji="🔷", cat="mining",  color=Color3.fromRGB(200,220,240) },
-    ["Wood Log"]        = { emoji="🪵", cat="mining",  color=Color3.fromRGB(160,110,70)  },
-    -- Food / crafted
-    ["Bread"]           = { emoji="🍞", cat="food",    color=Color3.fromRGB(240,200,140) },
-    ["Apple Pie"]       = { emoji="🥧", cat="food",    color=Color3.fromRGB(255,160,100) },
-    ["Zunda Bread"]     = { emoji="🫓", cat="food",    color=Color3.fromRGB(180,220,130) },
-    ["Zunda Mochi"]     = { emoji="🍡", cat="food",    color=Color3.fromRGB(200,240,200) },
-    ["Stew"]            = { emoji="🍲", cat="food",    color=Color3.fromRGB(200,130,80)  },
-    ["Cake"]            = { emoji="🎂", cat="food",    color=Color3.fromRGB(255,200,200) },
-    ["Edamame Snack"]   = { emoji="🫛", cat="food",    color=Color3.fromRGB(120,180,90)  },
-    ["Sweet Pea Cake"]  = { emoji="🍰", cat="food",    color=Color3.fromRGB(255,220,230) },
-    ["Pea Flower Tea"]  = { emoji="🍵", cat="food",    color=Color3.fromRGB(255,230,240) },
-    ["Zunda Paradise"]  = { emoji="✨", cat="food",    color=Color3.fromRGB(180,255,180) },
-}
-local function getMeta(name)
-    if ITEM_META[name] then return ITEM_META[name] end
-    -- Fuzzy match: check if name contains any key
-    for k, v in pairs(ITEM_META) do
-        if name:lower():find(k:lower(), 1, true) or k:lower():find(name:lower(), 1, true) then
-            return v
-        end
-    end
-    return { emoji="📦", cat="misc", color=Color3.fromRGB(200,200,200) }
-end
+local UIHelper = require(RS.Shared.Modules.UIHelper)
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
+local UIAssets = require(RS.Shared.Config.UIAssets)
 
 -- ─── COLORS ──────────────────────────────────────────────
 local C = {
@@ -219,54 +172,7 @@ emptyLbl.TextColor3 = C.subtext
 emptyLbl.TextWrapped = true
 emptyLbl.Visible = false
 
--- ─── CARD BUILDER ─────────────────────────────────────────
-local function buildCard(name, count, meta)
-    local card = Instance.new("Frame")
-    card.Name = name
-    card.Size = UDim2.new(0,118,0,108)
-    card.BackgroundColor3 = meta.color:Lerp(Color3.fromRGB(255,255,255), 0.72)
-    card.BorderSizePixel = 0
-    local cr = Instance.new("UICorner"); cr.CornerRadius = UDim.new(0,12); cr.Parent = card
-    local st = Instance.new("UIStroke"); st.Thickness = 1.5
-    st.Color = meta.color:Lerp(Color3.fromRGB(180,160,180),0.3)
-    st.Parent = card
-
-    local emojiLbl = Instance.new("TextLabel", card)
-    emojiLbl.Size = UDim2.new(1,0,0,52)
-    emojiLbl.Position = UDim2.new(0,0,0,8)
-    emojiLbl.BackgroundTransparency = 1
-    emojiLbl.Text = meta.emoji
-    emojiLbl.Font = Enum.Font.GothamBold
-    emojiLbl.TextSize = 32
-    emojiLbl.TextXAlignment = Enum.TextXAlignment.Center
-
-    local nameLbl = Instance.new("TextLabel", card)
-    nameLbl.Size = UDim2.new(1,-8,0,28)
-    nameLbl.Position = UDim2.new(0,4,0,58)
-    nameLbl.BackgroundTransparency = 1
-    nameLbl.Text = name
-    nameLbl.Font = Enum.Font.GothamMedium
-    nameLbl.TextSize = 12
-    nameLbl.TextColor3 = Color3.fromRGB(68,52,78)
-    nameLbl.TextWrapped = true
-    nameLbl.TextXAlignment = Enum.TextXAlignment.Center
-
-    local badge = Instance.new("Frame", card)
-    badge.Size = UDim2.new(0,32,0,22)
-    badge.Position = UDim2.new(1,-34,0,4)
-    badge.BackgroundColor3 = meta.color
-    badge.BorderSizePixel = 0
-    local bCr = Instance.new("UICorner"); bCr.CornerRadius = UDim.new(0,8); bCr.Parent = badge
-    local badgeLbl = Instance.new("TextLabel", badge)
-    badgeLbl.Size = UDim2.new(1,0,1,0)
-    badgeLbl.BackgroundTransparency = 1
-    badgeLbl.Text = tostring(count)
-    badgeLbl.Font = Enum.Font.GothamBold
-    badgeLbl.TextSize = 13
-    badgeLbl.TextColor3 = Color3.fromRGB(255,255,255)
-
-    return card
-end
+-- ─── CARD BUILDER (via UIHelper) ──────────────────────────
 
 -- ─── RENDER ───────────────────────────────────────────────
 local currentData = {}
@@ -282,7 +188,7 @@ local function render(tab)
     local keys = {}
     for k, v in pairs(currentData) do
         if type(v) == "number" and v > 0
-            and k ~= "Gold" and k ~= "current_gold" and k ~= "guests_served" then
+            and k ~= "gold" and k ~= "current_gold" and k ~= "Gold" and k ~= "guests_served" then
             table.insert(keys, k)
         end
     end
@@ -290,10 +196,9 @@ local function render(tab)
 
     for _, name in ipairs(keys) do
         local count = currentData[name]
-        local meta = getMeta(name)
-        if tab == "all" or meta.cat == tab then
-            local card = buildCard(name, count, meta)
-            card.Parent = scroll
+        local cat = UIHelper.getCategory(name)
+        if tab == "all" or cat == tab then
+            local card = UIHelper.createCard(name, count, cat, scroll)
             shown = shown + 1
         end
     end
@@ -329,7 +234,7 @@ local function refresh()
     if ok and data then
         currentData = data
         -- Show gold in header
-        local g = data.Gold or data.current_gold or 0
+        local g = data.gold or 0
         goldLbl.Text = "💰  " .. tostring(g)
         render(activeTab)
     end
@@ -349,7 +254,11 @@ local function toggle()
     end
 end
 
-closeBtn.MouseButton1Click:Connect(function() open=true; toggle() end)
+closeBtn.MouseButton1Click:Connect(function()
+	open = true; toggle()
+	local pos = closeBtn.AbsolutePosition
+	UIHelper.spawnSparkles(panel, pos.X + 19, pos.Y + 19, C.border, 4)
+end)
 
 -- ─── WIRE HUD BUTTON ─────────────────────────────────────
 task.spawn(function()

@@ -1,0 +1,12 @@
+{
+  "type": "flower",
+  "petal_count": 4,
+  "stem_height": 1.4,
+  "vertices": 216,
+  "triangles": 160,
+  "color": "#DAA520",
+  "glow": false,
+  "id": "Wheat_02",
+  "description": "Medium golden wheat",
+  "export_path": "HarvestNodes/Wheat/"
+}

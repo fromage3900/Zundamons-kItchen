@@ -11,7 +11,7 @@ local DEFAULTS = {
     { action = "compendium", cat = "Reference",    key = Enum.KeyCode.C,         desc = "Toggle Compendium",  icon = "📖" },
     { action = "map",        cat = "Exploration",  key = Enum.KeyCode.M,         desc = "Toggle Map",         icon = "🗺️" },
     { action = "quests",     cat = "Exploration",  key = Enum.KeyCode.J,         desc = "Toggle Quests",      icon = "📜" },
-    { action = "shop",       cat = "Shopping",     key = Enum.KeyCode.P,         desc = "Premium Shop",       icon = "💎" },
+    { action = "shop",       cat = "Shopping",     key = Enum.KeyCode.B,         desc = "Premium Shop",       icon = "💎" },
     { action = "progress",   cat = "Progression",  key = Enum.KeyCode.P,         desc = "Open Progress Panel",icon = "🏆" },
     { action = "advance_vn", cat = "Visual Novel", key = Enum.KeyCode.Space,     desc = "Advance Dialogue",   icon = "💬" },
     { action = "keybinds",   cat = "Help",         key = Enum.KeyCode.F1,        desc = "Toggle Keybinds",    icon = "⌨", readOnly = true },

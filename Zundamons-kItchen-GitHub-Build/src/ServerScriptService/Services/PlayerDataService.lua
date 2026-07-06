@@ -13,12 +13,12 @@ local store: { [string]: { [string]: any } } = {}
 local PlayerDataService = {}
 
 function PlayerDataService.get(player: Player): { [string]: any }?
-	local key = player.Name
+	local key = tostring(player.UserId)
 	return store[key]
 end
 
 function PlayerDataService.getOrCreate(player: Player): { [string]: any }
-	local key = player.Name
+	local key = tostring(player.UserId)
 	if not store[key] then
 		store[key] = {}
 	end
@@ -26,11 +26,11 @@ function PlayerDataService.getOrCreate(player: Player): { [string]: any }
 end
 
 function PlayerDataService.set(player: Player, data: { [string]: any })
-	store[player.Name] = data
+	store[tostring(player.UserId)] = data
 end
 
 function PlayerDataService.clear(player: Player)
-	store[player.Name] = nil
+	store[tostring(player.UserId)] = nil
 end
 
 function PlayerDataService.update(player: Player, mutator: ({ [string]: any }) -> ())
@@ -40,10 +40,16 @@ end
 
 local function createDefaultData(): { [string]: any }
 	local data = {
-		current_gold = 50,
+		gold = 50,
 		total_gold_earned = 0,
-		Gold = 50,
 		guests_served = 0,
+		perfect_cooks = 0,
+		great_cooks = 0,
+		quests_completed = {},
+		companion_affection = 0,
+		companion_chats = 0,
+		cooking_streak = 0,
+		max_cooking_streak = 0,
 		tier = 1,
 		recipes_unlocked = {},
 		cosmetics_unlocked = {},
@@ -78,9 +84,11 @@ local function createDefaultData(): { [string]: any }
 end
 
 local function backfillLoadedData(loaded: { [string]: any })
-	if loaded.current_gold == nil then
-		loaded.current_gold = 0
+	if loaded.gold == nil then
+		loaded.gold = loaded.current_gold or loaded.Gold or 0
 	end
+	loaded.current_gold = nil
+	loaded.Gold = nil
 	if loaded.owned_clothing == nil then
 		loaded.owned_clothing = {}
 	end
@@ -101,16 +109,16 @@ function PlayerDataService.loadPlayer(player: Player)
 	if success and playerData then
 		local loaded = playerData
 		backfillLoadedData(loaded)
-		store[player.Name] = loaded
+		store[tostring(player.UserId)] = loaded
 		print("[PlayerDataService] Loaded progression for " .. player.Name)
 	else
-		store[player.Name] = createDefaultData()
+		store[tostring(player.UserId)] = createDefaultData()
 		print("[PlayerDataService] Created new progression for " .. player.Name)
 	end
 end
 
 function PlayerDataService.savePlayer(player: Player)
-	local data = store[player.Name]
+	local data = store[tostring(player.UserId)]
 	if not data then
 		return
 	end
@@ -125,11 +133,11 @@ function PlayerDataService.savePlayer(player: Player)
 		print("[PlayerDataService] Failed to save " .. player.Name .. ": " .. tostring(err))
 	end
 
-	store[player.Name] = nil
+	store[tostring(player.UserId)] = nil
 end
 
 function PlayerDataService.checkAndUnlockTiers(player: Player)
-	local data = store[player.Name]
+	local data = store[tostring(player.UserId)]
 	if not data then
 		return
 	end
@@ -164,6 +172,17 @@ function PlayerDataService.checkAndUnlockTiers(player: Player)
 	end
 end
 
+local RF = game:GetService("ReplicatedStorage"):WaitForChild("RemoteFunctions")
+local markTut = RF:FindFirstChild("MarkTutorialDone")
+if not markTut then
+	markTut = Instance.new("RemoteFunction"); markTut.Name = "MarkTutorialDone"; markTut.Parent = RF
+end
+markTut.OnServerInvoke = function(player)
+	local d = PlayerDataService.getOrCreate(player)
+	d.tutorial_done = true
+	return true
+end
+
 Players.PlayerAdded:Connect(function(player)
 	PlayerDataService.loadPlayer(player)
 end)
@@ -173,7 +192,7 @@ Players.PlayerRemoving:Connect(function(player)
 end)
 
 for _, player in ipairs(Players:GetPlayers()) do
-	if not store[player.Name] then
+	if not store[tostring(player.UserId)] then
 		PlayerDataService.loadPlayer(player)
 	end
 end

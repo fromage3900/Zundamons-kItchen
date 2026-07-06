@@ -1,20 +1,23 @@
--- [[LocalScript] StoreScript (ref: RBX3C0E2A7A58224E6A994E3EE251CE9265)]]
 local Players=game:GetService("Players"); local RS=game:GetService("ReplicatedStorage")
 local Tween=game:GetService("TweenService"); local UIS=game:GetService("UserInputService")
 local MPS=game:GetService("MarketplaceService")
 local player=Players.LocalPlayer; local gui=script.Parent
 
+local UIHelper = require(RS.Shared.Modules.UIHelper)
 local RF=RS:WaitForChild("RemoteFunctions"); local RE=RS:WaitForChild("RemoteEvents")
 local promptRF=RF:WaitForChild("PromptRobuxPurchase",10)
 local purchaseEv=RE:WaitForChild("PurchaseResult",10)
 local compEv=RE:WaitForChild("SetCompanion",10)
 
--- ── CATALOGUE ───────────────────────────────────────────────────────────────
 local PRODUCTS = {
     companions = {
-        { id=1111111101, name="ZundaCat",      emoji="🐱", desc="A playful feline companion", robux=80,  key="zundacat"  },
-        { id=1111111102, name="ZundaBunny",    emoji="🐰", desc="Fluffy bunny bestie",         robux=80,  key="zundabunny"},
-        { id=1111111103, name="TantanMon",     emoji="🌶️", desc="Spicy & spirited companion",  robux=100, key="tantanmon" },
+        { id=1111111101, name="ZundaCat",      emoji="🐱", desc="A playful feline companion", robux=80,  key="zundacat"     },
+        { id=1111111102, name="ZundaBunny",    emoji="🐰", desc="Fluffy bunny bestie",         robux=80,  key="zundabunny"   },
+        { id=1111111103, name="TantanMon",     emoji="🌶️", desc="Spicy & spirited companion",  robux=100, key="tantanmon"    },
+        { id=1111111110, name="Ankomon",       emoji="🫘", desc="+15% gold from serving",      robux=500, key="ankomon"      },
+        { id=1111111111, name="Cardamon",      emoji="🍋", desc="+30% perfect cooking window",  robux=500, key="cardamon"     },
+        { id=1111111112, name="Antimon",       emoji="🌿", desc="+20% extra drop on gather",    robux=500, key="antimon"      },
+        { id=1111111113, name="Sakuradamon",   emoji="🌸", desc="+25% XP from crafting",        robux=500, key="sakuradamon"  },
     },
     recipes = {
         { id=1111111104, name="Premium Ramen", emoji="🍜", desc="Exclusive ramen recipe",       robux=60  },
@@ -28,12 +31,19 @@ local PRODUCTS = {
     },
 }
 
-local C={bg=Color3.fromRGB(252,248,240),border=Color3.fromRGB(255,180,80),
-         text=Color3.fromRGB(68,52,78),sub=Color3.fromRGB(140,120,140),
-         tabAct=Color3.fromRGB(255,160,60),tabIdle=Color3.fromRGB(245,235,215),
-         robux=Color3.fromRGB(0,162,255),card=Color3.fromRGB(255,250,240)}
+local CAT_COLORS = {
+    companions = Color3.fromRGB(200, 240, 200),
+    recipes    = Color3.fromRGB(255, 230, 180),
+    accessories = Color3.fromRGB(220, 200, 255),
+}
 
--- ── PANEL ───────────────────────────────────────────────────────────────────
+local C={
+    bg=Color3.fromRGB(252,248,240), border=Color3.fromRGB(255,180,80),
+    text=Color3.fromRGB(68,52,78), sub=Color3.fromRGB(140,120,140),
+    tabAct=Color3.fromRGB(255,160,60), tabIdle=Color3.fromRGB(245,235,215),
+    robux=Color3.fromRGB(0,162,255), card=Color3.fromRGB(255,250,240)
+}
+
 local panel=Instance.new("Frame",gui); panel.Name="Panel"
 panel.Size=UDim2.new(0,580,0,560); panel.AnchorPoint=Vector2.new(0.5,0.5)
 panel.Position=UDim2.new(0.5,0,0.5,0); panel.BackgroundColor3=C.bg
@@ -41,12 +51,10 @@ panel.BorderSizePixel=0; panel.Visible=false
 Instance.new("UICorner",panel).CornerRadius=UDim.new(0,22)
 local bst=Instance.new("UIStroke",panel); bst.Thickness=3; bst.Color=C.border
 
--- Decorative header band
 local hBand=Instance.new("Frame",panel); hBand.Size=UDim2.new(1,0,0,68)
 hBand.Position=UDim2.new(0,0,0,0); hBand.BackgroundColor3=Color3.fromRGB(255,200,80)
 hBand.BorderSizePixel=0
 local hBandCr=Instance.new("UICorner",hBand); hBandCr.CornerRadius=UDim.new(0,22)
--- Fix bottom corners
 local hFix=Instance.new("Frame",hBand); hFix.Size=UDim2.new(1,0,0.5,0)
 hFix.Position=UDim2.new(0,0,0.5,0); hFix.BackgroundColor3=Color3.fromRGB(255,200,80)
 hFix.BorderSizePixel=0
@@ -72,7 +80,6 @@ closeBtn.Font=Enum.Font.GothamBold; closeBtn.TextSize=16
 closeBtn.TextColor3=Color3.new(1,1,1); closeBtn.BorderSizePixel=0
 Instance.new("UICorner",closeBtn).CornerRadius=UDim.new(0,10)
 
--- Tab bar
 local tabBar=Instance.new("Frame",panel); tabBar.Size=UDim2.new(1,-32,0,38)
 tabBar.Position=UDim2.new(0,16,0,74); tabBar.BackgroundTransparency=1; tabBar.BorderSizePixel=0
 local tbl=Instance.new("UIListLayout",tabBar)
@@ -90,7 +97,6 @@ local tabComp=mkTab("companions","🐱  Companions",1)
 local tabRec =mkTab("recipes",   "🍳  Recipes",   2)
 local tabAcc =mkTab("accessories","👑  Accessories",3)
 
--- Scroll
 local scroll=Instance.new("ScrollingFrame",panel); scroll.Name="Cards"
 scroll.Size=UDim2.new(1,-32,0,408); scroll.Position=UDim2.new(0,16,0,118)
 scroll.BackgroundColor3=Color3.fromRGB(248,243,232); scroll.BorderSizePixel=0
@@ -102,7 +108,6 @@ local sp=Instance.new("UIPadding",scroll)
 sp.PaddingTop=UDim.new(0,10); sp.PaddingLeft=UDim.new(0,12)
 sp.PaddingRight=UDim.new(0,12); sp.PaddingBottom=UDim.new(0,10)
 
--- ── CARD BUILDER ────────────────────────────────────────────────────────────
 local function buildProductCard(prod, idx, cat)
     local card=Instance.new("Frame",scroll); card.Name="P_"..idx
     card.Size=UDim2.new(1,0,0,96); card.LayoutOrder=idx
@@ -127,16 +132,15 @@ local function buildProductCard(prod, idx, cat)
     desc.Font=Enum.Font.Gotham; desc.TextSize=12; desc.TextColor3=C.sub
     desc.TextXAlignment=Enum.TextXAlignment.Left
 
-    -- Category badge
-    local catColors={companions=Color3.fromRGB(200,240,200),recipes=Color3.fromRGB(255,230,180),accessories=Color3.fromRGB(220,200,255)}
-    local catLbl=Instance.new("Frame",card); catLbl.Size=UDim2.new(0,90,0,20)
-    catLbl.Position=UDim2.new(0,82,0,66); catLbl.BackgroundColor3=(catColors[cat] or C.card)
-    catLbl.BorderSizePixel=0; Instance.new("UICorner",catLbl).CornerRadius=UDim.new(0,8)
-    local cl=Instance.new("TextLabel",catLbl); cl.Size=UDim2.new(1,0,1,0)
+    local catBadge=Instance.new("Frame",card); catBadge.Size=UDim2.new(0,90,0,20)
+    catBadge.Position=UDim2.new(0,82,0,66)
+    catBadge.BackgroundColor3=(CAT_COLORS[cat] or C.card)
+    catBadge.BorderSizePixel=0
+    Instance.new("UICorner",catBadge).CornerRadius=UDim.new(0,8)
+    local cl=Instance.new("TextLabel",catBadge); cl.Size=UDim2.new(1,0,1,0)
     cl.BackgroundTransparency=1; cl.Text=cat:sub(1,1):upper()..cat:sub(2)
     cl.Font=Enum.Font.GothamBold; cl.TextSize=11; cl.TextColor3=C.text
 
-    -- Buy button
     local buyBtn=Instance.new("TextButton",card); buyBtn.Size=UDim2.new(0,110,0,40)
     buyBtn.Position=UDim2.new(1,-122,0,28); buyBtn.BackgroundColor3=C.robux
     buyBtn.Text="🌀 "..prod.robux.." R$"; buyBtn.Font=Enum.Font.GothamBold
@@ -144,9 +148,9 @@ local function buildProductCard(prod, idx, cat)
     Instance.new("UICorner",buyBtn).CornerRadius=UDim.new(0,10)
 
     buyBtn.MouseButton1Click:Connect(function()
+        local pos = buyBtn.AbsolutePosition; local sz = buyBtn.AbsoluteSize
+        UIHelper.spawnSparkles(buyBtn.Parent, pos.X + sz.X / 2, pos.Y + sz.Y / 2, C.robux, 6)
         if promptRF then
-            -- In real game: pcall(function() promptRF:InvokeServer(prod.id) end)
-            -- For Studio testing, show a purchase dialog simulation
             local toast=Instance.new("ScreenGui",player:WaitForChild("PlayerGui"))
             toast.Name="PurchaseToast"; toast.DisplayOrder=1000
             local f=Instance.new("Frame",toast)
@@ -159,19 +163,16 @@ local function buildProductCard(prod, idx, cat)
             tl.Text="🌀 Purchasing "..prod.name.."…\n(Replace product ID "..prod.id.." in RobuxStoreServer)"
             tl.Font=Enum.Font.GothamBold; tl.TextSize=13; tl.TextColor3=Color3.new(1,1,1)
             tl.TextWrapped=true; tl.TextXAlignment=Enum.TextXAlignment.Center
-            -- Animate in then out
             Tween:Create(f,TweenInfo.new(0.2,Enum.EasingStyle.Back,Enum.EasingDirection.Out),
                 {Position=UDim2.new(0.5,0,0,100)}):Play()
             task.delay(2.8,function()
                 Tween:Create(f,TweenInfo.new(0.2),{Position=UDim2.new(0.5,0,0,60)}):Play()
                 task.delay(0.25,function() toast:Destroy() end)
             end)
-            -- Actually invoke the prompt
             pcall(function() promptRF:InvokeServer(prod.id) end)
         end
     end)
 
-    -- Hover effect
     buyBtn.MouseEnter:Connect(function()
         Tween:Create(buyBtn,TweenInfo.new(0.1),{BackgroundColor3=Color3.fromRGB(0,130,220)}):Play()
     end)
@@ -180,34 +181,54 @@ local function buildProductCard(prod, idx, cat)
     end)
 end
 
--- ── COMPANION TAB ALSO SHOWS FREE SELECTOR ───────────────────────────────────
+local FREE_COMPANIONS = {
+    { key="zundamon",   emoji="🍡", name="Zundamon",   flavor="The original. A loyal pea spirit." },
+    { key="zundacat",   emoji="🐱", name="ZundaCat",   flavor="A curious cat-shaped friend." },
+    { key="zundabunny", emoji="🐰", name="ZundaBunny", flavor="Hops alongside with twinkling ears." },
+    { key="tantanmon",  emoji="🌶️", name="TantanMon",  flavor="Spicy little firework." },
+}
+
 local function buildCompanionSelector()
     local sFrame=Instance.new("Frame",scroll); sFrame.Name="CompSelector"
-    sFrame.Size=UDim2.new(1,0,0,78); sFrame.LayoutOrder=0
+    sFrame.Size=UDim2.new(1,0,0,86); sFrame.LayoutOrder=0
     sFrame.BackgroundColor3=Color3.fromRGB(235,255,235); sFrame.BorderSizePixel=0
     Instance.new("UICorner",sFrame).CornerRadius=UDim.new(0,14)
     local sst=Instance.new("UIStroke",sFrame); sst.Thickness=1.5; sst.Color=Color3.fromRGB(130,215,130)
 
-    local sl=Instance.new("TextLabel",sFrame); sl.Size=UDim2.new(1,-220,0,22)
-    sl.Position=UDim2.new(0,14,0,10); sl.BackgroundTransparency=1
-    sl.Text="🍡  Zundamon (Free — Active)"; sl.Font=Enum.Font.FredokaOne; sl.TextSize=16
+    local sl=Instance.new("TextLabel",sFrame); sl.Size=UDim2.new(1,-20,0,20)
+    sl.Position=UDim2.new(0,14,0,6); sl.BackgroundTransparency=1
+    sl.Text="🎁 Free Companions"; sl.Font=Enum.Font.FredokaOne; sl.TextSize=15
     sl.TextColor3=C.text; sl.TextXAlignment=Enum.TextXAlignment.Left
-    local sd=Instance.new("TextLabel",sFrame); sd.Size=UDim2.new(1,-220,0,18)
-    sd.Position=UDim2.new(0,14,0,34); sd.BackgroundTransparency=1
-    sd.Text="Your loyal Zundamon companion!"; sd.Font=Enum.Font.Gotham; sd.TextSize=12
-    sd.TextColor3=C.sub; sd.TextXAlignment=Enum.TextXAlignment.Left
 
-    local equipBtn=Instance.new("TextButton",sFrame); equipBtn.Size=UDim2.new(0,100,0,36)
-    equipBtn.Position=UDim2.new(1,-112,0,21); equipBtn.BackgroundColor3=Color3.fromRGB(130,200,100)
-    equipBtn.Text="✓ Equip"; equipBtn.Font=Enum.Font.GothamBold; equipBtn.TextSize=14
-    equipBtn.TextColor3=Color3.new(1,1,1); equipBtn.BorderSizePixel=0
-    Instance.new("UICorner",equipBtn).CornerRadius=UDim.new(0,10)
-    equipBtn.MouseButton1Click:Connect(function()
-        if compEv then compEv:FireServer("zundamon") end
-    end)
+    local freeList=Instance.new("Frame",sFrame); freeList.Size=UDim2.new(1,-16,0,48)
+    freeList.Position=UDim2.new(0,8,0,30); freeList.BackgroundTransparency=1; freeList.BorderSizePixel=0
+    local fll=Instance.new("UIListLayout",freeList); fll.FillDirection=Enum.FillDirection.Horizontal
+    fll.Padding=UDim.new(0,8); fll.VerticalAlignment=Enum.VerticalAlignment.Center
+
+    for _, fc in ipairs(FREE_COMPANIONS) do
+        local card=Instance.new("Frame",freeList); card.Size=UDim2.new(0,130,0,44); card.BorderSizePixel=0
+        card.BackgroundColor3=Color3.fromRGB(245,255,245)
+        Instance.new("UICorner",card).CornerRadius=UDim.new(0,10)
+        local cs=Instance.new("UIStroke",card); cs.Thickness=1; cs.Color=Color3.fromRGB(130,215,130)
+
+        local em=Instance.new("TextLabel",card); em.Size=UDim2.new(0,28,1,0); em.Position=UDim2.new(0,6,0,0)
+        em.BackgroundTransparency=1; em.Text=fc.emoji; em.Font=Enum.Font.GothamBold; em.TextSize=20
+
+        local nm=Instance.new("TextLabel",card); nm.Size=UDim2.new(1,-36,0,18); nm.Position=UDim2.new(0,34,0,4)
+        nm.BackgroundTransparency=1; nm.Text=fc.name; nm.Font=Enum.Font.FredokaOne; nm.TextSize=12
+        nm.TextColor3=C.text; nm.TextXAlignment=Enum.TextXAlignment.Left
+
+        local equipBtn=Instance.new("TextButton",card); equipBtn.Size=UDim2.new(0,54,0,20)
+        equipBtn.Position=UDim2.new(1,-60,0,24); equipBtn.BackgroundColor3=Color3.fromRGB(130,200,100)
+        equipBtn.Text="Equip"; equipBtn.Font=Enum.Font.GothamBold; equipBtn.TextSize=10
+        equipBtn.TextColor3=Color3.new(1,1,1); equipBtn.BorderSizePixel=0
+        Instance.new("UICorner",equipBtn).CornerRadius=UDim.new(0,6)
+        equipBtn.MouseButton1Click:Connect(function()
+            if compEv then compEv:FireServer(fc.key) end
+        end)
+    end
 end
 
--- ── TAB SWITCHING ─────────────────────────────────────────────────────────────
 local activeTab="companions"
 local function switchTab(id)
     activeTab=id
@@ -231,7 +252,6 @@ tabComp.MouseButton1Click:Connect(function() switchTab("companions") end)
 tabRec.MouseButton1Click:Connect(function()  switchTab("recipes")    end)
 tabAcc.MouseButton1Click:Connect(function()  switchTab("accessories") end)
 
--- Purchase success notification
 if purchaseEv then
     purchaseEv.OnClientEvent:Connect(function(itemName, itemType)
         local toast=Instance.new("ScreenGui",player:WaitForChild("PlayerGui"))
@@ -247,7 +267,6 @@ if purchaseEv then
     end)
 end
 
--- ── TOGGLE ─────────────────────────────────────────────────────────────────
 local open=false
 local function toggle()
     open=not open; panel.Visible=open
@@ -260,7 +279,6 @@ local function toggle()
 end
 closeBtn.MouseButton1Click:Connect(function() open=true; toggle() end)
 
--- Wire to HudBtn_settings and HudBtn_shop
 task.spawn(function()
     local pg=player:WaitForChild("PlayerGui")
     local hud=pg:WaitForChild("ZundaHUD",15)
@@ -274,5 +292,5 @@ task.spawn(function()
         end
     end
 end)
-UIS.InputBegan:Connect(function(i,g) if g then return end if i.KeyCode==Enum.KeyCode.P then toggle() end end)
+UIS.InputBegan:Connect(function(i,g) if g then return end if i.KeyCode==Enum.KeyCode.B then toggle() end end)
 print("[RobuxStore] Ready — P key or settings/shop button")

@@ -2,6 +2,7 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
+local UIHelper = require(RS.Shared.Modules.UIHelper)
 local gui = script.Parent
 local pill = gui:WaitForChild("ChefPill")
 local badge = pill:WaitForChild("Badge")
@@ -125,6 +126,8 @@ LevelUpEvent.OnClientEvent:Connect(function(level, tierName, tierColor, tierBadg
     t2.TextColor3 = Color3.fromRGB(255, 255, 255)
     t2.Parent = banner
 
+    UIHelper.spawnSparkles(gui, banner.AbsolutePosition.X + 230, banner.AbsolutePosition.Y + 60,
+        tierColor or Color3.fromRGB(255, 220, 90), 15)
     banner.Size = UDim2.new(0, 0, 0, 120)
     TweenService:Create(banner, TweenInfo.new(0.35, Enum.EasingStyle.Back), { Size = UDim2.new(0, 460, 0, 120) }):Play()
     task.delay(2.5, function()
@@ -246,27 +249,37 @@ AchievementUnlocked.OnClientEvent:Connect(function(name, desc, icon)
 end)
 
 -- ===== Progress panel (press P) =====
+local C = {
+	bg = Color3.fromRGB(255, 248, 235),
+	text = Color3.fromRGB(80, 55, 35),
+	sub = Color3.fromRGB(140, 110, 80),
+	accent = Color3.fromRGB(180, 150, 110),
+	white = Color3.fromRGB(255, 255, 255),
+	green = Color3.fromRGB(160, 210, 150),
+	red = Color3.fromRGB(200, 140, 120),
+}
+
 local progressPanel = Instance.new("Frame")
 progressPanel.Name = "ProgressPanel"
 progressPanel.Size = UDim2.new(0, 720, 0, 500)
 progressPanel.Position = UDim2.new(0.5, -360, 0.5, -250)
-progressPanel.BackgroundColor3 = Color3.fromRGB(36, 28, 54)
+progressPanel.BackgroundColor3 = C.bg
 progressPanel.BorderSizePixel = 0
 progressPanel.Visible = false
 progressPanel.Parent = gui
-local pCorner = Instance.new("UICorner"); pCorner.CornerRadius = UDim.new(0, 18); pCorner.Parent = progressPanel
-local pStroke = Instance.new("UIStroke"); pStroke.Color = Color3.fromRGB(180, 130, 255); pStroke.Thickness = 2; pStroke.Parent = progressPanel
+local pCorner = Instance.new("UICorner"); pCorner.CornerRadius = UDim.new(0, 22); pCorner.Parent = progressPanel
+local pStroke = Instance.new("UIStroke"); pStroke.Color = C.accent; pStroke.Thickness = 3; pStroke.Parent = progressPanel
 
 local pTitle = Instance.new("TextLabel")
 pTitle.Size = UDim2.new(1, 0, 0, 44); pTitle.BackgroundTransparency = 1
-pTitle.Text = "Chef Progress"; pTitle.Font = Enum.Font.GothamBlack; pTitle.TextScaled = true
-pTitle.TextColor3 = Color3.fromRGB(255, 220, 120); pTitle.Parent = progressPanel
+pTitle.Text = "📊  Chef Progress"; pTitle.Font = Enum.Font.FredokaOne; pTitle.TextSize = 28
+pTitle.TextColor3 = C.text; pTitle.Parent = progressPanel
 
 local pClose = Instance.new("TextButton")
-pClose.Size = UDim2.new(0, 36, 0, 36); pClose.Position = UDim2.new(1, -42, 0, 6)
-pClose.Text = "×"; pClose.Font = Enum.Font.GothamBlack; pClose.TextScaled = true
-pClose.BackgroundColor3 = Color3.fromRGB(200, 60, 80); pClose.TextColor3 = Color3.fromRGB(255,255,255)
-pClose.Parent = progressPanel
+pClose.Size = UDim2.new(0, 38, 0, 38); pClose.Position = UDim2.new(1, -46, 0, 6)
+pClose.Text = "✕"; pClose.Font = Enum.Font.FredokaOne; pClose.TextSize = 16
+pClose.BackgroundColor3 = C.red; pClose.TextColor3 = C.white
+pClose.BorderSizePixel = 0; pClose.Parent = progressPanel
 local pcCorner = Instance.new("UICorner"); pcCorner.CornerRadius = UDim.new(0, 10); pcCorner.Parent = pClose
 pClose.MouseButton1Click:Connect(function() progressPanel.Visible = false end)
 
@@ -279,8 +292,10 @@ tlay.Padding = UDim.new(0, 8); tlay.Parent = tabBar
 
 local content = Instance.new("ScrollingFrame")
 content.Size = UDim2.new(1, -32, 1, -110); content.Position = UDim2.new(0, 16, 0, 100)
-content.BackgroundTransparency = 1; content.ScrollBarThickness = 6
+content.BackgroundColor3 = Color3.fromRGB(248, 240, 230); content.ScrollBarThickness = 5
+content.ScrollBarImageColor3 = C.accent; content.BorderSizePixel = 0
 content.CanvasSize = UDim2.new(0, 0, 0, 800); content.Parent = progressPanel
+Instance.new("UICorner", content).CornerRadius = UDim.new(0, 14)
 local clay = Instance.new("UIListLayout"); clay.SortOrder = Enum.SortOrder.LayoutOrder
 clay.Padding = UDim.new(0, 6); clay.Parent = content
 
@@ -296,15 +311,15 @@ local function renderTab(name)
             local row = Instance.new("Frame")
             row.Size = UDim2.new(1, -8, 0, 50); row.LayoutOrder = i
             local unlocked = data.unlocked[ach.id]
-            row.BackgroundColor3 = unlocked and Color3.fromRGB(50, 70, 50) or Color3.fromRGB(50, 40, 70)
-            row.Parent = content
-            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 8); rc.Parent = row
+            row.BackgroundColor3 = unlocked and Color3.fromRGB(235, 250, 235) or Color3.fromRGB(250, 242, 228)
+            row.Parent = content; row.BorderSizePixel = 0
+            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 10); rc.Parent = row
             local l = Instance.new("TextLabel")
             l.Size = UDim2.new(1, -16, 1, 0); l.Position = UDim2.new(0, 8, 0, 0)
-            l.BackgroundTransparency = 1; l.TextScaled = true; l.Font = Enum.Font.GothamBold
+            l.BackgroundTransparency = 1; l.Font = Enum.Font.FredokaOne; l.TextSize = 16
             l.Text = (unlocked and "✅ " or "🔒 ") .. ach.icon .. " " .. ach.name .. " — " .. ach.desc
             l.TextXAlignment = Enum.TextXAlignment.Left
-            l.TextColor3 = unlocked and Color3.fromRGB(180, 240, 180) or Color3.fromRGB(200, 200, 220)
+            l.TextColor3 = unlocked and C.green or C.sub
             l.Parent = row
         end
     elseif name == "mastery" then
@@ -312,43 +327,43 @@ local function renderTab(name)
         for recipe, m in pairs(data.mastery or {}) do
             i = i + 1
             local row = Instance.new("Frame")
-            row.Size = UDim2.new(1, -8, 0, 40); row.LayoutOrder = i
-            row.BackgroundColor3 = Color3.fromRGB(50, 40, 70)
+            row.Size = UDim2.new(1, -8, 0, 44); row.LayoutOrder = i
+            row.BackgroundColor3 = Color3.fromRGB(250, 242, 228); row.BorderSizePixel = 0
             row.Parent = content
-            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 8); rc.Parent = row
+            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 10); rc.Parent = row
             local l = Instance.new("TextLabel")
             l.Size = UDim2.new(1, -16, 1, 0); l.Position = UDim2.new(0, 8, 0, 0)
-            l.BackgroundTransparency = 1; l.TextScaled = true; l.Font = Enum.Font.GothamBold
+            l.BackgroundTransparency = 1; l.Font = Enum.Font.FredokaOne; l.TextSize = 16
             l.Text = "📖 " .. recipe .. "  · Mastery " .. (m.level or 1) .. " (" .. (m.xp or 0) .. " xp)"
-            l.TextXAlignment = Enum.TextXAlignment.Left; l.TextColor3 = Color3.fromRGB(220, 220, 240)
+            l.TextXAlignment = Enum.TextXAlignment.Left; l.TextColor3 = C.text
             l.Parent = row
         end
         if i == 0 then
             local row = Instance.new("Frame"); row.Size = UDim2.new(1, -8, 0, 40); row.BackgroundTransparency = 1; row.Parent = content
             local l = Instance.new("TextLabel"); l.Size = UDim2.new(1,0,1,0); l.BackgroundTransparency = 1
-            l.Text = "Cook a recipe to start earning mastery!"; l.TextScaled = true; l.Font = Enum.Font.Gotham
-            l.TextColor3 = Color3.fromRGB(180,180,200); l.Parent = row
+            l.Text = "Cook a recipe to start earning mastery!"; l.Font = Enum.Font.Gotham
+            l.TextSize = 14; l.TextColor3 = C.sub; l.Parent = row
         end
     elseif name == "tools" then
         for j, toolKey in ipairs({"Axe","PickAxe","Sickle"}) do
             local tier = (data.toolTiers and data.toolTiers[toolKey]) or 1
             local row = Instance.new("Frame")
-            row.Size = UDim2.new(1, -8, 0, 60); row.LayoutOrder = j
-            row.BackgroundColor3 = Color3.fromRGB(50, 40, 70)
+            row.Size = UDim2.new(1, -8, 0, 64); row.LayoutOrder = j
+            row.BackgroundColor3 = Color3.fromRGB(250, 242, 228); row.BorderSizePixel = 0
             row.Parent = content
-            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 8); rc.Parent = row
+            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 10); rc.Parent = row
             local l = Instance.new("TextLabel")
             l.Size = UDim2.new(0.7, -8, 1, 0); l.Position = UDim2.new(0, 8, 0, 0)
-            l.BackgroundTransparency = 1; l.TextScaled = true; l.Font = Enum.Font.GothamBold
+            l.BackgroundTransparency = 1; l.Font = Enum.Font.FredokaOne; l.TextSize = 16
             l.Text = "🔨 " .. toolKey .. "  · Tier " .. tier
-            l.TextXAlignment = Enum.TextXAlignment.Left; l.TextColor3 = Color3.fromRGB(220, 220, 240)
+            l.TextXAlignment = Enum.TextXAlignment.Left; l.TextColor3 = C.text
             l.Parent = row
             if tier < 3 then
                 local cost = tier == 1 and 300 or 900
                 local btn = Instance.new("TextButton")
                 btn.Size = UDim2.new(0.28, -8, 0, 44); btn.Position = UDim2.new(0.72, 0, 0.5, -22)
-                btn.Text = "Upgrade  " .. cost .. "g"; btn.Font = Enum.Font.GothamBold; btn.TextScaled = true
-                btn.BackgroundColor3 = Color3.fromRGB(120, 90, 200); btn.TextColor3 = Color3.fromRGB(255,255,255)
+                btn.Text = "Upgrade  " .. cost .. "g"; btn.Font = Enum.Font.FredokaOne; btn.TextSize = 14
+                btn.BackgroundColor3 = C.accent; btn.TextColor3 = C.white; btn.BorderSizePixel = 0
                 btn.Parent = row
                 local bc = Instance.new("UICorner"); bc.CornerRadius = UDim.new(0, 8); bc.Parent = btn
                 btn.MouseButton1Click:Connect(function()
@@ -365,22 +380,23 @@ local function renderTab(name)
         for key, cfg in pairs(data.powerupConfig) do
             j = j + 1
             local row = Instance.new("Frame")
-            row.Size = UDim2.new(1, -8, 0, 70); row.LayoutOrder = j
-            row.BackgroundColor3 = Color3.fromRGB(50, 40, 70); row.Parent = content
-            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 8); rc.Parent = row
+            row.Size = UDim2.new(1, -8, 0, 74); row.LayoutOrder = j
+            row.BackgroundColor3 = Color3.fromRGB(250, 242, 228); row.BorderSizePixel = 0
+            row.Parent = content
+            local rc = Instance.new("UICorner"); rc.CornerRadius = UDim.new(0, 10); rc.Parent = row
             local active = data.powerups[key] and data.powerups[key] > os.time()
             local label = Instance.new("TextLabel")
             label.Size = UDim2.new(0.7, -8, 1, 0); label.Position = UDim2.new(0, 8, 0, 0)
-            label.BackgroundTransparency = 1; label.TextScaled = true; label.Font = Enum.Font.GothamBold
+            label.BackgroundTransparency = 1; label.Font = Enum.Font.FredokaOne; label.TextSize = 14
             label.Text = cfg.icon .. " " .. cfg.name .. "  " .. (active and "(ACTIVE)" or "")
                 .. "\n" .. cfg.desc
-            label.TextXAlignment = Enum.TextXAlignment.Left; label.TextColor3 = Color3.fromRGB(220, 220, 240)
+            label.TextXAlignment = Enum.TextXAlignment.Left; label.TextColor3 = active and C.green or C.text
             label.TextWrapped = true; label.Parent = row
             local btn = Instance.new("TextButton")
             btn.Size = UDim2.new(0.28, -8, 0, 50); btn.Position = UDim2.new(0.72, 0, 0.5, -25)
-            btn.Text = "Use  " .. (cfg.cost.Gold or "?") .. "g"; btn.Font = Enum.Font.GothamBold; btn.TextScaled = true
-            btn.BackgroundColor3 = active and Color3.fromRGB(80, 80, 100) or Color3.fromRGB(120, 90, 200)
-            btn.TextColor3 = Color3.fromRGB(255,255,255); btn.Parent = row
+            btn.Text = "Use  " .. (cfg.cost.gold or "?") .. "g"; btn.Font = Enum.Font.FredokaOne; btn.TextSize = 14
+            btn.BackgroundColor3 = active and Color3.fromRGB(210, 200, 185) or C.accent
+            btn.TextColor3 = C.white; btn.BorderSizePixel = 0; btn.Parent = row
             btn.AutoButtonColor = not active
             local bc = Instance.new("UICorner"); bc.CornerRadius = UDim.new(0, 8); bc.Parent = btn
             if not active then
@@ -399,10 +415,10 @@ end
 local function addTab(label, key)
     local btn = Instance.new("TextButton")
     btn.Size = UDim2.new(0, 140, 1, 0)
-    btn.Text = label; btn.Font = Enum.Font.GothamBold; btn.TextScaled = true
-    btn.BackgroundColor3 = Color3.fromRGB(70, 50, 100); btn.TextColor3 = Color3.fromRGB(255,255,255)
-    btn.Parent = tabBar
-    local bc = Instance.new("UICorner"); bc.CornerRadius = UDim.new(0, 8); bc.Parent = btn
+    btn.Text = label; btn.Font = Enum.Font.FredokaOne; btn.TextSize = 14
+    btn.BackgroundColor3 = C.accent; btn.TextColor3 = C.white
+    btn.BorderSizePixel = 0; btn.Parent = tabBar
+    local bc = Instance.new("UICorner"); bc.CornerRadius = UDim.new(0, 10); bc.Parent = btn
     btn.MouseButton1Click:Connect(function() renderTab(key) end)
 end
 addTab("🏆 Achievements", "achievements")

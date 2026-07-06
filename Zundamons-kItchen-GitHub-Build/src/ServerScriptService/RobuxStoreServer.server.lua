@@ -33,34 +33,7 @@ end
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
-MPS.ProcessReceipt = function(info)
-    local player = Players:GetPlayerByUserId(info.PlayerId)
-    if not player then return Enum.ProductPurchaseDecision.NotProcessedYet end
-
-    local prod = PRODUCTS[info.ProductId]
-    if not prod then
-        warn("[RobuxStore] Unknown product: "..info.ProductId)
-        return Enum.ProductPurchaseDecision.PurchaseGranted
-    end
-
-    -- Grant item
-	local d = PlayerDataService.getOrCreate(player)
-
-    if prod.type == "companion" then
-        d["companion_owned_"..prod.key] = true
-    elseif prod.type == "recipe" then
-        if not d.recipes_unlocked then d.recipes_unlocked={} end
-        d.recipes_unlocked[prod.key] = true
-    elseif prod.type == "accessory" then
-        d["accessory_"..prod.key] = true
-    end
-
-    -- Notify client
-    purchaseEv:FireClient(player, prod.name, prod.type)
-
-    print("[RobuxStore] "..player.Name.." purchased "..prod.name)
-    return Enum.ProductPurchaseDecision.PurchaseGranted
-end
+-- ProcessReceipt delegated to MarketplaceService.lua (unified handler)
 
 -- Client requests a purchase prompt
 local RF = RS:WaitForChild("RemoteFunctions")

@@ -20,29 +20,10 @@ local RE = RS:WaitForChild("RemoteEvents")
 local notify = RE:FindFirstChild("NotifyPlayer")
 local makeLoot = RE:FindFirstChild("MakeLootEvent")
 local requestData = RS:WaitForChild("RemoteFunctions"):FindFirstChild("RequestData")
-
--- Material visual config: { name -> {color, icon} }
-local MATERIAL_STYLES = {
-	["Apple"]          = {color = Color3.fromRGB(220, 50, 50),  icon = "\xf0\x9f\x8d\x8e"},
-	["Wheat"]          = {color = Color3.fromRGB(240, 220, 80), icon = "\xf0\x9f\x8c\xbe"},
-	["Wood"]           = {color = Color3.fromRGB(140, 90, 50),  icon = "\xf0\x9f\xaa\xb5"},
-	["Rock"]           = {color = Color3.fromRGB(140, 140, 140),icon = "\xf0\x9f\xaa\xa8"},
-	["Iron Ore"]       = {color = Color3.fromRGB(130, 100, 120),icon = "\xe2\x9a\x99"},
-	["Gold"]           = {color = Color3.fromRGB(255, 215, 0),  icon = "\xf0\x9f\xaa\x99"},
-	["Gold Ore"]       = {color = Color3.fromRGB(255, 215, 0),  icon = "\xf0\x9f\x92\xb0"},
-	["Zunda Flower"]   = {color = Color3.fromRGB(255, 120, 200),icon = "\xf0\x9f\x8c\xb8"},
-	["Zunda Berry"]    = {color = Color3.fromRGB(160, 50, 200), icon = "\xf0\x9f\xab\x90"},
-	["Zunda Mushroom"] = {color = Color3.fromRGB(220, 100, 80), icon = "\xf0\x9f\x8d\x84"},
-	["Zunda Pea"]      = {color = Color3.fromRGB(80, 200, 80),  icon = "\xf0\x9f\xab\x9b"},
-	["Zunda Root"]     = {color = Color3.fromRGB(140, 90, 50),  icon = "\xf0\x9f\xa5\x95"},
-	["Marble Rock"]    = {color = Color3.fromRGB(220, 220, 230),icon = "\xf0\x9f\x97\xbf"},
-	["Pine Cone"]      = {color = Color3.fromRGB(150, 100, 60), icon = "\xf0\x9f\x8c\xb2"},
-	["Salted Pea Bouquet"] = {color = Color3.fromRGB(180, 220, 140), icon = "\xf0\x9f\x92\x90"},
-}
-local DEFAULT_STYLE = {color = Color3.fromRGB(180, 180, 180), icon = "\xe2\x9d\x96"}
+local UIHelper = require(RS.Shared.Modules.UIHelper)
 
 local function styleFor(name)
-	return MATERIAL_STYLES[name] or DEFAULT_STYLE
+	return {color = UIHelper.getItemColor(name), icon = nil}
 end
 
 -- ---- MATERIAL CARDS ----
@@ -66,14 +47,7 @@ local function getOrCreateCard(name)
 	swatch.Parent = card
 	Instance.new("UICorner", swatch).CornerRadius = UDim.new(0, 4)
 
-	local icon = Instance.new("TextLabel")
-	icon.Size = UDim2.new(1, 0, 1, 0)
-	icon.BackgroundTransparency = 1
-	icon.TextColor3 = Color3.fromRGB(255, 255, 255)
-	icon.Text = style.icon
-	icon.TextScaled = true
-	icon.Font = Enum.Font.GothamBold
-	icon.Parent = swatch
+	local icon = UIHelper.createItemIcon(name, UDim2.new(1, 0, 1, 0), swatch)
 
 	local nameLbl = Instance.new("TextLabel")
 	nameLbl.Size = UDim2.new(1, -90, 1, 0)
