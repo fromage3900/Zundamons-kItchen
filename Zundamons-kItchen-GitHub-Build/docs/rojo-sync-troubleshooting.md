@@ -62,6 +62,18 @@ Rojo server listening on port 34872
 
 If Studio says *"Couldn't connect to the Rojo server"* → the terminal is not running, wrong port, or firewall blocked `localhost:34872`.
 
+### Plugin error: "denied script injection permission"
+
+Rojo connected but Studio blocked script sync. Fix:
+
+1. Studio ribbon → **Plugins** tab → **Manage Plugins**
+2. Find **Rojo** in the list
+3. Under the description, click **Script Injection Denied** (or the pencil/edit icon)
+4. Turn **Script Injection** **ON**
+5. **Restart Studio**, run `npm run rojo:serve` again, then **Connect**
+
+Without this permission, Rojo cannot push `src/` scripts into the place.
+
 ### 4. Open the RIGHT place in Studio
 
 | ✅ Correct | ❌ Wrong |

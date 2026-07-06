@@ -57,6 +57,14 @@ rojo plugin install
 
 Restart **Roblox Studio** after `rojo plugin install`.
 
+### Grant Script Injection (required)
+
+After first Connect, Studio may block Rojo with *"denied script injection permission"*:
+
+1. **Plugins → Manage Plugins**
+2. Select **Rojo** → enable **Script Injection**
+3. Restart Studio → `npm run rojo:serve` → Connect again
+
 ---
 
 ## 4. Every time you develop
