@@ -11,6 +11,8 @@ Live task board. **Claim before coding.** Workspace: `G:\Zundamons-kItchen` ([`W
 | P4 | Real DevProduct IDs | Human | pending | main | MarketplaceConfig.lua |
 | P5 | Kenney decal upload | Human | blocked | — | UIAssets.lua (network) |
 | C1 | Wire Mineable → HarvestValidator | Cline | pending | cline/mineable-validator | Mineable.server.lua |
+| C3 | Mesh import (HarvestNodeVariants IDs or Models/) | Cline | **blocked** | cline/mesh-import | verify:meshes fails — see CLINE-MESH-VERIFY.md |
+| C4 | RealNASA skybox upload (6 face IDs) | Human | pending | main | SkyConfig.presets.realnasa |
 | C2 | RewardCore → RewardSystem service | Cline | pending | cline/reward-service | RewardCore.lua, RewardBoot |
 | O1 | QuestScript UIComponents | OpenCode | pending | opencode/quest-ui | QuestScript.client.lua |
 | O2 | Asset upload pass (home network) | OpenCode | blocked | — | UIAssets, HarvestNodeVariants |

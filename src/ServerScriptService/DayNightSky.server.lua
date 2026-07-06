@@ -4,7 +4,9 @@
 
 local Lighting = game:GetService("Lighting")
 local Tween    = game:GetService("TweenService")
-local CONFIG   = require(game.ReplicatedStorage.ConfigurationFiles.SkyConfig)
+local RS       = game:GetService("ReplicatedStorage")
+local CONFIG   = require(RS.ConfigurationFiles.SkyConfig)
+local SkyAtmosphereHelper = require(RS.Shared.Modules.SkyAtmosphereHelper)
 
 local function lerp(a, b, t) return a + (b - a) * t end
 local function lerpColor(c1, c2, t)
@@ -46,18 +48,21 @@ end
 
 local atmo = Instance.new("Atmosphere")
 atmo.Name  = "ZundaAtmosphere"
-atmo.Decay = CONFIG.atmosphere.decay
-atmo.Glare = CONFIG.atmosphere.glare
-atmo.Haze  = CONFIG.atmosphere.haze
+local presetName, skySettings, atmosphereSettings = CONFIG.getActiveSkySettings()
+SkyAtmosphereHelper.applyAtmosphereBase(atmo, atmosphereSettings, CONFIG.atmosphere)
 atmo.Parent = Lighting
 
 local sky = Instance.new("Sky")
 sky.Name  = "ZundaSky"
-sky.CelestialBodiesShown = true
-sky.SunAngularSize  = CONFIG.sky.sun_angular_size
-sky.MoonAngularSize = CONFIG.sky.moon_angular_size
-sky.StarCount       = CONFIG.sky.star_count
+local facesApplied = SkyAtmosphereHelper.applySkyObject(sky, skySettings)
 sky.Parent = Lighting
+
+if presetName == "realnasa" and facesApplied < 6 then
+	warn(string.format(
+		"[DayNightSky] RealNASA preset active but only %d/6 skybox faces set — using NASA-tuned atmosphere + default Roblox sky until rbxassetid pasted in SkyConfig.presets.realnasa",
+		facesApplied
+	))
+end
 
 -- ── CONSTELLATIONS ────────────────────────────────────────
 local constFolder = workspace:FindFirstChild("Constellations")
@@ -212,7 +217,9 @@ task.spawn(function()
     end
 end)
 
-print("[DayNightSky] " .. CONFIG.cycle.minutes_per_day .. "min cycle, " ..
+print("[DayNightSky] preset=" .. presetName ..
+      " faces=" .. tostring(facesApplied) .. "/6 " ..
+      CONFIG.cycle.minutes_per_day .. "min cycle, " ..
       #CONFIG.keyframes .. " keyframes, " ..
       #CONFIG.constellations .. " constellations, aurora bands=" ..
       #auroraFolder:GetChildren())

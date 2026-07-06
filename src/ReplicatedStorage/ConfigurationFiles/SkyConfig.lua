@@ -27,8 +27,61 @@ SkyConfig.lighting = {
 }
 
 -- ============================================================
--- SKY
+-- SKY PRESETS (active: realnasa = NASA Blue Marble style)
+-- Upload 6 faces from Assets/Textures/RealNASA/ → paste rbxassetid below.
 -- ============================================================
+SkyConfig.active_preset = "realnasa"
+
+SkyConfig.presets = {
+	cozy_default = {
+		sky = {
+			sun_angular_size = 24,
+			moon_angular_size = 16,
+			star_count = 5500,
+			celestial_bodies_shown = true,
+			skybox_bk = "",
+			skybox_dn = "",
+			skybox_ft = "",
+			skybox_lf = "",
+			skybox_rt = "",
+			skybox_up = "",
+			sun_texture = "",
+			moon_texture = "",
+		},
+		atmosphere = {
+			decay = Color3.fromRGB(106, 112, 125),
+			glare = 0.22,
+			haze = 1.3,
+		},
+	},
+	-- NASA Visible Earth / Blue Marble — earthy horizon, deep-space night top
+	realnasa = {
+		sky = {
+			sun_angular_size = 21,
+			moon_angular_size = 12,
+			star_count = 12000,
+			celestial_bodies_shown = true,
+			orientation = Vector3.new(0, 180, 0),
+			-- Paste Creator asset IDs after bulk upload (see docs/skybox-upload-guide.md)
+			skybox_bk = "rbxassetid://FILL_REALNASA_BK",
+			skybox_dn = "rbxassetid://FILL_REALNASA_DN",
+			skybox_ft = "rbxassetid://FILL_REALNASA_FT",
+			skybox_lf = "rbxassetid://FILL_REALNASA_LF",
+			skybox_rt = "rbxassetid://FILL_REALNASA_RT",
+			skybox_up = "rbxassetid://FILL_REALNASA_UP",
+			sun_texture = "",
+			moon_texture = "",
+		},
+		atmosphere = {
+			decay = Color3.fromRGB(72, 98, 138),
+			glare = 0.38,
+			haze = 0.72,
+			offset = 0.12,
+		},
+	},
+}
+
+-- Legacy flat sky table (merged into active preset at runtime)
 SkyConfig.sky = {
     sun_angular_size   = 24,
     moon_angular_size  = 16,
@@ -276,6 +329,14 @@ SkyConfig.weather_pool = {
 }
 
 -- Shared time-of-day helpers (use across WeatherSystem, VNController, SkySync).
+function SkyConfig.getActiveSkySettings()
+	local presetName = SkyConfig.active_preset or "cozy_default"
+	local preset = (SkyConfig.presets and SkyConfig.presets[presetName]) or {}
+	local sky = preset.sky or SkyConfig.sky
+	local atmosphere = preset.atmosphere or SkyConfig.atmosphere
+	return presetName, sky, atmosphere
+end
+
 function SkyConfig.isNightHour(hour: number): boolean
 	local t = hour % 24
 	return t >= 19 or t <= 6

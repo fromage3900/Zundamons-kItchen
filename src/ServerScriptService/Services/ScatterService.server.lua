@@ -10,7 +10,13 @@ local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
 
-local ScatterConfig = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("ScatterConfig"))
+local RS = ReplicatedStorage
+local ScatterConfig = require(RS.ConfigurationFiles.ScatterConfig)
+local HarvestNodeVariants = require(RS.Shared.Config.HarvestNodeVariants)
+
+local function isRealMeshId(id: string): boolean
+	return id ~= "" and id:find("FILL_") == nil and id:find("rbxassetid://0$") == nil
+end
 
 local ScatterService = {}
 
@@ -103,45 +109,96 @@ local function spawnNode(nodeType: string, variantId: string, position: Vector3,
 		return nil
 	end
 
-	local part = Instance.new("Part")
-	part.Name = nodeType .. "_" .. variantId
-	part.Size = Vector3.new(2, 2, 2)
-	part.Position = position + Vector3.new(0, nodeConfig.yOffset, 0)
-	part.Anchored = true
-	part.CanCollide = false
-	part.Material = Enum.Material.SmoothPlastic
-	part.Color = Color3.fromRGB(100, 200, 130)
-	part.Transparency = 0
+	local yOffset = nodeConfig.yOffset or 0
+	local surfacePos = position + Vector3.new(0, yOffset, 0)
+	local scale = math.random() * (nodeConfig.scaleRange[2] - nodeConfig.scaleRange[1]) + nodeConfig.scaleRange[1]
+	local yRot = nodeConfig.yRotationRandom and math.rad(math.random(0, 359)) or 0
+	local baseCFrame = CFrame.new(surfacePos) * CFrame.Angles(0, yRot, 0)
 
-	-- Apply random rotation
-	if nodeConfig.yRotationRandom then
-		part.CFrame = CFrame.new(part.Position) * CFrame.Angles(0, math.rad(math.random(0, 359)), 0)
+	-- 1) Rojo-synced template in ReplicatedStorage.Models (Cline mesh import target)
+	local modelsFolder = RS:FindFirstChild("Models")
+	local templateName = nodeType:gsub("%s+", "") .. "_" .. variantId
+	local template = modelsFolder and modelsFolder:FindFirstChild(templateName)
+	if not template and modelsFolder then
+		template = modelsFolder:FindFirstChild(variantId)
 	end
 
-	-- Apply random scale
-	local scale = math.random() * (nodeConfig.scaleRange[2] - nodeConfig.scaleRange[1]) + nodeConfig.scaleRange[1]
-	part.Size = part.Size * scale
+	local node: Instance
+	if template and (template:IsA("Model") or template:IsA("BasePart")) then
+		node = template:Clone()
+		node.Name = nodeType .. "_" .. variantId
+		if node:IsA("Model") then
+			node:PivotTo(baseCFrame)
+			if node.ScaleTo then
+				node:ScaleTo(scale)
+			end
+		elseif node:IsA("BasePart") then
+			node.CFrame = baseCFrame
+			node.Size = node.Size * scale
+		end
+	else
+		-- 2) MeshPart from HarvestNodeVariants when rbxassetid is real
+		local meshId = HarvestNodeVariants.getMesh(nodeType, variantId)
+		if meshId ~= "" and isRealMeshId(meshId) then
+			local mesh = Instance.new("MeshPart")
+			mesh.Name = nodeType .. "_" .. variantId
+			mesh.MeshId = meshId
+			mesh.Size = Vector3.new(2, 2, 2) * scale
+			mesh.CFrame = baseCFrame
+			mesh.Anchored = true
+			mesh.CanCollide = false
+			mesh.CastShadow = true
+			node = mesh
+		else
+			-- 3) Colored Part fallback (no mesh imported yet)
+			local part = Instance.new("Part")
+			part.Name = nodeType .. "_" .. variantId
+			part.Size = Vector3.new(2, 2, 2) * scale
+			part.CFrame = baseCFrame
+			part.Anchored = true
+			part.CanCollide = false
+			part.Material = Enum.Material.SmoothPlastic
+			part.Color = Color3.fromRGB(100, 200, 130)
+			part.Transparency = 0
+			node = part
+		end
+	end
 
 	-- Attributes for harvesting system
-	part:SetAttribute("ResourceType", nodeConfig.resourceType)
-	part:SetAttribute("Available", true)
-	part:SetAttribute("VariantId", variantId)
-	part:SetAttribute("_origSize", part.Size)
-	part:SetAttribute("ScatterBiome", biomeName)
+	node:SetAttribute("ResourceType", nodeConfig.resourceType)
+	node:SetAttribute("Available", true)
+	node:SetAttribute("VariantId", variantId)
+	if node:IsA("BasePart") then
+		node:SetAttribute("_origSize", node.Size)
+	elseif node:IsA("Model") then
+		local primary = node.PrimaryPart or node:FindFirstChildWhichIsA("BasePart")
+		if primary then
+			node:SetAttribute("_origSize", primary.Size)
+		end
+	end
+	node:SetAttribute("ScatterBiome", biomeName)
 
 	-- ClickDetector for interaction
 	local cd = Instance.new("ClickDetector")
 	cd.MaxActivationDistance = 16
-	cd.Parent = part
+	cd.Parent = node:IsA("Model") and (node.PrimaryPart or node:FindFirstChildWhichIsA("BasePart") or node) or node
 
 	-- Tag for CollectionService
-	CollectionService:AddTag(part, "GatheringNode")
+	if node:IsA("BasePart") then
+		CollectionService:AddTag(node, "GatheringNode")
+	elseif node:IsA("Model") then
+		for _, desc in ipairs(node:GetDescendants()) do
+			if desc:IsA("BasePart") then
+				CollectionService:AddTag(desc, "GatheringNode")
+			end
+		end
+	end
 
-	part.Parent = Workspace:FindFirstChild("GameplayLoopArea") and
+	node.Parent = Workspace:FindFirstChild("GameplayLoopArea") and
 		Workspace.GameplayLoopArea:FindFirstChild("GatheringNodes") or Workspace
 
-	activeNodes[part] = true
-	return part
+	activeNodes[node] = true
+	return node
 end
 
 -- Scatter a biome's nodes within a volume region

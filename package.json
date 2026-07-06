@@ -5,6 +5,7 @@
   "description": "Rojo-based GitHub build for Zundamon's kItchen Roblox experience",
   "scripts": {
     "validate": "node scripts/validate-structure.mjs",
+    "verify:meshes": "node scripts/verify-mesh-imports.mjs",
     "verify:safety": "node scripts/verify-publish-safety.mjs",
     "security": "npm run validate && npm run verify:safety",
     "lint": "npm run lint:stylua && npm run lint:selene",
