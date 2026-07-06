@@ -1,35 +1,41 @@
--- [[ModuleScript] ChefLevelConfig (ref: RBX2717298F6AD34291908D07599A4F6190)]]
-local M = {}
+--!strict
+-- [[ModuleScript] ChefLevelConfig]]
+-- XP required per level and tier definitions
 
-M.tiers = {
-    { name = "Apprentice",   minLevel = 1,  color = Color3.fromRGB(180, 220, 140), badge = "🌱" },
-    { name = "Sous Chef",    minLevel = 5,  color = Color3.fromRGB(160, 200, 240), badge = "🍳" },
-    { name = "Chef",         minLevel = 10, color = Color3.fromRGB(255, 200, 140), badge = "👨‍🍳" },
-    { name = "Head Chef",    minLevel = 20, color = Color3.fromRGB(245, 160, 200), badge = "⭐" },
-    { name = "Grandmaster",  minLevel = 30, color = Color3.fromRGB(220, 180, 255), badge = "👑" },
-}
+local ChefLevelConfig = {}
 
-function M.tierForLevel(level)
-    local current = M.tiers[1]
-    for _, tier in ipairs(M.tiers) do
-        if level >= tier.minLevel then current = tier end
-    end
-    return current
+function ChefLevelConfig.xpForLevel(level: number): number
+	-- Gentle exponential: easier early levels for cozy feel
+	-- Level 1-5: ~100 XP each
+	-- Level 5-10: ~150 XP each
+	-- Level 10+: steeper curve
+	if level <= 5 then
+		return 80
+	elseif level <= 10 then
+		return math.floor(80 + (level - 5) * 20)
+	else
+		return math.floor(80 + 100 + (level - 10) * 40)
+	end
 end
 
-function M.xpForLevel(level)
-    return math.floor(80 * (level ^ 1.4))
+function ChefLevelConfig.tierForLevel(level: number)
+	if level < 5 then
+		return { name = "Novice", color = Color3.fromRGB(150, 150, 150), badge = "" }
+	elseif level < 15 then
+		return { name = "Apprentice", color = Color3.fromRGB(100, 200, 100), badge = "rbxassetid://12345678" }
+	elseif level < 30 then
+		return { name = "Chef", color = Color3.fromRGB(255, 200, 50), badge = "rbxassetid://12345679" }
+	else
+		return { name = "Master Chef", color = Color3.fromRGB(255, 100, 100), badge = "rbxassetid://12345680" }
+	end
 end
 
--- XP rewards per action
-M.xpRewards = {
-    gather        = 4,
-    craftSuccess  = 18,
-    craftPerfect  = 32,
-    serveGuest    = 25,
-    questComplete = 60,
-    dailyLogin    = 100,
-    perfectCombo  = 10,
+ChefLevelConfig.xpRewards = {
+	serveGuest = 15,
+	craftSuccess = 10,
+	craftPerfect = 25,
+	dailyLogin = 20,
+	gather = 5,
 }
 
-return M
+return ChefLevelConfig

@@ -54,6 +54,15 @@ ProgressionConfig.guest_settings = {
 	spawn_interval_min = 12,
 	spawn_interval_max = 25,
 	guest_patience = 120, -- seconds before guest leaves
+	patience_warning = 30, -- seconds left before warning color
+	patience_critical = 10, -- seconds left before critical color
+}
+
+-- Guest patience UI colors
+ProgressionConfig.patience_colors = {
+	normal = Color3.fromRGB(120, 200, 120), -- green
+	warning = Color3.fromRGB(220, 180, 80), -- yellow
+	critical = Color3.fromRGB(220, 80, 80), -- red
 }
 
 -- Progression milestones (tier unlocks)
