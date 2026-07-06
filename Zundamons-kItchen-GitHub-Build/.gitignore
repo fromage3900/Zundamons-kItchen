@@ -18,3 +18,4 @@ node_modules/
 *.lock
 extract_scripts.py
 rojo.zip
+sourcemap.json
