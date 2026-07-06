@@ -2,12 +2,6 @@ std = "roblox"
 
 exclude = [
   "src/ReplicatedStorage/ConfigurationFiles/Type.lua",
-  "src/ServerScriptService/Package.server.lua",
-  "src/ServerScriptService/qTexture.server.lua",
-  "src/ServerScriptService/qPerfectionWeld.server.lua",
-  "src/ServerScriptService/PoseTexture.server.lua",
-  "src/ServerScriptService/LightConfig.server.lua",
-  "src/ServerScriptService/EasyConfig.server.lua",
 ]
 
 [lints]
