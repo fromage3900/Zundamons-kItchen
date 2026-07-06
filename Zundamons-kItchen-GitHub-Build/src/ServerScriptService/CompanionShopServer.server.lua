@@ -1,6 +1,7 @@
 -- [[Script] CompanionShopServer (ref: RBX9AC1C5F5123A408F978AA7077D298CC8)]]
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local RS = game.ReplicatedStorage
 local RE = RS:WaitForChild("RemoteEvents")
 local RF = RS:WaitForChild("RemoteFunctions")

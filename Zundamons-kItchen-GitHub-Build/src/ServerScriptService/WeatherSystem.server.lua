@@ -23,7 +23,7 @@ local function rollWeather()
     local pool = CONFIG.weather_pool
     local total = 0
     local hour = Lighting:GetAttribute("CurrentHour") or 12
-    local isNight = (hour >= 19 or hour <= 6)
+    local isNight = CONFIG.isNightHour(hour)
 
     -- Filter: aurora only triggers at night
     local filtered = {}

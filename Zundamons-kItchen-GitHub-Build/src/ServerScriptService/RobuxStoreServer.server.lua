@@ -1,9 +1,7 @@
--- [[Script] RobuxStoreServer (ref: RBX8323588801564DE18ADA95D1FA09CE8C)]]
--- RobuxStoreServer: processes Robux DevProduct purchases and grants items/companions.
--- ⚠️  Replace placeholder product IDs with real ones from the Roblox Creator Dashboard.
-local MPS     = game:GetService("MarketplaceService")
-local Players = game:GetService("Players")
-local RS      = game:GetService("ReplicatedStorage")
+-- [[Script] RobuxStoreServer]]
+-- Wires MarketplaceService as the sole ProcessReceipt owner.
+local RS = game:GetService("ReplicatedStorage")
+local MarketplaceService = require(script.Parent.Services.MarketplaceService)
 
 -- ── PRODUCT CATALOGUE ────────────────────────────────────────────────────────
 -- Format: [productId] = { type, key, displayName }
@@ -39,11 +37,9 @@ local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 local RF = RS:WaitForChild("RemoteFunctions")
 local promptRF = RF:FindFirstChild("PromptRobuxPurchase")
 if not promptRF then
-    promptRF = Instance.new("RemoteFunction"); promptRF.Name="PromptRobuxPurchase"; promptRF.Parent=RF
-end
-promptRF.OnServerInvoke = function(player, productId)
-    MPS:PromptProductPurchase(player, productId)
-    return true
+	promptRF = Instance.new("RemoteFunction")
+	promptRF.Name = "PromptRobuxPurchase"
+	promptRF.Parent = RF
 end
 
 print("[RobuxStoreServer] Ready — "..#(function() local t={} for k in pairs(PRODUCTS) do t[#t+1]=k end return t end()).." products")

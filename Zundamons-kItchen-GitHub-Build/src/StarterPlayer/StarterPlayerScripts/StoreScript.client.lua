@@ -1,7 +1,10 @@
 local Players=game:GetService("Players"); local RS=game:GetService("ReplicatedStorage")
 local Tween=game:GetService("TweenService"); local UIS=game:GetService("UserInputService")
 local MPS=game:GetService("MarketplaceService")
-local player=Players.LocalPlayer; local gui=script.Parent
+local player=Players.LocalPlayer
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+local MarketplaceConfig = require(RS.ConfigurationFiles.MarketplaceConfig)
+local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaShopGui", 26)
 
 local UIHelper = require(RS.Shared.Modules.UIHelper)
 local RF=RS:WaitForChild("RemoteFunctions"); local RE=RS:WaitForChild("RemoteEvents")

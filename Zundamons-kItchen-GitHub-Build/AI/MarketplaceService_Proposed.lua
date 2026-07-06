@@ -1,4 +1,5 @@
 -- [[ModuleScript] MarketplaceService (ref: RBX-Consolidated-Marketplace)]]
+-- Superseded: implemented at ServerScriptService/Services/MarketplaceService.lua + MarketplaceConfig.lua
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")

@@ -21,7 +21,7 @@ Zundamons-kItchen-GitHub-Build/
 │   ├── ReplicatedStorage/ConfigurationFiles/   # shared configs + modules
 │   ├── ServerScriptService/                    # server scripts
 │   └── StarterPlayer/StarterPlayerScripts/     # client scripts
-├── docs/                    # architecture, style guide, review checklist
+├── docs/                    # architecture, style guide, publish checklists — see docs/README.md
 ├── scripts/validate-structure.mjs
 └── workspace/               # local Rojo build output (gitignored)
 ```

@@ -1,5 +1,7 @@
 # 🛠 Project Lead Environment Review & Procedural Update Plan
 
+> **Superseded for publish safety** by [`environment-audit.md`](environment-audit.md), [`atmosphere-gameplay-audit.md`](atmosphere-gameplay-audit.md), and [`legal-publish-checklist.md`](legal-publish-checklist.md). Kept for historical context (2026-07-05).
+
 ## 1. Architectural Integrity Audit
 During the review on 2026-07-05, several architectural "leaks" were identified that deviate from the intended Rojo/Service-oriented design.
 

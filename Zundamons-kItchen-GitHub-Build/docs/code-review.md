@@ -1,5 +1,7 @@
 # Code Review — Zundamon's kItchen (Deep Dive)
 
+> **Superseded for security/publish status** by [`security-audit.md`](security-audit.md), [`project-review.md`](project-review.md), and [`atmosphere-gameplay-audit.md`](atmosphere-gameplay-audit.md). Kept for July 2026 architecture snapshot.
+
 Review date: 2026-07-05  
 Scope: `src/` codebase (~98 Lua files) after Rojo migration  
 Experience ID: `108617605497926`

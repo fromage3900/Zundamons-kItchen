@@ -15,6 +15,10 @@ local SPEAKERS = VNDialogueData.SPEAKERS
 local COMPANION_DIALOGUE = VNDialogueData.COMPANION_DIALOGUE
 local SIDE_DIALOGUES = VNDialogueData.SIDE_DIALOGUES
 
+local function RGB(r: number, g: number, b: number): Color3
+	return Color3.fromRGB(r, g, b)
+end
+
 local player = Players.LocalPlayer
 local gui    = script.Parent
 
@@ -578,10 +582,8 @@ if qcRE then
     end)
 end
 
--- Zone entry lore  (BindableEvent fired by client zone ClickDetector handler)
-local RE2 = player:WaitForChild("PlayerGui"):WaitForChild("ZundaVN", 30)
--- Use a BindableEvent in PlayerGui for cross-LocalScript signalling
-local showZoneVNBindable = player.PlayerGui:FindFirstChild("ShowZoneVN")
+-- Zone entry lore (BindableEvent fired by client zone ClickDetector handler)
+local showZoneVNBindable = playerGui:FindFirstChild("ShowZoneVN")
 if not showZoneVNBindable then
     showZoneVNBindable = Instance.new("BindableEvent")
     showZoneVNBindable.Name = "ShowZoneVN"

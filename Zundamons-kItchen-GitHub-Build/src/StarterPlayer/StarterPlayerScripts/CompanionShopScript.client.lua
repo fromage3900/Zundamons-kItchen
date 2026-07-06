@@ -4,8 +4,12 @@ local UIS = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
 
+-- Premium companion receipts: MarketplaceService.ProcessReceipt (RobuxStoreServer init).
+
 local player = Players.LocalPlayer
-local gui = script.Parent
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+
+local gui = ClientGuiBootstrap.createScreenGui(player, "CompanionShopGui", 28)
 
 local RE = RS:WaitForChild("RemoteEvents")
 local RF = RS:WaitForChild("RemoteFunctions")
