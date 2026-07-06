@@ -17,6 +17,8 @@ Config: [`LegacyGuiConfig.lua`](../src/ReplicatedStorage/ConfigurationFiles/Lega
 
 ## Studio manual deletion (recommended once)
 
+See **[`studio-legacy-ui-deletion.md`](studio-legacy-ui-deletion.md)** for the full checklist.
+
 In place `108617605497926`, delete from **StarterGui**:
 
 | Instance | Why |

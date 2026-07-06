@@ -101,6 +101,7 @@ Rojo server listening:
 | `Cannot find path ... GitHub-Build` | You're in `C:\Users\froma` — cd into cloned repo |
 | `rokit is not recognized` | Run Rokit installer (step 2), then **new** PowerShell window |
 | `Couldn't connect to Rojo server` | `npm run rojo:serve` not running, or terminal was closed |
+| `WebSocket error: 400` | Rojo CLI/plugin version mismatch — run `rokit install`, `rojo plugin install`, restart Studio; both must be **7.7.0** |
 | `npm is not recognized` | Install Node.js LTS, restart PowerShell |
 
 ---

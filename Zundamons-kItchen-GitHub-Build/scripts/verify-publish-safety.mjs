@@ -23,6 +23,7 @@ const requiredFiles = [
 	"docs/legal-publish-checklist.md",
 	"docs/atmosphere-gameplay-audit.md",
 	"docs/studio-playtest-smoke.md",
+	"docs/studio-legacy-ui-deletion.md",
 ];
 
 const requiredPatterns = [
@@ -40,6 +41,11 @@ const requiredPatterns = [
 		file: "src/StarterPlayer/StarterPlayerScripts/CompanionShopScript.client.lua",
 		pattern: /ClientGuiBootstrap/,
 		label: "CompanionShop Rojo bootstrap",
+	},
+	{
+		file: "src/ReplicatedStorage/ConfigurationFiles/LegacyGuiConfig.lua",
+		pattern: /ZundaPouch|QuestPanel|destroyLegacyStarterShells/,
+		label: "Legacy StarterGui shell list",
 	},
 	{
 		file: "src/ServerScriptService/Services/ZundapalLLMService.lua",

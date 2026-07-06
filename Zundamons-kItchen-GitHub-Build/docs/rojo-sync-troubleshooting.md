@@ -99,6 +99,13 @@ If Connect fails:
 - Check firewall isn't blocking `localhost:34872`
 - Re-run `rojo plugin install` and restart Studio
 
+**WebSocket error: 400 - Failed ws recv** — CLI/plugin version mismatch or serve died:
+
+1. Terminal must show `Rojo server listening on port 34872` (if `npm run rojo:serve` exited with code 1, fix folder/rokit first)
+2. Run `rokit install` and `rojo plugin install`; `rojo --version` should be **7.7.0**
+3. Fully quit Studio, restart serve, reconnect with host `localhost`
+4. Enable Rojo **Script Injection** under Manage Plugins
+
 ### 6. Verify sync in Explorer
 
 After connecting, check these appear or update under:

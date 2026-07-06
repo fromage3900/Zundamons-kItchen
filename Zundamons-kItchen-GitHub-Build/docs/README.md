@@ -10,6 +10,7 @@ Canonical docs for **Zundamon's kItchen** (Rojo GitHub build). Start here instea
 |-----|---------|
 | [`publish-tonight.md`](publish-tonight.md) | Same-day playtest runbook |
 | [`studio-playtest-smoke.md`](studio-playtest-smoke.md) | 5-min Rojo live verification |
+| [`studio-legacy-ui-deletion.md`](studio-legacy-ui-deletion.md) | StarterGui legacy UI deletion checklist |
 | [`legal-publish-checklist.md`](legal-publish-checklist.md) | Public launch — Roblox questionnaire, AI disclosure, monetization |
 | [`git-security.md`](git-security.md) | Secrets, CI checks, branch policy, history scan |
 | [`security-audit.md`](security-audit.md) | Applied server hardening history |

@@ -1,5 +1,6 @@
--- Runs first (000_ prefix): tear down Studio vignette overlays and duplicate post-FX ScreenGuis.
+-- Runs first (000_ prefix): tear down Studio vignette overlays and duplicate ScreenGuis.
 -- Real atmosphere post-processing stays in AtmospherePostFX (Lighting effects).
+-- Matches docs/studio-legacy-ui-deletion.md
 
 local Players = game:GetService("Players")
 
@@ -10,9 +11,39 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local removedCount = 0
 
+local starterShellSet: { [string]: boolean } = {}
+for _, name in ipairs(LegacyGuiConfig.destroyLegacyStarterShells) do
+	starterShellSet[name] = true
+end
+
+local overlayGuiSet: { [string]: boolean } = {}
+for _, name in ipairs(LegacyGuiConfig.destroyScreenGuis) do
+	overlayGuiSet[name] = true
+end
+
 local function logRemoved(label: string)
 	removedCount += 1
 	print("[LegacyOverlayCleanup] Removed:", label)
+end
+
+local function destroyLegacyStarterShell(gui: ScreenGui): boolean
+	if not starterShellSet[gui.Name] then
+		return false
+	end
+	gui.Enabled = false
+	gui:Destroy()
+	logRemoved("ScreenGui " .. gui.Name .. " (Studio legacy shell)")
+	return true
+end
+
+local function destroyOverlayGui(gui: ScreenGui): boolean
+	if not overlayGuiSet[gui.Name] then
+		return false
+	end
+	gui.Enabled = false
+	gui:Destroy()
+	logRemoved("ScreenGui " .. gui.Name)
+	return true
 end
 
 local function destroyNamedDescendants(root: Instance)
@@ -51,7 +82,7 @@ local function destroyHeuristicVignettes(root: Instance)
 			continue
 		end
 		local parentGui = inst:FindFirstAncestorWhichIsA("ScreenGui")
-		if parentGui and table.find(LegacyGuiConfig.destroyScreenGuis, parentGui.Name) then
+		if parentGui and overlayGuiSet[parentGui.Name] then
 			continue
 		end
 		local lower = string.lower(inst.Name)
@@ -63,38 +94,17 @@ local function destroyHeuristicVignettes(root: Instance)
 end
 
 local function cleanupScreenGui(gui: ScreenGui)
-	for _, name in ipairs(LegacyGuiConfig.destroyScreenGuis) do
-		if gui.Name == name then
-			gui.Enabled = false
-			gui:Destroy()
-			logRemoved("ScreenGui " .. gui.Name)
-			return
-		end
+	if destroyOverlayGui(gui) then
+		return
 	end
-
+	if destroyLegacyStarterShell(gui) then
+		return
+	end
 	destroyNamedDescendants(gui)
 	destroyHeuristicVignettes(gui)
 end
 
 local function cleanupPlayerGui()
-	if LegacyGuiConfig.destroyLegacyVnShell then
-		local legacyVn = playerGui:FindFirstChild("ZundaVN")
-		if legacyVn and legacyVn:IsA("ScreenGui") then
-			legacyVn.Enabled = false
-			legacyVn:Destroy()
-			logRemoved("ScreenGui ZundaVN (Studio legacy shell)")
-		end
-	end
-
-	for _, shellName in ipairs(LegacyGuiConfig.destroyLegacyBootstrapShells or {}) do
-		local legacy = playerGui:FindFirstChild(shellName)
-		if legacy and legacy:IsA("ScreenGui") then
-			legacy.Enabled = false
-			legacy:Destroy()
-			logRemoved("ScreenGui " .. shellName .. " (Studio bootstrap duplicate)")
-		end
-	end
-
 	for _, child in ipairs(playerGui:GetChildren()) do
 		if child:IsA("ScreenGui") then
 			cleanupScreenGui(child)
