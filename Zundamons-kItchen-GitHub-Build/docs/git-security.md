@@ -32,8 +32,11 @@ npm run security    # secret scan + git hygiene
 |--------|-----------------|
 | `scripts/check-secrets.mjs` | API keys, Bearer tokens, private key blocks in tracked files |
 | `scripts/check-git-hygiene.mjs` | Place exports, `workspace/` commits, `_G.data[` on server |
+| `scripts/check-remote-sync.mjs` | `RemoteManifest.lua` drift from `default.project.json` |
 
 CI runs these on every PR and push to `main`.
+
+**Optional:** `npm run hooks:install` — pre-push hook runs `npm run security`.
 
 ---
 
@@ -74,6 +77,7 @@ Enable **HttpService** and whitelist `api.deepseek.com` in Game Settings.
 | `plantEvent` | Planter tag + distance + `RemoteRateLimiter` (1.5s) |
 | `BuyDecoration` / `PlaceDecoration` | Catalog whitelist + rate limits |
 | `ZundapalChatSend` | Length, cooldown, TextService filter |
+| `MasterChefChatSend` | Persona locked server-side (`master_chef`); shared LLM cooldown |
 | `RecordNpcChat` | Speaker whitelist + 5s cooldown |
 | Harvest | `HarvestValidator` distance + rate limit |
 

@@ -19,6 +19,8 @@
 
 Zundapal is **not** a general-purpose chatbot in-game — she is a cozy kitchen companion who knows Zunda Village lore, recipes, and the player's name.
 
+**Master Chef Zunda** (🍙) is a separate NPC mentor at the Kitchen Court with its own `master_chef` LLM persona — wise, calm, tier-aware — via `MasterChefZundaServer` and `MasterChefChat*` remotes.
+
 ---
 
 ## 2. Architecture

@@ -22,6 +22,11 @@ RemoteManifest.remoteEvents = {
 	"ZundapalChatError",
 	"ZundapalChatStatus",
 	"RecordNpcChat",
+	"OpenMasterChefVN",
+	"MasterChefChatSend",
+	"MasterChefChatReply",
+	"MasterChefChatError",
+	"MasterChefChatStatus",
 	"ZoneVisited",
 	"PurchaseResult",
 }

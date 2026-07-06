@@ -18,6 +18,8 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | O2 | Migrate QuestScript to UIComponents | OpenCode | pending | opencode/quest-ui-components | QuestScript.client.lua, UIComponents.lua |
 | O3 | Document skybox upload steps for SkyConfig | Cursor | done | cursor/publish-blockers-594f | docs/skybox-upload-guide.md |
 | L3 | LLM chat UX polish (history, streaming) | OpenCode | pending | opencode/zundapal-chat-ui | VNController, ZundapalChat.client |
+| L5 | Master Chef Zunda NPC + LLM mentor persona | Cursor | done | cursor/master-chef-zunda-594f | MasterChefZundaConfig, MasterChefZundaServer, VNController |
+| P3 | Git hooks + remote manifest sync check | Cursor | done | cursor/master-chef-zunda-594f | check-remote-sync.mjs, hooks:install |
 
 ## Status values
 

@@ -13,7 +13,7 @@ return {
 		lines = {
 			"The Zunda Kitchen Court — heart of the village! 🍳",
 			"Gather ingredients, craft recipes, and serve guests to earn gold.",
-			"The market stalls to the east have fresh supplies every day~",
+			"Seek Master Chef Zunda at the stove when you crave mentor's wisdom.",
 		},
 	},
 	Zone_NorthernBridge = {

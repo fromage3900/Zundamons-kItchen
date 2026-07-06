@@ -12,6 +12,8 @@ local Lighting = game:GetService("Lighting")
 
 local VNDialogueData = require(RS.ConfigurationFiles:WaitForChild("VNDialogueData"))
 local CompanionConfig = require(RS.ConfigurationFiles:WaitForChild("CompanionConfig"))
+local MasterChefZundaConfig = require(RS.ConfigurationFiles:WaitForChild("MasterChefZundaConfig"))
+local ProgressionConfig = require(RS.ConfigurationFiles:WaitForChild("ProgressionConfig"))
 local SPEAKERS = VNDialogueData.SPEAKERS
 
 local player = Players.LocalPlayer
@@ -265,6 +267,8 @@ chatExit.BorderSizePixel = 0
 Instance.new("UICorner", chatExit).CornerRadius = UDim.new(0, 8)
 
 local freeChatActive = false
+local freeChatSpeaker = "zundapal"
+local freeChatSubmitFn = nil
 
 local function setChatBarVisible(visible)
 	chatBar.Visible = visible
@@ -281,7 +285,11 @@ local function submitFreeChat()
 		return
 	end
 	chatInput.Text = ""
-	if _G.ZundaPalChat and _G.ZundaPalChat.submit then
+	if freeChatSubmitFn then
+		freeChatSubmitFn(text)
+	elseif freeChatSpeaker == "master_chef" and _G.ZundaMasterChefChat and _G.ZundaMasterChefChat.submit then
+		_G.ZundaMasterChefChat.submit(text)
+	elseif _G.ZundaPalChat and _G.ZundaPalChat.submit then
 		_G.ZundaPalChat.submit(text)
 	end
 end
@@ -532,7 +540,11 @@ end
 --   node = { speaker="key", lines={...}, prompt="?", choices={{text,next},..} }
 local function handleChoicePick(choice)
 	if choice.freeChat then
-		_G.ZundaVN.enterFreeChat()
+		_G.ZundaVN.enterFreeChat({ speaker = "zundapal" })
+		return
+	end
+	if choice.masterChefChat then
+		_G.ZundaVN.enterFreeChat({ speaker = "master_chef" })
 		return
 	end
 	if choice.next then
@@ -615,12 +627,28 @@ _G.ZundaVN = {
 	isOpen = function()
 		return isOpen
 	end,
-	enterFreeChat = function()
+	enterFreeChat = function(opts)
+		opts = opts or {}
 		clearChoices()
 		freeChatActive = true
+		freeChatSpeaker = opts.speaker or "zundapal"
+		freeChatSubmitFn = opts.submit
+		if not freeChatSubmitFn then
+			if freeChatSpeaker == "master_chef" and _G.ZundaMasterChefChat then
+				freeChatSubmitFn = _G.ZundaMasterChefChat.submit
+			elseif _G.ZundaPalChat then
+				freeChatSubmitFn = _G.ZundaPalChat.submit
+			end
+		end
 		openPanel()
-		setSpeaker("zundapal")
-		dlgText.Text = "Free chat mode~ Ask me about recipes, quests, or the village! 🍡"
+		setSpeaker(freeChatSpeaker)
+		if freeChatSpeaker == "master_chef" then
+			chatInput.PlaceholderText = "Ask Master Chef Zunda for guidance…"
+			dlgText.Text = "Speak freely, young chef. Ask about recipes, tiers, or the village. 🍙"
+		else
+			chatInput.PlaceholderText = "Ask Zundapal anything…"
+			dlgText.Text = "Free chat mode~ Ask me about recipes, quests, or the village! 🍡"
+		end
 		typing = false
 		advArrow.Visible = false
 		setChatBarVisible(true)
@@ -630,6 +658,8 @@ _G.ZundaVN = {
 	end,
 	exitFreeChat = function()
 		freeChatActive = false
+		freeChatSpeaker = "zundapal"
+		freeChatSubmitFn = nil
 		setChatBarVisible(false)
 		chatInput.Text = ""
 		closePanel(true)
@@ -646,10 +676,23 @@ _G.ZundaVN = {
 			typeWrite(text)
 		end)
 	end,
-	setThinking = function(thinking)
+	showNpcLine = function(speakerKey, text)
+		setSpeaker(speakerKey or "zundapal")
+		seqIdx = 1
+		seqLines = { text }
+		seqLines._defaultSpeaker = speakerKey or "zundapal"
+		typeThread = task.spawn(function()
+			typeWrite(text)
+		end)
+	end,
+	setThinking = function(thinking, label)
 		if thinking then
 			typing = false
-			dlgText.Text = "Zundapal is thinking… ✨"
+			dlgText.Text = label
+				or (
+					freeChatSpeaker == "master_chef" and "Master Chef Zunda is thinking… 🍙"
+					or "Zundapal is thinking… ✨"
+				)
 			advArrow.Visible = false
 		end
 	end,
@@ -679,6 +722,80 @@ end)
 
 -- ── Event listeners ───────────────────────────────────────────
 local RE = RS:WaitForChild("RemoteEvents")
+
+-- ── BRANCHING MASTER CHEF ZUNDA DIALOGUE TREE ────────────────────
+local function tierNameFor(tier: number): string
+	local milestone = ProgressionConfig.milestones[tier]
+	if milestone then
+		return milestone.name
+	end
+	return "Chef"
+end
+
+local function buildMasterChefTree()
+	local RF = RS:WaitForChild("RemoteFunctions")
+	local data: { [string]: any } = {}
+	pcall(function()
+		data = RF:WaitForChild("RequestData"):InvokeServer() or {}
+	end)
+	local tier = data.tier or 1
+	local guests = data.guests_served or 0
+	local tierLabel = tierNameFor(tier)
+
+	local leafEnd = {
+		speaker = "master_chef",
+		lines = {
+			{ speaker = "master_chef", text = "Return when you hunger for more wisdom, " .. player.Name .. ". 🍙" },
+		},
+	}
+
+	local recipeNode = {
+		speaker = "master_chef",
+		lines = {
+			{ speaker = "master_chef", text = MasterChefZundaConfig.recipeTips.ZundaMochi },
+			{ speaker = "master_chef", text = "Perfect timing separates good cooks from legends." },
+		},
+		prompt = "Another recipe?",
+		choices = {
+			{
+				text = "Tell me about Zunda Paradise",
+				next = {
+					speaker = "master_chef",
+					lines = {
+						{ speaker = "master_chef", text = MasterChefZundaConfig.recipeTips.ZundaParadise },
+					},
+				},
+			},
+			{ text = "That's enough for now", next = leafEnd },
+		},
+	}
+
+	return {
+		speaker = "master_chef",
+		lines = {
+			{ speaker = "narrator", text = "[ Master Chef Zunda sets down his ladle and nods. ]" },
+			{ speaker = "master_chef", text = MasterChefZundaConfig.greetingForTier(tier, player.Name) },
+			{
+				speaker = "master_chef",
+				text = "You stand as " .. tierLabel .. " — " .. tostring(guests) .. " guests served.",
+			},
+			{ speaker = "master_chef", text = MasterChefZundaConfig.adviceForTier(tier, player.Name) },
+		},
+		prompt = "How may I guide you?",
+		choices = {
+			{ text = "Recipe wisdom 🍳", next = recipeNode },
+			{ text = "Ask freely (mentor chat) 🍙", masterChefChat = true },
+			{ text = "Farewell", next = leafEnd },
+		},
+	}
+end
+
+RE:WaitForChild("OpenMasterChefVN").OnClientEvent:Connect(function()
+	if isOpen then
+		closePanel(true)
+	end
+	_G.ZundaVN.showBranching(buildMasterChefTree())
+end)
 
 -- ── BRANCHING ZUNDAPAL DIALOGUE TREE ─────────────────────────────
 local function buildCompanionTree()

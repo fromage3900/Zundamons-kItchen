@@ -36,7 +36,7 @@ sendEv.OnServerEvent:Connect(function(player: Player, message: any)
 	statusEv:FireClient(player, "thinking")
 
 	task.spawn(function()
-		local ok, text, reason = ZundapalLLMService.chat(player, message)
+		local ok, text, reason = ZundapalLLMService.chat(player, message, "zundapal")
 		statusEv:FireClient(player, "ready")
 
 		if ok then

@@ -6,6 +6,12 @@ local RGB = Color3.fromRGB
 local SPEAKERS = {
 	zundamon = { name = "Zundamon", emoji = "🍙", accent = RGB(120, 200, 130), portrait = RGB(45, 90, 50) },
 	zundapal = { name = "Zundapal", emoji = "🍡", accent = RGB(150, 230, 160), portrait = RGB(35, 90, 45) },
+	master_chef = {
+		name = "Master Chef Zunda",
+		emoji = "🍙",
+		accent = RGB(200, 165, 90),
+		portrait = RGB(72, 48, 28),
+	},
 	narrator = { name = "", emoji = "✨", accent = RGB(160, 145, 225), portrait = RGB(28, 18, 55) },
 	elder = { name = "Village Elder", emoji = "🏮", accent = RGB(225, 185, 100), portrait = RGB(95, 55, 18) },
 	ruins = { name = "Ancient Voice", emoji = "👁", accent = RGB(170, 140, 230), portrait = RGB(22, 14, 48) },

@@ -26,15 +26,7 @@ In Studio:
 3. Confirm Output shows `[ROJO SYNC OK]`
 4. Play solo — no red errors in Output
 
-**Branches to merge before publish (if not on main):**
-
-| Branch | Contains |
-|--------|----------|
-| `cursor/quest-vn-review-594f` | QuestConfig wiring, VN fixes |
-| `cursor/zundapal-llm-594f` | LLM chat, companion integration |
-| `cursor/publish-blockers-594f` | Planters fix, planting menu, decoration shop |
-
----
+**Branches:** All publish work is on `main` as of July 2026. Pull `main` before Rojo sync.
 
 ## 2. Studio secrets & services (10 min)
 
@@ -59,6 +51,7 @@ These are **not in git**. Verify in the published place:
 | Decoration models | `ServerStorage.Decorations.*` (11 model names in `DecorationConfig`) | Decoration shop |
 | Tagged planters | `CollectionService` tags `Planter` on planter parts | Planting |
 | Plantable templates | `CollectionService` tag `Plantable` on seed models in ServerStorage | Planting |
+| Master Chef Zunda NPC | `CollectionService` tag `MasterChefZunda` + ClickDetector in Kitchen | Mentor VN + LLM |
 | Gather nodes | `GameplayLoopArea.GatheringNodes` | Zunda gather loop |
 | Plot signs | `PlotConfig` centers match world | Claim plot |
 
@@ -77,11 +70,12 @@ Run each flow once before publish:
 | 3 | Craft + serve | Guest served; gold/XP updates |
 | 4 | Quest board | Active quests show progress |
 | 5 | Zone lore NPC | VN opens; `npc_chats` increments (elder/ruins/chef) |
-| 6 | Companion click | VN tree or free chat; sparkles on LLM thinking |
-| 7 | Planting | Click empty planter with seeds → menu → plant grows |
-| 8 | Decoration shop (H) | Buy with gold → place on owned plot |
-| 9 | Claim plot | `ClaimPlot` remote when guest milestone met |
-| 10 | Companion shop (K) | Equip free companion |
+| 6 | Companion click | VN tree or Zundapal free chat; sparkles on LLM thinking |
+| 7 | Master Chef Zunda | Click tagged NPC → tier-aware VN → mentor LLM chat |
+| 8 | Planting | Click empty planter with seeds → menu → plant grows |
+| 9 | Decoration shop (H) | Buy with gold → place on owned plot |
+| 10 | Claim plot | `ClaimPlot` when guest milestone met |
+| 11 | Companion shop (K) | Equip free companion |
 
 ---
 

@@ -1,5 +1,5 @@
 --!strict
--- ZundapalLLMService: server-side LLM proxy for Zundapal free chat.
+-- ZundapalLLMService: server-side LLM proxy for Zundapal and Master Chef Zunda personas.
 
 local HttpService = game:GetService("HttpService")
 local ServerStorage = game:GetService("ServerStorage")
@@ -15,12 +15,30 @@ export type ChatMessage = {
 	content: string,
 }
 
-local sessions: { [number]: { ChatMessage } } = {}
+local sessions: { [string]: { ChatMessage } } = {}
 local sessionMeta: { [number]: { lastAction: string?, lastPayload: { [string]: any }? } } = {}
 local lastSendAt: { [number]: number } = {}
 local cachedApiKey: string? = nil
 
 local ZundapalLLMService = {}
+
+local function sessionKey(userId: number, personaKey: string): string
+	return tostring(userId) .. ":" .. personaKey
+end
+
+local function getPersonaDef(personaKey: string)
+	local personas = Config.personas
+	if personas and personas[personaKey] then
+		return personas[personaKey]
+	end
+	if personas and personas.zundapal then
+		return personas.zundapal
+	end
+	return {
+		systemPrompt = Config.systemPrompt or "",
+		fallbackReplies = Config.fallbackReplies or { "..." },
+	}
+end
 
 local function getApiKey(): string?
 	if cachedApiKey and cachedApiKey ~= "" then
@@ -49,8 +67,8 @@ local function filterForPlayer(text: string, userId: number): string?
 	return nil
 end
 
-local function trimHistory(userId: number)
-	local history = sessions[userId]
+local function trimHistory(key: string)
+	local history = sessions[key]
 	if not history then
 		return
 	end
@@ -59,8 +77,9 @@ local function trimHistory(userId: number)
 	end
 end
 
-local function pickFallback(playerName: string): string
-	local options = Config.fallbackReplies
+local function pickFallback(playerName: string, personaKey: string): string
+	local def = getPersonaDef(personaKey)
+	local options = def.fallbackReplies or Config.fallbackReplies
 	local template = options[math.random(1, #options)]
 	return string.gsub(template, "{playerName}", playerName or "Chef")
 end
@@ -76,14 +95,16 @@ local function getWorldEnv(userId: number): { [string]: any }
 	}
 end
 
-local function buildMessages(player: Player, userText: string): { ChatMessage }
+local function buildMessages(player: Player, userText: string, personaKey: string): { ChatMessage }
 	local userId = player.UserId
-	if not sessions[userId] then
-		sessions[userId] = {}
+	local key = sessionKey(userId, personaKey)
+	if not sessions[key] then
+		sessions[key] = {}
 	end
-	local history = sessions[userId]
+	local history = sessions[key]
+	local persona = getPersonaDef(personaKey)
 
-	local systemContent = Config.systemPrompt
+	local systemContent = persona.systemPrompt
 		.. "\n\nThe player's Roblox display name is: "
 		.. player.Name
 		.. ". Address them warmly by name when natural."
@@ -92,15 +113,16 @@ local function buildMessages(player: Player, userText: string): { ChatMessage }
 		local data = PlayerDataService.get(player) or PlayerDataService.getOrCreate(player)
 		local snapshot = ContextBuilder.buildSnapshot(data, getWorldEnv(userId))
 		systemContent = systemContent .. "\n\n" .. ContextBuilder.formatForPrompt(snapshot, player.Name)
-		local companionDef = CompanionConfig.getCompanion(data.active_companion or "zundamon")
-		if companionDef.llmPersona then
-			systemContent = systemContent .. "\n" .. companionDef.llmPersona
+		if personaKey == "zundapal" then
+			local companionDef = CompanionConfig.getCompanion(data.active_companion or "zundamon")
+			if companionDef.llmPersona then
+				systemContent = systemContent .. "\n" .. companionDef.llmPersona
+			end
 		end
 	end
 
 	table.insert(history, { role = "user", content = userText })
-
-	trimHistory(userId)
+	trimHistory(key)
 
 	local messages: { ChatMessage } = { { role = "system", content = systemContent } }
 	for _, msg in ipairs(history) do
@@ -145,7 +167,11 @@ function ZundapalLLMService.checkCooldown(userId: number): (boolean, number?)
 end
 
 function ZundapalLLMService.clearSession(userId: number)
-	sessions[userId] = nil
+	for key in pairs(sessions) do
+		if string.sub(key, 1, #tostring(userId) + 1) == tostring(userId) .. ":" then
+			sessions[key] = nil
+		end
+	end
 	sessionMeta[userId] = nil
 	lastSendAt[userId] = nil
 end
@@ -162,18 +188,27 @@ function ZundapalLLMService.buildSnapshotForPlayer(player: Player)
 	return ContextBuilder.buildSnapshot(data, getWorldEnv(player.UserId))
 end
 
-function ZundapalLLMService.chat(player: Player, rawMessage: string): (boolean, string, string?)
+function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey: string?): (boolean, string, string?)
+	personaKey = personaKey or "zundapal"
+	if not Config.personas or not Config.personas[personaKey] then
+		personaKey = "zundapal"
+	end
+
 	if not ZundapalLLMService.isEnabled() then
-		return false, pickFallback(player.Name), "disabled"
+		return false, pickFallback(player.Name, personaKey), "disabled"
 	end
 
 	local message = string.gsub(rawMessage, "^%s+", "")
 	message = string.gsub(message, "%s+$", "")
 	if message == "" then
-		return false, "Say something and I'll listen~ 🍡", "empty"
+		local emptyMsg = personaKey == "master_chef" and "Speak, young chef — I am listening. 🍙"
+			or "Say something and I'll listen~ 🍡"
+		return false, emptyMsg, "empty"
 	end
 	if #message > Config.maxInputChars then
-		return false, "That message is a little long~ Try a shorter question! ✨", "too_long"
+		local longMsg = personaKey == "master_chef" and "Keep your question brief, chef — wisdom favors clarity."
+			or "That message is a little long~ Try a shorter question! ✨"
+		return false, longMsg, "too_long"
 	end
 
 	local okCooldown, waitSec = ZundapalLLMService.checkCooldown(player.UserId)
@@ -183,25 +218,25 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string): (boolean, 
 
 	local filteredInput = filterForPlayer(message, player.UserId)
 	if not filteredInput then
-		return false, "I couldn't read that message~ Try different words? 🍡", "filtered"
+		return false, "I couldn't read that message~ Try different words?", "filtered"
 	end
 
 	local apiKey = getApiKey()
 	if not apiKey then
 		warn("[ZundapalLLM] No ApiKey in ServerStorage." .. Config.secretsFolderName)
-		return false, pickFallback(player.Name), "no_key"
+		return false, pickFallback(player.Name, personaKey), "no_key"
 	end
 
 	local provider = Config.provider
 	local endpoint = Config.endpoints[provider]
 	local model = Config.models[provider]
 	if not endpoint or not model then
-		return false, pickFallback(player.Name), "bad_config"
+		return false, pickFallback(player.Name, personaKey), "bad_config"
 	end
 
 	lastSendAt[player.UserId] = os.clock()
 
-	local messages = buildMessages(player, filteredInput)
+	local messages = buildMessages(player, filteredInput, personaKey)
 	local requestBody = HttpService:JSONEncode({
 		model = model,
 		messages = messages,
@@ -223,27 +258,28 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string): (boolean, 
 
 	if not success or not response then
 		warn("[ZundapalLLM] Request failed:", response)
-		return false, pickFallback(player.Name), "http_error"
+		return false, pickFallback(player.Name, personaKey), "http_error"
 	end
 
 	if response.StatusCode < 200 or response.StatusCode >= 300 then
 		warn("[ZundapalLLM] HTTP", response.StatusCode, response.Body)
-		return false, pickFallback(player.Name), "http_status"
+		return false, pickFallback(player.Name, personaKey), "http_status"
 	end
 
 	local assistantText = parseAssistantText(response.Body)
 	if not assistantText then
-		return false, pickFallback(player.Name), "parse_error"
+		return false, pickFallback(player.Name, personaKey), "parse_error"
 	end
 
 	if #assistantText > Config.maxOutputChars then
 		assistantText = string.sub(assistantText, 1, Config.maxOutputChars) .. "…"
 	end
 
-	local history = sessions[player.UserId]
+	local key = sessionKey(player.UserId, personaKey)
+	local history = sessions[key]
 	if history then
 		table.insert(history, { role = "assistant", content = assistantText })
-		trimHistory(player.UserId)
+		trimHistory(key)
 	end
 
 	return true, assistantText, nil

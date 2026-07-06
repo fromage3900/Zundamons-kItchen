@@ -27,7 +27,12 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `ZundapalChatReply` | S→C | `{ text, speaker?, fallback? }` | `ZundapalChatServer.server.lua` | N/A |
 | `ZundapalChatError` | S→C | `(message: string)` | `ZundapalChatServer.server.lua` | N/A |
 | `ZundapalChatStatus` | S→C | `"thinking" \| "ready"` | `ZundapalChatServer.server.lua` | N/A |
-| `RecordNpcChat` | C→S | `(speakerKey: "elder" \| "ruins" \| "chef")` | `CompanionInteractionServer.server.lua` | Whitelist via `CompanionConfig.npcSpeakers`, 5s cooldown |
+| `RecordNpcChat` | C→S | `(speakerKey: "elder" \| "ruins" \| "chef" \| "master_chef")` | `CompanionInteractionServer.server.lua` | Whitelist via `CompanionConfig.npcSpeakers`, 5s cooldown |
+| `OpenMasterChefVN` | S→C | — | `MasterChefZundaServer.server.lua` | NPC click + distance |
+| `MasterChefChatSend` | C→S | `(message: string)` | `MasterChefZundaServer.server.lua` | Same validation as Zundapal LLM |
+| `MasterChefChatReply` | S→C | `{ text, speaker?, fallback? }` | `MasterChefZundaServer.server.lua` | N/A |
+| `MasterChefChatError` | S→C | `(message: string)` | `MasterChefZundaServer.server.lua` | N/A |
+| `MasterChefChatStatus` | S→C | `"thinking" \| "ready"` | `MasterChefZundaServer.server.lua` | N/A |
 | `ZoneVisited` | C→S | `(zoneName: string)` | `ZoneVisitServer.server.lua` | Mapped via `ZoneVisitConfig` |
 
 ---

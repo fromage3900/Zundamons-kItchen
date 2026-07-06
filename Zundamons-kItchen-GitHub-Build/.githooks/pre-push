@@ -1,0 +1,5 @@
+#!/bin/sh
+# Run security checks before push. Install: npm run hooks:install
+set -e
+cd "$(git rev-parse --show-toplevel)/Zundamons-kItchen-GitHub-Build"
+npm run security

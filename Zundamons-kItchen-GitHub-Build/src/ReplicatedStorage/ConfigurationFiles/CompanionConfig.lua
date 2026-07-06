@@ -17,6 +17,7 @@ CompanionConfig.npcSpeakers = {
 	elder = "Elder",
 	ruins = "AncientRuins",
 	chef = "Head Chef",
+	master_chef = "MasterChefZunda",
 }
 
 CompanionConfig.companions = {

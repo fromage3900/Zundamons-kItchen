@@ -30,6 +30,11 @@
 		"ZundapalChatError": { "$className": "RemoteEvent" },
 		"ZundapalChatStatus": { "$className": "RemoteEvent" },
 		"RecordNpcChat": { "$className": "RemoteEvent" },
+		"OpenMasterChefVN": { "$className": "RemoteEvent" },
+		"MasterChefChatSend": { "$className": "RemoteEvent" },
+		"MasterChefChatReply": { "$className": "RemoteEvent" },
+		"MasterChefChatError": { "$className": "RemoteEvent" },
+		"MasterChefChatStatus": { "$className": "RemoteEvent" },
 		"ZoneVisited": { "$className": "RemoteEvent" },
         "PurchaseResult": { "$className": "RemoteEvent" }
       },
