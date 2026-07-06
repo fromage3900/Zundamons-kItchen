@@ -9,7 +9,8 @@
     "lint:stylua": "npx stylua-bin --check src",
     "lint:selene": "node scripts/lint-selene.mjs",
     "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
-    "rojo:serve": "rojo serve default.project.json"
+    "rojo:serve": "node scripts/rojo-serve.mjs",
+    "rojo:stop": "node scripts/rojo-stop.mjs"
   },
   "devDependencies": {
     "@johnnymorganz/stylua-bin": "2.5.2",
