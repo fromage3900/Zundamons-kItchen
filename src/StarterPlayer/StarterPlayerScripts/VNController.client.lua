@@ -20,7 +20,9 @@ local function RGB(r: number, g: number, b: number): Color3
 end
 
 local player = Players.LocalPlayer
-local gui    = script.Parent
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+local playerGui = player:WaitForChild("PlayerGui")
+local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaVNGui", 40)
 
 local UIHelper = require(RS.Shared.Modules.UIHelper)
 
@@ -192,6 +194,92 @@ choiceLayout.FillDirection = Enum.FillDirection.Vertical
 choiceLayout.Padding = UDim.new(0, 6)
 choiceLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 
+-- Free chat bar (LLM mode)
+local chatBar = Instance.new("Frame", panel)
+chatBar.Name = "ChatBar"
+chatBar.Size = UDim2.new(1, -(PORT_W + 50), 0, 36)
+chatBar.Position = UDim2.new(0, PORT_W + 8, 1, -8)
+chatBar.AnchorPoint = Vector2.new(0, 1)
+chatBar.BackgroundTransparency = 1
+chatBar.Visible = false
+chatBar.ZIndex = 17
+
+local chatInput = Instance.new("TextBox", chatBar)
+chatInput.Name = "ChatInput"
+chatInput.Size = UDim2.new(1, -118, 1, 0)
+chatInput.BackgroundColor3 = Color3.fromRGB(255, 252, 245)
+chatInput.TextColor3 = C_text
+chatInput.PlaceholderText = "Ask Zundapal anything…"
+chatInput.PlaceholderColor3 = C_textLight
+chatInput.Font = Enum.Font.Gotham
+chatInput.TextSize = 14
+chatInput.ClearTextOnFocus = false
+chatInput.BorderSizePixel = 0
+Instance.new("UICorner", chatInput).CornerRadius = UDim.new(0, 8)
+local chatInputStroke = Instance.new("UIStroke", chatInput)
+chatInputStroke.Color = C_border
+chatInputStroke.Thickness = 1.5
+
+local chatSend = Instance.new("TextButton", chatBar)
+chatSend.Name = "Send"
+chatSend.Size = UDim2.new(0, 52, 1, 0)
+chatSend.Position = UDim2.new(1, -52, 0, 0)
+chatSend.BackgroundColor3 = Color3.fromRGB(160, 210, 150)
+chatSend.Text = "Send"
+chatSend.Font = Enum.Font.GothamBold
+chatSend.TextSize = 13
+chatSend.TextColor3 = C_text
+chatSend.BorderSizePixel = 0
+Instance.new("UICorner", chatSend).CornerRadius = UDim.new(0, 8)
+
+local chatExit = Instance.new("TextButton", chatBar)
+chatExit.Name = "ExitChat"
+chatExit.Size = UDim2.new(0, 58, 1, 0)
+chatExit.Position = UDim2.new(1, -118, 0, 0)
+chatExit.BackgroundColor3 = C_close
+chatExit.Text = "Back"
+chatExit.Font = Enum.Font.GothamBold
+chatExit.TextSize = 12
+chatExit.TextColor3 = Color3.fromRGB(255, 255, 255)
+chatExit.BorderSizePixel = 0
+Instance.new("UICorner", chatExit).CornerRadius = UDim.new(0, 8)
+
+local freeChatActive = false
+
+local function setChatBarVisible(visible: boolean)
+	chatBar.Visible = visible
+	advBtn.Visible = not visible
+	if not visible then
+		advArrow.Visible = false
+	end
+end
+
+local function submitFreeChat()
+	if not freeChatActive then
+		return
+	end
+	local text = chatInput.Text
+	if text == "" then
+		return
+	end
+	chatInput.Text = ""
+	if _G.ZundaPalChat and _G.ZundaPalChat.submit then
+		_G.ZundaPalChat.submit(text)
+	end
+end
+
+chatSend.MouseButton1Click:Connect(submitFreeChat)
+chatInput.FocusLost:Connect(function(enter)
+	if enter and freeChatActive then
+		submitFreeChat()
+	end
+end)
+chatExit.MouseButton1Click:Connect(function()
+	if _G.ZundaVN and _G.ZundaVN.exitFreeChat then
+		_G.ZundaVN.exitFreeChat()
+	end
+end)
+
 local function setSpeaker(key)
     local sp = SPEAKERS[key] or SPEAKERS.zundamon
     pEmoji.Text = sp.emoji
@@ -221,6 +309,11 @@ end
 --   pass force=true to ALSO drop any queued sequences so the panel really stays
 --   closed. Otherwise the next queued sequence will play after the close tween.
 local function closePanel(force)
+    if freeChatActive then
+        setChatBarVisible(false)
+        freeChatActive = false
+        chatInput.Text = ""
+    end
     isOpen = false
     typing = false
     if typeThread then
@@ -362,6 +455,10 @@ showChoicesUI = function(choices, onPick)
         end)
         btn.MouseButton1Click:Connect(function()
             clearChoices()
+            if c.freeChat and _G.ZundaVN and _G.ZundaVN.enterFreeChat then
+                _G.ZundaVN.enterFreeChat()
+                return
+            end
             if onPick then pcall(onPick, i, c) end
         end)
         h = h + 34
@@ -431,6 +528,49 @@ _G.ZundaVN = {
         if isOpen then closePanel(true) end
     end,
     isOpen = function() return isOpen end,
+    enterFreeChat = function()
+        freeChatActive = true
+        openPanel()
+        setSpeaker("zundapal")
+        dlgText.Text = "Free chat mode~ Ask me about recipes, quests, or the village! 🍡"
+        typing = false
+        advArrow.Visible = false
+        setChatBarVisible(true)
+        task.defer(function()
+            chatInput:CaptureFocus()
+        end)
+    end,
+    exitFreeChat = function()
+        freeChatActive = false
+        setChatBarVisible(false)
+        chatInput.Text = ""
+        closePanel(true)
+    end,
+    isFreeChat = function()
+        return freeChatActive
+    end,
+    showCompanionLine = function(text)
+        if not isOpen then
+            openPanel()
+        end
+        setSpeaker("zundapal")
+        seqIdx = 1
+        seqLines = { text }
+        seqLines._defaultSpeaker = "zundapal"
+        if typeThread then
+            pcall(task.cancel, typeThread)
+        end
+        typeThread = task.spawn(function()
+            typeWrite(text)
+        end)
+    end,
+    setThinking = function(thinking)
+        if thinking then
+            typing = false
+            dlgText.Text = "Zundapal is thinking… ✨"
+            advArrow.Visible = false
+        end
+    end,
 }
 
 -- ── Input handlers ────────────────────────────────────────────
@@ -559,6 +699,7 @@ local function buildCompanionTree()
                     {speaker="zundapal", text="It’s really nice to see your face today, "..player.Name.."."},
                 },
             }},
+            {text="Just chat freely with me \u{1F4AC}", freeChat = true},
             {text="Bye for now",                       next=leafEnd},
         },
     }
