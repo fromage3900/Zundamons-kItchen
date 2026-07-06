@@ -3,7 +3,7 @@
   "mcp": {
     "roblox-studio": {
       "type": "local",
-      "command": ["cmd.exe", "/c", "%LOCALAPPDATA%\\Roblox\\mcp.bat"],
+      "command": ["npx", "-y", "robloxstudio-mcp@latest"],
       "enabled": true,
       "description": "Roblox Studio MCP — read/edit scripts, generate meshes/materials, run Luau, control play mode"
     },
