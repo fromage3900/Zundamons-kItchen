@@ -45,6 +45,8 @@ Explorer → **StarterGui** → delete each row:
 
 **Do not delete yet:** `ZundaHUD`, `CraftingPanel`, `DataGUI`, `SellLoot`
 
+**Also delete duplicate LocalScripts** inside any remaining StarterGui if Rojo already syncs the same script to `PlayerScripts` (you will see double `[ZundaPouch] Ready` / `Hello world!` in Output).
+
 ---
 
 ## Save and publish

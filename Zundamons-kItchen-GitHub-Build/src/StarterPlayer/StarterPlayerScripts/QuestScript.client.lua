@@ -3,7 +3,7 @@ local Players=game:GetService("Players"); local RS=game:GetService("ReplicatedSt
 local Tween=game:GetService("TweenService"); local UIS=game:GetService("UserInputService")
 local player=Players.LocalPlayer
 local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
-local gui=ClientGuiBootstrap.createScreenGui(player, "QuestPanel", 24)
+local gui=ClientGuiBootstrap.createScreenGui(player, "QuestPanelGui", 24)
 local RE=RS:WaitForChild("RemoteEvents"); local ev=RE:WaitForChild("UpdateQuests",15)
 local C={bg=Color3.fromRGB(252,248,240),border=Color3.fromRGB(130,195,120),
          text=Color3.fromRGB(68,52,78),sub=Color3.fromRGB(140,120,140),

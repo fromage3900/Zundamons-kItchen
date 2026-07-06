@@ -40,8 +40,8 @@ In place `108617605497926`, delete from **StarterGui**:
 | `DecorationShopGui` | `DecorationShop.client.lua` |
 | `PlantingMenuGui` | `PlantingMenu.client.lua` |
 | `CompanionShopGui` | `CompanionShopScript.client.lua` |
-| `ZundaPouch` | `PouchScript.client.lua` |
-| `QuestPanel` | `QuestScript.client.lua` |
+| `ZundaPouchGui` | `PouchScript.client.lua` |
+| `QuestPanelGui` | `QuestScript.client.lua` |
 | `ZundaShopGui` | `StoreScript.client.lua` |
 | `HarvestProgressGui` | `HarvestController.client.lua` |
 | `CookingMinigame` | `TimedCookingScript.client.lua` |

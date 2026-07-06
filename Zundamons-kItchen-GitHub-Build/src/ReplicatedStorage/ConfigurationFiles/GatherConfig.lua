@@ -13,7 +13,7 @@ local GatherConfig = {}
 
 -- ResourceType attribute on BasePart + ClickDetector → instant click harvest (ZundaGatherServer).
 -- Do NOT duplicate these as Mineable tool nodes — use one path per resource.
-GatherConfig.clickResources: { [string]: ClickResource } = {
+GatherConfig.clickResources = {
 	ZundaFlower = {
 		itemName = "Zunda Flower",
 		defaultYield = 3,

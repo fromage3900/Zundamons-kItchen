@@ -17,6 +17,10 @@ local ProgressionConfig = require(RS.ConfigurationFiles:WaitForChild("Progressio
 local SkyConfig = require(RS.ConfigurationFiles:WaitForChild("SkyConfig"))
 local SPEAKERS = VNDialogueData.SPEAKERS
 
+local function RGB(r: number, g: number, b: number): Color3
+	return Color3.fromRGB(r, g, b)
+end
+
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 

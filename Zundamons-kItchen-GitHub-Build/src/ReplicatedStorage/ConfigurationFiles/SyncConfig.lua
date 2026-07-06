@@ -2,6 +2,6 @@
 -- Bump `label` when verifying a fresh sync after git pull.
 
 return {
-	label = "main-2026-07-06-legacy-ui-deletion",
+	label = "main-2026-07-06-ui-fixes",
 	experienceId = "108617605497926",
 }

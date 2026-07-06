@@ -111,8 +111,8 @@ end
 task.spawn(function()
     task.wait(2) -- Wait for UI to load
     
-    -- Apply to ZundaPouch panel
-    local pouchGui = playerGui:FindFirstChild("ZundaPouch")
+    -- Apply to ZundaPouch panel (Rojo or legacy name)
+    local pouchGui = playerGui:FindFirstChild("ZundaPouchGui") or playerGui:FindFirstChild("ZundaPouch")
     if pouchGui then
         local panel = pouchGui:FindFirstChild("Panel")
         if panel then
@@ -121,8 +121,8 @@ task.spawn(function()
         end
     end
     
-    -- Apply to QuestPanel
-    local questGui = playerGui:FindFirstChild("QuestPanel")
+    -- Apply to QuestPanel (Rojo or legacy name)
+    local questGui = playerGui:FindFirstChild("QuestPanelGui") or playerGui:FindFirstChild("QuestPanel")
     if questGui then
         local panel = questGui:FindFirstChild("Panel")
         if panel then
