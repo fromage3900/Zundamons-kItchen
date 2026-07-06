@@ -9,7 +9,7 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 - [x] Zone visit tracking wired to quests
 - [x] `QuestManager` reads `QuestConfig` via `QuestProgress`
 - [x] Zundapal LLM free chat Phase 1 (server proxy + VN UI)
-- [ ] Zundapal LLM Phase 2: player context injection
+- [x] Zundapal LLM Phase 2: player context + proactive hints (NotifyAction)
 
 ## Priority 1: Hardening & Stabilization
 

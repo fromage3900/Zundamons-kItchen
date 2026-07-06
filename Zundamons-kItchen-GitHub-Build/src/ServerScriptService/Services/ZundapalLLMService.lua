@@ -6,6 +6,8 @@ local ServerStorage = game:GetService("ServerStorage")
 local TextService = game:GetService("TextService")
 
 local Config = require(game.ReplicatedStorage.ConfigurationFiles.ZundapalLLMConfig)
+local ContextBuilder = require(game.ReplicatedStorage.ConfigurationFiles.ZundapalContextBuilder)
+local PlayerDataService = require(script.Parent.PlayerDataService)
 
 export type ChatMessage = {
 	role: string,
@@ -13,6 +15,7 @@ export type ChatMessage = {
 }
 
 local sessions: { [number]: { ChatMessage } } = {}
+local sessionMeta: { [number]: { lastAction: string?, lastPayload: { [string]: any }? } } = {}
 local lastSendAt: { [number]: number } = {}
 local cachedApiKey: string? = nil
 
@@ -61,7 +64,19 @@ local function pickFallback(playerName: string): string
 	return string.gsub(template, "{playerName}", playerName or "Chef")
 end
 
-local function buildMessages(userId: number, playerName: string, userText: string): { ChatMessage }
+local function getWorldEnv(userId: number): { [string]: any }
+	local Lighting = game:GetService("Lighting")
+	local meta = sessionMeta[userId]
+	return {
+		hour = Lighting:GetAttribute("CurrentHour"),
+		weather = workspace:GetAttribute("CurrentWeather") or Lighting:GetAttribute("CurrentWeather"),
+		lastAction = meta and meta.lastAction,
+		lastPayload = meta and meta.lastPayload,
+	}
+end
+
+local function buildMessages(player: Player, userText: string): { ChatMessage }
+	local userId = player.UserId
 	if not sessions[userId] then
 		sessions[userId] = {}
 	end
@@ -69,8 +84,14 @@ local function buildMessages(userId: number, playerName: string, userText: strin
 
 	local systemContent = Config.systemPrompt
 		.. "\n\nThe player's Roblox display name is: "
-		.. playerName
+		.. player.Name
 		.. ". Address them warmly by name when natural."
+
+	if Config.injectPlayerContext then
+		local data = PlayerDataService.get(player) or PlayerDataService.getOrCreate(player)
+		local snapshot = ContextBuilder.buildSnapshot(data, getWorldEnv(userId))
+		systemContent = systemContent .. "\n\n" .. ContextBuilder.formatForPrompt(snapshot, player.Name)
+	end
 
 	table.insert(history, { role = "user", content = userText })
 
@@ -120,7 +141,20 @@ end
 
 function ZundapalLLMService.clearSession(userId: number)
 	sessions[userId] = nil
+	sessionMeta[userId] = nil
 	lastSendAt[userId] = nil
+end
+
+function ZundapalLLMService.recordGameplayEvent(userId: number, action: string, payload: { [string]: any }?)
+	sessionMeta[userId] = {
+		lastAction = action,
+		lastPayload = payload,
+	}
+end
+
+function ZundapalLLMService.buildSnapshotForPlayer(player: Player)
+	local data = PlayerDataService.get(player) or PlayerDataService.getOrCreate(player)
+	return ContextBuilder.buildSnapshot(data, getWorldEnv(player.UserId))
 end
 
 function ZundapalLLMService.chat(player: Player, rawMessage: string): (boolean, string, string?)
@@ -162,7 +196,7 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string): (boolean, 
 
 	lastSendAt[player.UserId] = os.clock()
 
-	local messages = buildMessages(player.UserId, player.Name, filteredInput)
+	local messages = buildMessages(player, filteredInput)
 	local requestBody = HttpService:JSONEncode({
 		model = model,
 		messages = messages,

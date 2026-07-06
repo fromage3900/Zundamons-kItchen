@@ -67,4 +67,4 @@ Players.PlayerRemoving:Connect(function(player)
 	ZundapalLLMService.clearSession(player.UserId)
 end)
 
-print("[ZundapalChatServer] Ready — LLM free chat via ZundapalChatSend/Reply")
+print("[ZundapalChatServer] Ready — LLM free chat with live PlayerData/Quest context")

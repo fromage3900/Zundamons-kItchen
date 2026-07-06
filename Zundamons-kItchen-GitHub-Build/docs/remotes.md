@@ -10,7 +10,7 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 
 | Name | Direction | Payload | Handler | Validation |
 |------|-----------|---------|---------|------------|
-| `NotifyPlayer` | S→C | `(kind, message)` | Multiple servers fire | N/A |
+| `NotifyPlayer` | S→C | `(kind, message)` | Multiple servers fire | N/A — kinds include `zundapal` for proactive LLM hints |
 | `UpdateQuests` | S→C | `(quests, progress)` | `QuestManager.server.lua` | N/A |
 | `QuestCompleted` | S→C | quest table | `QuestManager.server.lua` | N/A |
 | `PurchaseCompanion` | C→S | `(compType: string)` | `CompanionShopServer.server.lua` | Catalog + ownership check |

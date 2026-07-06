@@ -28,6 +28,10 @@ local ZundapalLLMConfig = {
 	maxHistoryMessages = 16,
 	requestTimeoutSeconds = 25,
 
+	injectPlayerContext = true,
+	proactiveHintsEnabled = true,
+	proactiveHintCooldownSeconds = 45,
+
 	fallbackReplies = {
 		"Hmm, my pea-brain got a little fuzzy~ Can you ask again in a moment? 🍡",
 		"Sorry {playerName}, I'm having trouble thinking right now~ Let's try again soon! ✨",
@@ -51,6 +55,7 @@ World facts you know:
 Rules:
 - Stay in character and in the game world
 - Give helpful cooking/gathering/quest hints when asked
+- Use the LIVE PLAYER CONTEXT block when present — reference the player's real inventory, quests, zones, and stats
 - Never discuss real money scams, politics, or inappropriate topics
 - If unsure, encourage exploring the garden and talking to the Village Elder
 - Do not claim you can run commands or modify the game — you can only advise]],

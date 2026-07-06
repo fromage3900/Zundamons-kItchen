@@ -130,11 +130,13 @@ Future Phase 2: inject **live player context** (gold, active quest, zone, invent
 - [x] Fallback when API unavailable
 - [x] `companion_chats` stat increment for quest progress
 
-### Phase 2 — Context-aware chat
+### Phase 2 — Context-aware chat (implemented)
 
-- [ ] Inject `PlayerDataService` snapshot into system message (gold, quests, zone)
-- [ ] Remember last 3 topics per player in DataStore (optional)
-- [ ] "Zundapal suggests…" hooks after craft/serve events
+- [x] `ZundapalContextBuilder.lua` — snapshot from `PlayerDataService`, `QuestConfig`/`QuestProgress`, `CraftConfig`, `ZoneVisitConfig`
+- [x] Inject live context into every LLM request via `ZundapalLLMService`
+- [x] Record last gameplay event from `RewardCore.NotifyAction` for contextual replies
+- [x] Proactive rule-based hints via `ZundapalHintsServer` → `NotifyPlayer` (`zundapal` toast)
+- [ ] Remember topics per player in DataStore (optional future)
 
 ### Phase 3 — UX polish
 
