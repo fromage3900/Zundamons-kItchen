@@ -1,36 +1,24 @@
-# Documentation & Planning Task List (No MCP Required)
+# Task Priority Matrix
 
-## Immediate Tasks (Can Do Now)
+## 🔴 Critical (Requires Unrestricted Network)
+- [ ] Upload 167 Kenney Food Kit preview PNGs as decals (`upload_decal`)
+- [ ] Upload Impact Sounds OGGs as audio (`upload_audio`)
+- [ ] Wire returned `rbxassetid://` into UIAssets.lua ImageLabel.Image properties
+- [ ] Wire returned `rbxassetid://` into HarvestNodeVariants.lua mesh IDs
 
-### 1. Quest System Configuration (High Priority)
-- [ ] Create `QuestConfig.lua` module
-- [ ] Define daily/weekly quests as data
-- [ ] Add quest reward variations (gold, XP, unlocks)
+## 🟡 High (Can Do Now — Code Only)
+- [ ] Wire Mineable.server.lua with HarvestValidator (5-line patch)
+- [ ] Sync source code to Studio via Rojo or MCP `create_object` + `set_script_source`
+- [ ] Create `Shared.Config` folder hierarchy in Studio (doesn't exist yet)
 
-### 2. Mineable Validator Wiring (High Priority)
-- [ ] Read Mineable.server.lua
-- [ ] Add HarvestValidator.validateHarvest call
-- [ ] Add nil guards for character
-
-### 3. Architecture Documentation (Medium Priority)
+## 🟢 Medium (Documentation)
+- [ ] Create `docs/asset-checklist.md` — catalog all 58 `FILL_*` slots
+- [ ] Create `docs/testing-plan.md` — harvest, cook, serve, quest scenarios
 - [ ] Update `docs/architecture-overview.md` with flow diagrams
-- [ ] Document HarvestNodeVariants usage
-- [ ] Add quest integration notes
 
-### 4. Testing Plan Documentation (Medium Priority)
-- [ ] Create `docs/testing-plan.md`
-- [ ] List all test scenarios (harvest, cook, serve, quest)
-- [ ] Add edge cases (death, disconnect, exploit attempts)
-
-### 5. Asset Checklist (Medium Priority)
-- [ ] List all asset IDs needed (meshes, sounds, animations)
-- [ ] Create `docs/asset-checklist.md`
-- [ ] Mark placeholder IDs to replace
-
-### 6. Patch Notes Template (Low Priority)
-- [ ] Update `docs/patch-notes-template.md`
-- [ ] Add harvest loop changes section
-- [ ] Add quest system section
+## 🔵 Low (Nice to Have)
+- [ ] QuestConfig.lua — daily/weekly quest data module
+- [ ] Patch notes template
 
 ---
 
@@ -84,4 +72,9 @@ return {
 
 ---
 
-**Pick any task to start — all can be done in Act Mode without MCP.**
+### Blocked Status Summary
+| Blockage | Tool | Root Cause | Workaround |
+|----------|------|------------|------------|
+| Decal upload | `upload_decal` | Firewall blocks 128.116.116.3 | Run from home network |
+| Luau execution | `execute_luau` | v2.6.0 compile bug | `set_script_source` + `create_object` |
+| Mesh generation | Blender pipeline | Requires unrestricted network + Studio | Generate FBX at home, upload later |

@@ -97,4 +97,24 @@ src/
 
 ---
 
-**Status:** Ready for afternoon work session. Harvest loop is **90% wired**. Cooking + Serving can be tested after gather.
+## Session 2026-07-06 — Asset Integration + Studio MCP Cleanup
+
+### Completed
+- **Kenney Food Kit + Impact Sounds** downloaded (CC0): 167 PNG previews, OGGs
+- **HarvestNodeVariants.lua** updated: pipeline mesh variant keys, built-in `rbxasset://` particle effects, helper functions
+- **UIAssets.lua** updated: gui/anims sections, `isPlaceholder()`, `getIconWithFallback()`, built-in rbxasset sounds/particles
+- **4 deprecated ScreenGuis** deleted via MCP: DataGUI, SellLoot, PlanterGui, Custom Inventory
+- **`IgnoreGuiInset = true`** set on all 18 active ScreenGuis (toolbar overlap fix)
+- **ScatterConfig.lua** refactored: seasonal biomes, cozy animation flags
+- **Git commit** `857b5e9`: all 3 config files staged and committed
+
+### Blocked
+- `upload_decal`: Roblox API IPs blocked by network firewall (128.116.116.3)
+- `execute_luau`: compile error in robloxstudio-mcp v2.6.0 (`"Expected identifier"`)
+- 58 asset slots remain `FILL_*`: 16 icons, 22 meshes, 4 NPC models, 7 companion models, 9 anims, 5 GUI textures, 3 anims
+
+### Next
+- Upload decals/audio from unrestricted network
+- Generate Blender→FBX meshes from pipeline JSONs
+- Sync source code to Studio via Rojo (MCP `create_object` + `set_script_source` if needed)
+- Wire Mineable.server.lua with HarvestValidator

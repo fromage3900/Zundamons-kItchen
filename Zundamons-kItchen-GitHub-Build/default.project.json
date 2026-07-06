@@ -10,6 +10,9 @@
       "ConfigurationFiles": {
         "$path": "src/ReplicatedStorage/ConfigurationFiles"
       },
+      "RemoteEvents": {
+        "$path": "src/ReplicatedStorage/RemoteEvents"
+      },
       "Shared": {
         "$className": "Folder",
         "Config": {
