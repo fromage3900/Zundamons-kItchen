@@ -23,7 +23,7 @@ npm run security
 npm run rojo:serve
 ```
 
-Studio: Plugins → Rojo → Connect `localhost:34872`
+Studio: Plugins → Rojo → Connect `localhost:34872` (or **34873** if port fallback — see terminal)
 
 ### First-time clone to G:
 
