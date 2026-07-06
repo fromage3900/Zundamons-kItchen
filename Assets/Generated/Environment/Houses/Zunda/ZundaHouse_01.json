@@ -1,0 +1,14 @@
+{
+  "type": "house",
+  "width": 8.0,
+  "depth": 6.0,
+  "height": 4.0,
+  "roof_color": "#78C882",
+  "wall_color": "#FFF8DC",
+  "vertices": 24,
+  "triangles": 12,
+  "color": "#78C882",
+  "id": "ZundaHouse_01",
+  "description": "Round green-roof cottage",
+  "export_path": "Environment/Houses/Zunda/"
+}

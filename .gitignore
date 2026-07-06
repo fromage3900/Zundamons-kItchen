@@ -1,0 +1,24 @@
+# Local build outputs + legacy junk (do not commit)
+source/
+extract_scripts.py
+rojo.zip
+/workspace/
+*.rbxl
+*.rbxlx
+*.rbxmx
+
+# OS/editor
+.DS_Store
+.idea/
+
+# CI artifacts
+/artifacts/
+
+# Node
+node_modules/
+
+# Temp / generated files
+*.lock
+extract_scripts.py
+rojo.zip
+sourcemap.json

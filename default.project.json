@@ -1,0 +1,47 @@
+{
+  "name": "Zundamons-kItchen",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "QuestConfig": {
+        "$path": "src/ReplicatedStorage/QuestConfig.lua"
+      },
+      "ConfigurationFiles": {
+        "$path": "src/ReplicatedStorage/ConfigurationFiles"
+      },
+      "RemoteEvents": {
+        "$path": "src/ReplicatedStorage/RemoteEvents"
+      },
+      "Models": {
+        "$className": "Folder",
+        "$path": "src/ReplicatedStorage/Models"
+      },
+      "Shared": {
+        "$className": "Folder",
+        "Config": {
+          "$className": "Folder",
+          "$path": "src/ReplicatedStorage/Shared/Config"
+        },
+        "Modules": {
+          "$className": "Folder",
+          "$path": "src/ReplicatedStorage/Shared/Modules"
+        }
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$path": "src/ServerScriptService"
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$path": "src/StarterPlayer/StarterPlayerScripts"
+      }
+    },
+    "Workspace": {
+      "$className": "Workspace",
+      "$path": "src/Workspace"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "tree",
+  "trunk_height": 6.0,
+  "canopy_radius": 2.5,
+  "vertices": 300,
+  "triangles": 225,
+  "color": "#E1B9FF",
+  "id": "ZundaTree_02",
+  "description": "Tall lavender tree",
+  "export_path": "Environment/Forest/Trees/"
+}

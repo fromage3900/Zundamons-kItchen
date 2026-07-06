@@ -1,0 +1,33 @@
+{
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      { "scope": "keyword.custom.Collectible", "settings": { "foreground": "#FF6B6B", "fontStyle": "bold" } },
+      { "scope": "keyword.custom.Inventory",   "settings": { "foreground": "#4ECDC4", "fontStyle": "bold" } },
+      { "scope": "keyword.custom.RemoteEvent", "settings": { "foreground": "#FFE66D", "fontStyle": "bold" } },
+      { "scope": "keyword.custom.SaveData",    "settings": { "foreground": "#A78BFA", "fontStyle": "bold" } },
+      { "scope": "keyword.custom.Harvest",     "settings": { "foreground": "#34D399", "fontStyle": "bold" } }
+    ]
+  },
+  "luau-lsp.require.mode": "relative",
+  "luau-lsp.sourcemap.enabled": true,
+  "stylua.targetReleaseVersion": "latest",
+  "selene.enable": true,
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true
+  },
+  "todo-tree.general.tags": [
+    "TODO",
+    "FIXME",
+    "HACK",
+    "NOTE",
+    "PERF"
+  ],
+  "better-comments.tags": [
+    { "tag": "!", "color": "#FF6B6B", "strikethrough": false, "backgroundColor": "transparent" },
+    { "tag": "?", "color": "#FFE66D", "strikethrough": false, "backgroundColor": "transparent" },
+    { "tag": "//", "color": "#4ECDC4", "strikethrough": false, "backgroundColor": "transparent" },
+    { "tag": "todo", "color": "#A78BFA", "strikethrough": false, "backgroundColor": "transparent" }
+  ]
+}

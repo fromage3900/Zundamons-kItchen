@@ -1,0 +1,11 @@
+{
+  "type": "tree",
+  "trunk_height": 4.0,
+  "canopy_radius": 3.0,
+  "vertices": 320,
+  "triangles": 240,
+  "color": "#78C882",
+  "id": "ZundaTree_01",
+  "description": "Round green canopy tree",
+  "export_path": "Environment/Forest/Trees/"
+}

@@ -1,0 +1,404 @@
+-- [[ModuleScript] QuestConfig (ref: RBXF6CB94E09956482FB9EF70B219DFF3C7)]]
+-- QuestConfig: Data-driven quest definitions
+-- Persisted by QuestManager; modified by admin menus
+
+local QuestConfig = {
+	quests = {
+		-- Example quest structure:
+		-- {
+		--   id = "quest_1",
+		--   name = "First Guests",
+		--   description = "Serve 5 guests at the kitchen",
+		--   icon = "🍽️",
+		--   type = "serve", -- serve, cook, gather, earn_gold
+		--   target = 5, -- guests to serve
+		--   rewards = {
+		--     gold = 50,
+		--     tier_points = 10,
+		--     items = {}
+		--   },
+		--   difficulty = 1 -- 1-5 scale
+		-- }
+	},
+	
+	-- Default quests to initialize on player join
+	default_quests = {
+		{
+			id = "quest_welcome_1",
+			name = "Welcome to the Kitchen",
+			description = "Serve your first guest",
+			icon = "🍽️",
+			type = "serve",
+			target = 1,
+			rewards = {
+				gold = 25,
+				tier_points = 5,
+				items = {}
+			},
+			difficulty = 1
+		},
+		{
+			id = "quest_cafe_master",
+			name = "Café Master",
+			description = "Serve 10 guests",
+			icon = "⭐",
+			type = "serve",
+			target = 10,
+			rewards = {
+				gold = 100,
+				tier_points = 20,
+				items = {}
+			},
+			difficulty = 2
+		},
+		-- NEW ZUNDA-THEMED QUESTS
+		{
+			id = "quest_zunda_pea_collector",
+			name = "Zunda Pea Collector",
+			description = "Gather 10 Zunda Peas from the garden",
+			icon = "🫛",
+			type = "gather",
+			target = 10,
+			target_item = "Zunda Pea",
+			rewards = {
+				gold = 50,
+				tier_points = 10,
+				items = {"Zunda Mochi"}
+			},
+			difficulty = 1
+		},
+		{
+			id = "quest_edamame_harvest",
+			name = "Edamame Harvest",
+			description = "Collect 5 Edamame Pods",
+			icon = "🌿",
+			type = "gather",
+			target = 5,
+			target_item = "Edamame Pod",
+			rewards = {
+				gold = 75,
+				tier_points = 15,
+				items = {}
+			},
+			difficulty = 2
+		},
+		{
+			id = "quest_zunda_mochi_master",
+			name = "Zunda Mochi Master",
+			description = "Craft 3 Zunda Mochi",
+			icon = "🍡",
+			type = "cook",
+			target = 3,
+			target_item = "Zunda Mochi",
+			rewards = {
+				gold = 150,
+				tier_points = 30,
+				items = {"Sweet Pea"}
+			},
+			difficulty = 3
+		},
+		{
+			id = "quest_pea_flower_garden",
+			name = "Pea Flower Garden",
+			description = "Find 8 Pea Flowers",
+			icon = "🌸",
+			type = "gather",
+			target = 8,
+			target_item = "Pea Flower",
+			rewards = {
+				gold = 100,
+				tier_points = 20,
+				items = {}
+			},
+			difficulty = 2
+		},
+		{
+			id = "quest_zunda_paradise",
+			name = "Zunda Paradise Chef",
+			description = "Cook the legendary Zunda Paradise dish",
+			icon = "✨",
+			type = "cook",
+			target = 1,
+			target_item = "Zunda Paradise",
+			rewards = {
+				gold = 500,
+				tier_points = 100,
+				items = {}
+			},
+			difficulty = 5
+		},
+
+		-- ─────────────────────────────────────────────────────
+		-- NEW QUEST BATCH — gathering, cooking, serving, exploration, mastery
+		-- ─────────────────────────────────────────────────────
+
+		-- GATHERING quests
+		{
+			id = "quest_apple_picker",
+			name = "Apple Picker",
+			description = "Pick 20 apples from the orchard",
+			icon = "\u{1F34E}",
+			type = "gather",
+			target = 20,
+			target_item = "Apple",
+			rewards = { gold = 80, tier_points = 15, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_wheat_field",
+			name = "Wheat Field Worker",
+			description = "Harvest 30 wheat",
+			icon = "\u{1F33E}",
+			type = "gather",
+			target = 30,
+			target_item = "Wheat",
+			rewards = { gold = 60, tier_points = 12, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_sweet_pea_search",
+			name = "Sweet Pea Search",
+			description = "Find 12 Sweet Peas in the garden",
+			icon = "\u{1FAD8}",
+			type = "gather",
+			target = 12,
+			target_item = "Sweet Pea",
+			rewards = { gold = 120, tier_points = 20, items = {} },
+			difficulty = 2
+		},
+		{
+			id = "quest_zunda_leaf_walk",
+			name = "Leafy Walk",
+			description = "Collect 15 Zunda Leaves",
+			icon = "\u{1F343}",
+			type = "gather",
+			target = 15,
+			target_item = "Zunda Leaf",
+			rewards = { gold = 90, tier_points = 18, items = {} },
+			difficulty = 2
+		},
+		{
+			id = "quest_gold_prospector",
+			name = "Gold Prospector",
+			description = "Mine 5 nuggets of Gold from the rocks",
+			icon = "\u{1F4B0}",
+			type = "gather",
+			target = 5,
+			target_item = "Gold",
+			rewards = { gold = 200, tier_points = 30, items = {} },
+			difficulty = 3
+		},
+
+		-- COOKING quests
+		{
+			id = "quest_bread_baker",
+			name = "Bread Baker",
+			description = "Bake 5 loaves of Bread",
+			icon = "\u{1F35E}",
+			type = "cook",
+			target = 5,
+			target_item = "Bread",
+			rewards = { gold = 100, tier_points = 18, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_apple_pie_party",
+			name = "Apple Pie Party",
+			description = "Cook 4 Apple Pies",
+			icon = "\u{1F967}",
+			type = "cook",
+			target = 4,
+			target_item = "Apple Pie",
+			rewards = { gold = 160, tier_points = 24, items = {} },
+			difficulty = 2
+		},
+		{
+			id = "quest_pea_flower_tea",
+			name = "Tea Time",
+			description = "Brew 3 cups of Pea Flower Tea",
+			icon = "\u{1F375}",
+			type = "cook",
+			target = 3,
+			target_item = "Pea Flower Tea",
+			rewards = { gold = 180, tier_points = 28, items = {} },
+			difficulty = 2
+		},
+		{
+			id = "quest_royal_stew",
+			name = "Royal Cuisine",
+			description = "Prepare 2 servings of Royal Stew",
+			icon = "\u{1F35B}",
+			type = "cook",
+			target = 2,
+			target_item = "Royal Stew",
+			rewards = { gold = 240, tier_points = 35, items = {} },
+			difficulty = 3
+		},
+		{
+			id = "quest_perfect_cook_streak",
+			name = "Perfect Cook Streak",
+			description = "Land 5 PERFECT timing cooks",
+			icon = "\u{2728}",
+			type = "cook_perfect",
+			target = 5,
+			rewards = { gold = 300, tier_points = 45, items = {} },
+			difficulty = 3
+		},
+
+		-- SERVING / GUEST quests
+		{
+			id = "quest_breakfast_rush",
+			name = "Breakfast Rush",
+			description = "Serve 3 guests before noon",
+			icon = "\u{1F373}",
+			type = "serve",
+			target = 3,
+			rewards = { gold = 90, tier_points = 18, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_dinner_rush",
+			name = "Dinner Rush",
+			description = "Serve 15 guests in a day",
+			icon = "\u{1F37D}",
+			type = "serve",
+			target = 15,
+			rewards = { gold = 220, tier_points = 32, items = {} },
+			difficulty = 3
+		},
+		{
+			id = "quest_legendary_host",
+			name = "Legendary Host",
+			description = "Serve 50 guests total",
+			icon = "\u{1F451}",
+			type = "serve",
+			target = 50,
+			rewards = { gold = 500, tier_points = 80, items = {} },
+			difficulty = 4
+		},
+
+		-- ECONOMY quests
+		{
+			id = "quest_first_100_gold",
+			name = "First Coins",
+			description = "Earn 100 gold total",
+			icon = "\u{1FA99}",
+			type = "earn_gold",
+			target = 100,
+			rewards = { gold = 25, tier_points = 8, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_gold_hoard",
+			name = "Gold Hoard",
+			description = "Accumulate 1,000 gold",
+			icon = "\u{1F4B0}",
+			type = "earn_gold",
+			target = 1000,
+			rewards = { gold = 150, tier_points = 35, items = {} },
+			difficulty = 3
+		},
+		{
+			id = "quest_master_economist",
+			name = "Master Economist",
+			description = "Accumulate 5,000 gold",
+			icon = "\u{1F4B5}",
+			type = "earn_gold",
+			target = 5000,
+			rewards = { gold = 500, tier_points = 80, items = {} },
+			difficulty = 5
+		},
+
+		-- EXPLORATION quests (uses zone visit / building entry)
+		{
+			id = "quest_visit_kitchen",
+			name = "Find the Kitchen",
+			description = "Visit the Kitchen Workshop",
+			icon = "\u{1F373}",
+			type = "visit_zone",
+			target = 1,
+			target_zone = "Kitchen",
+			rewards = { gold = 30, tier_points = 5, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_visit_pagoda",
+			name = "Peaceful Pilgrimage",
+			description = "Visit the Pagoda in the Zen Garden",
+			icon = "\u{26E9}",
+			type = "visit_zone",
+			target = 1,
+			target_zone = "Pagoda",
+			rewards = { gold = 60, tier_points = 10, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_visit_ruins",
+			name = "Ancient Whispers",
+			description = "Discover the Ancient Ruins",
+			icon = "\u{1F3DB}",
+			type = "visit_zone",
+			target = 1,
+			target_zone = "AncientRuins",
+			rewards = { gold = 100, tier_points = 18, items = {} },
+			difficulty = 2
+		},
+		{
+			id = "quest_visit_all_zones",
+			name = "World Tour",
+			description = "Visit every zone at least once",
+			icon = "\u{1F30D}",
+			type = "visit_zones_unique",
+			target = 5,
+			rewards = { gold = 350, tier_points = 55, items = {} },
+			difficulty = 3
+		},
+
+		-- COMPANION / SOCIAL quests
+		{
+			id = "quest_chat_with_zundapal",
+			name = "Best Friends",
+			description = "Chat with Zundapal 5 times",
+			icon = "\u{1F361}",
+			type = "companion_chat",
+			target = 5,
+			rewards = { gold = 50, tier_points = 12, items = {} },
+			difficulty = 1
+		},
+		{
+			id = "quest_meet_elder",
+			name = "Wisdom of the Elder",
+			description = "Speak with the Village Elder",
+			icon = "\u{1F3EE}",
+			type = "npc_chat",
+			target = 1,
+			target_npc = "Elder",
+			rewards = { gold = 75, tier_points = 14, items = {} },
+			difficulty = 2
+		},
+
+		-- MASTERY quests (long-running)
+		{
+			id = "quest_recipe_collector",
+			name = "Recipe Collector",
+			description = "Cook every recipe at least once",
+			icon = "\u{1F4D6}",
+			type = "cook_unique",
+			target = 12,  -- matches CraftConfig recipe count
+			rewards = { gold = 600, tier_points = 90, items = {} },
+			difficulty = 4
+		},
+		{
+			id = "quest_zunda_grand_master",
+			name = "Zunda Grand Master",
+			description = "Cook every Zunda-themed recipe",
+			icon = "\u{1F95E}",
+			type = "cook_unique_zunda",
+			target = 6,
+			rewards = { gold = 700, tier_points = 120, items = {} },
+			difficulty = 5
+		},
+	}
+}
+
+return QuestConfig
