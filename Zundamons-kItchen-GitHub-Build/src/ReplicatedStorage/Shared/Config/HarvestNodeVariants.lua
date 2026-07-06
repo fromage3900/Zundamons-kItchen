@@ -1,9 +1,3 @@
---!strict
--- [[ModuleScript] HarvestNodeVariants]]
--- Maps node types to visual variants (meshes, colors, effects)
--- Variant IDs align with BlenderPipeline.lua for asset generation.
--- Fill in rbxassetid:// values after generating meshes via Blender MCP.
-
 local Variants = {
 	Wheat = {
 		meshes = {
@@ -13,7 +7,7 @@ local Variants = {
 		},
 		resourceType = "Wheat",
 		swayRange = { min = 0.8, max = 1.2 },
-		harvestEffect = "rbxassetid://FILL_EFFECT_WHEAT",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -24,7 +18,7 @@ local Variants = {
 		},
 		resourceType = "ZundaFlower",
 		spinSpeed = 0.5,
-		harvestEffect = "rbxassetid://FILL_EFFECT_FLOWER",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.8, 1.2 },
 	},
 
@@ -35,7 +29,7 @@ local Variants = {
 			["ZundaPea_03"] = "rbxassetid://FILL_ZUNDAPEA_03",
 		},
 		resourceType = "ZundaPea",
-		harvestEffect = "rbxassetid://FILL_EFFECT_PEA",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -46,7 +40,7 @@ local Variants = {
 		},
 		resourceType = "Zunda Mushroom",
 		bobHeight = 0.3,
-		harvestEffect = "rbxassetid://FILL_EFFECT_MUSHROOM",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.7, 1.3 },
 	},
 
@@ -57,7 +51,7 @@ local Variants = {
 			["BerryBush_03"] = "rbxassetid://FILL_BERRY_03",
 		},
 		resourceType = "Zunda Berry",
-		harvestEffect = "rbxassetid://FILL_EFFECT_BERRY",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.85, 1.15 },
 	},
 
@@ -67,7 +61,7 @@ local Variants = {
 			["Root_02"] = "rbxassetid://FILL_ROOT_02",
 		},
 		resourceType = "Zunda Root",
-		harvestEffect = "rbxassetid://FILL_EFFECT_ROOT",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -78,7 +72,7 @@ local Variants = {
 		},
 		resourceType = "Rock",
 		crackStages = 3,
-		harvestEffect = "rbxassetid://FILL_EFFECT_ROCK",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.8, 1.4 },
 	},
 
@@ -88,12 +82,11 @@ local Variants = {
 		},
 		resourceType = "Gold Ore",
 		glowColor = Color3.fromRGB(255, 215, 0),
-		harvestEffect = "rbxassetid://FILL_EFFECT_GOLD",
+		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
 		scaleRange = { 0.9, 1.1 },
 	},
 }
 
--- Helper: get variant mesh with fallback
 function Variants.getMesh(nodeType: string, variantId: string?): string
 	local config = Variants[nodeType]
 	if not config then
@@ -108,7 +101,6 @@ function Variants.getMesh(nodeType: string, variantId: string?): string
 	return ""
 end
 
--- Helper: get all variant IDs for a node type
 function Variants.getVariantIds(nodeType: string): { string }
 	local config = Variants[nodeType]
 	if not config then
@@ -121,7 +113,6 @@ function Variants.getVariantIds(nodeType: string): { string }
 	return ids
 end
 
--- Helper: get scale range for a node type
 function Variants.getScaleRange(nodeType: string): { number }
 	local config = Variants[nodeType]
 	if not config then

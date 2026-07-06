@@ -1,13 +1,5 @@
---!strict
--- [[ModuleScript] UIAssets]]
--- Asset IDs for UI elements, icons, sounds, particles.
--- Fill in rbxassetid:// values after generating via Blender/Roblox MCP.
--- Each FILL_ entry should be replaced with actual asset ID before publish.
-
 local UIAssets = {
 	icons = {
-		-- Item icons (inventory, crafting panel)
-		-- All icons use emoji fallback via UIHelper until real decals are uploaded
 		Wheat = "rbxassetid://FILL_ICON_WHEAT",
 		["Zunda Flower"] = "rbxassetid://FILL_ICON_ZUNDA_FLOWER",
 		["Zunda Pea"] = "rbxassetid://FILL_ICON_ZUNDA_PEA",
@@ -27,8 +19,6 @@ local UIAssets = {
 	},
 
 	sounds = {
-		-- Built-in Roblox engine sounds — no upload needed
-		-- Set pitch/volume in calling scripts for variety
 		harvest_start = "rbxasset://sounds/hit.wav",
 		harvest_complete = "rbxasset://sounds/snap.mp3",
 		craft_start = "rbxasset://sounds/snap.mp3",
@@ -40,15 +30,12 @@ local UIAssets = {
 	},
 
 	particles = {
-		-- Built-in Roblox particle texture — always available
 		harvest_sparkle = "rbxasset://textures/particles/sparkle_main.dds",
 		craft_magic = "rbxasset://textures/particles/sparkle_main.dds",
 		serve_stars = "rbxasset://textures/particles/sparkle_main.dds",
 	},
 
 	gui = {
-		-- GUI image assets (need Studio upload for real 9-slice textures)
-		-- UIHelper fallback creates colored frames with rounded corners
 		progress_bar_fill = "rbxassetid://FILL_GUI_PROGRESS_FILL",
 		progress_bar_border = "rbxassetid://FILL_GUI_PROGRESS_BORDER",
 		combo_badge = "rbxassetid://FILL_GUI_COMBO_BADGE",
@@ -57,14 +44,12 @@ local UIAssets = {
 	},
 
 	animations = {
-		-- Animation assets (need Blender + FBX import pipeline)
 		harvest_loop = "rbxassetid://FILL_ANIM_HARVEST",
 		cook_victory = "rbxassetid://FILL_ANIM_COOK_VICTORY",
 		cook_fail = "rbxassetid://FILL_ANIM_COOK_FAIL",
 	},
 }
 
--- Helper: Check if asset is still placeholder
 function UIAssets.isPlaceholder(id: string): boolean
 	if typeof(id) ~= "string" then
 		return true
@@ -72,10 +57,9 @@ function UIAssets.isPlaceholder(id: string): boolean
 	return id:find("FILL_") ~= nil or id:find("rbxassetid://0$") ~= nil
 end
 
--- Helper: Get icon with fallback emoji
 function UIAssets.getIconWithFallback(itemName: string): (string, string)
 	local id = UIAssets.icons[itemName] or ""
-	return id, "" -- fallback emoji handled by UIHelper
+	return id, ""
 end
 
 return UIAssets
