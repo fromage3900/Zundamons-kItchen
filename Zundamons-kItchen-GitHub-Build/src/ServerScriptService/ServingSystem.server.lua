@@ -10,8 +10,10 @@ local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(game.ReplicatedStorage.ConfigurationFiles.ChefLevelConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 local GuestService = require(script.Parent.Services.GuestService)
+local RemoteRateLimiter = require(script.Parent.Services.RemoteRateLimiter)
 
 local MAX_SERVE_DISTANCE = 20
+local SERVE_COOLDOWN = 0.75
 
 local function isValidGuest(guestInstance: Instance?): boolean
 	if not guestInstance or not guestInstance.Parent then
@@ -45,6 +47,9 @@ local function lookupPayAmount(recipe: string, guestAttributePay: number?): numb
 end
 
 local function handleServeGuest(player, guestInstance, foodItemName)
+	if not RemoteRateLimiter.allow(player, "serve", SERVE_COOLDOWN) then
+		return false, "Slow down a moment"
+	end
 	if typeof(foodItemName) ~= "string" then
 		return false, "Invalid food item"
 	end
@@ -66,7 +71,14 @@ local function handleServeGuest(player, guestInstance, foodItemName)
 	local payAmount = lookupPayAmount(recipe, guestInstance:GetAttribute("PayAmount"))
 
 	if foodItemName ~= recipe then
-		print("[ServingSystem] " .. player.Name .. " tried to serve " .. foodItemName .. " but guest wanted " .. tostring(recipe))
+		print(
+			"[ServingSystem] "
+				.. player.Name
+				.. " tried to serve "
+				.. foodItemName
+				.. " but guest wanted "
+				.. tostring(recipe)
+		)
 		return false, "Wrong food! Guest wants " .. tostring(recipe)
 	end
 

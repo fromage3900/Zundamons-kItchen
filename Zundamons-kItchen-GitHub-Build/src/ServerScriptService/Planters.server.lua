@@ -7,6 +7,9 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+local RemoteRateLimiter = require(script.Parent.Services.RemoteRateLimiter)
+
+local PLANT_COOLDOWN = 1.5
 
 local myplanters = CollectionService:GetTagged("Planter")
 local plantable = CollectionService:GetTagged("Plantable")
@@ -91,6 +94,9 @@ local function activvateClickDetector()
 end
 
 plantingEvent.OnServerEvent:Connect(function(player: Player, seedName: any, planter: any)
+	if not RemoteRateLimiter.allow(player, "plant", PLANT_COOLDOWN) then
+		return
+	end
 	if typeof(seedName) ~= "string" then
 		return
 	end

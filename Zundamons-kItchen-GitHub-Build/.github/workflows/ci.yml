@@ -21,24 +21,11 @@ jobs:
       - name: Install Rokit toolchain
         run: node scripts/install-rokit-ci.mjs
 
-      - name: Validate Rojo project structure
+      - name: Validate Rojo project + security
         run: npm run validate
 
       - name: Lint (StyLua + Selene)
         run: npm run lint
-
-      - name: Validate git hygiene (no workspace/ or place exports)
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git ls-files | grep -q '^Zundamons-kItchen-GitHub-Build/workspace/'; then
-            echo "workspace/ is committed. Remove it from git."
-            exit 1
-          fi
-          if git ls-files | grep -E '\.(rbxlx|rbxmx)$'; then
-            echo "Place/model exports should not be committed; use Rojo src/ instead."
-            exit 1
-          fi
 
       - name: Success
         run: echo "Rojo project structure looks correct."

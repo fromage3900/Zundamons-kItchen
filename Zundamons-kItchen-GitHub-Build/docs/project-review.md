@@ -13,7 +13,7 @@
 | Rojo-first workflow | PASS | All code under `src/`; `default.project.json` is source of truth |
 | No place exports in git | PASS | `source/` and `*.rbxl(x)` blocked by `.gitignore` |
 | Legacy `beantown.rbxlx` removed | PASS | Do not open legacy export — use published place `108617605497926` |
-| CI validation | PASS | `npm run validate` + StyLua on `src/` |
+| CI validation | PASS | `npm run validate` + secret scan + git hygiene |
 | Branch default | PASS | `main` is default; stale `master` optional cleanup |
 
 ---
@@ -50,7 +50,7 @@
 | ProcessReceipt single owner | PASS | `RobuxStoreServer` owns handler; duplicate removed from `CompanionShopServer` |
 | Harvest validation | PASS | Distance, cooldown, rate limit in `HarvestValidator` |
 | AdvancedRewards debounce | PASS | Rate limiting on remote actions |
-| ClickDetector trust | PARTIAL | Planters and gather nodes rely on client click; harvest has validator layer |
+| ClickDetector trust | PASS | HarvestValidator + planter/plant distance + rate limits |
 | DecorationPlacer validation | PASS | Server validates ownership, gold, plot bounds |
 
 ---

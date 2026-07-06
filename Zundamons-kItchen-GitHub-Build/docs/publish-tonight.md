@@ -13,9 +13,11 @@ Use this runbook when shipping a playtest build the same day.
 cd Zundamons-kItchen-GitHub-Build
 git pull origin main   # or your feature branch
 npm install
-npm run validate
+npm run validate       # includes secret scan + git hygiene
 npm run rojo:serve
 ```
+
+**Security gate:** `npm run validate` fails if API keys or place exports are committed. See [`git-security.md`](git-security.md).
 
 In Studio:
 

@@ -14,7 +14,7 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | L1 | Zundapal LLM free chat Phase 1 | Cursor | done | cursor/zundapal-llm-594f | ZundapalLLMConfig, ZundapalLLMService, ZundapalChatServer, VNController, ZundapalChat.client |
 | L2 | LLM player context injection | Cursor | done | cursor/zundapal-llm-594f | ZundapalContextBuilder, ZundapalLLMService, ZundapalHintsServer |
 | L4 | Companion system + LLM integration | Cursor | done | cursor/zundapal-llm-594f | CompanionConfig, CompanionStats, RecordNpcChat, sparkle VFX, audit doc |
-| P1 | Publish tonight runbook + ship blockers | Cursor | done | cursor/publish-blockers-594f | publish-tonight.md, Planters, PlantingMenu, DecorationShop |
+| P2 | Git security + remote rate limits for publish | Cursor | done | cursor/publish-blockers-594f | check-secrets.mjs, RemoteRateLimiter, git-security.md |
 | O2 | Migrate QuestScript to UIComponents | OpenCode | pending | opencode/quest-ui-components | QuestScript.client.lua, UIComponents.lua |
 | O3 | Document skybox upload steps for SkyConfig | Cursor | done | cursor/publish-blockers-594f | docs/skybox-upload-guide.md |
 | L3 | LLM chat UX polish (history, streaming) | OpenCode | pending | opencode/zundapal-chat-ui | VNController, ZundapalChat.client |

@@ -37,7 +37,8 @@ See `docs/toolchain.md` for CI parity and `docs/rojo-workflow.md` for Studio syn
 ## PR checklist
 
 - [ ] `src/` changes included for any code/config edits
-- [ ] `npm run validate` and `npm run lint` pass locally
+- [ ] `npm run validate` and `npm run security` pass locally
+- [ ] No API keys, `.env`, or place exports in git (see `docs/git-security.md`)
 - [ ] Playtested in Studio with Rojo connected
 - [ ] No `workspace/` or place export files committed
 - [ ] Patch notes included (if user-facing changes)

@@ -7,7 +7,8 @@
   - 
 
 ## How to verify
-- [ ] `npm run validate` passes
+- [ ] `npm run validate` passes (includes `npm run security`)
+- [ ] `npm run lint` passes (StyLua; Selene may have pre-existing warnings)
 - [ ] Rojo connected in Studio (`npm run rojo:serve`)
 - [ ] Playtest affected systems in the published place
 

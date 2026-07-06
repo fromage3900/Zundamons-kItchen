@@ -25,3 +25,12 @@ sourcemap.json
 extract_scripts.py
 rojo.zip
 rojo-build-test.rbxl
+
+# Secrets and local env (API keys live in Studio ServerStorage only)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+**/ZundapalLLMSecrets/**

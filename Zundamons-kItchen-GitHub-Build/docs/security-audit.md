@@ -86,4 +86,13 @@ Scope: Priority systems from [`code-review.md`](code-review.md)
 - Document new remotes in [`remotes.md`](remotes.md) before shipping
 - Audit `AdvancedRewards` RemoteFunctions for payload validation (future PR)
 - Move `RewardCore` remote wiring to `ServerScriptService/` (future refactor)
-- Add server-side rate limits on `CraftFunction` and `ServeGuest` spam
+
+## July 2026 hardening (publish prep)
+
+| Area | Fix |
+|------|-----|
+| `RemoteRateLimiter` | Shared cooldowns on craft, serve, plant, decoration remotes |
+| `Planters.server.lua` | Migrated off `_G.data` to `PlayerDataService` |
+| Git secret scan | `scripts/check-secrets.mjs` in CI + `npm run security` |
+| Git hygiene | `scripts/check-git-hygiene.mjs` blocks place exports + `_G.data[` |
+| LLM keys | Studio-only `ServerStorage.ZundapalLLMSecrets` (documented in `git-security.md`) |

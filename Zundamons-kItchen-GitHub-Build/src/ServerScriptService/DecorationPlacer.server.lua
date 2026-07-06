@@ -6,6 +6,7 @@ local RS = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+local RemoteRateLimiter = require(script.Parent.Services.RemoteRateLimiter)
 local DecorationConfig = require(RS.ConfigurationFiles.DecorationConfig)
 local PlotConfig = require(RS.ConfigurationFiles.PlotConfig)
 local PlacerConfig = require(RS.ConfigurationFiles.DecorationPlacerConfig)
@@ -184,6 +185,9 @@ local function restorePlotDecorations(player: Player)
 end
 
 local function buyDecoration(player: Player, decorationId: string)
+	if not RemoteRateLimiter.allow(player, "buyDecoration", 0.5) then
+		return { success = false, message = "Slow down" }
+	end
 	if type(decorationId) ~= "string" then
 		return { success = false, message = "Invalid decoration id" }
 	end
@@ -218,6 +222,9 @@ local function buyDecoration(player: Player, decorationId: string)
 end
 
 local function placeDecoration(player: Player, decorationId: string, slotIndex: number?)
+	if not RemoteRateLimiter.allow(player, "placeDecoration", 0.75) then
+		return { success = false, message = "Slow down" }
+	end
 	if type(decorationId) ~= "string" then
 		return { success = false, message = "Invalid decoration id" }
 	end
