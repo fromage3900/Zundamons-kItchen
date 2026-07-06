@@ -34,7 +34,7 @@
 - [ ] Delete stale `master` branch on GitHub (optional cleanup; 19 commits behind `main`)
 - [ ] Install Rojo Studio plugin on dev machines (`rojo plugin install`)
 - [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
-- [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
+3. Upload 6-face skybox IDs into `SkyConfig.sky` (see [`docs/skybox-upload-guide.md`](docs/skybox-upload-guide.md))
 - [ ] Studio: add `ServerStorage.ZundapalLLMSecrets.ApiKey` + enable HttpService for DeepSeek
 - [x] Planters migrated to PlayerDataService + PlantingMenu client
 - [x] Decoration shop client UI (press H)
