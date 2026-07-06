@@ -1,105 +1,103 @@
--- [[ModuleScript] ProgressionConfig (ref: RBXCCF415BABD4146428AF46366C0A24A45)]]
+--!strict
+-- [[ModuleScript] ProgressionConfig]]
+-- Shared progression values for server systems
+
 local ProgressionConfig = {}
 
--- Progression Milestones: When you reach these, you unlock new content
--- Structure: { guests_served = X, gold_earned = X, unlocks = {recipes, cosmetics, furniture, locations}}
-
-ProgressionConfig.milestones = {
-	-- Tier 1: Starting tier (unlocks when player joins)
-	[1] = {
-		name = "Humble Baker",
-		guests_served = 0,
-		gold_earned = 0,
-		unlocks = {
-			recipes = {"Apple Pie", "Bread"}, -- Already exist in CraftConfig
-			cosmetics = {"Chef Hat"},
-			furniture = {"Basic Stove"},
-			locations = {"Main Kitchen"}
-		}
-	},
-	
-	-- Tier 2: Intermediate (after serving 5 guests)
-	[2] = {
-		name = "Royal Chef",
-		guests_served = 5,
-		gold_earned = 0,
-		unlocks = {
-			recipes = {"Zunda Bread", "Royal Stew"},
-			cosmetics = {"Chef Outfit", "Crown"},
-			furniture = {"Fancy Stove", "Chandelier"},
-			locations = {"Royal Dining Room"}
-		}
-	},
-	
-	-- Tier 3: Advanced (after serving 20 guests)
-	[3] = {
-		name = "Master Chef",
-		guests_served = 20,
-		gold_earned = 0,
-		unlocks = {
-			recipes = {"Fancy Pie", "Zundamon's Banquet"},
-			cosmetics = {"Golden Chef Outfit", "Master's Badge"},
-			furniture = {"Legendary Stove", "Throne"},
-			locations = {"Zundamon's Banquet Hall"}
-		}
-	},
-	
-	-- Tier 4: Expert (after serving 50 guests)
-	[4] = {
-		name = "Legend",
-		guests_served = 50,
-		gold_earned = 0,
-		unlocks = {
-			recipes = {"Ultimate Feast"},
-			cosmetics = {"Legendary Crown"},
-			furniture = {"Crystal Stove"},
-			locations = {}
-		}
-	}
+-- XP rewards per action
+ProgressionConfig.xp = {
+	serve = 15,
+	craft = 10,
+	craftPerfect = 25,
+	gather = 5,
+	login = 20,
 }
 
--- Recipe unlock requirements (alternative path: unlock by gold earned)
--- If a recipe isn't in milestones, check here
-ProgressionConfig.recipe_unlock_costs = {
-	["Apple Pie"] = { guests_needed = 0, gold_needed = 0 }, -- starter
-	["Bread"] = { guests_needed = 0, gold_needed = 0 }, -- starter
-	["Zunda Bread"] = { guests_needed = 5, gold_needed = 0 },
-	["Royal Stew"] = { guests_needed = 5, gold_needed = 50 },
-	["Fancy Pie"] = { guests_needed = 20, gold_needed = 100 },
-	["Zundamon's Banquet"] = { guests_needed = 20, gold_needed = 150 },
-	["Ultimate Feast"] = { guests_needed = 50, gold_needed = 300 }
+-- Guest pay amounts by recipe (base)
+ProgressionConfig.pay = {
+	Bread = 10,
+	["Apple Pie"] = 25,
+	["Zunda Bread"] = 30,
+	Cupcake = 35,
+	["Zunda Mochi"] = 40,
+	["Royal Stew"] = 100,
+	["Salted Pea Bouquet"] = 50,
 }
 
--- Guest preferences: what recipes different guests want and how much they'll pay
+-- Guest personality templates for spawn variety
 ProgressionConfig.guest_preferences = {
 	{
-		name = "Hungry Traveler",
-		preferred_recipes = {"Apple Pie", "Bread"},
-		pay_range = {20, 35}
+		name = "Hopeful Visitor",
+		pay_range = { 12, 20 },
+		preferred_recipes = { "Bread", "Apple Pie" },
 	},
 	{
-		name = "Royal Noble",
-		preferred_recipes = {"Royal Stew", "Fancy Pie", "Zunda Bread"},
-		pay_range = {50, 75}
+		name = "Food Critic",
+		pay_range = { 40, 60 },
+		preferred_recipes = { "Zunda Mochi", "Royal Stew", "Zunda Bread" },
 	},
 	{
-		name = "Zundamon Enthusiast",
-		preferred_recipes = {"Zunda Bread", "Zundamon's Banquet"},
-		pay_range = {40, 60}
+		name = "Regular Customer",
+		pay_range = { 18, 28 },
+		preferred_recipes = { "Bread", "Zunda Bread" },
 	},
 	{
-		name = "Banquet Master",
-		preferred_recipes = {"Ultimate Feast", "Zundamon's Banquet"},
-		pay_range = {100, 150}
-	}
+		name = "Picnic Guest",
+		pay_range = { 30, 45 },
+		preferred_recipes = { "Cupcake", "Apple Pie" },
+	},
 }
 
--- Guest spawn settings
+-- Guest spawning settings
 ProgressionConfig.guest_settings = {
-	spawn_interval_min = 30, -- minimum seconds between guest spawns
-	spawn_interval_max = 60, -- maximum seconds between guest spawns
-	guest_patience = 45, -- seconds before guest leaves if not served
-	max_guests_at_once = 3 -- max concurrent guests in the kitchen
+	max_guests_at_once = 6,
+	spawn_interval_min = 12,
+	spawn_interval_max = 25,
+	guest_patience = 120, -- seconds before guest leaves
+}
+
+-- Progression milestones (tier unlocks)
+ProgressionConfig.milestones = {
+	{
+		name = "Village Loop",
+		guests_served = 0,
+		unlocks = {
+			recipes = { "Bread", "Apple Pie" },
+			cosmetics = {},
+			furniture = {},
+			locations = {},
+		},
+	},
+	{
+		name = "Kitchen Garden",
+		guests_served = 15,
+		unlocks = {
+			recipes = { "Zunda Bread" },
+			cosmetics = {},
+			furniture = {},
+			locations = {},
+		},
+	},
+	{
+		name = "Garden Mastery",
+		guests_served = 40,
+		unlocks = {
+			recipes = { "Zunda Mochi" },
+			cosmetics = {},
+			furniture = {},
+			locations = {},
+		},
+	},
+	{
+		name = "Promenade Market",
+		guests_served = 100,
+		unlocks = {
+			recipes = { "Cupcake" },
+			cosmetics = {},
+			furniture = {},
+			locations = {},
+		},
+	},
 }
 
 return ProgressionConfig
