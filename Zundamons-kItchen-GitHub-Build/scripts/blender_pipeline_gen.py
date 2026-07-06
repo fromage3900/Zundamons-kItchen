@@ -173,6 +173,68 @@ def generate_counter(params):
     }
 
 
+def generate_obj(path, result):
+    """Generate a simple OBJ file for Roblox import"""
+    obj_type = result.get("type", "cube")
+    
+    # Simple geometric OBJ files for each type
+    if obj_type == "flower":
+        lines = [
+            "o flower",
+            "v 0 0 0",  # center
+            "v 0.5 1 0", "v -0.5 1 0", "v 0 1.2 0.5",
+            "v 0 1.2 -0.5", "v 0.5 1 1", "v -0.5 1 1",
+            "f 1 2 3", "f 1 3 4", "f 1 4 5", "f 1 5 6",
+        ]
+    elif obj_type == "rock":
+        lines = [
+            "o rock",
+            "v -1 -1 -1", "v 1 -1 -1", "v 1 1 -1", "v -1 1 -1",
+            "v -1 -1 1", "v 1 -1 1", "v 1 1 1", "v -1 1 1",
+            "f 1 2 3 4", "f 5 6 7 8", "f 1 2 6 5", "f 2 3 7 6",
+            "f 3 4 8 7", "f 4 1 5 8",
+        ]
+    elif obj_type == "berry_bush":
+        lines = [
+            "o berry_bush",
+            "v 0 0 0", "v 0 2 0", "v 1 0.5 0.5", "v -1 0.5 0",
+            "v 0.5 0.5 1", "v -0.5 0.5 -1",
+            "f 1 2 3", "f 1 2 4", "f 1 2 5", "f 1 2 6",
+        ]
+    elif obj_type == "mushroom":
+        lines = [
+            "o mushroom",
+            "v 0 0 0", "v 0 1.2 0",  # stem
+            "v 0.8 1.2 0.2", "v -0.8 1.2 0.2", "v 0.8 1.2 -0.2",
+            "v -0.8 1.2 -0.2",  # cap
+            "f 1 3 4", "f 1 4 2", "f 1 2 5", "f 1 5 6",
+        ]
+    elif obj_type == "pea_pod":
+        lines = [
+            "o pea_pod",
+            "v -0.5 0 -0.2", "v 0.5 0 -0.2", "v 0.5 0.5 0.2",
+            "v -0.5 0.5 0.2", "v 0 0.7 0",
+            "f 1 2 3 4", "f 1 4 2",
+        ]
+    elif obj_type == "root":
+        lines = [
+            "o root",
+            "v 0 0 0", "v 0.3 0.8 0.2", "v -0.3 0.8 -0.2", "v 0.2 1.6 0.1",
+            "f 1 2 3", "f 2 3 4",
+        ]
+    else:  # default cube
+        lines = [
+            "o object",
+            "v -1 -1 -1", "v 1 -1 -1", "v 1 1 -1", "v -1 1 -1",
+            "v -1 -1 1", "v 1 -1 1", "v 1 1 1", "v -1 1 1",
+            "f 1 2 3 4", "f 5 6 7 8", "f 1 2 6 5", "f 2 3 7 6",
+            "f 3 4 8 7", "f 4 1 5 8",
+        ]
+    
+    with open(path, "w") as f:
+        f.write("\n".join(lines) + "\n")
+
+
 GENERATORS = {
     "flower": generate_flower,
     "pea_pod": generate_pea_pod,
@@ -251,13 +313,18 @@ def generate_asset(entry, output_dir):
         result["description"] = description
         result["export_path"] = export_path
 
+# Generate OBJ file for direct Roblox import
+        obj_path = os.path.join(output_dir, export_path, f"{asset_id}.obj")
+        os.makedirs(os.path.dirname(obj_path), exist_ok=True)
+        generate_obj(obj_path, result)
+        
         # Write metadata JSON
         meta_path = os.path.join(output_dir, export_path, f"{asset_id}.json")
         os.makedirs(os.path.dirname(meta_path), exist_ok=True)
         with open(meta_path, "w") as f:
             json.dump(result, f, indent=2)
 
-        print(f"  [OK] {asset_id}: {result['type']} ({result.get('vertices', 0)} verts) -> {meta_path}")
+        print(f"  [OK] {asset_id}: {result['type']} ({result.get('vertices', 0)} verts) -> {obj_path} + {meta_path}")
         return result
     else:
         print(f"  [--] {asset_id}: unknown type, skipping")
