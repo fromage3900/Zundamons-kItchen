@@ -11,8 +11,29 @@
 - Avoid monolithic scripts; prefer splitting into logical components (e.g., `VNController` and `VNDialogueData`).
 
 ## Configuration
-- Game tuning and static data live in `src/ReplicatedStorage/ConfigurationFiles/`.
-- These modules are shared between Client and Server.
+- **Legacy configs**: `src/ReplicatedStorage/ConfigurationFiles/` — migrated one-by-one to Shared/Config
+- **Shared configs**: `src/ReplicatedStorage/Shared/Config/` — Rojo-mapped to `game.ReplicatedStorage.Shared.Config`
+  - `UIAssets.lua` — icons, sounds, particles, GUI textures, animations
+  - `HarvestNodeVariants.lua` — harvest node mesh variants + effects
+  - `NPCConfig.lua` — NPC + companion definitions (models, anims, effects)
+- All configs are ModuleScripts, shared between Client and Server.
+- Placeholder IDs (`FILL_*`) are guarded by `isPlaceholder()` — safe to deploy with emoji fallback.
 
 ## Validation
 - Use dedicated validator scripts (e.g., `HarvestValidator.server.lua`) to check client requests against server-side logic.
+- `HarvestValidator` is wired into `Mineable.server.lua` and `ZundaGatherServer.server.lua`.
+
+## Data Flow Diagram
+```
+Client Click → RemoteEvent → Server Handler
+                                  ↓
+                         HarvestValidator (distance, rate, cooldown)
+                                  ↓
+                         HarvestNodeVariants (get mesh/variant/scale)
+                                  ↓
+                         LootModule.generateLoot (spawn pickups)
+                                  ↓
+                         PlayerDataService (update gold/inventory)
+                                  ↓
+                         RemoteEvent → Client (play effects, update UI)
+```

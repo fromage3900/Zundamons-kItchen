@@ -1,21 +1,25 @@
-# Patch Notes (Template)
+# Patch Notes — v{version}
 
-**Version:** vX.Y.Z  
-**Date:** YYYY-MM-DD
+## New Features
+- {Feature}: {1-line description}
+- {Feature}: {1-line description}
 
-## Added
-- 
+## Changes
+- {Change}: {1-line description}
+- {Change}: {1-line description}
 
-## Changed
-- 
+## Bug Fixes
+- {Fix}: {1-line description} (closes #{issue})
 
-## Fixed
-- 
+## Asset Updates
+- {Asset}: {what changed — e.g. "updated wheat icon to Kenney Food Kit texture"}
+- {Asset}: {what changed}
 
-## Balance
-- 
+## Known Issues
+- {Issue}: {description of known limitation}
 
-## Technical
-- CI/export/structure notes (if any)
-- 
-
+## Files Changed
+```
+{path/to/file}
+{path/to/file}
+```
