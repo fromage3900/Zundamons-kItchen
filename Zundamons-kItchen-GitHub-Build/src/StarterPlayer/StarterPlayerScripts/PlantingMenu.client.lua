@@ -71,7 +71,7 @@ listLayout.Padding = UDim.new(0, 8)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Parent = listFrame
 
-local currentPlanter: BasePart? = nil
+local currentPlanter: Instance? = nil
 
 local function clearList()
 	for _, child in ipairs(listFrame:GetChildren()) do
@@ -88,7 +88,7 @@ local function close()
 	clearList()
 end
 
-local function open(plantables: { [string]: number }, planter: BasePart)
+local function open(plantables: { [string]: number }, planter: Instance)
 	currentPlanter = planter
 	clearList()
 
@@ -127,7 +127,7 @@ showMenuEv.OnClientEvent:Connect(function(plantables, planter)
 	if typeof(plantables) ~= "table" then
 		return
 	end
-	if typeof(planter) ~= "Instance" or not planter:IsA("BasePart") then
+	if typeof(planter) ~= "Instance" or not (planter:IsA("BasePart") or planter:IsA("Model")) then
 		return
 	end
 	open(plantables, planter)

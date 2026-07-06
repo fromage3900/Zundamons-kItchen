@@ -54,12 +54,36 @@ local function getSeedCount(data: { [string]: any }, seedName: string): number
 	return n
 end
 
-local function clonePlant(item: BasePart, plant: Instance)
+local function clonePlant(planter: Instance, plant: Instance)
 	local newPlant = plant:Clone()
 	newPlant:SetAttribute("Planted_at", tick())
-	newPlant.Parent = item
+	newPlant.Parent = planter
 	newPlant.Anchored = true
-	newPlant.Position = Vector3.new(item.Position.X, item.Position.Y + newPlant.Size.Y / 2, item.Position.Z)
+
+	local pos = planterPosition(planter)
+	if not pos then
+		return
+	end
+
+	local yOffset = 0
+	if newPlant:IsA("BasePart") then
+		yOffset = newPlant.Size.Y / 2
+	elseif newPlant:IsA("Model") then
+		local _, size = newPlant:GetBoundingBox()
+		yOffset = size.Y / 2
+	end
+
+	local target = Vector3.new(pos.X, pos.Y + yOffset, pos.Z)
+	if newPlant:IsA("BasePart") then
+		newPlant.Position = target
+	elseif newPlant:IsA("Model") then
+		newPlant:PivotTo(CFrame.new(target))
+	end
+	for _, part in ipairs(newPlant:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.Anchored = true
+		end
+	end
 end
 
 local function activvateClickDetector()
@@ -100,7 +124,7 @@ plantingEvent.OnServerEvent:Connect(function(player: Player, seedName: any, plan
 	if typeof(seedName) ~= "string" then
 		return
 	end
-	if typeof(planter) ~= "Instance" or not planter:IsA("BasePart") then
+	if typeof(planter) ~= "Instance" or not (planter:IsA("BasePart") or planter:IsA("Model")) then
 		return
 	end
 	if not CollectionService:HasTag(planter, "Planter") then

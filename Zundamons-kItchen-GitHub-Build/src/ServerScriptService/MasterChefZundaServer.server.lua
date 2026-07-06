@@ -76,6 +76,10 @@ end
 CollectionService:GetInstanceAddedSignal(MasterChefConfig.collectionTag):Connect(bindNpc)
 
 sendEv.OnServerEvent:Connect(function(player: Player, message: any)
+	if not RemoteRateLimiter.allow(player, "masterChefChat", 1) then
+		errorEv:FireClient(player, "Slow down a moment, chef.")
+		return
+	end
 	if typeof(message) ~= "string" then
 		errorEv:FireClient(player, "Invalid message.")
 		return

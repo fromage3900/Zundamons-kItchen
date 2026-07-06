@@ -13,7 +13,7 @@ if not recordNpcEv then
 	recordNpcEv.Parent = RE
 end
 
-local lastNpcChat: { [number]: number } = {}
+local lastNpcChat: { [string]: number } = {}
 local NPC_COOLDOWN = 5
 
 recordNpcEv.OnServerEvent:Connect(function(player: Player, speakerKey: any)
@@ -25,11 +25,12 @@ recordNpcEv.OnServerEvent:Connect(function(player: Player, speakerKey: any)
 	end
 
 	local now = os.clock()
-	local last = lastNpcChat[player.UserId]
+	local cooldownKey = tostring(player.UserId) .. ":" .. speakerKey
+	local last = lastNpcChat[cooldownKey]
 	if last and (now - last) < NPC_COOLDOWN then
 		return
 	end
-	lastNpcChat[player.UserId] = now
+	lastNpcChat[cooldownKey] = now
 
 	if CompanionStats.recordNpcChat(player, speakerKey) then
 		print("[CompanionInteraction] " .. player.Name .. " spoke with " .. speakerKey)

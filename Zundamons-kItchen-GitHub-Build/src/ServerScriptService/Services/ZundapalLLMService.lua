@@ -17,7 +17,7 @@ export type ChatMessage = {
 
 local sessions: { [string]: { ChatMessage } } = {}
 local sessionMeta: { [number]: { lastAction: string?, lastPayload: { [string]: any }? } } = {}
-local lastSendAt: { [number]: number } = {}
+local lastSendAt: { [string]: number } = {}
 local cachedApiKey: string? = nil
 
 local ZundapalLLMService = {}
@@ -121,13 +121,11 @@ local function buildMessages(player: Player, userText: string, personaKey: strin
 		end
 	end
 
-	table.insert(history, { role = "user", content = userText })
-	trimHistory(key)
-
 	local messages: { ChatMessage } = { { role = "system", content = systemContent } }
 	for _, msg in ipairs(history) do
 		table.insert(messages, msg)
 	end
+	table.insert(messages, { role = "user", content = userText })
 	return messages
 end
 
@@ -157,9 +155,10 @@ function ZundapalLLMService.isEnabled(): boolean
 	return Config.enabled == true
 end
 
-function ZundapalLLMService.checkCooldown(userId: number): (boolean, number?)
+function ZundapalLLMService.checkCooldown(userId: number, personaKey: string?): (boolean, number?)
 	local now = os.clock()
-	local last = lastSendAt[userId]
+	local key = sessionKey(userId, personaKey or "zundapal")
+	local last = lastSendAt[key]
 	if last and (now - last) < Config.cooldownSeconds then
 		return false, Config.cooldownSeconds - (now - last)
 	end
@@ -173,7 +172,12 @@ function ZundapalLLMService.clearSession(userId: number)
 		end
 	end
 	sessionMeta[userId] = nil
-	lastSendAt[userId] = nil
+	local prefix = tostring(userId) .. ":"
+	for key in pairs(lastSendAt) do
+		if string.sub(key, 1, #prefix) == prefix then
+			lastSendAt[key] = nil
+		end
+	end
 end
 
 function ZundapalLLMService.recordGameplayEvent(userId: number, action: string, payload: { [string]: any }?)
@@ -211,7 +215,7 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 		return false, longMsg, "too_long"
 	end
 
-	local okCooldown, waitSec = ZundapalLLMService.checkCooldown(player.UserId)
+	local okCooldown, waitSec = ZundapalLLMService.checkCooldown(player.UserId, personaKey)
 	if not okCooldown then
 		return false, string.format("Slow down a tiny bit~ %.0fs left ⏳", waitSec or 1), "cooldown"
 	end
@@ -234,7 +238,8 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 		return false, pickFallback(player.Name, personaKey), "bad_config"
 	end
 
-	lastSendAt[player.UserId] = os.clock()
+	local cooldownKey = sessionKey(player.UserId, personaKey)
+	lastSendAt[cooldownKey] = os.clock()
 
 	local messages = buildMessages(player, filteredInput, personaKey)
 	local requestBody = HttpService:JSONEncode({
@@ -275,14 +280,20 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 		assistantText = string.sub(assistantText, 1, Config.maxOutputChars) .. "…"
 	end
 
+	local filteredOutput = filterForPlayer(assistantText, player.UserId)
+	if not filteredOutput then
+		return false, pickFallback(player.Name, personaKey), "filtered"
+	end
+
 	local key = sessionKey(player.UserId, personaKey)
 	local history = sessions[key]
 	if history then
-		table.insert(history, { role = "assistant", content = assistantText })
+		table.insert(history, { role = "user", content = filteredInput })
+		table.insert(history, { role = "assistant", content = filteredOutput })
 		trimHistory(key)
 	end
 
-	return true, assistantText, nil
+	return true, filteredOutput, nil
 end
 
 return ZundapalLLMService
