@@ -29,6 +29,9 @@ const requiredFiles = [
 	"docs/studio-legacy-ui-deletion.md",
 	"docs/ELECTRA-SETUP.md",
 	"AI/PUBLISH-PLAN.md",
+	"src/ServerScriptService/Services/ZundapalLLMService.lua",
+	"src/ServerScriptService/ZundapalChatServer.server.lua",
+	"src/StarterPlayer/StarterPlayerScripts/ZundapalChat.client.lua",
 	"src/ReplicatedStorage/RemoteFunctions/init.meta.json",
 	"src/ReplicatedStorage/RewardEvents/init.meta.json",
 ];
@@ -69,15 +72,14 @@ const requiredPatterns = [
 		pattern: /RemoteFunctions/,
 		label: "Rojo project includes RemoteFunctions",
 	},
-];
-
-const optionalPatterns = [
 	{
 		file: "src/ServerScriptService/Services/ZundapalLLMService.lua",
-		pattern: /maxDailyMessagesPerUser/,
-		label: "LLM daily cap (restore in Phase 1.2)",
+		pattern: /maxDailyMessagesPerUser|llm_disclaimer_accepted/,
+		label: "LLM daily cap + disclaimer enforcement",
 	},
 ];
+
+const optionalPatterns = [];
 
 let failed = false;
 let warned = false;

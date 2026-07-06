@@ -70,9 +70,19 @@ for (const [file, pattern] of badRequires) {
 	}
 }
 
-const guestDetector = requireFile("src/StarterPlayer/StarterPlayerScripts/GuestDetector.client.lua");
+const guestDetector = requireFile("src/StarterPlayer/StarterPlayerScripts/VNController.client.lua");
 if (guestDetector.includes("character = script.Parent")) {
 	console.error("[verify-rojo-wiring] GuestDetector still uses script.Parent as character");
+	failed = true;
+}
+
+const vnController = requireFile("src/StarterPlayer/StarterPlayerScripts/VNController.client.lua");
+if (vnController.includes("script.Parent") && !vnController.includes("ClientGuiBootstrap")) {
+	console.error("[verify-rojo-wiring] VNController still uses script.Parent without bootstrap");
+	failed = true;
+}
+if (!vnController.includes("ZundaVNGui")) {
+	console.error("[verify-rojo-wiring] VNController missing ZundaVNGui bootstrap");
 	failed = true;
 }
 

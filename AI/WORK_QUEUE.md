@@ -5,8 +5,8 @@ Live task board. **Claim before coding.** Workspace: `G:\Zundamons-kItchen` ([`W
 | ID | Task | Owner | Status | Branch | Files |
 |----|------|-------|--------|--------|-------|
 | P0 | Friends playtest smoke | Human | pending | main | Studio StarterGui cleanup |
-| P1 | Restore LLM stack post-merge | Cursor | pending | cursor/restore-llm-vn-594f | ZundapalLLM*, MasterChef*, chat clients |
-| P2 | VN code-bootstrap (`ZundaVNGui`) | Cursor | pending | cursor/restore-llm-vn-594f | VNController.client.lua |
+| P2 | VN code-bootstrap (`ZundaVNGui`) | Cursor | done | cursor/vn-llm-restore-594f | VNController.client.lua |
+| P1 | Restore LLM stack post-merge | Cursor | done | cursor/vn-llm-restore-594f | ZundapalLLM*, ZundapalChat |
 | P3 | HUD Rojo bootstrap | OpenCode | pending | opencode/hud-bootstrap | HudScript, CraftingScript |
 | P4 | Real DevProduct IDs | Human | pending | main | MarketplaceConfig.lua |
 | P5 | Kenney decal upload | Human | blocked | — | UIAssets.lua (network) |
