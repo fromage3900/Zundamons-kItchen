@@ -19,6 +19,8 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 - [x] Legacy UI Phase 0 — `000_LegacyOverlayCleanup`, VN `ZundaVNGui` bootstrap
 - [x] Publish safety — atmosphere audit, LLM disclaimer, daily cap, publish-readiness script
 - [x] Docs index (`docs/README.md`), `PRIVACY.md`, `SECURITY.md`, legal publish checklist
+- [ ] Studio smoke playtest confirmed (see `docs/studio-playtest-smoke.md`)
+- [ ] Real DevProduct IDs + `STRICT_PUBLISH=1` CI (Cline C3)
 
 ## Priority 1: Hardening & Stabilization
 

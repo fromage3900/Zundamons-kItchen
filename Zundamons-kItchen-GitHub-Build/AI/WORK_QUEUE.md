@@ -21,6 +21,10 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | L5 | Master Chef Zunda NPC + LLM mentor persona | Cursor | done | cursor/master-chef-zunda-594f | MasterChefZundaConfig, MasterChefZundaServer, VNController |
 | P3 | Git hooks + remote manifest sync check | Cursor | done | cursor/master-chef-zunda-594f | check-remote-sync.mjs, hooks:install |
 | G1 | Consolidate click-gather vs tool-mine overlap | Cursor | done | cursor/gather-consolidation-594f | GatherConfig, ZundaGatherServer, MineableConfig |
+| P4 | Publish safety plan (atmosphere, LLM disclaimer, legal docs) | Cursor | done | cursor/publish-safety-594f | DisclaimerGate, check-publish-readiness, PRIVACY.md, legal-publish-checklist |
+| P5 | Studio smoke playtest + delete StarterGui.ZundaFX | Human | in_progress | main | docs/studio-playtest-smoke.md |
+| P6 | Real DevProduct IDs + STRICT_PUBLISH CI | Cline | pending | cline/marketplace-service | MarketplaceService, RobuxStoreServer, CompanionShopServer |
+| P7 | Client UI Rojo bootstrap (CompanionShop, Pouch, Quest) | OpenCode | pending | opencode/ui-bootstrap | CompanionShopScript, PouchScript, QuestScript |
 
 ## Status values
 
