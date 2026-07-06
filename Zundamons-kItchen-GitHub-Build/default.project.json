@@ -29,6 +29,7 @@
 		"ZundapalChatReply": { "$className": "RemoteEvent" },
 		"ZundapalChatError": { "$className": "RemoteEvent" },
 		"ZundapalChatStatus": { "$className": "RemoteEvent" },
+		"RecordNpcChat": { "$className": "RemoteEvent" },
 		"ZoneVisited": { "$className": "RemoteEvent" },
         "PurchaseResult": { "$className": "RemoteEvent" }
       },

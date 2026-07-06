@@ -21,6 +21,7 @@ RemoteManifest.remoteEvents = {
 	"ZundapalChatReply",
 	"ZundapalChatError",
 	"ZundapalChatStatus",
+	"RecordNpcChat",
 	"ZoneVisited",
 	"PurchaseResult",
 }

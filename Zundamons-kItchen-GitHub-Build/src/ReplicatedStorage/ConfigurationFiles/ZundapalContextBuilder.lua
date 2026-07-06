@@ -7,6 +7,7 @@ local QuestConfig = require(script.Parent:WaitForChild("QuestConfig"))
 local QuestProgress = require(script.Parent:WaitForChild("QuestProgress"))
 local ProgressionConfig = require(script.Parent:WaitForChild("ProgressionConfig"))
 local ZoneVisitConfig = require(script.Parent:WaitForChild("ZoneVisitConfig"))
+local CompanionConfig = require(script.Parent:WaitForChild("CompanionConfig"))
 
 local ZundapalContextBuilder = {}
 
@@ -168,6 +169,8 @@ function ZundapalContextBuilder.buildSnapshot(data: { [string]: any }, env: { [s
 	env = env or {}
 	local stats = data.stats or {}
 	local zones = data.zones_visited or {}
+	local activeKey = data.active_companion or "zundamon"
+	local companionDef = CompanionConfig.getCompanion(activeKey)
 
 	return {
 		gold = data.Gold or data.current_gold or 0,
@@ -175,7 +178,10 @@ function ZundapalContextBuilder.buildSnapshot(data: { [string]: any }, env: { [s
 		guestsServed = data.guests_served or 0,
 		tier = data.tier or 1,
 		tierName = tierName(data.tier or 1),
-		activeCompanion = COMPANION_LABELS[data.active_companion or "zundamon"] or data.active_companion or "Zundamon",
+		activeCompanion = COMPANION_LABELS[activeKey] or companionDef.displayName,
+		activeCompanionKey = activeKey,
+		activeCompanionBuff = companionDef.buff and companionDef.buff.description or "none",
+		activeCompanionPersona = companionDef.llmPersona,
 		plotOwned = data.owned_plot,
 		decorationsOwned = type(data.owned_decorations) == "table" and #data.owned_decorations or 0,
 		zonesVisited = listVisitedZones(zones),
@@ -194,6 +200,7 @@ function ZundapalContextBuilder.buildSnapshot(data: { [string]: any }, env: { [s
 		end)(),
 		perfectCooks = stats.perfectCooks or 0,
 		companionChats = stats.companion_chats or 0,
+		npcChats = stats.npc_chats or 0,
 		dailyQuestTitle = data.daily and data.daily.todayQuestId,
 		dailyQuestProgress = data.daily and data.daily.todayProgress,
 		hour = env.hour,
@@ -212,8 +219,15 @@ function ZundapalContextBuilder.formatForPrompt(snapshot: { [string]: any }, pla
 		"Active companion form: " .. tostring(snapshot.activeCompanion),
 		"Perfect cooks: " .. tostring(snapshot.perfectCooks) .. " | Chats with you: " .. tostring(
 			snapshot.companionChats
-		),
+		) .. " | NPC chats: " .. tostring(snapshot.npcChats),
 	}
+
+	if snapshot.activeCompanionBuff and snapshot.activeCompanionBuff ~= "none" then
+		table.insert(lines, "Active companion buff: " .. tostring(snapshot.activeCompanionBuff))
+	end
+	if snapshot.activeCompanionPersona then
+		table.insert(lines, "Companion persona: " .. tostring(snapshot.activeCompanionPersona))
+	end
 
 	if snapshot.plotOwned then
 		table.insert(lines, "Owned plot: #" .. tostring(snapshot.plotOwned))
@@ -295,11 +309,17 @@ function ZundapalContextBuilder.suggestProactiveHint(
 		if snapshot.guestsServed == 1 then
 			return "First guest served~ You're officially a village chef now! 🧑‍🍳"
 		end
+		if snapshot.activeCompanionKey == "ankomon" then
+			return "Ankomon's buff is boosting your gold from guests~ Keep serving! 💰"
+		end
 		if #snapshot.craftableNow > 0 then
 			return "Guests love your cooking! Maybe cook " .. snapshot.craftableNow[1] .. " for the next one~"
 		end
 	elseif action == "gather" then
 		local item = payload.item
+		if snapshot.activeCompanionKey == "antimon" then
+			return "Your Antimon buff might snag an extra gather drop~ Keep collecting! 🌿"
+		end
 		if item == "Zunda Pea" then
 			return "Zunda Peas! 🫛 Those are perfect for Zunda Mochi~"
 		elseif item == "Edamame Pod" then

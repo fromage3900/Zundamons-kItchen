@@ -27,6 +27,7 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `ZundapalChatReply` | S→C | `{ text, speaker?, fallback? }` | `ZundapalChatServer.server.lua` | N/A |
 | `ZundapalChatError` | S→C | `(message: string)` | `ZundapalChatServer.server.lua` | N/A |
 | `ZundapalChatStatus` | S→C | `"thinking" \| "ready"` | `ZundapalChatServer.server.lua` | N/A |
+| `RecordNpcChat` | C→S | `(speakerKey: "elder" \| "ruins" \| "chef")` | `CompanionInteractionServer.server.lua` | Whitelist via `CompanionConfig.npcSpeakers`, 5s cooldown |
 | `ZoneVisited` | C→S | `(zoneName: string)` | `ZoneVisitServer.server.lua` | Mapped via `ZoneVisitConfig` |
 
 ---

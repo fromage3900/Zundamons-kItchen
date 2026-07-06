@@ -7,6 +7,7 @@ local TextService = game:GetService("TextService")
 
 local Config = require(game.ReplicatedStorage.ConfigurationFiles.ZundapalLLMConfig)
 local ContextBuilder = require(game.ReplicatedStorage.ConfigurationFiles.ZundapalContextBuilder)
+local CompanionConfig = require(game.ReplicatedStorage.ConfigurationFiles.CompanionConfig)
 local PlayerDataService = require(script.Parent.PlayerDataService)
 
 export type ChatMessage = {
@@ -91,6 +92,10 @@ local function buildMessages(player: Player, userText: string): { ChatMessage }
 		local data = PlayerDataService.get(player) or PlayerDataService.getOrCreate(player)
 		local snapshot = ContextBuilder.buildSnapshot(data, getWorldEnv(userId))
 		systemContent = systemContent .. "\n\n" .. ContextBuilder.formatForPrompt(snapshot, player.Name)
+		local companionDef = CompanionConfig.getCompanion(data.active_companion or "zundamon")
+		if companionDef.llmPersona then
+			systemContent = systemContent .. "\n" .. companionDef.llmPersona
+		end
 	end
 
 	table.insert(history, { role = "user", content = userText })

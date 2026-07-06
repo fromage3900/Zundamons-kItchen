@@ -1,6 +1,7 @@
 -- [[Script] CompanionBuffServer (ref: RBXBECA557F11C442D2A370EE1018993A66)]]
 local RF = game.ReplicatedStorage:WaitForChild("RemoteFunctions")
 local GetActiveCompanionBuff = RF:WaitForChild("GetActiveCompanionBuff")
+local CompanionConfig = require(game.ReplicatedStorage.ConfigurationFiles.CompanionConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 GetActiveCompanionBuff.OnServerInvoke = function(player, stat)
@@ -12,12 +13,8 @@ GetActiveCompanionBuff.OnServerInvoke = function(player, stat)
 	if not active then
 		return 0
 	end
-	local cat = shared.ZundaCompanionCatalog
-	if not cat then
-		return 0
-	end
-	local def = cat[active]
-	if not def or not def.buff then
+	local def = CompanionConfig.getCompanion(active)
+	if not def.buff then
 		return 0
 	end
 	if def.buff.stat == stat then

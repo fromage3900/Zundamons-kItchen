@@ -159,20 +159,24 @@ Sell prices for Zunda items are in `mineableConfig.priceLists` (e.g. Zunda Mochi
 | flower_vase | FlowerVase |
 | chalkboard_menu | ChalkboardMenu |
 
-### Companions (`CompanionManager.server.lua` → `shared.ZundaCompanionCatalog`)
+### Companions (`CompanionConfig.lua` → `CompanionManager.server.lua`)
 
-| Key | Tier | Buff |
-|-----|------|------|
-| zundamon | Free | — |
-| zundacat | Free | — |
-| zundabunny | Free | — |
-| tantanmon | Free | — |
-| ankomon | Premium (500 R$) | +15% gold |
-| cardamon | Premium | +30% perfect cook window |
-| antimon | Premium | +20% extra gather drop |
-| sakuradamon | Premium | +25% XP |
+Canonical catalog in **`CompanionConfig.lua`** (also sets `shared.ZundaCompanionCatalog` for legacy scripts). Each companion defines emoji, glow, sparkle colors, buff, `displayName`, `llmPersona`, and optional per-form `meshPath`.
 
-Mesh clones from `GameplayLoopArea.GatheringNodes.Loop_AppleTree_1.mesh.zundapal` (sphere fallback if missing).
+| Key | Tier | Buff | LLM persona |
+|-----|------|------|-------------|
+| zundamon | Free | — | Pea-spirit form |
+| zundacat | Free | — | Playful cat form |
+| zundabunny | Free | — | Bunny form |
+| tantanmon | Free | — | Spicy tan form |
+| ankomon | Premium (500 R$) | +15% gold | Gold buff context |
+| cardamon | Premium | +30% perfect cook window | Perfect cook helper |
+| antimon | Premium | +20% extra gather drop | Gather helper |
+| sakuradamon | Premium | +25% XP | XP buff context |
+
+Default mesh clones from `GameplayLoopArea.GatheringNodes.Loop_AppleTree_1.mesh.zundapal` (sphere fallback if missing). Override per companion via `meshPath` in `CompanionConfig`.
+
+**LLM integration:** `ZundapalLLMService` injects `llmPersona` + live buff into system prompt. `ZundapalChat.client` boosts companion sparkles during "thinking". Quest stats: `companion_chats` (LLM replies + companion click), `npc_chats` (`RecordNpcChat` from zone NPC VN speakers: elder, ruins, chef).
 
 ### Tools (`ToolsConfig.lua`)
 

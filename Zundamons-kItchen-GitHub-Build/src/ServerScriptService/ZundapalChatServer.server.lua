@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local RS = game:GetService("ReplicatedStorage")
 
 local ZundapalLLMService = require(script.Parent.Services.ZundapalLLMService)
-local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+local CompanionStats = require(script.Parent.Services.CompanionStats)
 
 local RE = RS:WaitForChild("RemoteEvents")
 
@@ -24,11 +24,7 @@ local errorEv = ensureEvent("ZundapalChatError")
 local statusEv = ensureEvent("ZundapalChatStatus")
 
 local function bumpCompanionChats(player: Player)
-	local data = PlayerDataService.getOrCreate(player)
-	if not data.stats then
-		data.stats = { perfectCooks = 0, companion_chats = 0, npc_chats = 0 }
-	end
-	data.stats.companion_chats = (data.stats.companion_chats or 0) + 1
+	CompanionStats.recordCompanionChat(player)
 end
 
 sendEv.OnServerEvent:Connect(function(player: Player, message: any)

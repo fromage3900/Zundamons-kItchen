@@ -37,6 +37,6 @@
 - [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
 - [ ] Studio: add `ServerStorage.ZundapalLLMSecrets.ApiKey` + enable HttpService for DeepSeek
 - [ ] Decoration shop client UI (server remotes ready — see AI/WORK_QUEUE O1)
-- [ ] Wire companion_chat / npc_chat quest stat hooks (see AI/WORK_QUEUE C2)
+- [x] Wire companion_chat / npc_chat quest stat hooks (CompanionConfig + RecordNpcChat)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
 - [ ] Bootstrap remaining Studio-only UI in Rojo (optional future)

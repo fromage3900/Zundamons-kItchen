@@ -11,6 +11,7 @@ local RS = game:GetService("ReplicatedStorage")
 local Lighting = game:GetService("Lighting")
 
 local VNDialogueData = require(RS.ConfigurationFiles:WaitForChild("VNDialogueData"))
+local CompanionConfig = require(RS.ConfigurationFiles:WaitForChild("CompanionConfig"))
 local SPEAKERS = VNDialogueData.SPEAKERS
 
 local player = Players.LocalPlayer
@@ -297,6 +298,20 @@ chatExit.MouseButton1Click:Connect(function()
 	end
 end)
 
+local function recordNpcDialogue(speakerKey: string)
+	if not CompanionConfig.npcSpeakers[speakerKey] then
+		return
+	end
+	local re = RS:FindFirstChild("RemoteEvents")
+	if not re then
+		return
+	end
+	local ev = re:FindFirstChild("RecordNpcChat")
+	if ev then
+		ev:FireServer(speakerKey)
+	end
+end
+
 local function setSpeaker(key)
 	local sp = SPEAKERS[key] or SPEAKERS.zundamon
 	pEmoji.Text = sp.emoji
@@ -434,6 +449,7 @@ local function showLine(idx)
 		speakerKey = entry.speaker or "zundamon"
 		text = entry.text or ""
 	end
+	recordNpcDialogue(speakerKey)
 	setSpeaker(speakerKey)
 	typeThread = task.spawn(function()
 		typeWrite(text)
@@ -746,7 +762,10 @@ local function buildCompanionTree()
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "Cook the dish they want, then walk over with it in your pouch." },
+						{
+							speaker = "zundapal",
+							text = "Cook the dish they want, then walk over with it in your pouch.",
+						},
 						{ speaker = "zundapal", text = "Click the guest — they’ll pay in gold and a smile~" },
 					},
 				},
@@ -787,9 +806,10 @@ local function buildCompanionTree()
 					speaker = "zundapal",
 					lines = {
 						{ speaker = "zundapal", text = "Hehe — hi! \u{1F49A}" },
-						{ speaker = "zundapal", text = "It’s really nice to see your face today, "
-							.. player.Name
-							.. "." },
+						{
+							speaker = "zundapal",
+							text = "It’s really nice to see your face today, " .. player.Name .. ".",
+						},
 					},
 				},
 			},
@@ -814,11 +834,10 @@ if qcRE then
 	qcRE.OnClientEvent:Connect(function(quest)
 		local lines = {
 			{ speaker = "zundamon", text = 'Quest complete! 🎉  "' .. quest.title .. '"' },
-			{ speaker = "zundapal", text = "You did it, "
-				.. player.Name
-				.. "! ✨ +"
-				.. (quest.reward or 0)
-				.. " gold~" },
+			{
+				speaker = "zundapal",
+				text = "You did it, " .. player.Name .. "! ✨ +" .. (quest.reward or 0) .. " gold~",
+			},
 			{ speaker = "zundamon", text = quest.unlock_hint or "Keep exploring — new surprises await!" },
 		}
 		_G.ZundaVN.show("zundamon", lines)

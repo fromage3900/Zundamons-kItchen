@@ -83,7 +83,7 @@
 - **After:** All `QuestConfig.default_quests` active via `QuestProgress.evaluate()`
 - **Persistence:** `completed_quests` saved in `PlayerDataService`
 - **VN integration:** Milestone quests retain `unlock_hint` for `QuestCompleted` events
-- **Pending:** `companion_chat` / `npc_chat` quest types return 0 until stat hooks added (see `AI/WORK_QUEUE.md`)
+- **Stat hooks:** `companion_chats` (companion click + LLM reply) and `npc_chats` (`RecordNpcChat` from zone NPC VN) wired via `CompanionConfig` / `CompanionStats` (see `docs/companion-integration-audit.md`)
 
 ---
 
@@ -124,8 +124,7 @@ The project is in **good shape for active development**. The Rojo pipeline works
 
 1. Decoration shop client UI (OpenCode territory)
 2. Migrate `Planters` off `_G.data` (Cline territory)
-3. Wire `companion_chat` / `npc_chat` stat counters (Cline territory)
-4. Adopt `UIComponents` in client menus (OpenCode territory)
+3. Adopt `UIComponents` in client menus (OpenCode territory)
 
 ### Score: 7.5/10
 

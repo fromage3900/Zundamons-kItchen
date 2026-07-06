@@ -16,51 +16,58 @@ local GetOwnedCompanions = RF:WaitForChild("GetOwnedCompanions")
 -- If you don't set these yet, the shop falls back to a "test purchase" path
 -- that grants ownership immediately so the system can be developed without Robux.
 local DEVPRODUCT_IDS = {
-    ankomon     = 0,
-    cardamon    = 0,
-    antimon     = 0,
-    sakuradamon = 0,
+	ankomon = 0,
+	cardamon = 0,
+	antimon = 0,
+	sakuradamon = 0,
 }
 
 -- Map productId -> compType (built reverse)
 local productToComp = {}
-for k, v in pairs(DEVPRODUCT_IDS) do if v ~= 0 then productToComp[v] = k end end
+for k, v in pairs(DEVPRODUCT_IDS) do
+	if v ~= 0 then
+		productToComp[v] = k
+	end
+end
 
 -- Pending purchases per player so we can credit on success
 local pending = {}
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+local CompanionConfig = require(RS.ConfigurationFiles.CompanionConfig)
 
 PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
-    local cat = shared.ZundaCompanionCatalog
-    if not cat then return end
-    local def = cat[compType]
-    if not def or def.free then return end
+	local def = CompanionConfig.companions[compType]
+	if not def or def.free then
+		return
+	end
 	if PlayerDataService.get(player) and PlayerDataService.get(player)["companion_owned_" .. compType] then
-        return  -- already owned
-    end
-    local pid = DEVPRODUCT_IDS[compType]
-    if pid and pid ~= 0 then
-        pending[player.UserId] = pending[player.UserId] or {}
-        pending[player.UserId][pid] = compType
-        local ok, err = pcall(function()
-            MarketplaceService:PromptProductPurchase(player, pid)
-        end)
-        if not ok then warn("[CompanionShop] prompt failed:", err) end
-    else
-        -- TEST MODE: grant immediately so dev/playtest flow works without real Robux products
+		return -- already owned
+	end
+	local pid = DEVPRODUCT_IDS[compType]
+	if pid and pid ~= 0 then
+		pending[player.UserId] = pending[player.UserId] or {}
+		pending[player.UserId][pid] = compType
+		local ok, err = pcall(function()
+			MarketplaceService:PromptProductPurchase(player, pid)
+		end)
+		if not ok then
+			warn("[CompanionShop] prompt failed:", err)
+		end
+	else
+		-- TEST MODE: grant immediately so dev/playtest flow works without real Robux products
 		local data = PlayerDataService.getOrCreate(player)
 		data["companion_owned_" .. compType] = true
-        CompanionOwnedSync:FireClient(player, compType, true)
-        print(string.format("[CompanionShop] TEST grant: %s -> %s", player.Name, compType))
-    end
+		CompanionOwnedSync:FireClient(player, compType, true)
+		print(string.format("[CompanionShop] TEST grant: %s -> %s", player.Name, compType))
+	end
 end)
 
 -- Premium companion receipts: register DevProduct IDs in RobuxStoreServer PRODUCTS.
 -- Do not assign MarketplaceService.ProcessReceipt here — RobuxStoreServer owns the handler.
 
 GetCompanionCatalog.OnServerInvoke = function(player)
-    return shared.ZundaCompanionCatalog
+	return CompanionConfig.companions
 end
 
 GetOwnedCompanions.OnServerInvoke = function(player)
@@ -77,7 +84,7 @@ GetOwnedCompanions.OnServerInvoke = function(player)
 		end
 		owned.__active = data.active_companion or "zundamon"
 	end
-    return owned
+	return owned
 end
 
 print("[CompanionShopServer] online")
