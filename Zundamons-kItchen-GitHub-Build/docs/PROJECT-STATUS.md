@@ -22,12 +22,17 @@
 | Mineable security    | Mineable.server.lua                    | Validator + nil guards |
 | ZundaGatherServer    | ZundaGatherServer.server.lua           | Validator wired        |
 
-### Cline's Configuration Fixes
-| System            | File                                           | Purpose                                             |
-| ----------------- | ---------------------------------------------- | --------------------------------------------------- |
-| ProgressionConfig | ConfigurationFiles/ProgressionConfig.lua       | Added guest_preferences, guest_settings, milestones |
-| CraftConfig       | Shared/Modules/CraftConfig.lua                 | Added all recipes for consistency                   |
-| CraftingScript    | StarterPlayerScripts/CraftingScript.client.lua | Now reads from server config                        |
+### Cline's High-Value Implementations
+| System            | File                                           | Purpose                                                        |
+| ----------------- | ---------------------------------------------- | -------------------------------------------------------------- |
+| ProgressionConfig | ConfigurationFiles/ProgressionConfig.lua       | guest_preferences, guest_settings, patience_colors, milestones |
+| ChefLevelConfig   | ConfigurationFiles/ChefLevelConfig.lua         | Gentler XP curve (80 XP/level 1-5)                             |
+| CraftConfig       | Shared/Modules/CraftConfig.lua                 | All 12 recipes with getUnlockedRecipes() helper                |
+| CraftingScript    | StarterPlayerScripts/CraftingScript.client.lua | Reads from server, shows unlock hints                          |
+| GuestManager      | ServerScriptService/GuestManager.server.lua    | Patience bar UI with color transitions                         |
+| UIAssets          | Shared/Config/UIAssets.lua                     | Rock icon, isPlaceholder() helper                              |
+| QuestConfig       | ReplicatedStorage/QuestConfig.lua              | Sweet Tooth achievement, seasonal recipes                      |
+| ScatterConfig     | ConfigurationFiles/ScatterConfig.lua           | Discovery hints, animation flags (sway, bob, glow)             |
 
 ### New Systems Added
 | System              | File                                  | Purpose                   |
