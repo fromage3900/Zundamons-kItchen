@@ -8,7 +8,7 @@ local RS      = game:GetService("ReplicatedStorage")
 -- ── PRODUCT CATALOGUE ────────────────────────────────────────────────────────
 -- Format: [productId] = { type, key, displayName }
 -- type: "companion" | "recipe" | "accessory"
--- key:  stored as _G.data[playerName]["companion_owned_KEY"] = true
+-- key:  companion → PlayerDataService companion_owned[key]; recipe → unlocked_recipes
 local PRODUCTS = {
     -- COMPANIONS  (replace IDs!)
     [1111111101] = { type="companion",  key="zundacat",     name="ZundaCat Companion"  },
