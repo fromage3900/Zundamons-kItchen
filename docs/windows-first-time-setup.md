@@ -42,15 +42,18 @@ Output should show `[ROJO SYNC OK] Client — main-2026-07-06-g-drive-workspace`
 
 ### Port 34872 already in use (`os error 10048`)
 
-Another Rojo instance is still bound to port 34872. The project scripts handle this automatically:
+**Stale Rojo/node:** `npm run rojo:serve` stops old `node.exe` on 34872 automatically.
+
+**Cursor holds 34872:** Cursor sometimes port-forwards 34872. The serve script **falls back to 34873** (or next free port). In Studio Rojo plugin, set port to match the terminal (e.g. `34873`), not always `34872`.
+
+Manual cleanup:
 
 ```powershell
-cd G:\Zundamons-kItchen
 npm run rojo:stop
 npm run rojo:serve
 ```
 
-`rojo:serve` will also try to stop a stale **node.exe** on 34872 before starting. If a different app holds the port, close it or run `netstat -ano | findstr :34872` then `taskkill /PID <pid> /F`.
+Custom port: `$env:ROJO_PORT=34900; npm run rojo:serve`
 
 **Rule:** only one `npm run rojo:serve` at a time.
 

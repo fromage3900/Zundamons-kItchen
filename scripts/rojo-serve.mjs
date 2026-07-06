@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Start Rojo serve on port 34872. If the port is held by a stale node/rojo
- * process (common after closing a terminal without stopping serve), free it first.
+ * Start Rojo serve. Prefers port 34872; frees stale node/rojo there, or falls
+ * back to 34873+ when another app (e.g. Cursor port-forward) holds 34872.
  */
 import { spawn, execSync } from "node:child_process";
 import net from "node:net";
@@ -9,7 +9,8 @@ import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const PORT = 34872;
+const DEFAULT_PORT = 34872;
+const FALLBACK_PORTS = [34873, 34874, 34875, 34876, 34877, 34878, 34879];
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const project = join(root, "default.project.json");
 
@@ -68,9 +69,10 @@ function killPidWindows(pid) {
 	execSync(`taskkill /PID ${pid} /F`, { stdio: "inherit" });
 }
 
-async function freePort(port) {
+/** Try to clear stale node/rojo on port. Returns true if port is free after. */
+async function tryClearStaleRojo(port) {
 	if (await isPortFree(port)) {
-		return;
+		return true;
 	}
 
 	console.log(`[rojo:serve] Port ${port} is in use — checking for stale Rojo/node...`);
@@ -86,9 +88,8 @@ async function freePort(port) {
 				freed = true;
 			} else {
 				console.warn(
-					`[rojo:serve] Port held by ${name || "unknown"} (PID ${pid}) — not auto-killing.`,
+					`[rojo:serve] Port ${port} held by ${name || "unknown"} (PID ${pid}) — skipping.`,
 				);
-				console.warn(`[rojo:serve] Run: taskkill /PID ${pid} /F`);
 			}
 		}
 		if (freed) {
@@ -103,20 +104,44 @@ async function freePort(port) {
 		}
 	}
 
-	if (await isPortFree(port)) {
-		return;
+	return isPortFree(port);
+}
+
+async function resolvePort() {
+	const envPort = Number(process.env.ROJO_PORT);
+	if (envPort > 0) {
+		if (await tryClearStaleRojo(envPort)) {
+			return envPort;
+		}
+		console.error(`[rojo:serve] ROJO_PORT=${envPort} is busy.`);
+		process.exit(1);
 	}
 
-	console.error(`[rojo:serve] Port ${port} is still busy.`);
+	if (await tryClearStaleRojo(DEFAULT_PORT)) {
+		return DEFAULT_PORT;
+	}
+
+	for (const port of FALLBACK_PORTS) {
+		if (await isPortFree(port)) {
+			console.log(
+				`[rojo:serve] Port ${DEFAULT_PORT} busy (often Cursor port-forward) — using ${port} instead.`,
+			);
+			console.log(
+				`[rojo:serve] In Studio: Plugins → Rojo → Connect → host localhost, port ${port}`,
+			);
+			return port;
+		}
+	}
+
+	console.error(`[rojo:serve] No free port in ${DEFAULT_PORT}–${FALLBACK_PORTS[FALLBACK_PORTS.length - 1]} range.`);
 	if (process.platform === "win32") {
-		console.error(`[rojo:serve] Run: netstat -ano | findstr :${port}`);
-		console.error(`[rojo:serve] Then: taskkill /PID <pid> /F`);
+		console.error(`[rojo:serve] Run: netstat -ano | findstr :${DEFAULT_PORT}`);
 	}
 	process.exit(1);
 }
 
-function spawnRojo() {
-	const args = ["exec", "rojo", "--", "serve", "default.project.json", "--port", String(PORT)];
+function spawnRojo(port) {
+	const args = ["exec", "rojo", "--", "serve", "default.project.json", "--port", String(port)];
 	const npm = process.platform === "win32" ? "npm.cmd" : "npm";
 	return spawn(npm, args, {
 		cwd: root,
@@ -131,12 +156,12 @@ async function main() {
 		process.exit(1);
 	}
 
-	await freePort(PORT);
+	const port = await resolvePort();
 
-	console.log(`[rojo:serve] Starting on http://127.0.0.1:${PORT}`);
+	console.log(`[rojo:serve] Starting on http://127.0.0.1:${port}`);
 	console.log("[rojo:serve] Studio: Plugins → Rojo → Connect (leave this terminal open)\n");
 
-	const child = spawnRojo();
+	const child = spawnRojo(port);
 
 	child.on("error", (err) => {
 		console.error("[rojo:serve]", err.message);
