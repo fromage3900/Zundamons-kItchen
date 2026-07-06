@@ -8,9 +8,11 @@
 5. **Cross-Platform**: Ensure all scripts (Node.js, Luau) are compatible with both Windows and Linux.
 
 ## Workflow Rules
-1. **Validation**: Run `npm run validate` and `npm run lint` before committing.
-2. **Documentation**: Update `docs/remotes.md` when adding new network events. Update `AI/` guidance when changing architecture or design patterns.
-3. **Architecture**: Keep `ConfigurationFiles/` side-effect free. Active listeners and server logic belong in `ServerScriptService`.
+1. **Work Queue**: Read [`WORK_QUEUE.md`](WORK_QUEUE.md) before starting. Claim a task (update Owner, Status, Branch) and push before coding.
+2. **Branch prefix**: Cursor uses `cursor/<task>-594f`, OpenCode uses `opencode/<task>`, Cline uses `cline/<task>`. See [`AGENT_COORDINATION.md`](AGENT_COORDINATION.md).
+3. **Validation**: Run `npm run validate` and `npm run lint` before committing.
+4. **Documentation**: Update `docs/remotes.md` when adding new network events. Update `AI/` guidance when changing architecture or design patterns.
+5. **Architecture**: Keep `ConfigurationFiles/` side-effect free. Active listeners and server logic belong in `ServerScriptService`.
 
 ## Communication
 1. **Tone**: Maintain a professional, technical, and helpful persona.

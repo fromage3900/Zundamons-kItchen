@@ -4,7 +4,7 @@ Thanks for helping build **Zundamon's kItchen**!
 
 ## Development model
 
-- Use **feature branches**: `feature/<short-name>` or `cursor/<descriptive-name>-<id>`
+- Use **feature branches**: `feature/<short-name>`, `cursor/<descriptive-name>-<id>`, `opencode/<task>`, or `cline/<task>`
 - Open a **Pull Request** targeting `main`
 - Prefer small PRs with clear system notes and playtest steps
 

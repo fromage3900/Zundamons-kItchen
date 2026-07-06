@@ -18,24 +18,57 @@ local QuestConfig = {
 		--     items = {}
 		--   },
 		--   difficulty = 1 -- 1-5 scale
+		--   unlock_hint = "Optional VN line on milestone completion"
 		-- }
 	},
 
 	-- Default quests to initialize on player join
 	default_quests = {
+		-- Milestone quests (VN unlock hints)
 		{
-			id = "quest_welcome_1",
-			name = "Welcome to the Kitchen",
+			id = "q_harvest",
+			name = "First Harvest",
+			description = "Gather 5 materials",
+			icon = "🌿",
+			type = "materials_total",
+			target = 5,
+			unlock_hint = "The Kitchen Court is now fully unlocked — craft away! 🍳",
+			rewards = { gold = 10, tier_points = 0, items = {} },
+			difficulty = 1,
+		},
+		{
+			id = "q_bake",
+			name = "Baker's Debut",
+			description = "Craft any food item",
+			icon = "🍞",
+			type = "cook_any",
+			target = 1,
+			cook_items = { "Bread", "Apple Pie", "Zunda Bread", "Zunda Mochi", "Royal Stew" },
+			unlock_hint = "The Promenade market stalls now have new recipes available! 🌸",
+			rewards = { gold = 20, tier_points = 0, items = {} },
+			difficulty = 1,
+		},
+		{
+			id = "q_serve",
+			name = "A Warm Welcome",
 			description = "Serve your first guest",
-			icon = "🍽️",
+			icon = "🧑‍🍳",
 			type = "serve",
 			target = 1,
-			rewards = {
-				gold = 25,
-				tier_points = 5,
-				items = {},
-			},
+			unlock_hint = "The Ancient Ruins to the northwest stirs with an ancient energy...",
+			rewards = { gold = 30, tier_points = 0, items = {} },
 			difficulty = 1,
+		},
+		{
+			id = "q_explore",
+			name = "Zunda Explorer",
+			description = "Visit all 4 teleporter zones",
+			icon = "🗺",
+			type = "visit_zones_unique",
+			target = 4,
+			unlock_hint = "All zones unlocked! A secret recipe awaits at the Hilltop Shrine~ ⛩",
+			rewards = { gold = 50, tier_points = 0, items = {} },
+			difficulty = 2,
 		},
 		{
 			id = "quest_cafe_master",
@@ -349,7 +382,7 @@ local QuestConfig = {
 			description = "Visit every zone at least once",
 			icon = "\u{1F30D}",
 			type = "visit_zones_unique",
-			target = 5,
+			target = 4,
 			rewards = { gold = 350, tier_points = 55, items = {} },
 			difficulty = 3,
 		},

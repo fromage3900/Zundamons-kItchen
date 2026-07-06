@@ -12,13 +12,12 @@ local Lighting = game:GetService("Lighting")
 
 local VNDialogueData = require(RS.ConfigurationFiles:WaitForChild("VNDialogueData"))
 local SPEAKERS = VNDialogueData.SPEAKERS
-local COMPANION_DIALOGUE = VNDialogueData.COMPANION_DIALOGUE
-local SIDE_DIALOGUES = VNDialogueData.SIDE_DIALOGUES
 
 local player = Players.LocalPlayer
 local gui    = script.Parent
 
--- Expose side dialogues for other scripts to trigger
+-- Expose side dialogues for other scripts to trigger (player name resolved lazily)
+local SIDE_DIALOGUES = VNDialogueData.resolveSideDialogues(player.Name)
 _G.ZundaSideDialogues = SIDE_DIALOGUES
 
 -- ── Build UI ──────────────────────────────────────────────────
@@ -486,7 +485,7 @@ local function buildCompanionTree()
               or hour>=12 and hour<18 and "afternoon"
               or hour>=18 and hour<21 and "evening"
               or "night"
-    local greeting = COMPANION_DIALOGUE[slot]
+    local greeting = VNDialogueData.getCompanionDialogue(slot, player.Name)
 
     -- LEAVES
     local leafEnd = {

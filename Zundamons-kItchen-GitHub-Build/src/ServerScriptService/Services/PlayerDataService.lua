@@ -54,6 +54,12 @@ local function createDefaultData(): { [string]: any }
 		decoration_placements = {},
 		owned_plot = nil,
 		zones_visited = {},
+		completed_quests = {},
+		stats = {
+			perfectCooks = 0,
+			companion_chats = 0,
+			npc_chats = 0,
+		},
 		recipes_unlocked_count = 0,
 		recipes_served_count = {},
 		Apple = 5,
@@ -97,6 +103,16 @@ local function backfillLoadedData(loaded: { [string]: any })
 	end
 	if loaded.zones_visited == nil then
 		loaded.zones_visited = {}
+	end
+	if loaded.completed_quests == nil then
+		loaded.completed_quests = {}
+	end
+	if loaded.stats == nil then
+		loaded.stats = {
+			perfectCooks = 0,
+			companion_chats = 0,
+			npc_chats = 0,
+		}
 	end
 end
 

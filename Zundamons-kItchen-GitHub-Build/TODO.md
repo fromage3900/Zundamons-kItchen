@@ -25,6 +25,9 @@
 - [x] Remotes in Rojo (`default.project.json` + `RemoteBootstrap` + `RemoteManifest`)
 - [x] `LootModule` / `RewardCore` ServerScriptService shims for Rojo sync
 - [x] GitHub default branch set to `main` (PR #3 merged)
+- [x] QuestManager wired to QuestConfig via QuestProgress
+- [x] VNDialogueData LocalPlayer race fixed
+- [x] Multi-agent coordination (AI/WORK_QUEUE, opencode/cline prompts)
 
 ## Next steps (Studio / product — not blocking git)
 - [ ] Delete stale `master` branch on GitHub (optional cleanup; 19 commits behind `main`)
@@ -32,7 +35,7 @@
 - [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
 - [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
 - [ ] Replace Robux DevProduct IDs and clothing `assetId` placeholders
-- [ ] Wire `QuestManager` → `QuestConfig` (30+ quests dormant)
-- [ ] Decoration shop client UI (server remotes ready)
+- [ ] Decoration shop client UI (server remotes ready — see AI/WORK_QUEUE O1)
+- [ ] Wire companion_chat / npc_chat quest stat hooks (see AI/WORK_QUEUE C2)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
 - [ ] Bootstrap remaining Studio-only UI in Rojo (optional future)
