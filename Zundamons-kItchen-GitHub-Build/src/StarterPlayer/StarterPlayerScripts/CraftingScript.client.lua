@@ -17,6 +17,8 @@ local requestData = RS:WaitForChild("RemoteFunctions"):WaitForChild("RequestData
 -- Load recipes from server config to avoid sync issues
 -- Recipes are read-only; locked recipes handled server-side
 local craftConfig = require(RS.ConfigurationFiles:WaitForChild("CraftConfig"))
+local UIHelper = require(RS.Shared.Modules.UIHelper)
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 
 -- Build RECIPES array from Config (format for UI display)
 local RECIPES = {}
@@ -35,13 +37,28 @@ for recipeName, ings in pairs(craftConfig.recipes) do
 	table.insert(RECIPES, recipeEntry)
 end
 
--- Helper: format an ingredient list as a readable string
-local function formatIngs(ings)
-	local parts = {}
-	for item, count in pairs(ings) do
-		table.insert(parts, count .. "x " .. item)
-	end
-	return table.concat(parts, ", ")
+-- Helper: build ingredient labels with icons
+local function buildIngredientLine(parent, xPos, yPos, width, item, count)
+	local row = Instance.new("Frame")
+	row.Size = UDim2.new(0, width, 0, 24)
+	row.Position = UDim2.new(0, xPos, 0, yPos)
+	row.BackgroundTransparency = 1
+	row.BorderSizePixel = 0
+	row.Parent = parent
+
+	local icon = UIHelper.createItemIcon(item, UDim2.fromOffset(20, 20), row)
+	icon.Position = UDim2.new(0, 0, 0.5, -10)
+
+	local lbl = Instance.new("TextLabel")
+	lbl.Size = UDim2.new(1, -24, 1, 0)
+	lbl.Position = UDim2.new(0, 24, 0, 0)
+	lbl.BackgroundTransparency = 1
+	lbl.Text = count .. "x " .. item
+	lbl.TextColor3 = Color3.fromRGB(140, 100, 80)
+	lbl.TextXAlignment = Enum.TextXAlignment.Left
+	lbl.TextScaled = true
+	lbl.Font = Enum.Font.Gotham
+	lbl.Parent = row
 end
 
 -- Build a card for each recipe
@@ -65,16 +82,25 @@ local function buildRecipeCard(recipe)
 	nameLabel.Font = Enum.Font.GothamBold
 	nameLabel.Parent = card
 
-	local ingLabel = Instance.new("TextLabel")
-	ingLabel.Size = UDim2.new(0.7, 0, 0.4, 0)
-	ingLabel.Position = UDim2.new(0, 10, 0.55, 0)
-	ingLabel.BackgroundTransparency = 1
-	ingLabel.Text = formatIngs(recipe.ings)
-	ingLabel.TextColor3 = Color3.fromRGB(140, 100, 80)
-	ingLabel.TextXAlignment = Enum.TextXAlignment.Left
-	ingLabel.TextScaled = true
-	ingLabel.Font = Enum.Font.Gotham
-	ingLabel.Parent = card
+	-- Unlock hint for locked recipes
+	local hintLabel = Instance.new("TextLabel")
+	hintLabel.Name = "HintLabel"
+	hintLabel.Size = UDim2.new(0.7, 0, 0, 16)
+	hintLabel.Position = UDim2.new(0, 10, 0, 32)
+	hintLabel.BackgroundTransparency = 1
+	hintLabel.Text = recipe.locked and "🔒 Unlocks at Tier 2 (15 guests)" or ""
+	hintLabel.TextColor3 = Color3.fromRGB(180, 100, 120)
+	hintLabel.TextXAlignment = Enum.TextXAlignment.Left
+	hintLabel.TextScaled = true
+	hintLabel.Font = Enum.Font.Gotham
+	hintLabel.Visible = recipe.locked
+	hintLabel.Parent = card
+
+	local ingY = 0
+	for item, count in recipe.ings do
+		buildIngredientLine(card, 10, 50 + ingY, 280, item, count)
+		ingY = ingY + 22
+	end
 
 	local craftBtn = Instance.new("TextButton")
 	craftBtn.Size = UDim2.new(0, 90, 0, 50)
