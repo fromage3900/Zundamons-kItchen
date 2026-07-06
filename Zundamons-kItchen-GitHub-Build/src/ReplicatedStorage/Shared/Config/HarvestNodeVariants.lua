@@ -1,9 +1,12 @@
+-- Harvest Node Variants Configuration
+-- FBX substitutes available in Downloads:\kenney_survival-kit\Models\FBX format\
+-- Rock/Grass can substitute for plants; see docs/asset-mapping.md for full list
 local Variants = {
 	Wheat = {
 		meshes = {
-			["Wheat_01"] = "rbxassetid://FILL_WHEAT_01",
-			["Wheat_02"] = "rbxassetid://FILL_WHEAT_02",
-			["Wheat_03"] = "rbxassetid://FILL_WHEAT_03",
+			["Wheat_01"] = "rbxassetid://FILL_WHEAT_01", -- grass.fbx substitute
+			["Wheat_02"] = "rbxassetid://FILL_WHEAT_02", -- grass-large.fbx substitute
+			["Wheat_03"] = "rbxassetid://FILL_WHEAT_03", -- grass.fbx variant
 		},
 		resourceType = "Wheat",
 		swayRange = { min = 0.8, max = 1.2 },

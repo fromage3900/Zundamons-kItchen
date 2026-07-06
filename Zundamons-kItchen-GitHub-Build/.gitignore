@@ -19,3 +19,6 @@ node_modules/
 extract_scripts.py
 rojo.zip
 sourcemap.json
+
+# Asset generation outputs
+Assets/Generated/
