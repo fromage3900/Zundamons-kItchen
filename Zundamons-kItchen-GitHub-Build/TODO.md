@@ -36,7 +36,10 @@
 - [ ] Place `ServerStorage.Decorations` models + new gather nodes in published place
 - [ ] Upload 6-face skybox IDs into `SkyConfig.sky`
 - [ ] Studio: add `ServerStorage.ZundapalLLMSecrets.ApiKey` + enable HttpService for DeepSeek
-- [ ] Decoration shop client UI (server remotes ready — see AI/WORK_QUEUE O1)
+- [x] Planters migrated to PlayerDataService + PlantingMenu client
+- [x] Decoration shop client UI (press H)
+- [x] Publish tonight runbook (`docs/publish-tonight.md`)
+- [ ] Merge feature branches to `main` before Creator Hub publish
 - [x] Wire companion_chat / npc_chat quest stat hooks (CompanionConfig + RecordNpcChat)
 - [ ] Expand Selene lint scope beyond `Services/` once baseline is clean
 - [ ] Bootstrap remaining Studio-only UI in Rojo (optional future)

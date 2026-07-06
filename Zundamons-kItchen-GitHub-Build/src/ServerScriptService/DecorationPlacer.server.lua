@@ -292,6 +292,7 @@ local function getDecorationState(player: Player)
 		placements = data.decoration_placements or {},
 		catalog = catalog,
 		max_slots = PlacerConfig.MAX_PER_PLOT,
+		gold = playerGold(data),
 	}
 end
 

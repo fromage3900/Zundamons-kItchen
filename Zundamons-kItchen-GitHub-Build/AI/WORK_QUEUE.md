@@ -7,15 +7,16 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | Q1 | Wire QuestManager to QuestConfig + QuestProgress | Cursor | done | cursor/quest-vn-review-594f | QuestManager, QuestConfig, QuestProgress, PlayerDataService |
 | Q2 | Fix VNDialogueData LocalPlayer race | Cursor | done | cursor/quest-vn-review-594f | VNDialogueData, VNController |
 | Q3 | Refresh project-review.md | Cursor | done | cursor/quest-vn-review-594f | docs/project-review.md |
-| O1 | Decoration shop client UI | OpenCode | pending | opencode/decoration-shop-ui | new DecorationShop.client.lua, DecorationPlacer remotes |
-| O2 | Migrate QuestScript to UIComponents | OpenCode | pending | opencode/quest-ui-components | QuestScript.client.lua, UIComponents.lua |
-| O3 | Document skybox upload steps for SkyConfig | OpenCode | pending | opencode/skybox-docs | docs/atmosphere-polish-plan.md or new guide |
-| C1 | Migrate Planters off _G.data to PlayerDataService | Cline | pending | cline/planters-playerdata | Planters.server.lua, PlayerDataService |
+| C1 | Migrate Planters off _G.data to PlayerDataService | Cursor | done | cursor/publish-blockers-594f | Planters.server.lua, PlantingMenu.client |
+| O1 | Decoration shop client UI | Cursor | done | cursor/publish-blockers-594f | DecorationShop.client.lua, DecorationPlacer |
 | C2 | Add companion_chat / npc_chat stat hooks | Cursor | done | cursor/zundapal-llm-594f | CompanionConfig, CompanionStats, CompanionInteractionServer, VNController, ZundapalChatServer |
 | C3 | Implement MarketplaceService from proposal | Cline | pending | cline/marketplace-service | Services/MarketplaceService.lua, RobuxStoreServer, CompanionShopServer |
 | L1 | Zundapal LLM free chat Phase 1 | Cursor | done | cursor/zundapal-llm-594f | ZundapalLLMConfig, ZundapalLLMService, ZundapalChatServer, VNController, ZundapalChat.client |
 | L2 | LLM player context injection | Cursor | done | cursor/zundapal-llm-594f | ZundapalContextBuilder, ZundapalLLMService, ZundapalHintsServer |
 | L4 | Companion system + LLM integration | Cursor | done | cursor/zundapal-llm-594f | CompanionConfig, CompanionStats, RecordNpcChat, sparkle VFX, audit doc |
+| P1 | Publish tonight runbook + ship blockers | Cursor | done | cursor/publish-blockers-594f | publish-tonight.md, Planters, PlantingMenu, DecorationShop |
+| O2 | Migrate QuestScript to UIComponents | OpenCode | pending | opencode/quest-ui-components | QuestScript.client.lua, UIComponents.lua |
+| O3 | Document skybox upload steps for SkyConfig | OpenCode | pending | opencode/skybox-docs | docs/atmosphere-polish-plan.md or new guide |
 | L3 | LLM chat UX polish (history, streaming) | OpenCode | pending | opencode/zundapal-chat-ui | VNController, ZundapalChat.client |
 
 ## Status values

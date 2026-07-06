@@ -24,7 +24,7 @@
 |---|---|---|
 | DataModel mirror in `src/` | PASS | 116+ Lua files under ReplicatedStorage, ServerScriptService, StarterPlayer |
 | Config modules centralized | PASS | `ConfigurationFiles/` holds tuning data |
-| PlayerDataService adoption | PARTIAL | Used by 18+ server scripts; `Planters.server.lua` still uses `_G.data` |
+| PlayerDataService adoption | PASS | Planters migrated; 20+ server scripts use canonical store |
 | Quest system unified | PASS | `QuestManager` reads `QuestConfig` via `QuestProgress` evaluator |
 | Remote bootstrap | PASS | `00_RemoteBootstrap`, `RemoteManifest`, remotes in project JSON |
 
@@ -37,7 +37,7 @@
 
 ### Remaining Issues
 
-1. **`_G.data` legacy** — Still referenced in `Planters.server.lua`, `RobuxStoreServer`, and some client scripts. `AI/AI_RULES.md` forbids new usage; migrate to `PlayerDataService`.
+1. **`_G.data` legacy** — Removed from `Planters.server.lua`. Some client comments still reference it; server uses `PlayerDataService` only.
 2. **Config side effects** — `RewardCore.lua` and `LootModule.lua` in `ConfigurationFiles/` still contain active listeners (documented in environment review).
 3. **Missing `--!strict`** — Most ModuleScripts lack strict typing.
 
@@ -72,7 +72,8 @@
 | Harvest polish | Complete | Progress bar, cancel-on-move, effects, server validation |
 | Zone visit tracking | Complete | Teleporter + lore entrances → `zones_visited` |
 | Quest panel | Complete | ~30 quests from `QuestConfig`; milestones with VN unlock hints |
-| DecorationPlacer | Server only | Buy/place/restore works; client shop UI pending |
+| DecorationPlacer | Complete | Buy/place/restore + **DecorationShop.client** (H key) |
+| Planters / planting | Complete | `PlayerDataService` + `PlantingMenu.client` wired to `ShowPlantingMenu` |
 | Gather handlers | Code ready | Edamame, Zunda Leaf, Sweet Pea, Pea Flower — need Studio nodes |
 | Atmosphere PostFX | Partial | Client module wired; skybox texture IDs empty in `SkyConfig` |
 | Monetization | Placeholders | DevProduct IDs and clothing `assetId`s need real values |
@@ -122,11 +123,11 @@ The project is in **good shape for active development**. The Rojo pipeline works
 
 ### Critical Next Steps (Code — see TODO.md and WORK_QUEUE)
 
-1. Decoration shop client UI (OpenCode territory)
-2. Migrate `Planters` off `_G.data` (Cline territory)
-3. Adopt `UIComponents` in client menus (OpenCode territory)
+1. Merge feature branches to `main` before publish (see `docs/publish-tonight.md`)
+2. Adopt `UIComponents` in remaining client menus (OpenCode O2)
+3. MarketplaceService implementation (Cline C3)
 
-### Score: 7.5/10
+### Score: 8/10
 
 | Area | Score |
 |---|---|
@@ -134,7 +135,7 @@ The project is in **good shape for active development**. The Rojo pipeline works
 | Architecture | 7/10 |
 | Security | 7.5/10 |
 | Performance | 8/10 |
-| Gameplay completeness | 6/10 |
-| Shippable as public game | 5/10 |
+| Gameplay completeness | 7/10 |
+| Shippable as public game | 6/10 |
 
 See [`TODO.md`](../TODO.md) for tracked next steps.

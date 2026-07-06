@@ -64,6 +64,7 @@ local function createDefaultData(): { [string]: any }
 		recipes_served_count = {},
 		Apple = 5,
 		Wheat = 5,
+		WheatSeed = 3,
 		Wood = 5,
 		Rock = 5,
 		["Iron Ore"] = 3,

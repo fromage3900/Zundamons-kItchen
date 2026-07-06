@@ -45,7 +45,7 @@ See also: [`rojo-workflow.md`](rojo-workflow.md)
 | `ClaimPlot` | C→S | `(plotNum)` | `{success, message}` | `PlotManager.server.lua` | Guest count + availability |
 | `BuyDecoration` | C→S | `(decorationId)` | `{success, message, ...}` | `DecorationPlacer.server.lua` | Gold + catalog whitelist |
 | `PlaceDecoration` | C→S | `(decorationId, slotIndex?)` | `{success, message, slot?}` | `DecorationPlacer.server.lua` | Plot ownership + slot |
-| `GetDecorationState` | C→S | — | owned/placements/catalog | `DecorationPlacer.server.lua` | — |
+| `GetDecorationState` | C→S | — | owned/placements/catalog/**gold** | `DecorationPlacer.server.lua` | — |
 | `GetCompanionCatalog` | C→S | — | catalog | `CompanionShopServer.server.lua` | — |
 | `GetOwnedCompanions` | C→S | — | owned table | `CompanionShopServer.server.lua` | — |
 | `GetActiveCompanionBuff` | C→S | `(stat)` | `number` | `CompanionBuffServer.server.lua` | — |
