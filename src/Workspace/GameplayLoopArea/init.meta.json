@@ -1,0 +1,9 @@
+{
+	"className": "Folder",
+	"children": [
+		{
+			"name": "GatheringNodes",
+			"className": "Folder"
+		}
+	]
+}

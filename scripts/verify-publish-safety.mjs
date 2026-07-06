@@ -29,6 +29,8 @@ const requiredFiles = [
 	"docs/studio-legacy-ui-deletion.md",
 	"docs/ELECTRA-SETUP.md",
 	"AI/PUBLISH-PLAN.md",
+	"src/ReplicatedStorage/RemoteFunctions/init.meta.json",
+	"src/ReplicatedStorage/RewardEvents/init.meta.json",
 ];
 
 const requiredPatterns = [
@@ -64,8 +66,8 @@ const requiredPatterns = [
 	},
 	{
 		file: "default.project.json",
-		pattern: /ConfigurationFiles/,
-		label: "Rojo project includes ConfigurationFiles",
+		pattern: /RemoteFunctions/,
+		label: "Rojo project includes RemoteFunctions",
 	},
 ];
 

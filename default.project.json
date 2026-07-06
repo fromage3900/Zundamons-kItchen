@@ -10,6 +10,16 @@
       "RemoteEvents": {
         "$path": "src/ReplicatedStorage/RemoteEvents"
       },
+      "RemoteFunctions": {
+        "$path": "src/ReplicatedStorage/RemoteFunctions"
+      },
+      "RewardEvents": {
+        "$path": "src/ReplicatedStorage/RewardEvents"
+      },
+      "Loot": {
+        "$className": "Folder",
+        "$path": "src/ReplicatedStorage/Loot"
+      },
       "Models": {
         "$className": "Folder",
         "$path": "src/ReplicatedStorage/Models"

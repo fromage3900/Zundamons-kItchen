@@ -6,8 +6,9 @@
   "scripts": {
     "validate": "node scripts/validate-structure.mjs",
     "verify:meshes": "node scripts/verify-mesh-imports.mjs",
+    "verify:wiring": "node scripts/verify-rojo-wiring.mjs",
     "verify:safety": "node scripts/verify-publish-safety.mjs",
-    "security": "npm run validate && npm run verify:safety",
+    "security": "npm run validate && npm run verify:wiring && npm run verify:safety",
     "lint": "npm run lint:stylua && npm run lint:selene",
     "lint:stylua": "npx stylua-bin --check src",
     "lint:selene": "node scripts/lint-selene.mjs",

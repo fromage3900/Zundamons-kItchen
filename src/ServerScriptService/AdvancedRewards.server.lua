@@ -5,7 +5,9 @@ local Players = game:GetService("Players")
 local RS = game.ReplicatedStorage
 local SSS = game.ServerScriptService
 
-local RewardCore = require(SSS:WaitForChild("RewardCore"))
+local RS = game:GetService("ReplicatedStorage")
+local configFiles = RS:WaitForChild("ConfigurationFiles")
+local RewardCore = require(configFiles:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
 local AchievementConfig = require(RS.ConfigurationFiles.AchievementConfig)
 local DailyQuestConfig = require(RS.ConfigurationFiles.DailyQuestConfig)

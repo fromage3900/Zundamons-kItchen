@@ -15,15 +15,7 @@ local priceLists = mineableConfig.priceLists
 
 local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
-local RewardCore
-task.spawn(function()
-	local ok, mod = pcall(function()
-		return require(game.ServerScriptService:WaitForChild("RewardCore"))
-	end)
-	if ok then
-		RewardCore = mod
-	end
-end)
+local RewardCore = require(configFiles:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(configFiles:WaitForChild("ChefLevelConfig"))
 
 local codes: { [string]: { { string } } } = {}
@@ -65,8 +57,7 @@ function handleOreSell(player, item)
 	if RewardCore then
 		total = RewardCore.addGold(player, total, "sell")
 	end
-	data.Gold = (data.Gold or 0) + total
-	return data.Gold
+	return data.gold
 end
 
 function loot_module.eraseData(player)

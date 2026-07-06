@@ -8,7 +8,9 @@ local SSS = game:GetService("ServerScriptService")
 local Debris = game:GetService("Debris")
 local TweenS = game:GetService("TweenService")
 
-local lootMod = require(RS:WaitForChild("Shared"):WaitForChild("Modules"):WaitForChild("LootModule"))
+local RS = game:GetService("ReplicatedStorage")
+local configFiles = RS:WaitForChild("ConfigurationFiles")
+local lootMod = require(configFiles:WaitForChild("LootModule"))
 
 -- HarvestValidator for server-side validation (distance, rate limit, cooldown)
 local HarvestValidator = SSS:FindFirstChild("Validation") and SSS.Validation:FindFirstChild("HarvestValidator")

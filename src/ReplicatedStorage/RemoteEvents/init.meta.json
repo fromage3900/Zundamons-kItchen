@@ -1,45 +1,20 @@
 {
-    "className": "Folder",
-    "children": [
-        {
-            "name": "OpenCompanionVN",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "ServeGuest",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "RequestData",
-            "className": "RemoteFunction",
-            "properties": {}
-        },
-        {
-            "name": "CraftFunction",
-            "className": "RemoteFunction",
-            "properties": {}
-        },
-        {
-            "name": "UpdateQuests",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "PurchaseCompanion",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "SetCompanion",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "NotifyPlayer",
-            "className": "RemoteEvent",
-            "properties": {}
-        }
-    ]
+	"className": "Folder",
+	"children": [
+		{ "name": "OpenCompanionVN", "className": "RemoteEvent" },
+		{ "name": "UpdateQuests", "className": "RemoteEvent" },
+		{ "name": "PurchaseCompanion", "className": "RemoteEvent" },
+		{ "name": "SetCompanion", "className": "RemoteEvent" },
+		{ "name": "NotifyPlayer", "className": "RemoteEvent" },
+		{ "name": "MakeLootEvent", "className": "RemoteEvent" },
+		{ "name": "RemoveCode", "className": "RemoteEvent" },
+		{ "name": "CookingResult", "className": "RemoteEvent" },
+		{ "name": "WeatherChanged", "className": "RemoteEvent" },
+		{ "name": "CompanionOwnedSync", "className": "RemoteEvent" },
+		{ "name": "QuestCompleted", "className": "RemoteEvent" },
+		{ "name": "QuestCompletedBatch", "className": "RemoteEvent" },
+		{ "name": "CompanionChat", "className": "RemoteEvent" },
+		{ "name": "NPCChat", "className": "RemoteEvent" },
+		{ "name": "PurchaseResult", "className": "RemoteEvent" }
+	]
 }

@@ -2,6 +2,6 @@
 -- Bump `label` when verifying a fresh sync after git pull.
 
 return {
-	label = "main-2026-07-06-realnasa-sky",
+	label = "main-2026-07-06-rojo-wiring",
 	experienceId = "108617605497926",
 }

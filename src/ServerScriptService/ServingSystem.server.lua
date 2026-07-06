@@ -6,7 +6,7 @@ local Players = game:GetService("Players")
 local CONFIG = require(game.ReplicatedStorage.ConfigurationFiles.ProgressionConfig)
 local RF = game.ReplicatedStorage:WaitForChild("RemoteFunctions")
 local serveGuestRF = RF:WaitForChild("ServeGuest")
-local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
+local RewardCore = require(game.ReplicatedStorage.ConfigurationFiles:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(game.ReplicatedStorage.ConfigurationFiles.ChefLevelConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 local GuestService = require(script.Parent.Services.GuestService)
@@ -81,7 +81,6 @@ local function handleServeGuest(player, guestInstance, foodItemName)
 
 	RewardCore.bumpCombo(player)
 	local awarded = RewardCore.addGold(player, payAmount, "serve")
-	playerData.Gold = (playerData.Gold or 0) + awarded
 	payAmount = awarded
 	RewardCore.addXP(player, ChefLevelConfig.xpRewards.serveGuest, "serve")
 	RewardCore.notify(player, "serve", { recipe = recipe, guestName = guestInstance.Name, gold = awarded })

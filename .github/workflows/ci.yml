@@ -23,6 +23,9 @@ jobs:
       - name: Validate Rojo project structure
         run: npm run validate
 
+      - name: Verify Rojo wiring and publish safety
+        run: npm run verify:wiring && npm run verify:safety
+
       - name: Lint (StyLua + Selene on Services)
         run: npm run lint
 
