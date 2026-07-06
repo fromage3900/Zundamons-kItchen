@@ -57,6 +57,7 @@ When OpenCode or Cline push branches:
 ## Communication
 
 - Status lives in `AI/WORK_QUEUE.md` (not chat-only handoffs)
+- **Cline:** read `AI/CLINE_BRIEFING.md` every session (LLM, NPCs, gather split)
 - Commit messages: `feat:`, `fix:`, `docs:`, `chore:` prefixes
 - Reference task ID from WORK_QUEUE in PR description
 

@@ -41,7 +41,8 @@ flowchart LR
 | `CompanionManager.server.lua` v4 | Done | Config-driven mesh, sparkles, name tag, `companion_chats` on click |
 | `CompanionStats.lua` | Done | `recordCompanionChat`, `recordNpcChat` |
 | `CompanionInteractionServer` | Done | `RecordNpcChat` remote, whitelist + 5s cooldown |
-| `VNController` NPC hook | Done | Fires `RecordNpcChat` when elder/ruins/chef lines display |
+| `VNController` NPC hook | Done | Fires `RecordNpcChat` for elder/ruins/chef/master_chef lines |
+| `MasterChefZundaServer` | Done | Kitchen NPC click, tier VN, `master_chef` LLM chat |
 | `ZundapalChatServer` | Done | Uses `CompanionStats` on successful LLM reply |
 | `ZundapalLLMService` | Done | Injects companion `llmPersona` + live context |
 | `ZundapalContextBuilder` | Done | Active companion key, buff, persona, chat counts in snapshot |
@@ -56,7 +57,7 @@ flowchart LR
 | Quest type | Counter | Increments when |
 |------------|---------|-----------------|
 | `companion_chat` | `stats.companion_chats` | Companion click (VN open), successful LLM reply |
-| `npc_chat` | `stats.npc_chats` | VN line from `elder`, `ruins`, or `chef` speaker (server-validated) |
+| `npc_chat` | `stats.npc_chats` | VN line from `elder`, `ruins`, `chef`, or `master_chef` (server-validated, 5s per speaker) |
 
 Scripted VN branches alone do not increment `companion_chats` unless the player clicks the companion or sends a free-chat message.
 
@@ -71,6 +72,7 @@ These remain **place-only** (not in git). Required for seamless companion + LLM 
 | LLM API key | `ServerStorage.ZundapalLLMSecrets.ApiKey` (StringValue) | `ZundapalLLMService` |
 | HttpService | Enable in Game Settings | LLM proxy |
 | API whitelist | `api.deepseek.com` (and/or `api.openai.com`) | Outbound requests |
+| Master Chef NPC | CollectionService tag `MasterChefZunda` + ClickDetector in Kitchen Court | `MasterChefZundaServer`, tier VN + LLM |
 | Zone NPC ClickDetectors | Elder, Ancient Ruins, Head Chef entrances | VN lore → `RecordNpcChat` |
 | Gather nodes | Zunda Pea, Edamame, etc. under `GameplayLoopArea` | Gather quests + hint context |
 | Skybox IDs | `SkyConfig.sky` six faces | Atmosphere (optional) |

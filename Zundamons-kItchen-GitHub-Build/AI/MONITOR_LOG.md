@@ -2,55 +2,45 @@
 
 Cursor review loop for OpenCode / Cline / main branch activity.
 
-## 2026-07-06 00:26 UTC — Cycle 1
+## 2026-07-06 03:00 UTC — Cycle 2
 
-### Git fetch results
+### Main branch status
 
 | Check | Result |
-|---|---|
-| `origin/main` new commits | None since last fetch |
-| `opencode/*` branches | **None on remote** |
-| `cline/*` branches | **None on remote** |
-| Cursor PR #4 merged | **No** — still on `cursor/quest-vn-review-594f` @ `f463fb8` |
-| WORK_QUEUE tasks claimed | **No** — O1–O3, C1–C3 all `pending` |
+|-------|--------|
+| `origin/main` | Merged PR #7 (systems bugfix) + PR #8 (legacy cleanup) |
+| LLM + Master Chef Zunda | **On main** — `ZundapalLLMService`, `MasterChefZundaServer`, remotes wired |
+| Companion/NPC stats | **Done** — `CompanionStats`, `RecordNpcChat`, per-speaker cooldown |
+| `opencode/*` branches | None on remote |
+| `cline/*` branches | None on remote — briefing updated in `AI/CLINE_BRIEFING.md` |
 
-### Pending Cursor branch (not on main)
+### Systems now live on main
 
-- `cursor/quest-vn-review-594f` — QuestConfig wiring, VN fix, multi-agent docs (15 files)
+| System | Status |
+|--------|--------|
+| Zundapal LLM free chat | Live — `ZundapalChatServer` + `ZundapalChat.client` |
+| Master Chef Zunda NPC | Live — VN tree + `master_chef` LLM persona |
+| Companion click → VN | Live — `CompanionManager` + `OpenCompanionVN` |
+| Quest stats | `companion_chats`, `npc_chats` wired to quests |
+| Gather split | `GatherConfig` click flora; `MineableConfig` tool-only rocks/trees |
+| Post-FX | `AtmospherePostFX` (Lighting); legacy ScreenGui vignette stripped |
 
-### Zundapal / companion systems audit
+### Cline handoff
 
-| System | Status | LLM? |
-|---|---|---|
-| `CompanionManager.server.lua` | Live — mesh clone, follow, sparkles, click → VN | No — scripted |
-| `VNController.client.lua` | Live — branching dialogue tree, quest/zone triggers | No — static + templates |
-| `VNDialogueData.lua` | Live — speaker registry, `{playerName}` placeholders | No |
-| `CompanionBuffServer.server.lua` | Live — stat buffs by active companion | No |
-| `CompanionShopServer.server.lua` | Live — Robux companion purchases | No |
-| In-game HttpService / AI API | **Not present** | N/A |
-| `quest_chat_with_zundapal` | Config exists; **progress stuck at 0** | Needs C2 stat hook |
-
-**Conclusion:** No LLM is building or running Zundapal dialogue in-game. Zundapal is a **scripted VN companion**. Dev LLMs (OpenCode/Cline) have **not pushed any branches yet**.
-
-### Building / plot systems (separate from Zundapal)
-
-| System | Status | Assigned agent |
-|---|---|---|
-| `PlotManager.server.lua` | Live — plot claim/restore | — |
-| `DecorationPlacer.server.lua` | Server only — buy/place | OpenCode O1 (client UI pending) |
-| `BuildingConfig.lua` | Config only — door/interior defs | Studio placement |
-| Procedural building | Docs only (`procedural-building-tools.md`) | Not implemented in code |
+- Read **`AI/CLINE_BRIEFING.md`** before any server work
+- Next task: **C3** `MarketplaceService` — do not duplicate LLM/NPC stat code
+- `AI/PROMPTS/cline.md` updated to reference briefing
 
 ### Next loop actions
 
-1. `git fetch origin` — watch for `opencode/*`, `cline/*`
-2. If branch appears: diff vs `main`, run validate/lint, review against `AI/AI_RULES.md`
-3. Check WORK_QUEUE for `in_progress` or `review` status
-4. Merge PR #4 when ready, then re-base agent branches on updated `main`
+1. `node scripts/check-agent-branches.mjs` — watch for `cline/*`, `opencode/*`
+2. Review C3 branch when pushed: single `ProcessReceipt`, catalog aligned with `CompanionConfig`
+3. OpenCode: O2 quest UI, L3 LLM chat polish
 
-### Loop command (local or cloud)
+### Loop command
 
 ```bash
 cd Zundamons-kItchen-GitHub-Build
 node scripts/check-agent-branches.mjs
+npm run validate
 ```

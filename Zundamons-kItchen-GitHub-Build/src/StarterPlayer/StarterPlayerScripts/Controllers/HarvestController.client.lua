@@ -1,7 +1,7 @@
 --!strict
 -- [[LocalScript] HarvestController (ref: NEW)]]
 -- Client-side harvest interaction: progress bar, cancel-on-move, animations, sounds, particles.
--- Works alongside existing ZundaGatherServer / Planters / Mineable systems.
+-- Works alongside ZundaGatherServer (GatherConfig click flora) and Mineable tool mining.
 -- Place in StarterPlayer > StarterPlayerScripts > Controllers
 
 local Players = game:GetService("Players")

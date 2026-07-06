@@ -1,4 +1,7 @@
 -- [[ModuleScript] MineableConfig (ref: RBX6330426701494520A633C16AF5A04948)]]
+-- Tool-swing mining: tag nodes Mineable + tool type (Axe, PickAxe, Sickle).
+-- Flora with ResourceType uses GatherConfig + ZundaGatherServer (click) — not listed here.
+
 local mineableConfig = {}
 
 mineableConfig.priceLists = {
@@ -79,24 +82,6 @@ mineableConfig.Mineables = {
 			["Tier1"] = { "Pine Cone", "Wood Log" },
 			["Tier2"] = { "Pine Cone", "Pine Cone", "Wood Log", "Wood Log", "Wood Log" },
 		},
-	},
-	["ZundaMushroom"] = {
-		["Health"] = 50,
-		["MaxHealth"] = 50,
-		["Respawn"] = 25,
-		["loot"] = { ["Tier1"] = { "Zunda Mushroom", "Zunda Mushroom", "Zunda Mushroom" } },
-	},
-	["ZundaBerry"] = {
-		["Health"] = 40,
-		["MaxHealth"] = 40,
-		["Respawn"] = 20,
-		["loot"] = { ["Tier1"] = { "Zunda Berry", "Zunda Berry", "Zunda Berry", "Zunda Berry" } },
-	},
-	["ZundaRoot"] = {
-		["Health"] = 45,
-		["MaxHealth"] = 45,
-		["Respawn"] = 22,
-		["loot"] = { ["Tier1"] = { "Zunda Root", "Zunda Root", "Zunda Root" } },
 	},
 }
 

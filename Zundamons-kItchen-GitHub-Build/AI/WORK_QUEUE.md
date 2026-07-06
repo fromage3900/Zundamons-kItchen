@@ -20,6 +20,7 @@ Live task board for Cursor, DeepSeek OpenCode, and Cline. **Claim before coding.
 | L3 | LLM chat UX polish (history, streaming) | OpenCode | pending | opencode/zundapal-chat-ui | VNController, ZundapalChat.client |
 | L5 | Master Chef Zunda NPC + LLM mentor persona | Cursor | done | cursor/master-chef-zunda-594f | MasterChefZundaConfig, MasterChefZundaServer, VNController |
 | P3 | Git hooks + remote manifest sync check | Cursor | done | cursor/master-chef-zunda-594f | check-remote-sync.mjs, hooks:install |
+| G1 | Consolidate click-gather vs tool-mine overlap | Cursor | done | cursor/gather-consolidation-594f | GatherConfig, ZundaGatherServer, MineableConfig |
 
 ## Status values
 
