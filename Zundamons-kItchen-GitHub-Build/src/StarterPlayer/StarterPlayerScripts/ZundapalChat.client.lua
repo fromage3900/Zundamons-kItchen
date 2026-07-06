@@ -50,13 +50,24 @@ local function onThinking()
 	burstCompanionSparkles(60, 1.2)
 end
 
+while not _G.ZundaLlmDisclaimer do
+	task.wait(0.05)
+end
+
 _G.ZundaPalChat = {
 	submit = function(text: string)
 		if typeof(text) ~= "string" or text == "" then
 			return
 		end
-		onThinking()
-		sendEv:FireServer(text)
+		local function send()
+			onThinking()
+			sendEv:FireServer(text)
+		end
+		if _G.ZundaLlmDisclaimer and _G.ZundaLlmDisclaimer.ensureAccepted then
+			_G.ZundaLlmDisclaimer.ensureAccepted(send)
+		else
+			send()
+		end
 	end,
 }
 

@@ -1,11 +1,14 @@
 -- [[Script] SkySync (ref: RBXFB46CA2DA5074AAEBA729C4BD18F1812)]]
 -- SkySync: Ties gameplay visuals to the realtime sky.
--- Flowers glow brighter at night, planters get cooler hues, gathering nodes
--- pulse when ready, planters tint by weather.
+-- Flower PointLights brighten at night; planters tint when weather is wet.
+-- Does not affect gather/serve/craft stats (see docs/atmosphere-gameplay-audit.md).
 
 local Lighting = game:GetService("Lighting")
 local CS = game:GetService("CollectionService")
+local RS = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
+
+local SkyConfig = require(RS.ConfigurationFiles.SkyConfig)
 
 -- Tracks PointLights on flower nodes (those have ResourceType attribute)
 local trackedFlowers = {}
@@ -68,7 +71,7 @@ end
 -- Planters react to weather (darker when rainy)
 local function updatePlanters()
 	local weather = workspace:GetAttribute("WeatherFogMult") or 1.0
-	local wet = math.clamp(weather - 1, 0, 1)  -- 0 when clear, up to 1 in fog/rain
+	local wet = SkyConfig.weatherWetness(weather)
 	for _, p in ipairs(CS:GetTagged("Planter")) do
 		if p:IsA("BasePart") then
 			local base = Color3.fromRGB(101, 67, 33)
@@ -87,11 +90,7 @@ local function updateSigns()
 	local welcome = signs:FindFirstChild("WelcomeSign")
 	if not welcome then return end
 	local hour = Lighting:GetAttribute("CurrentHour") or 12
-	local greeting = "Good morning!"
-	if hour >= 5 and hour < 12 then greeting = "Good morning!"
-	elseif hour >= 12 and hour < 18 then greeting = "Good afternoon!"
-	elseif hour >= 18 and hour < 22 then greeting = "Good evening!"
-	else greeting = "Goodnight!" end
+	local greeting = SkyConfig.welcomeGreeting(hour)
 	for _, sg in ipairs(welcome:GetChildren()) do
 		if sg:IsA("SurfaceGui") then
 			local lbl = sg:FindFirstChildOfClass("TextLabel")

@@ -5,6 +5,7 @@ local RS = game:GetService("ReplicatedStorage")
 
 local ZundapalLLMService = require(script.Parent.Services.ZundapalLLMService)
 local CompanionStats = require(script.Parent.Services.CompanionStats)
+local RemoteRateLimiter = require(script.Parent.Services.RemoteRateLimiter)
 
 local RE = RS:WaitForChild("RemoteEvents")
 
@@ -28,6 +29,10 @@ local function bumpCompanionChats(player: Player)
 end
 
 sendEv.OnServerEvent:Connect(function(player: Player, message: any)
+	if not RemoteRateLimiter.allow(player, "zundapalChat", 1) then
+		errorEv:FireClient(player, "Slow down a moment~")
+		return
+	end
 	if typeof(message) ~= "string" then
 		errorEv:FireClient(player, "Invalid message.")
 		return
@@ -46,7 +51,7 @@ sendEv.OnServerEvent:Connect(function(player: Player, message: any)
 				speaker = "zundapal",
 			})
 		else
-			if reason == "cooldown" or reason == "too_long" or reason == "empty" or reason == "filtered" then
+			if reason == "cooldown" or reason == "too_long" or reason == "empty" or reason == "filtered" or reason == "disclaimer" or reason == "daily_limit" then
 				errorEv:FireClient(player, text)
 			else
 				replyEv:FireClient(player, {

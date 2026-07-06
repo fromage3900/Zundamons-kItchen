@@ -1,6 +1,7 @@
 -- [[Script] CompanionShopServer (ref: RBX9AC1C5F5123A408F978AA7077D298CC8)]]
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local RS = game.ReplicatedStorage
 local RE = RS:WaitForChild("RemoteEvents")
 local RF = RS:WaitForChild("RemoteFunctions")
@@ -55,7 +56,11 @@ PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
 			warn("[CompanionShop] prompt failed:", err)
 		end
 	else
-		-- TEST MODE: grant immediately so dev/playtest flow works without real Robux products
+		if not RunService:IsStudio() then
+			warn("[CompanionShop] DevProduct missing for " .. compType .. " — purchase blocked in live servers")
+			return
+		end
+		-- Studio test grant only (replace DEVPRODUCT_IDS before public publish)
 		local data = PlayerDataService.getOrCreate(player)
 		data["companion_owned_" .. compType] = true
 		CompanionOwnedSync:FireClient(player, compType, true)

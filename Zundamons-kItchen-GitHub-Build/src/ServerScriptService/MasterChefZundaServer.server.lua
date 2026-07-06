@@ -98,7 +98,7 @@ sendEv.OnServerEvent:Connect(function(player: Player, message: any)
 				speaker = MasterChefConfig.speakerKey,
 			})
 		else
-			if reason == "cooldown" or reason == "too_long" or reason == "empty" or reason == "filtered" then
+			if reason == "cooldown" or reason == "too_long" or reason == "empty" or reason == "filtered" or reason == "disclaimer" or reason == "daily_limit" then
 				errorEv:FireClient(player, text)
 			else
 				replyEv:FireClient(player, {

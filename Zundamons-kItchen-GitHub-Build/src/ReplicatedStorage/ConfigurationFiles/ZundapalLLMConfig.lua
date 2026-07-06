@@ -26,6 +26,8 @@ local ZundapalLLMConfig = {
 	cooldownSeconds = 3,
 	maxHistoryMessages = 16,
 	requestTimeoutSeconds = 25,
+	maxDailyMessagesPerUser = 20,
+	requireLlmDisclaimer = true,
 
 	injectPlayerContext = true,
 	proactiveHintsEnabled = true,

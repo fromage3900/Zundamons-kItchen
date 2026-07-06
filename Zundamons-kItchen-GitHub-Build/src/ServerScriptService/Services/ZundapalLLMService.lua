@@ -18,9 +18,47 @@ export type ChatMessage = {
 local sessions: { [string]: { ChatMessage } } = {}
 local sessionMeta: { [number]: { lastAction: string?, lastPayload: { [string]: any }? } } = {}
 local lastSendAt: { [string]: number } = {}
+local dailyMessageCount: { [number]: number } = {}
+local dailyMessageDay: { [number]: string } = {}
 local cachedApiKey: string? = nil
 
-local ZundapalLLMService = {}
+local function todayKey(): string
+	return os.date("%Y-%m-%d")
+end
+
+local function checkDailyLimit(userId: number): (boolean, number?)
+	local max = Config.maxDailyMessagesPerUser
+	if type(max) ~= "number" or max <= 0 then
+		return true, nil
+	end
+	local day = todayKey()
+	if dailyMessageDay[userId] ~= day then
+		dailyMessageDay[userId] = day
+		dailyMessageCount[userId] = 0
+	end
+	local count = dailyMessageCount[userId] or 0
+	if count >= max then
+		return false, max
+	end
+	return true, nil
+end
+
+local function bumpDailyCount(userId: number)
+	local day = todayKey()
+	if dailyMessageDay[userId] ~= day then
+		dailyMessageDay[userId] = day
+		dailyMessageCount[userId] = 0
+	end
+	dailyMessageCount[userId] = (dailyMessageCount[userId] or 0) + 1
+end
+
+local function playerAcceptedDisclaimer(player: Player): boolean
+	if Config.requireLlmDisclaimer ~= true then
+		return true
+	end
+	local data = PlayerDataService.get(player)
+	return data ~= nil and data.llm_disclaimer_accepted == true
+end
 
 local function sessionKey(userId: number, personaKey: string): string
 	return tostring(userId) .. ":" .. personaKey
@@ -89,7 +127,7 @@ local function getWorldEnv(userId: number): { [string]: any }
 	local meta = sessionMeta[userId]
 	return {
 		hour = Lighting:GetAttribute("CurrentHour"),
-		weather = workspace:GetAttribute("CurrentWeather") or Lighting:GetAttribute("CurrentWeather"),
+		weather = workspace:GetAttribute("CurrentWeather"),
 		lastAction = meta and meta.lastAction,
 		lastPayload = meta and meta.lastPayload,
 	}
@@ -151,6 +189,8 @@ local function parseAssistantText(body: string): string?
 	return content
 end
 
+local ZundapalLLMService = {}
+
 function ZundapalLLMService.isEnabled(): boolean
 	return Config.enabled == true
 end
@@ -200,6 +240,15 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 
 	if not ZundapalLLMService.isEnabled() then
 		return false, pickFallback(player.Name, personaKey), "disabled"
+	end
+
+	if not playerAcceptedDisclaimer(player) then
+		return false, "Please accept the AI chat notice before sending messages.", "disclaimer"
+	end
+
+	local okDaily, dailyMax = checkDailyLimit(player.UserId)
+	if not okDaily then
+		return false, string.format("You've reached today's AI chat limit (%d messages). Try again tomorrow~", dailyMax or 20), "daily_limit"
 	end
 
 	local message = string.gsub(rawMessage, "^%s+", "")
@@ -258,16 +307,17 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 				["Authorization"] = "Bearer " .. apiKey,
 			},
 			Body = requestBody,
+			Timeout = Config.requestTimeoutSeconds,
 		})
 	end)
 
 	if not success or not response then
-		warn("[ZundapalLLM] Request failed:", response)
+		warn("[ZundapalLLM] Request failed (network or timeout)")
 		return false, pickFallback(player.Name, personaKey), "http_error"
 	end
 
 	if response.StatusCode < 200 or response.StatusCode >= 300 then
-		warn("[ZundapalLLM] HTTP", response.StatusCode, response.Body)
+		warn("[ZundapalLLM] HTTP", response.StatusCode)
 		return false, pickFallback(player.Name, personaKey), "http_status"
 	end
 
@@ -292,6 +342,8 @@ function ZundapalLLMService.chat(player: Player, rawMessage: string, personaKey:
 		table.insert(history, { role = "assistant", content = filteredOutput })
 		trimHistory(key)
 	end
+
+	bumpDailyCount(player.UserId)
 
 	return true, filteredOutput, nil
 end

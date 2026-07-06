@@ -14,6 +14,7 @@ local VNDialogueData = require(RS.ConfigurationFiles:WaitForChild("VNDialogueDat
 local CompanionConfig = require(RS.ConfigurationFiles:WaitForChild("CompanionConfig"))
 local MasterChefZundaConfig = require(RS.ConfigurationFiles:WaitForChild("MasterChefZundaConfig"))
 local ProgressionConfig = require(RS.ConfigurationFiles:WaitForChild("ProgressionConfig"))
+local SkyConfig = require(RS.ConfigurationFiles:WaitForChild("SkyConfig"))
 local SPEAKERS = VNDialogueData.SPEAKERS
 
 local player = Players.LocalPlayer
@@ -275,12 +276,28 @@ chatExit.TextColor3 = RGB(220, 210, 240)
 chatExit.BorderSizePixel = 0
 Instance.new("UICorner", chatExit).CornerRadius = UDim.new(0, 8)
 
+local aiBadge = Instance.new("TextLabel", chatBar)
+aiBadge.Name = "AiBadge"
+aiBadge.Size = UDim2.fromOffset(88, 16)
+aiBadge.Position = UDim2.fromOffset(0, -18)
+aiBadge.BackgroundColor3 = RGB(90, 60, 140)
+aiBadge.BackgroundTransparency = 0.15
+aiBadge.Text = "AI mentor"
+aiBadge.Font = Enum.Font.GothamBold
+aiBadge.TextSize = 11
+aiBadge.TextColor3 = RGB(240, 230, 255)
+aiBadge.BorderSizePixel = 0
+aiBadge.Visible = false
+aiBadge.ZIndex = 18
+Instance.new("UICorner", aiBadge).CornerRadius = UDim.new(0, 6)
+
 local freeChatActive = false
 local freeChatSpeaker = "zundapal"
 local freeChatSubmitFn = nil
 
 local function setChatBarVisible(visible)
 	chatBar.Visible = visible
+	aiBadge.Visible = visible
 	advBtn.Visible = not visible
 	advArrow.Visible = not visible
 end
@@ -809,10 +826,7 @@ end)
 -- ── BRANCHING ZUNDAPAL DIALOGUE TREE ─────────────────────────────
 local function buildCompanionTree()
 	local hour = tonumber(Lighting:GetAttribute("CurrentHour")) or 12
-	local slot = hour >= 5 and hour < 12 and "morning"
-		or hour >= 12 and hour < 18 and "afternoon"
-		or hour >= 18 and hour < 21 and "evening"
-		or "night"
+	local slot = SkyConfig.greetingSlot(hour)
 	local greeting = VNDialogueData.getCompanionDialogue(slot, player.Name)
 
 	-- LEAVES

@@ -53,7 +53,9 @@
         "GetCompanionCatalog": { "$className": "RemoteFunction" },
         "GetOwnedCompanions": { "$className": "RemoteFunction" },
         "GetActiveCompanionBuff": { "$className": "RemoteFunction" },
-        "PromptRobuxPurchase": { "$className": "RemoteFunction" }
+        "PromptRobuxPurchase": { "$className": "RemoteFunction" },
+        "GetLlmDisclaimerStatus": { "$className": "RemoteFunction" },
+        "AcceptLlmDisclaimer": { "$className": "RemoteFunction" }
       },
       "RewardEvents": {
         "$className": "Folder",

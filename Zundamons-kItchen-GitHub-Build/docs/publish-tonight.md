@@ -1,13 +1,16 @@
-# Publish Tonight Checklist
+# Publish Checklists
 
 **Place ID:** `108617605497926`  
-**Repo:** Rojo-first — sync code from `main` (or feature branch) before publishing.
+**Repo:** Rojo-first — sync code from `main` before publishing.
 
-Use this runbook when shipping a playtest build the same day.
+Two paths:
+
+- **Playtest tonight** — sections 1–5 below (friends/public playtest OK with placeholders)
+- **Public launch** — also complete [`legal-publish-checklist.md`](legal-publish-checklist.md) and run `STRICT_PUBLISH=1 npm run security` after real DevProduct IDs
 
 ---
 
-## 1. Code sync (15 min)
+## Playtest tonight
 
 ```bash
 cd Zundamons-kItchen-GitHub-Build
@@ -72,8 +75,8 @@ Run each flow once before publish:
 | 3 | Craft + serve | Guest served; gold/XP updates |
 | 4 | Quest board | Active quests show progress |
 | 5 | Zone lore NPC | VN opens; `npc_chats` increments (elder/ruins/chef) |
-| 6 | Companion click | VN tree or Zundapal free chat; sparkles on LLM thinking |
-| 7 | Master Chef Zunda | Click tagged NPC → tier-aware VN → mentor LLM chat |
+| 6 | Companion click | VN tree or Zundapal free chat; AI disclaimer on first send; sparkles on thinking |
+| 7 | Master Chef Zunda | Click tagged NPC → tier-aware VN → mentor LLM + disclaimer |
 | 8 | Planting | Click empty planter with seeds → menu → plant grows |
 | 9 | Decoration shop (H) | Buy with gold → place on owned plot |
 | 10 | Claim plot | `ClaimPlot` when guest milestone met |
@@ -97,12 +100,23 @@ Run each flow once before publish:
 
 ---
 
-## Known non-blockers
+## Known non-blockers (playtest)
 
 - Skybox face IDs empty in `SkyConfig` — default sky still works
-- Robux DevProduct IDs are placeholders — companion shop uses test grant
+- Robux DevProduct IDs are placeholders — companion shop uses Studio-only test grant
 - Selene full-repo lint not clean — `npm run validate` is the gate
 - `master` branch stale — use `main` only
+
+---
+
+## Public launch (additional)
+
+Before setting the experience **Public** for general audiences:
+
+1. Complete [`legal-publish-checklist.md`](legal-publish-checklist.md)
+2. Replace placeholder product IDs; run `STRICT_PUBLISH=1 npm run security`
+3. Add AI disclosure to experience description (see checklist template)
+4. Publish [`PRIVACY.md`](../PRIVACY.md) link if repo is public
 
 ---
 

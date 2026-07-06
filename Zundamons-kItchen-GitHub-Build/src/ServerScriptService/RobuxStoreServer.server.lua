@@ -69,8 +69,12 @@ if not promptRF then
     promptRF = Instance.new("RemoteFunction"); promptRF.Name="PromptRobuxPurchase"; promptRF.Parent=RF
 end
 promptRF.OnServerInvoke = function(player, productId)
-    MPS:PromptProductPurchase(player, productId)
-    return true
+	if typeof(productId) ~= "number" or not PRODUCTS[productId] then
+		warn("[RobuxStore] Rejected unlisted product prompt from", player.Name, productId)
+		return false
+	end
+	MPS:PromptProductPurchase(player, productId)
+	return true
 end
 
 local productCount = 0

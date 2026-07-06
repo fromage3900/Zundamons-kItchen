@@ -480,4 +480,39 @@ SkyConfig.weather_pool = {
 	{ weather = "aurora", weight = 2 },
 }
 
+-- Shared time-of-day helpers (use across WeatherSystem, VNController, SkySync).
+function SkyConfig.isNightHour(hour: number): boolean
+	local t = hour % 24
+	return t >= 19 or t <= 6
+end
+
+function SkyConfig.greetingSlot(hour: number): string
+	local t = hour % 24
+	if t >= 5 and t < 12 then
+		return "morning"
+	elseif t >= 12 and t < 18 then
+		return "afternoon"
+	elseif t >= 18 and t < 21 then
+		return "evening"
+	end
+	return "night"
+end
+
+function SkyConfig.welcomeGreeting(hour: number): string
+	local slot = SkyConfig.greetingSlot(hour)
+	if slot == "morning" then
+		return "Good morning!"
+	elseif slot == "afternoon" then
+		return "Good afternoon!"
+	elseif slot == "evening" then
+		return "Good evening!"
+	end
+	return "Goodnight!"
+end
+
+-- fog_mult is lower in rain/storm (see weather_types). Returns 0 (dry) .. 1 (wet).
+function SkyConfig.weatherWetness(fogMult: number): number
+	return math.clamp((1 - fogMult) / 0.5, 0, 1)
+end
+
 return SkyConfig

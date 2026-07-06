@@ -33,10 +33,43 @@ npm run security    # secret scan + git hygiene
 | `scripts/check-secrets.mjs` | API keys, Bearer tokens, private key blocks in tracked files |
 | `scripts/check-git-hygiene.mjs` | Place exports, `workspace/` commits, `_G.data[` on server |
 | `scripts/check-remote-sync.mjs` | `RemoteManifest.lua` drift from `default.project.json` |
+| `scripts/check-publish-readiness.mjs` | Unguarded TEST grants; placeholder DevProduct IDs (`STRICT_PUBLISH=1`) |
 
 CI runs these on every PR and push to `main`.
 
 **Optional:** `npm run hooks:install` — pre-push hook runs `npm run security`.
+
+---
+
+## Branch protection (recommended)
+
+On GitHub → Settings → Branches → `main`:
+
+- [ ] Require status check `validate-rojo` (or local `npm run validate` before merge)
+- [ ] Block force-push to `main`
+- [ ] Optional: require PR review for collaborators
+
+---
+
+## Full git history scan
+
+Run before making the repo **public** or after any suspected secret commit:
+
+```bash
+# Option A — gitleaks (install separately)
+gitleaks detect --source . --verbose
+
+# Option B — trufflehog
+trufflehog git file://$(pwd)
+```
+
+If a place export or API key appears in history:
+
+1. Rotate the compromised credential immediately
+2. Remove from history with `git filter-repo` (not just a new delete commit)
+3. Re-run `npm run security`
+
+Stale `master` branch on GitHub can be deleted; use `main` only.
 
 ---
 
@@ -76,8 +109,9 @@ Enable **HttpService** and whitelist `api.deepseek.com` in Game Settings.
 | `ServeGuest` | Guest folder + distance + `RemoteRateLimiter` (0.75s) |
 | `plantEvent` | Planter tag + distance + `RemoteRateLimiter` (1.5s) |
 | `BuyDecoration` / `PlaceDecoration` | Catalog whitelist + rate limits |
-| `ZundapalChatSend` | Length, cooldown, TextService filter |
+| `ZundapalChatSend` | Length, cooldown, TextService filter, disclaimer, daily cap |
 | `MasterChefChatSend` | Persona locked server-side (`master_chef`); shared LLM cooldown |
+| `GetLlmDisclaimerStatus` / `AcceptLlmDisclaimer` | Server-backed disclosure acceptance |
 | `RecordNpcChat` | Speaker whitelist + 5s cooldown |
 | Harvest | `HarvestValidator` distance + rate limit |
 

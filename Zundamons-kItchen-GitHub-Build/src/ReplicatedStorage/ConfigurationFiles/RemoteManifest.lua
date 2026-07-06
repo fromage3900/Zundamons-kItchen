@@ -46,6 +46,8 @@ RemoteManifest.remoteFunctions = {
 	"GetOwnedCompanions",
 	"GetActiveCompanionBuff",
 	"PromptRobuxPurchase",
+	"GetLlmDisclaimerStatus",
+	"AcceptLlmDisclaimer",
 }
 
 RemoteManifest.rewardEvents = {

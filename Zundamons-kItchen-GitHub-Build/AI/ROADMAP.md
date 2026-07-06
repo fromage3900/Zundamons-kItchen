@@ -16,6 +16,9 @@ See [`WORK_QUEUE.md`](WORK_QUEUE.md) for live task ownership across Cursor, Open
 - [x] Legacy vendor scripts removed; watercolour vignette overlay stripped
 - [x] LLM bugfixes (history, output filter, per-persona cooldown)
 - [x] Gather consolidation started (`GatherConfig`, Mineable flora deduped)
+- [x] Legacy UI Phase 0 — `000_LegacyOverlayCleanup`, VN `ZundaVNGui` bootstrap
+- [x] Publish safety — atmosphere audit, LLM disclaimer, daily cap, publish-readiness script
+- [x] Docs index (`docs/README.md`), `PRIVACY.md`, `SECURITY.md`, legal publish checklist
 
 ## Priority 1: Hardening & Stabilization
 

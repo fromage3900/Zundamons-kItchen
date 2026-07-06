@@ -1,5 +1,7 @@
 # Design System Review — Zundamon's kItchen
 
+> **Canonical references:** [`style-guide.md`](style-guide.md), [`zunda-design-bible.md`](zunda-design-bible.md), [`docs/README.md`](README.md).
+
 **Date:** 2026-07-05  
 **Reviewer:** Professional UI/UX Design Review  
 **Scope:** Full design system audit — documentation, code architecture, interaction patterns, and visual consistency

@@ -95,4 +95,19 @@ Scope: Priority systems from [`code-review.md`](code-review.md)
 | `Planters.server.lua` | Migrated off `_G.data` to `PlayerDataService` |
 | Git secret scan | `scripts/check-secrets.mjs` in CI + `npm run security` |
 | Git hygiene | `scripts/check-git-hygiene.mjs` blocks place exports + `_G.data[` |
+| Publish readiness | `scripts/check-publish-readiness.mjs` — TEST grants, placeholder product IDs |
 | LLM keys | Studio-only `ServerStorage.ZundapalLLMSecrets` (documented in `git-security.md`) |
+| LLM safety | Daily cap, disclaimer gate, HTTP timeout, no raw body in logs |
+| `ZundapalChatSend` | `RemoteRateLimiter` + disclaimer / daily_limit error paths |
+| `PromptRobuxPurchase` | Product ID whitelist against `PRODUCTS` table |
+| Companion test grant | Studio-only (`RunService:IsStudio()`) |
+
+## Publish blockers matrix
+
+| Blocker | Status | Doc |
+|---------|--------|-----|
+| AI disclosure modal | Implemented | [`legal-publish-checklist.md`](legal-publish-checklist.md) |
+| Privacy policy | [`PRIVACY.md`](../PRIVACY.md) | Repo + experience description |
+| Placeholder DevProduct IDs | Warn in CI; fail with `STRICT_PUBLISH=1` | [`publish-tonight.md`](publish-tonight.md) |
+| Git history secret scan | Manual / optional gitleaks | [`git-security.md`](git-security.md) |
+| Roblox maturity questionnaire | Manual Creator Hub | [`legal-publish-checklist.md`](legal-publish-checklist.md) |

@@ -115,6 +115,9 @@ local function backfillLoadedData(loaded: { [string]: any })
 			npc_chats = 0,
 		}
 	end
+	if loaded.llm_disclaimer_accepted == nil then
+		loaded.llm_disclaimer_accepted = false
+	end
 end
 
 function PlayerDataService.recordZoneVisit(player: Player, rawZoneKey: string)

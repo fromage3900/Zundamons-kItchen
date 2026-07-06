@@ -22,7 +22,7 @@ Zundamons-kItchen-GitHub-Build/
 │   ├── ReplicatedStorage/ConfigurationFiles/   # shared configs + modules
 │   ├── ServerScriptService/                    # server scripts
 │   └── StarterPlayer/StarterPlayerScripts/     # client scripts
-├── docs/                    # architecture, style guide, review checklist
+├── docs/                    # architecture, style guide, publish checklists — see docs/README.md
 ├── scripts/validate-structure.mjs
 └── workspace/               # local Rojo build output (gitignored)
 ```
@@ -75,6 +75,9 @@ See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) for the full split and onbo
 
 See [`docs/project-review.md`](docs/project-review.md) for scorecard and links to architecture, remotes, and security docs.
 
+**Documentation index:** [`docs/README.md`](docs/README.md)  
+**Privacy & security:** [`PRIVACY.md`](PRIVACY.md) · [`SECURITY.md`](SECURITY.md)
+
 ## World building & environment
 
 See [`docs/environment-audit.md`](docs/environment-audit.md) for the Studio Workspace contract, CollectionService tags, procedural sky/weather systems, and artist recommendations.
@@ -83,7 +86,8 @@ See [`docs/procedural-building-tools.md`](docs/procedural-building-tools.md) for
 
 See [`docs/zunda-design-bible.md`](docs/zunda-design-bible.md) for the Zunda asset catalog, gameplay loop, zone map, expansion playbook, and content backlog.
 
-**Publishing a playtest tonight?** See [`docs/publish-tonight.md`](docs/publish-tonight.md).
+**Publishing a playtest tonight?** See [`docs/publish-tonight.md`](docs/publish-tonight.md).  
+**Public launch?** See [`docs/legal-publish-checklist.md`](docs/legal-publish-checklist.md).
 
 **Rojo not syncing?** See [`docs/rojo-sync-troubleshooting.md`](docs/rojo-sync-troubleshooting.md).
 
