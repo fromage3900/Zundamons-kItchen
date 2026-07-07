@@ -1,12 +1,12 @@
 {
+  "type": "flower",
+  "petal_count": 8,
+  "stem_height": 1.0,
+  "vertices": 312,
+  "triangles": 240,
   "color": "#E1B9FF",
-  "description": "Rare lavender flower",
-  "export_path": "HarvestNodes/ZundaFlower/",
   "glow": true,
   "id": "ZundaFlower_Rare",
-  "petal_count": 8,
-  "stem_height": 1,
-  "triangles": 240,
-  "type": "flower",
-  "vertices": 312
+  "description": "Rare lavender flower",
+  "export_path": "HarvestNodes/ZundaFlower/"
 }

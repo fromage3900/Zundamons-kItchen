@@ -1,12 +1,12 @@
 {
-  "color": "#FFD700",
-  "description": "Tall ripe wheat",
-  "export_path": "HarvestNodes/Wheat/",
-  "glow": false,
-  "id": "Wheat_03",
+  "type": "flower",
   "petal_count": 5,
   "stem_height": 1.8,
+  "vertices": 240,
   "triangles": 180,
-  "type": "flower",
-  "vertices": 240
+  "color": "#FFD700",
+  "glow": false,
+  "id": "Wheat_03",
+  "description": "Tall ripe wheat",
+  "export_path": "HarvestNodes/Wheat/"
 }

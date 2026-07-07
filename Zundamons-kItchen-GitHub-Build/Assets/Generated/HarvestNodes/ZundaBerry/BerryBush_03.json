@@ -1,12 +1,12 @@
 {
-  "berry_color": "#FFD700",
-  "berry_count": 12,
-  "bush_radius": 1.5,
-  "color": "#78C882",
-  "description": "Large gold berry bush",
-  "export_path": "HarvestNodes/ZundaBerry/",
-  "id": "BerryBush_03",
-  "triangles": 184,
   "type": "berry_bush",
-  "vertices": 252
+  "bush_radius": 1.5,
+  "berry_count": 12,
+  "vertices": 252,
+  "triangles": 184,
+  "color": "#78C882",
+  "berry_color": "#FFD700",
+  "id": "BerryBush_03",
+  "description": "Large gold berry bush",
+  "export_path": "HarvestNodes/ZundaBerry/"
 }

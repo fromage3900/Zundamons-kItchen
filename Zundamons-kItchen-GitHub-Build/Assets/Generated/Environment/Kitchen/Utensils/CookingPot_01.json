@@ -1,12 +1,12 @@
 {
-  "cap_radius": 1,
-  "color": "#4A4A4A",
-  "description": "Large stew pot",
-  "export_path": "Environment/Kitchen/Utensils/",
-  "id": "CookingPot_01",
-  "spot_count": 0,
-  "stem_height": 0.8,
-  "triangles": 50,
   "type": "mushroom",
-  "vertices": 80
+  "cap_radius": 1.0,
+  "stem_height": 0.8,
+  "spot_count": 0,
+  "vertices": 80,
+  "triangles": 50,
+  "color": "#4A4A4A",
+  "id": "CookingPot_01",
+  "description": "Large stew pot",
+  "export_path": "Environment/Kitchen/Utensils/"
 }

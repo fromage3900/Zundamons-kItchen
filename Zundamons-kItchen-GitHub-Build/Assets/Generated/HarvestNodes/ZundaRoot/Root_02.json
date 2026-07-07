@@ -1,12 +1,12 @@
 {
-  "color": "#A0782C",
-  "description": "Long twisted root",
-  "export_path": "HarvestNodes/ZundaRoot/",
-  "id": "Root_02",
-  "length": 1.4,
-  "segments": 8,
-  "triangles": 40,
-  "twist": 0.7,
   "type": "root",
-  "vertices": 54
+  "length": 1.4,
+  "twist": 0.7,
+  "segments": 8,
+  "vertices": 54,
+  "triangles": 40,
+  "color": "#A0782C",
+  "id": "Root_02",
+  "description": "Long twisted root",
+  "export_path": "HarvestNodes/ZundaRoot/"
 }

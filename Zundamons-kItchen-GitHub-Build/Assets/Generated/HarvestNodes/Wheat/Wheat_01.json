@@ -1,12 +1,12 @@
 {
+  "type": "flower",
+  "petal_count": 3,
+  "stem_height": 1.0,
+  "vertices": 192,
+  "triangles": 140,
   "color": "#90EE50",
-  "description": "Short green wheat",
-  "export_path": "HarvestNodes/Wheat/",
   "glow": false,
   "id": "Wheat_01",
-  "petal_count": 3,
-  "stem_height": 1,
-  "triangles": 140,
-  "type": "flower",
-  "vertices": 192
+  "description": "Short green wheat",
+  "export_path": "HarvestNodes/Wheat/"
 }

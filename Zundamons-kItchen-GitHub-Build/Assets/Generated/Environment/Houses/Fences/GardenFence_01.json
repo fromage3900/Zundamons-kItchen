@@ -1,12 +1,12 @@
 {
-  "color": "#8B6514",
-  "description": "Low wood fence segment",
-  "export_path": "Environment/Houses/Fences/",
-  "glow": false,
-  "id": "GardenFence_01",
+  "type": "flower",
   "petal_count": 5,
   "stem_height": 1.2,
+  "vertices": 240,
   "triangles": 180,
-  "type": "flower",
-  "vertices": 240
+  "color": "#8B6514",
+  "glow": false,
+  "id": "GardenFence_01",
+  "description": "Low wood fence segment",
+  "export_path": "Environment/Houses/Fences/"
 }
