@@ -1,7 +1,7 @@
 local NPCConfig = {
 	guestTemplates = {
 		Child = {
-			modelId = "rbxassetid://FILL_NPC_CHILD",
+			modelId = "rbxassetid://85728145615215",
 			scale = 0.7,
 			animations = {
 				idle = "rbxassetid://FILL_ANIM_IDLE",
@@ -10,7 +10,7 @@ local NPCConfig = {
 			},
 		},
 		Adult = {
-			modelId = "rbxassetid://FILL_NPC_ADULT",
+			modelId = "rbxassetid://89611587152743",
 			scale = 1.0,
 			animations = {
 				idle = "rbxassetid://FILL_ANIM_IDLE",
@@ -19,7 +19,7 @@ local NPCConfig = {
 			},
 		},
 		Elder = {
-			modelId = "rbxassetid://FILL_NPC_ELDER",
+			modelId = "rbxassetid://121639150484362",
 			scale = 0.9,
 			animations = {
 				idle = "rbxassetid://FILL_ANIM_IDLE",
@@ -30,15 +30,15 @@ local NPCConfig = {
 	},
 	companionTemplates = {
 		Zundapal = {
-			modelId = "rbxassetid://FILL_COMPANION_ZUNDAPAL",
+			modelId = "rbxassetid://113753628820808",
 			scale = 0.5,
 			followSpeed = 8,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_SPARKLE",
-			buff = nil, -- free companion
+			buff = nil,
 			price = 0,
 		},
 		Ankomon = {
-			modelId = "rbxassetid://FILL_COMPANION_ANKOMON",
+			modelId = "rbxassetid://110290651922538",
 			scale = 0.6,
 			followSpeed = 6,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_GOLD",
@@ -46,7 +46,7 @@ local NPCConfig = {
 			price = 250,
 		},
 		Cardamon = {
-			modelId = "rbxassetid://FILL_COMPANION_CARDAMON",
+			modelId = "rbxassetid://91041813069462",
 			scale = 0.5,
 			followSpeed = 7,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_LAVENDER",
@@ -54,7 +54,7 @@ local NPCConfig = {
 			price = 150,
 		},
 		Antimon = {
-			modelId = "rbxassetid://FILL_COMPANION_ANTIMON",
+			modelId = "rbxassetid://94125444857929",
 			scale = 0.4,
 			followSpeed = 12,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_YELLOW",
@@ -62,7 +62,7 @@ local NPCConfig = {
 			price = 100,
 		},
 		Sakuradamon = {
-			modelId = "rbxassetid://FILL_COMPANION_SAKURA",
+			modelId = "rbxassetid://128478553136178",
 			scale = 0.55,
 			followSpeed = 8,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_PINK",

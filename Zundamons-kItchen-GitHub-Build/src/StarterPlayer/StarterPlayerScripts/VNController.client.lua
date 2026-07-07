@@ -530,98 +530,100 @@ local function buildCompanionTree()
 	local leafEnd = {
 		speaker = "zundapal",
 		lines = {
-			{ speaker = "zundapal", text = "Talk to me anytime, " .. player.Name .. "~ \u{1F49B}" },
+			{ speaker = "zundapal", text = "SCREAM AT ME WHENEVER YOU WANT, " .. player.Name .. "!!! \u{1F49B}\u{1F49B}\u{1F49B}" },
 		},
 	}
 
 	local cookingTipsNode = {
 		speaker = "zundapal",
 		lines = {
-			{ speaker = "zundapal", text = "Cooking tip time! \u{1F468}\u{200D}\u{1F373}" },
+			{ speaker = "zundapal", text = "COOKING TIP TIME!!!! EVERYBODY PANIC \u{1F468}\u{200D}\u{1F373}\u{2728}" },
 			{
 				speaker = "zundapal",
-				text = "Watch the timing bar carefully. When the indicator hits the bright-green middle…",
+				text = "Watch the bar. THE GLOWY BAR. When it hits PEAK GREEN…",
 			},
 			{
 				speaker = "zundapal",
-				text = "…that’s a PERFECT cook — you get bonus gold AND a chance at a free extra dish! ✨",
+				text = "…THAT'S A PERFECT COOK!!! BONUS GOLD!!! FREE EXTRA DISH!!! ABSOLUTE CINEMA!!! ✨\u{1F389}",
 			},
 		},
-		prompt = "Want to hear more?",
+		prompt = "WANT MORE????????",
 		choices = {
 			{
-				text = "What about Zunda Mochi?",
+				text = "What about Zunda Mochi??",
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "Zunda Mochi needs 5 Zunda Peas and 8 Wheat \u{1F361}" },
-						{ speaker = "zundapal", text = "Pick the peas in the Kitchen Garden — they sparkle pink!" },
+						{ speaker = "zundapal", text = "ZUNDA MOCHI!!! 5 ZUNDA PEAS + 8 WHEAT = PEA HEAVEN \u{1F361}\u{1F361}" },
+						{ speaker = "zundapal", text = "The peas are in the Kitchen Garden!!! THEY SPARKLE PINK!!! STARE AT THEM UNTIL THEY SUBMIT \u{1F495}\u{1F495}" },
 					},
 				},
 			},
 			{
-				text = "And the legendary Zunda Paradise?",
+				text = "And the LEGENDARY Zunda Paradise???",
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "Oooh you ambitious chef! \u{2728}" },
+						{ speaker = "zundapal", text = "OOOOOH YOU'RE AMBITIOUS I LIKE IT \u{2728}\u{2728}" },
 						{
 							speaker = "zundapal",
-							text = "Zunda Paradise wants 15 Zunda Peas, 10 Edamame Pods, 5 Sweet Peas and 3 Pea Flowers.",
+							text = "ZUNDA PARADISE: 15 ZUNDA PEAS + 10 EDAMAME + 5 SWEET PEAS + 3 PEA FLOWERS. GO BIG OR GO HOME.",
 						},
-						{ speaker = "zundapal", text = "Only true masters can pull it off!" },
+						{ speaker = "zundapal", text = "ONLY TRUE PEA MASTERS CAN PULL IT OFF!!! ARE YOU THE ONE??? \u{1F9E1}\u{1F9E1}" },
 					},
 				},
 			},
-			{ text = "Thanks, that's all.", next = leafEnd },
+			{ text = "I'm full. Thanks.", next = leafEnd },
 		},
 	}
 
 	local questHintsNode = {
 		speaker = "zundapal",
 		lines = {
-			{ speaker = "zundapal", text = "Let me check the quest board… \u{1F4DC}" },
+			{ speaker = "zundapal", text = "QUEST BOARD!!! MY BELOVED!!! \u{1F4DC}\u{1F4DC}" },
 		},
-		prompt = "What are you curious about?",
+		prompt = "WHAT DO YOU WANT TO KNOW???? (SCREAM IT)",
 		choices = {
 			{
-				text = "Where do I find Zunda Peas?",
+				text = "WHERE ARE THE ZUNDA PEAS",
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "In the Kitchen Garden, behind the bakery!" },
-						{ speaker = "zundapal", text = "They sparkle pink — you can’t miss them \u{1F495}" },
+						{ speaker = "zundapal", text = "KITCHEN GARDEN!!! BEHIND THE BAKERY!!! RUN DON'T WALK \u{1F3C3}\u{200D}\u{2642}\u{FE0F}" },
+						{ speaker = "zundapal", text = "THEY SPARKLE PINK YOU LITERALLY CANNOT MISS THEM \u{1F495}\u{1F495}" },
 					},
 				},
 			},
 			{
-				text = "How do I serve guests?",
+				text = "HOW DO I SERVE GUESTS",
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "Cook the dish they want, then walk over with it in your pouch." },
-						{ speaker = "zundapal", text = "Click the guest — they’ll pay in gold and a smile~" },
+						{ speaker = "zundapal", text = "COOK THE THING THEY WANT. PUT IT IN YOUR POUCH. WALK UP TO THEM. DOMINANCE." },
+						{ speaker = "zundapal", text = "CLICK THE GUEST!!! THEY EXPLODE INTO GOLD AND GRATITUDE \u{2728}" },
 					},
 				},
 			},
 			{
-				text = "Tell me about the village.",
+				text = "TELL ME ABOUT THE VILLAGE WHISPER",
 				next = {
 					speaker = "elder",
 					lines = {
-						{ speaker = "elder", text = "Ah, Zunda Village… founded long ago by chef-monks." },
-						{ speaker = "elder", text = "Every dish here carries a little of their patience." },
+						{ speaker = "elder", text = "...Zunda Village. Founded by chef-monks who REALLY liked peas. \u{1F3ED}" },
+						{ speaker = "elder", text = "Every dish here carries their obsession. COOK IT PROUDLY. \u{1F9E1}" },
 					},
 				},
 			},
-			{ text = "Never mind.", next = leafEnd },
+			{ text = "Never mind (coward)", next = leafEnd },
 		},
 	}
 
 	-- ROOT
 	local greetingLines = {}
 	if math.random() < 0.5 then
-		table.insert(greetingLines, { speaker = "narrator", text = "[ Zundapal looks up with sparkling eyes. ]" })
+		table.insert(greetingLines, { speaker = "narrator", text = "[ Zundapal explodes into view with sparkling eyes and pea aura ] \u{1F4A5}" })
+	else
+		table.insert(greetingLines, { speaker = "narrator", text = "[ Zundapal is vibrating with kitchen energy ] \u{26A1}" })
 	end
 	for _, l in ipairs(greeting) do
 		table.insert(greetingLines, { speaker = "zundapal", text = l })
@@ -630,23 +632,23 @@ local function buildCompanionTree()
 	return {
 		speaker = "zundapal",
 		lines = greetingLines,
-		prompt = "What would you like to talk about?",
+		prompt = "WHAT NOW??? 🎤",
 		choices = {
-			{ text = "Give me a cooking tip \u{1F373}", next = cookingTipsNode },
-			{ text = "I need quest help \u{1F4DC}", next = questHintsNode },
+			{ text = "GIVE ME A COOKING TIP OR ELSE \u{1F373}\u{1F525}", next = cookingTipsNode },
+			{ text = "I NEED QUEST HELP (I'M LOST) \u{1F4DC}", next = questHintsNode },
 			{
-				text = "Just saying hi \u{1F495}",
+				text = "Just saying hi I love you \u{1F495}",
 				next = {
 					speaker = "zundapal",
 					lines = {
-						{ speaker = "zundapal", text = "Hehe — hi! \u{1F49A}" },
-						{ speaker = "zundapal", text = "It’s really nice to see your face today, "
+						{ speaker = "zundapal", text = "HIII!!!! I LOVE YOU TOO \u{1F49A}\u{1F49A}" },
+						{ speaker = "zundapal", text = "YOUR FACE IS MY FAVORITE THING TODAY, "
 							.. player.Name
-							.. "." },
+							.. "!!! AND EVERY DAY!!! \u{2728}" },
 					},
 				},
 			},
-			{ text = "Bye for now", next = leafEnd },
+			{ text = "BYE OR I'LL CRY", next = leafEnd },
 		},
 	}
 end
@@ -665,13 +667,14 @@ local qcRE = RE:FindFirstChild("QuestCompleted")
 if qcRE then
 	qcRE.OnClientEvent:Connect(function(quest)
 		local lines = {
-			{ speaker = "zundamon", text = 'Quest complete! 🎉  "' .. quest.title .. '"' },
-			{ speaker = "zundapal", text = "You did it, "
+			{ speaker = "zundamon", text = 'QUEST COMPLETE!!!!!!!!! 🎉🎉🎉 "' .. quest.title .. '" HAS BEEN DESTROYED (in a good way)' },
+			{ speaker = "zundapal", text = "YOU DID THE THING!!!! "
 				.. player.Name
-				.. "! ✨ +"
+				.. "!!! ABSOLUTE LEGEND 🔥 +"
 				.. (quest.reward or 0)
-				.. " gold~" },
-			{ speaker = "zundamon", text = quest.unlock_hint or "Keep exploring — new surprises await!" },
+				.. " GOLD GET IN THE BAG 💰💰" },
+			{ speaker = "zundamon", text = quest.unlock_hint or "MORE AWAITS YOU!!! THIS IS ONLY THE BEGINNING OF THE PEA-SPLOSION 🌱💥" },
+			{ speaker = "zundapal", text = "I'M SO PROUD I COULD EAT A THOUSAND MOCHI (I won't though. maybe one.) 🍡" },
 		}
 		_G.ZundaVN.show("zundamon", lines)
 	end)
@@ -705,10 +708,11 @@ end)
 -- Wait for _G.ZundaVN to be ready then fire welcome dialogue
 task.delay(2.5, function()
 	_G.ZundaVN.show("zundamon", {
-		"Welcome to Zunda Village, " .. player.Name .. "! 🌸",
-		"I'm Zundamon — I'll guide you through your culinary adventure!",
-		"Press M for the map  •  I for your pouch  •  J for quests~",
-		"Your Zundapal companion is right beside you — click them to chat! 🍡",
+		"WELCOME TO ZUNDA VILLAGE!!!!!!!!! 🌸🔥 " .. player.Name .. " YOU'RE HERE!!!!!",
+		"I'M ZUNDAMON!!! I WILL GUIDE YOU THROUGH CULINARY... THINGS!!!",
+		"Press M for map • I for pouch • J for QUESTS • and your BRAIN for FUN 🧠",
+		"YOUR ZUNDAPAL COMPANION IS RIGHT THERE — CLICK THEM AND SCREAM TOGETHER 🍡💚",
+		"WE'RE GONNA COOK SO HARD THE SUN WILL GET JEALOUS ☀️😤 READY?? LET'S PEA!!!!!!",
 	})
 end)
 

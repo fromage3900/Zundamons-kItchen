@@ -4,17 +4,19 @@ local Players    = game:GetService("Players")
 local Tween      = game:GetService("TweenService")
 local RS         = game:GetService("ReplicatedStorage")
 
--- ── Zundapal mesh template (from NPCConfig) ────────────────────
-local NPCConfig = require(RS.Shared.Config.NPCConfig)
+-- Per-companion mesh IDs
+local COMPANION_MESHES = {
+    zundamon   = "rbxassetid://113753628820808",
+    zundacat   = "rbxassetid://101663144452966",
+    zundabunny = "rbxassetid://76425192775041",
+    tantanmon  = "rbxassetid://107150527246774",
+    ankomon    = "rbxassetid://110290651922538",
+    cardamon   = "rbxassetid://91041813069462",
+    antimon    = "rbxassetid://94125444857929",
+    sakuradamon = "rbxassetid://128478553136178",
+}
 
-local function getCompanionMesh()
-    local def = NPCConfig.getCompanion("Zundapal")
-    if not def then return nil end
-    -- Try loading from InsertService, or find in workspace
-    local mesh = Instance.new("MeshPart")
-    mesh.MeshId = def.modelId
-    return mesh
-end
+local DEFAULT_COMPANION_MESH = "rbxassetid://113753628820808"
 
 -- ── Companion catalog ──────────────────────────────────────────
 local COMPANIONS = {
@@ -85,20 +87,20 @@ local function buildCompanion(player, compType)
     model.Name = name
     model.Parent = workspace
 
-    -- ── Body: load from NPCConfig model, else sphere fallback ──
+    -- ── Body: per-companion mesh ──
     local body
-    local companionMesh = getCompanionMesh()
+    local meshId = COMPANION_MESHES[compType] or DEFAULT_COMPANION_MESH
 
-    if companionMesh and companionMesh.MeshId ~= "rbxassetid://FILL_COMPANION_ZUNDAPAL" then
-        body = companionMesh
+    if meshId then
+        body = Instance.new("MeshPart")
         body.Name = "Body"
-        body.Size = body.Size * 0.85
+        body.MeshId = meshId
+        body.Size = Vector3.new(3, 3, 3)
         body.Anchored = false
         body.CanCollide = false
         body.CastShadow = false
         body.Massless = true
     else
-        -- Fallback: smooth sphere
         body = Instance.new("Part")
         body.Name = "Body"
         body.Shape = Enum.PartType.Ball

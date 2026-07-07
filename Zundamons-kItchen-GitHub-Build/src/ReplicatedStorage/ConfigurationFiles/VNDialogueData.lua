@@ -9,113 +9,114 @@ local RGB = Color3.fromRGB
 
 -- Speaker configurations with companion emojis
 local SPEAKERS = {}
-SPEAKERS.zundamon = { name = "Zundamon", emoji = "🍙", accent = RGB(160, 210, 150), portrait = RGB(180, 220, 170) }
-SPEAKERS.zundapal = { name = "Zundapal", emoji = "🍡", accent = RGB(200, 230, 180), portrait = RGB(210, 235, 195) }
-SPEAKERS.narrator = { name = "", emoji = "✨", accent = RGB(220, 200, 170), portrait = RGB(230, 220, 200) }
+SPEAKERS.zundamon = { name = "Zundamon", emoji = "🍡🔥", accent = RGB(140, 255, 160), portrait = RGB(180, 255, 200) }
+SPEAKERS.zundapal = { name = "Zundapal", emoji = "🫛✨", accent = RGB(200, 255, 180), portrait = RGB(210, 255, 195) }
+SPEAKERS.narrator = { name = "", emoji = "🌀", accent = RGB(220, 200, 170), portrait = RGB(230, 220, 200) }
 SPEAKERS.elder = { name = "Village Elder", emoji = "🏮", accent = RGB(220, 180, 130), portrait = RGB(230, 200, 160) }
-SPEAKERS.ruins = { name = "Ancient Voice", emoji = "👁", accent = RGB(190, 170, 210), portrait = RGB(210, 195, 220) }
-SPEAKERS.chef = { name = "Head Chef", emoji = "🍳", accent = RGB(230, 185, 130), portrait = RGB(240, 210, 170) }
-SPEAKERS.system = { name = "", emoji = "⭐", accent = RGB(210, 195, 235), portrait = RGB(225, 215, 240) }
-SPEAKERS.ankomon = { name = "Ankomon", emoji = "🦴", accent = RGB(180, 180, 190), portrait = RGB(200, 200, 210) }
-SPEAKERS.cardamon = { name = "Cardamon", emoji = "🌿", accent = RGB(180, 210, 180), portrait = RGB(200, 230, 200) }
-SPEAKERS.antimon = { name = "Antimon", emoji = "⚡", accent = RGB(210, 220, 150), portrait = RGB(230, 240, 180) }
+SPEAKERS.ruins = { name = "??WHISPER??", emoji = "👁️", accent = RGB(190, 170, 210), portrait = RGB(210, 195, 220) }
+SPEAKERS.chef = { name = "Head Chef", emoji = "🍳💀", accent = RGB(255, 120, 80), portrait = RGB(255, 150, 120) }
+SPEAKERS.system = { name = "", emoji = "⚡", accent = RGB(210, 195, 235), portrait = RGB(225, 215, 240) }
+SPEAKERS.ankomon = { name = "Ankomon", emoji = "🫘🥊", accent = RGB(200, 80, 80), portrait = RGB(220, 100, 100) }
+SPEAKERS.cardamon = { name = "Cardamon", emoji = "🌿🍋", accent = RGB(240, 200, 80), portrait = RGB(255, 230, 140) }
+SPEAKERS.antimon = { name = "Antimon", emoji = "⚡💨", accent = RGB(120, 220, 200), portrait = RGB(160, 240, 220) }
 SPEAKERS.sakuradamon =
-	{ name = "Sakuradamon", emoji = "🌸", accent = RGB(255, 180, 200), portrait = RGB(255, 220, 230) }
+	{ name = "Sakuradamon", emoji = "🌸💥", accent = RGB(255, 180, 220), portrait = RGB(255, 220, 230) }
 
 -- Companion-specific branching dialogue (time + level based)
+-- They get progressively more unhinged
 local COMPANION_DIALOGUE = {}
 COMPANION_DIALOGUE.zundapal = {
 	morning = {
-		"Good morning, " .. player.Name .. "~ ☀️",
-		"Ready to cook up something wonderful today?",
-		"I can already smell the kitchen from here! 🍳",
+		"GOOD MORNING!!!!!!!! " .. player.Name .. "!!! ☀️☀️☀️",
+		"THE PEAS ARE AWAKE AND SO ARE WE LET'S GOOOOO",
+		"I can smell the kitchen from here and it smells like GLORY 🍳✨",
 	},
 	afternoon = {
-		"Hey, " .. player.Name .. "! You're doing great~ ✨",
-		"Have you tried any of the new recipes yet?",
-		"The guests look hungry... let's get cooking! 🍡",
+		"Hey " .. player.Name .. " you're COOKING (literally) 🔥🔥🔥",
+		"Did you try the new recipe? DID YOU?? WAS IT AMAZING??",
+		"THE GUESTS ARE STARVING AND I'M STARVING LET'S FEED THEM ALL 🍡🍡🍡",
 	},
 	evening = {
-		"The sunset is so pretty from here... 🌅",
-		"You worked so hard today, " .. player.Name .. ".",
-		"I'll be right here beside you, always~ 💫",
+		"The sunset is hitting different today... 🌅",
+		"You worked so hard, " .. player.Name .. "! Take a bow or something!!",
+		"I'll be right here. Watching. Waiting. Always. 👁️💫",
 	},
 	night = {
-		"Psst — " .. player.Name .. "... still awake? 🌙",
-		"The stars are beautiful tonight...",
-		"Even chefs deserve a rest. I'll keep watch~ ⭐",
+		"PSST — " .. player.Name .. "... you up?? 🌙🌙",
+		"I was counting peas to sleep but I LOST COUNT AT 3000",
+		"Chefs need rest but like... what IF we cooked all night instead?? ⭐",
 	},
-	level1_10 = { "Starting your journey? I believe in you! 🌱", "Let's gather some basic ingredients first." },
-	level11_20 = { "You're getting the hang of this! ✨", "Try making Zunda Mochi - it's my favorite!" },
-	level21_50 = { "Amazing progress, chef! 🌟", "You've mastered so many recipes already." },
+	level1_10 = { "A JOURNEY BEGINS!!! I'M SO EXCITED I COULD BURST INTO PEAS 🌱", "Let's gather stuff!!! EVERYTHING!!! ALL THE THINGS!!!" },
+	level11_20 = { "YOU'RE GETTING THE HANG OF THIS!!! NEXT STOP: WORLD DOMINATION VIA SNACKS ✨", "ZUNDA MOCHI TIME!!! IT'S MY FAVORITE IT'S SO GOOD I CRY 🍡" },
+	level21_50 = { "CHEF SUPREME " .. player.Name .. "!!!! YOU'RE A CULINARY MENACE 👑", "You've mastered so many recipes my brain is doing backflips 🌀" },
 }
 COMPANION_DIALOGUE.ankomon = {
 	morning = {
-		"Training begins at dawn, " .. player.Name .. ".",
-		"Every great chef needs discipline. ⚖️",
-		"Shall we practice precision cooking? 🔥",
+		"RISE AND SHINE IT'S BEAN O'CLOCK, " .. player.Name .. " 🫘🔥",
+		"DISCIPLINE. FOCUS. BEANS. THESE ARE THE PILLARS OF COOKING.",
+		"Precision is key!!! UNLESS YOU'RE MAKING SOUP THEN JUST THROW STUFF IN 🥣",
 	},
-	afternoon = { "Your XP gain increases with focused effort.", "Try perfect timing for maximum efficiency!" },
-	level1_10 = { "Don't rush technique. Master the basics first." },
-	level11_20 = { "Excellent form! Your XP multiplier is active." },
-	level21_50 = { "True mastery! Double XP for you now." },
+	afternoon = { "YOU'RE GETTING STRONGER I CAN SENSE IT IN THE BEAN AURA 🫘⚡", "XP GO BRRRRRRR — FOCUS UP CHEF!!!" },
+	level1_10 = { "Basics first. Then beans. THEN EVERYTHING ELSE. Order matters." },
+	level11_20 = { "EXCELLENT FORM!!! YOUR XP IS MULTIPLYING LIKE RABBITS (or beans) 🫘🐇" },
+	level21_50 = { "TRUE MASTERY!!! DOUBLE XP!!! TRIPLE BEANS!!! I'M SO PROUD I COULD BURST 🫘💥" },
 }
 COMPANION_DIALOGUE.cardamon = {
-	morning = { "Breathe in the fresh aromas, " .. player.Name .. "~", "Patience reveals the best flavors. 🧘" },
-	night = { "The herbs whisper secrets in the moonlight...", "Rest well, young chef. Tomorrow brings new recipes." },
-	level1_10 = { "Slower timing gives better results for beginners." },
-	level11_20 = { "Your timing window is wider now - use it wisely!" },
-	level21_50 = { "Perfect zen state achieved - flawless cooking ahead." },
+	morning = { "Breathe in… breathe out… " .. player.Name .. "~ 🍃", "PATIENCE IS A VIRTUE BUT FRANKLY I'M RUNNING LOW ON IT 🔥🧘" },
+	night = { "The herbs are whispering again… they say YOU COOKED TODAY. Legendary behavior 🌿", "Rest well. Tomorrow we commit GASTRONOMY CRIMES (delicious ones) 🍳" },
+	level1_10 = { "Go slow at first… OR DON'T. I'm a cardamon not a cop 😤" },
+	level11_20 = { "Your timing window is WIDER now! You could drive a TRUCK through that window 🚛✨" },
+	level21_50 = { "PERFECT ZEN STATE!!! FLAWLESS COOKING AHEAD!!! The herbs are SCREAMING 🔥🌿🔥" },
 }
 COMPANION_DIALOGUE.antimon = {
-	morning = { "Time is ingredients, " .. player.Name .. "! ⚡", "Let's cook at lightning speed!" },
-	afternoon = { "Faster craft time means more dishes! 🚀", "I can feel the energy accelerating!" },
-	level1_10 = { "Haste makes waste... but I'll help you go fast!" },
-	level11_20 = { "Your crafting speed buff is ready!" },
-	level21_50 = { "No time wasted - pure efficiency!" },
+	morning = { "TIME IS MONEY AND INGREDIENTS AND EVERYTHING GO GO GO " .. player.Name .. " ⚡⚡⚡", "LET'S COOK AT THE SPEED OF SOUND BOOM 💥" },
+	afternoon = { "FASTER!!! MORE DISHES!!! CHAOS KITCHEN MODE ACTIVATED 🚀🚀🚀", "I CAN FEEL THE ENERGY!!! THE KITCHEN IS VIBRATING ⚡💨" },
+	level1_10 = { "Haste makes waste BUT HASTE ALSO MAKES DINNER so let's gooooo 🏃‍♂️💨" },
+	level11_20 = { "CRAFTING SPEED BUFF ACTIVE!!! YOU'RE A LIVING BLENDER NOW 🌀" },
+	level21_50 = { "NO TIME WASTED!!! PURE EFFICIENCY!!! CHEF MODE MAXIMUM OVERDRIVE ⚡🔥⚡" },
 }
 COMPANION_DIALOGUE.sakuradamon = {
-	morning = { "The sakura blossoms bloom with the seasons~ 🌸", "Seek rare ingredients for special recipes!" },
-	night = { "The moon blesses secret ingredients tonight...", "If you listen closely, you'll find their locations." },
-	level1_10 = { "Rare drops appear with luck - I sense some nearby!" },
-	level11_20 = { "Your rare drop chance has increased!" },
-	level21_50 = { "Legendary ingredients reveal themselves to you..." },
+	morning = { "THE BLOSSOMS ARE BLOOMING AND SO IS YOUR POTENTIAL, " .. player.Name .. " 🌸💥", "RARE INGREDIENT SENSORS TINGLING!!! GO GO GO!!!" },
+	night = { "The moon is full… the ingredients are NERVOUS… excellent ✨🌙", "LISTEN CLOSELY… they're whispering WHERE THEY HIDE. N O W  G O 🗣️🌸" },
+	level1_10 = { "RARE DROPS I SENSE THEM THEY'RE EVERYWHERE THEY'RE IN THE WALLS 🧱👁️" },
+	level11_20 = { "YOUR RARE DROP CHANCE HAS ASCENDED!!! THE INGREDIENTS CANNOT HIDE FROM YOU NOW 🌸🔍" },
+	level21_50 = { "LEGENDARY INGREDIENTS ARE LITERALLY THROWING THEMSELVES AT YOU!!! THIS IS YOUR ERA 💫🌸💫" },
 }
 
 -- Side dialogue triggers (item/lore discoveries)
 local SIDE_DIALOGUES = {}
 SIDE_DIALOGUES.zunda_pea = {
 	speaker = "zundapal",
-	text = "Oh! You found some Zunda Peas! 🫛",
-	hint = "Those are my favorite~ They're so sweet and green!",
-	recipe = "Did you know you can make Zunda Mochi with them? 🍡",
+	text = "OH MY PEA YOU FOUND ZUNDA PEAS 🫛🫛🫛",
+	hint = "THEY'RE SO GREEN AND PERFECT AND I LOVE THEM MORE THAN ANYTHING",
+	recipe = "ZUNDA MOCHI TIME BABYYYYY SMASH THOSE PEAS INTO GLORY 🍡🔥",
 }
 SIDE_DIALOGUES.zunda_mochi = {
 	speaker = "zundapal",
-	text = "Zunda Mochi is a special treat! 🍡",
-	lore = "It's made from sweet green peas, mashed into paste~",
-	tip = "The texture is so chewy and delicious! 💚",
+	text = "ZUNDA MOCHI!!!! THE LEGENDARY SNACK 🍡✨",
+	lore = "It's peas. Mashed. And PERFECT. That's it. That's the lore.",
+	tip = "THE CHEWINESS IS ENOUGH TO MAKE YOU TRANSCEND 💚💚💚",
 }
 SIDE_DIALOGUES.wheat = {
 	speaker = "zundapal",
-	text = "Wheat is the base of so many dishes! 🌾",
-	tip = "Harvest carefully - golden wheat makes golden bread!",
+	text = "WHEAT!!! The backbone of EVERYTHING DELICIOUS 🌾",
+	tip = "GOLDEN WHEAT = GOLDEN BREAD = GOLDEN SOUL. It's science. Trust me. 🔬",
 }
 SIDE_DIALOGUES.royal_stew = {
 	speaker = "ankomon",
-	text = "Royal Stew - the pinnacle of cooking! 👑",
-	tip = "Requires Gold Ore for true regality.",
+	text = "ROYAL STEW!!! THIS ISN'T JUST FOOD IT'S A STATEMENT 👑🔥",
+	tip = "GOLD ORE. IN THE STEW. FOR REGALITY. OBEY THE STEW LORE. 🫘",
 }
 SIDE_DIALOGUES.seasonal = {
 	summer = {
 		speaker = "sakuradamon",
-		text = "Summer brings the rare Summer Salad! ☀️",
-		hint = "Add Zunda Berry to your Bread for a seasonal twist.",
+		text = "SUMMER SALAD!!! THE SUN'S FAVORITE DISH ☀️🥗",
+		hint = "SLAP A ZUNDA BERRY ON YOUR BREAD AND WATCH THE SEASONS ALIGN 🔥🌸",
 	},
 	winter = {
 		speaker = "sakuradamon",
-		text = "Winter's warmth comes from Warm Stew! ❄️",
-		hint = "Gold Ore makes it extra nourishing in cold months.",
+		text = "WINTER'S WARMTH!!! aka WARM STEW aka HOT SOUP OF VICTORY ❄️🔥",
+		hint = "GOLD ORE MAKES IT SO NOURISHING YOU'LL FORGET THE COLD (and your problems) 💰",
 	},
 }
 
