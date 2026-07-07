@@ -1,22 +1,26 @@
 -- [[ModuleScript] LootModule (ref: RBX4573179EFA054EED872412F08A8A6EF4)]]
 local loot_module = {}
 local RS = game.ReplicatedStorage
-local RE = RS:WaitForChild("RemoteEvents")
-local RF = RS:WaitForChild("RemoteFunctions")
-local loot = RS:WaitForChild("Loot")
-local give_loot = RF:WaitForChild("GiveLoot")
-local removeCode = RE:WaitForChild("RemoveCode")
-local MakeLootEvent = RE:WaitForChild("MakeLootEvent")
+local RE = RS:WaitForChild("RemoteEvents", 10)
+local RF = RS:WaitForChild("RemoteFunctions", 10)
+local loot = RS:WaitForChild("Loot", 10)
+if not RE or not RF or not loot then
+	warn("[LootModule] Core folders not found — loot disabled")
+	return { GiveLoot = function() return false end, generateLoot = function() end, lootMaker = function() return {} end }
+end
+local give_loot = RF:WaitForChild("GiveLoot", 10)
+local removeCode = RE:WaitForChild("RemoveCode", 10)
+local MakeLootEvent = RE:WaitForChild("MakeLootEvent", 10)
 local finalLoots = loot:GetChildren()
-local sellLoot = RF:WaitForChild("sellLoot")
-local configFiles = RS:WaitForChild("ConfigurationFiles")
-local mineableConfig = require(configFiles:WaitForChild("MineableConfig"))
-local priceLists = mineableConfig.priceLists
+local sellLoot = RF:WaitForChild("sellLoot", 10)
+local configFiles = RS:WaitForChild("ConfigurationFiles", 10)
+local mineableConfig = configFiles and require(configFiles:WaitForChild("MineableConfig", 10))
+local priceLists = mineableConfig and mineableConfig.priceLists or {}
 
 local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
-local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
-local ChefLevelConfig = require(configFiles:WaitForChild("ChefLevelConfig"))
+local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore", 10))
+local ChefLevelConfig = configFiles and require(configFiles:WaitForChild("ChefLevelConfig", 10))
 
 local codes: { [string]: { { string } } } = {}
 local sellTimestamps: { [string]: { number } } = {}

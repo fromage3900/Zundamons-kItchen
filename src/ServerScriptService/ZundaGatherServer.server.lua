@@ -8,7 +8,12 @@ local SSS = game:GetService("ServerScriptService")
 local Debris = game:GetService("Debris")
 local TweenS = game:GetService("TweenService")
 
-local lootMod = require(RS:WaitForChild("Shared"):WaitForChild("Modules"):WaitForChild("LootModule"))
+local sharedFolder = RS:FindFirstChild("Shared")
+local lootMod = sharedFolder and require(sharedFolder:WaitForChild("Modules", 10):WaitForChild("LootModule", 10))
+if not lootMod then
+	warn("[ZundaGatherServer] LootModule not found — gather disabled")
+	return {}
+end
 
 -- HarvestValidator for server-side validation (distance, rate limit, cooldown)
 local HarvestValidator = SSS:FindFirstChild("Validation") and SSS.Validation:FindFirstChild("HarvestValidator")

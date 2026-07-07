@@ -10,8 +10,14 @@ local RunService = game:GetService("RunService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
 
-local ScatterConfig = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("ScatterConfig"))
-local MeshAssets = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("MeshAssets"))
+local configFolder = ReplicatedStorage:FindFirstChild("ConfigurationFiles")
+if not configFolder then configFolder = ReplicatedStorage:WaitForChild("ConfigurationFiles", 10) end
+local ScatterConfig = configFolder and require(configFolder:WaitForChild("ScatterConfig", 10))
+local MeshAssets = configFolder and require(configFolder:WaitForChild("MeshAssets", 10))
+if not ScatterConfig or not MeshAssets then
+	warn("[ScatterService] Config assets not found — scatter disabled")
+	return {}
+end
 
 local ScatterService = {}
 
@@ -114,13 +120,24 @@ local function spawnNode(nodeType: string, variantId: string, position: Vector3,
 		part = Instance.new("Part")
 	end
 
+	local RESOURCE_COLORS = {
+		ZundaFlower = Color3.fromRGB(100, 200, 100),
+		ZundaPea = Color3.fromRGB(180, 220, 80),
+		["Zunda Mushroom"] = Color3.fromRGB(200, 180, 150),
+		["Zunda Berry"] = Color3.fromRGB(220, 120, 160),
+		["Zunda Root"] = Color3.fromRGB(160, 120, 80),
+		Wheat = Color3.fromRGB(180, 200, 80),
+		Rock = Color3.fromRGB(160, 160, 160),
+		["Gold Ore"] = Color3.fromRGB(255, 215, 0),
+	}
+
 	part.Name = nodeType .. "_" .. variantId
 	part.Size = Vector3.new(2, 2, 2)
 	part.Position = position + Vector3.new(0, nodeConfig.yOffset, 0)
 	part.Anchored = true
 	part.CanCollide = false
 	part.Material = Enum.Material.SmoothPlastic
-	part.Color = Color3.fromRGB(100, 200, 130)
+	part.Color = RESOURCE_COLORS[nodeType] or Color3.fromRGB(100, 200, 130)
 	part.Transparency = 0
 
 	-- Apply random rotation

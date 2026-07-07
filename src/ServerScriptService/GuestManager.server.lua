@@ -1,8 +1,16 @@
 -- [[Script] GuestManager (ref: RBX0F6550E0891E47F9B20D70EEFC302651)]]
 -- GuestManager: Spawns and manages guest NPCs
 
-local CONFIG = require(game.ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("ProgressionConfig"))
-local guestTemplate = workspace:WaitForChild("ZoneAssets"):WaitForChild("GuestTemplate")
+local configFolder = game.ReplicatedStorage:FindFirstChild("ConfigurationFiles")
+if not configFolder then configFolder = game.ReplicatedStorage:WaitForChild("ConfigurationFiles", 15) end
+local CONFIG = configFolder and require(configFolder:WaitForChild("ProgressionConfig", 10))
+if not CONFIG then
+	warn("[GuestManager] ProgressionConfig not found — guests disabled")
+	return {}
+end
+
+local zoneAssets = workspace:FindFirstChild("ZoneAssets")
+local guestTemplate = zoneAssets and zoneAssets:FindFirstChild("GuestTemplate") or workspace:WaitForChild("ZoneAssets", 15):WaitForChild("GuestTemplate", 10)
 
 local GUEST_SPAWN_FOLDER = workspace:FindFirstChild("Guests") or Instance.new("Folder")
 if not GUEST_SPAWN_FOLDER.Parent then
@@ -55,6 +63,39 @@ local function createGuest(player)
 	local guest = guestTemplate:Clone()
 	guestIdCounter = guestIdCounter + 1
 	guest.Name = "Guest_" .. guestIdCounter
+
+	-- If template has no BasePart, build a procedural capsule guest
+	if not guest:FindFirstChildWhichIsA("BasePart") then
+		local prefs = CONFIG.guest_preferences
+		local pref = prefs[math.random(1, #prefs)]
+		local npcColor = Color3.fromRGB(180, 120, 80)
+		if pref.name == "Food Critic" then npcColor = Color3.fromRGB(100, 180, 220)
+		elseif pref.name == "Regular Customer" then npcColor = Color3.fromRGB(220, 160, 100)
+		elseif pref.name == "Picnic Guest" then npcColor = Color3.fromRGB(200, 180, 60)
+		elseif pref.name and pref.name:find("Challenge") then npcColor = Color3.fromRGB(220, 80, 80) end
+		local torso = Instance.new("Part")
+		torso.Name = "Torso"
+		torso.Size = Vector3.new(2, 2.5, 1)
+		torso.Color = npcColor
+		torso.Anchored = false
+		torso.CanCollide = false
+		torso.Parent = guest
+		local head = Instance.new("Part")
+		head.Name = "Head"
+		head.Size = Vector3.new(1.2, 1.2, 1.2)
+		head.Color = npcColor
+		head.Anchored = false
+		head.CanCollide = false
+		head.Position = Vector3.new(0, 2, 0)
+		head.Parent = guest
+		local weld = Instance.new("WeldConstraint")
+		weld.Part0 = torso
+		weld.Part1 = head
+		weld.Parent = torso
+		local humanoid = Instance.new("Humanoid")
+		humanoid.Parent = guest
+		guest.PrimaryPart = torso
+	end
 
 	-- Pick a random guest preference
 	local preference = CONFIG.guest_preferences[math.random(1, #CONFIG.guest_preferences)]

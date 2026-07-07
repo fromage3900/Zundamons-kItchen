@@ -105,7 +105,8 @@ local function craftItem(player, item, position, quality)
     local RE_re = RS:WaitForChild("RemoteEvents")
     local sideDlgRE = RE_re:FindFirstChild("TriggerSideDialogue")
     local bucket_before = PlayerDataService.get(player)
-    local was_first_craft = bucket_before and not bucket_before.recipes_served_count or not bucket_before.recipes_served_count[item]
+    if not bucket_before then return "ok" end
+    local was_first_craft = not bucket_before.recipes_served_count or not bucket_before.recipes_served_count[item]
 
     -- Track cooking quality for quest system
     PlayerDataService.update(player, function(d)

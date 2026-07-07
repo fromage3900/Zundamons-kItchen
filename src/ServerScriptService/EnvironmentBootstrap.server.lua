@@ -17,9 +17,19 @@ if servicesFolder then
 		ScatterService = require(scatterModule)
 	end
 end
--- Fallback to ScatterConfig if Services version not available
+-- Fallback: use a stub if ScatterService is unavailable
 if not ScatterService then
-	ScatterService = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("ScatterConfig"))
+	local configFolder = ReplicatedStorage:FindFirstChild("ConfigurationFiles")
+	if configFolder then
+		local sc = configFolder:FindFirstChild("ScatterConfig")
+		if sc then
+			ScatterService = require(sc)
+		end
+	end
+	if not ScatterService then
+		ScatterService = { scatterBiome = function() end, clearBiome = function() end, clearAll = function() end }
+		warn("[EnvironmentBootstrap] ScatterService unavailable — using stub")
+	end
 end
 
 -- Tag regions in Studio with "ScatterRegion" and a "Biome" attribute
@@ -101,16 +111,9 @@ local function ensureWorkspaceStructure()
 	end
 end
 
--- Runtime landscape spawner
-local landscapeSpawner = ServerScriptService:FindFirstChild("ProceduralLandscapeSpawner.server")
-if landscapeSpawner then
-	task.delay(3, function()
-		require(landscapeSpawner)
-	end)
-end
-
 ensureWorkspaceStructure()
-bootstrapEnvironment()
+-- DISABLED: bootstrapEnvironment() — manual scatter only
+-- DISABLED: landscape spawner auto-run
 bootstrapNPC()
 
 return ScatterService
