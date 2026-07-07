@@ -49,9 +49,24 @@ Return as a single JSON quest object."""
         return quests[0] if quests else {}
 
     def _parse_quests(self, text: str) -> list[dict]:
-        match = re.search(r"\[.*?\]", text, re.DOTALL)
+        # Strategy 1: Try to parse the entire response as JSON
+        if text.strip().startswith("["):
+            try: return json.loads(text)
+            except: pass
+        # Strategy 2: Extract JSON array (greedy match for nested structures)
+        match = re.search(r"\[.*\]", text, re.DOTALL)
         if match:
             try: return json.loads(match.group())
             except: pass
-        try: return json.loads(text)
-        except: return [{"error": "Failed to parse", "raw": text[:200]}]
+        # Strategy 3: Check for markdown code blocks
+        match = re.search(r"```(?:json)?\s*(\[.*?\])\s*```", text, re.DOTALL)
+        if match:
+            try: return json.loads(match.group(1))
+            except: pass
+        # Strategy 4: Try to find any JSON-like array
+        for line in text.split("\n"):
+            line = line.strip()
+            if line.startswith("[") and line.endswith("]"):
+                try: return json.loads(line)
+                except: pass
+        return [{"error": "Failed to parse", "raw": text[:200]}]

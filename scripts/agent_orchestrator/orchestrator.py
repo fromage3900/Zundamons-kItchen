@@ -1,4 +1,5 @@
 import json, sys, os
+from datetime import datetime
 from pathlib import Path
 
 # Ensure we're running from project root (find default.project.json)
@@ -29,7 +30,7 @@ from agents.gameplay_agent import GameplayAgent
 from agents.config_writer_agent import ConfigWriterAgent
 from config import MODELS, MAX_RECURSION_DEPTH, ROOT
 
-ORCHESTRATOR_PROMPT = """You are the Zunda Orchestrator for a Roblox game at G:\Zundamons-kItchen.
+ORCHESTRATOR_PROMPT = r"""You are the Zunda Orchestrator for a Roblox game at G:\Zundamons-kItchen.
 Your specialist agents: research, code_gen, roblox, blender, reviewer, quest (quest designer), gameplay (gameplay systems designer), config_writer (writes Lua config files).
 For any task: 1) Decompose 2) Assign 3) Collect 4) Research deeper if needed 5) Validate 6) Report.
 Return subtasks as JSON array: [{"agent": "agent_type", "task": "description"}]"""
@@ -156,15 +157,17 @@ class ZundaOrchestrator:
             all_quests.extend(quests)
             self.log_msg(f"  Generated quest for {recipe_name}")
 
-        # Phase 3: Write to Lua format
-        print("\nPhase 3: Writing Lua config snippet...")
-        lua_output = self.config.write_quests(all_quests)
+        # Phase 3: Sanitize and write to Lua format
+        print("\nPhase 3: Sanitizing and writing Lua config snippet...")
+        sanitized = [self._sanitize_quest(q) for q in all_quests if isinstance(q, dict)]
+        lua_output = self._quests_to_lua(sanitized)
 
         # Phase 4: Save
         output_dir = ROOT / "reports" / "generated"
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / f"generated_quests_{__import__('datetime').datetime.now().strftime('%Y%m%d_%H%M')}.lua"
-        with open(output_path, "w") as f:
+        ts = datetime.now().strftime('%Y%m%d_%H%M')
+        output_path = output_dir / f"generated_quests_{ts}.lua"
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write("-- Auto-generated quests by Zunda Orchestrator\n")
             f.write("-- Review and integrate into QuestConfig.lua default_quests table\n\n")
             f.write(lua_output)
@@ -172,6 +175,118 @@ class ZundaOrchestrator:
         print("Review the generated file, then merge into QuestConfig.lua manually or with /reload plugin")
 
         return all_quests
+
+    def _sanitize_quest(self, q: dict) -> dict:
+        """Fix common LLM inconsistencies before formatting."""
+        result = dict(q)
+        # Map :emoji: style to proper emoji
+        emoji_map = {
+            ":apple:": "🍎", ":wheat:": "🌾", ":pea:": "🫛", ":pea_pod:": "🫛",
+            ":mushroom:": "🍄", ":berry:": "🫐", ":root:": "🌱", ":leaf:": "🍃",
+            ":flower:": "🌸", ":bouquet:": "💐", ":gold:": "💛", ":rock:": "🪨",
+            ":pie:": "🥧", ":bread:": "🍞", ":mochi:": "🍡", ":stew:": "🍲",
+            ":cake:": "🍰", ":tea:": "🍵", ":salad:": "🥗", ":punch:": "💪",
+            ":soup:": "🍜", ":feast:": "🏛️", ":paradise:": "✨", ":chef:": "👨‍🍳",
+            ":zunda:": "🫛", ":guest:": "👤", ":gold_coin:": "🪙", ":compass:": "🧭",
+        }
+        icon = result.get("icon", "")
+        if icon in emoji_map:
+            result["icon"] = emoji_map[icon]
+        elif icon and icon.startswith(":") and icon.endswith(":"):
+            result["icon"] = "📋"  # fallback for unknown emoji codes
+        # Fix quest type
+        valid_types = {"serve","cook","cook_perfect","cook_quality","cook_speed",
+            "cook_unique","cook_unique_zunda","cook_unique_seasonal",
+            "gather","gather_unique","earn_gold","visit_zone","visit_zones_unique",
+            "companion_chat","npc_chat","npc_chat_all","set_companion"}
+        qtype = str(result.get("type", "gather"))
+        if qtype not in valid_types:
+            if "gather" in qtype or "collect" in qtype: result["type"] = "gather"
+            elif "cook" in qtype or "craft" in qtype: result["type"] = "cook"
+            elif "serve" in qtype or "guest" in qtype: result["type"] = "serve"
+            elif "gold" in qtype or "earn" in qtype: result["type"] = "earn_gold"
+            elif "chat" in qtype or "talk" in qtype: result["type"] = "companion_chat"
+            elif "visit" in qtype or "explore" in qtype or "zone" in qtype: result["type"] = "visit_zone"
+            else: result["type"] = "gather"
+        # Clamp difficulty to 1-5
+        diff = result.get("difficulty", 1)
+        if isinstance(diff, (int, float)):
+            result["difficulty"] = max(1, min(5, int(diff)))
+        else:
+            result["difficulty"] = 1
+        return result
+
+    def _quests_to_lua(self, quests: list) -> str:
+        """Convert quest data to properly formatted Lua without calling an LLM."""
+        lines = []
+        lines.append("return {")
+        for q in quests:
+            if isinstance(q, str):
+                continue
+            if not isinstance(q, dict):
+                continue
+            lines.append("\t{")
+            for field in ["id", "name", "description", "icon", "type", "target_item",
+                          "chain_id", "chain_step", "difficulty"]:
+                val = q.get(field)
+                if val is not None:
+                    self._add_lua_field(lines, field, val, indent=2)
+            # target: can be int or dict (ingredient map)
+            target = q.get("target")
+            if target is not None:
+                if isinstance(target, dict):
+                    items = ", ".join(f'["{k}"] = {v}' for k, v in target.items())
+                    lines.append(f"\t\ttarget = {{{items}}},")
+                else:
+                    self._add_lua_field(lines, "target", target, indent=2)
+            # rewards
+            rewards = q.get("rewards")
+            if rewards and isinstance(rewards, dict):
+                lines.append("\t\trewards = {")
+                if rewards.get("gold"):
+                    self._add_lua_field(lines, "gold", rewards["gold"], indent=3)
+                if rewards.get("tier_points"):
+                    self._add_lua_field(lines, "tier_points", rewards["tier_points"], indent=3)
+                r_items = rewards.get("items", [])
+                if isinstance(r_items, list) and r_items:
+                    items_str = ", ".join(f'"{i}"' for i in r_items)
+                    lines.append(f"\t\t\titems = {{{items_str}}},")
+                else:
+                    lines.append("\t\t\titems = {},")
+                lines.append("\t\t},")
+            # subtext
+            if q.get("subtext"):
+                self._add_lua_field(lines, "subtext", q["subtext"], indent=2)
+            # npc_dialogue
+            dia = q.get("npc_dialogue")
+            if dia and isinstance(dia, dict):
+                speaker = dia.get("speaker") or next(iter(dia.keys()), "narrator")
+                dlines_raw = dia.get("lines") or dia.get(speaker, [])
+                if isinstance(dlines_raw, str):
+                    dlines_raw = [dlines_raw]
+                if isinstance(dlines_raw, list) and dlines_raw:
+                    lines.append(f'\t\tnpc_dialogue = {{ speaker = "{speaker}", lines = {{')
+                    for dl in dlines_raw:
+                        escaped = str(dl).replace("\\", "\\\\").replace('"', '\\"')
+                        lines.append(f'\t\t\t"{escaped}",')
+                    lines.append("\t\t} },")
+            lines.append("\t},")
+        lines.append("}")
+        return "\n".join(lines)
+
+    def _add_lua_field(self, lines: list[str], name: str, value, indent: int = 1, skip_name: bool = False):
+        tab = "\t" * indent
+        if skip_name:
+            prefix = tab
+        else:
+            prefix = f"{tab}{name} = "
+        if isinstance(value, str):
+            escaped = str(value).replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n")
+            lines.append(f'{prefix}"{escaped}",')
+        elif isinstance(value, bool):
+            lines.append(f'{prefix}{str(value).lower()},')
+        elif isinstance(value, (int, float)):
+            lines.append(f'{prefix}{value},')
 
     def run_task(self, task_description: str) -> list[dict]:
         print(f"\n{'='*60}")
