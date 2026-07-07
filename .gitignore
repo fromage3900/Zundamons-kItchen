@@ -22,3 +22,5 @@ node_modules/
 
 # Generated
 sourcemap.json
+Assets/Generated/
+*.lock
