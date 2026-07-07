@@ -70,7 +70,7 @@ def phase2_apply(json_path: str = None):
         return
 
     print(f"Found {len(results)} imported assets")
-    updater.apply_results(json_path)
+    updater.apply_results(results)
 
     print(f"\nDone. Verify changes with: npm run overnight")
 
