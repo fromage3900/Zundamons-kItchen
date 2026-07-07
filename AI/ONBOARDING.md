@@ -8,8 +8,8 @@ You are working on a Roblox game (Zundamon's Kitchen) built with Rojo + Luau + A
 |------|-------------------|
 | `README.md` | Project overview, all commands |
 | `BUILD.md` | Step-by-step build guide |
+| `AI/HANDOFF_QWEN.md` | Issues faced + what NOT to touch |
 | `AI/WORK_QUEUE.md` | Current task board |
-| `AI/DELEGATION_PLAN.md` | Multi-agent workstream assignments |
 | `default.project.json` | Rojo project map (WHERE scripts sync to) |
 
 ## Project Topology
@@ -56,3 +56,24 @@ return Config
 ## Important: No Workspace Mapping
 
 The `default.project.json` does NOT map Workspace. Rojo syncs scripts only — terrain and placed objects are safe.
+
+## Critical: Correct Require Paths
+
+RewardCore and LootModule live in `ReplicatedStorage.ConfigurationFiles`, NOT in `ServerScriptService`.
+```lua
+-- CORRECT:
+local RewardCore = require(game.ReplicatedStorage.ConfigurationFiles.RewardCore)
+local LootModule = require(game.ReplicatedStorage.ConfigurationFiles.LootModule)
+
+-- WRONG (will hang or fail):
+local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
+```
+
+## DO NOT TOUCH (working systems)
+
+- `CompanionManager.server.lua`
+- `CompanionShopServer.server.lua`
+- `CompanionHUD.client.lua`
+- `HudScript.client.lua`
+
+These were reverted to commit `0dafc6d` originals after modifications broke them. They work — leave them alone.

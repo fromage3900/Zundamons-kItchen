@@ -15,8 +15,18 @@
 ### Current Git State
 
 ```
-HEAD: 8e8e042 — companion mesh ID fixed, all companion files at 0dafc6d originals
-Remotes: origin/main force-pushed, clean
+HEAD: 3f7f5aa — Qwen fixes applied
+Commits: 9d36394 (handoff) → 3f7f5aa (Qwen: RewardCore/LootModule paths, NPCConfig multiplier)
+Remotes: origin/main, clean
+
+### Qwen's Fixes (applied July 7)
+
+Qwen fixed 7 files with correct require paths:
+- **RewardCore** path: `SSS:WaitForChild("RewardCore")` → `RS.ConfigurationFiles.RewardCore` — RewardCore is a ModuleScript in ReplicatedStorage, not a Script in ServerScriptService
+- **LootModule** path: `SSS:WaitForChild("LootModule")` → `RS.ConfigurationFiles.LootModule` — same fix
+- **NPCConfig**: Added missing `getQualityMultiplier(quality)` function (ServingSystem depends on it)
+- **QuestConfig**: Removed stray extra closing brace (syntax fix)
+- Files affected: LootModule, QuestConfig, NPCConfig, AdvancedRewards, FishingServer, Mineable, ServingSystem, ZundaGatherServer
 ```
 
 ### What's Actually True
