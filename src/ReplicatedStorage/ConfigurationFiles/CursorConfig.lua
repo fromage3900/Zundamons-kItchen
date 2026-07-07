@@ -6,25 +6,24 @@
 -- Created by scripts/agent_orchestrator/tools/cursor_converter.py
 local CursorConfig = {
     cursors = {
-        -- Zundamon themed cursors
-        -- Replace 'rbxassetid://0' with real uploaded Decal IDs
-        ['alternate'] = 'rbxassetid://0',
-        ['busy'] = 'rbxassetid://0',
-        ['cross'] = 'rbxassetid://0',
-        ['handwriting'] = 'rbxassetid://0',
-        ['help'] = 'rbxassetid://0',
-        ['link'] = 'rbxassetid://0',
-        ['location'] = 'rbxassetid://0',
-        ['move'] = 'rbxassetid://0',
-        ['normal'] = 'rbxassetid://0',
-        ['person'] = 'rbxassetid://0',
-        ['resize_nesw'] = 'rbxassetid://0',
-        ['resize_ns'] = 'rbxassetid://0',
-        ['resize_nwse'] = 'rbxassetid://0',
-        ['resize_we'] = 'rbxassetid://0',
-        ['text'] = 'rbxassetid://0',
-        ['unavailable'] = 'rbxassetid://0',
-        ['working'] = 'rbxassetid://0',
+        -- Zundamon themed cursors (uploaded as Decals)
+        ['alternate'] = 'rbxassetid://106094557321184',
+        ['busy'] = 'rbxassetid://134483427046324',
+        ['cross'] = 'rbxassetid://134658133048447',
+        ['handwriting'] = 'rbxassetid://123335052649445',
+        ['help'] = 'rbxassetid://110661163934017',
+        ['link'] = 'rbxassetid://125261033114925',
+        ['location'] = 'rbxassetid://128030590859262',
+        ['move'] = 'rbxassetid://129620721993236',
+        ['normal'] = 'rbxassetid://129907991370277',
+        ['person'] = 'rbxassetid://121316566770444',
+        ['resize_nesw'] = 'rbxassetid://71648493285118',
+        ['resize_ns'] = 'rbxassetid://99275830582802',
+        ['resize_nwse'] = 'rbxassetid://82791611989858',
+        ['resize_we'] = 'rbxassetid://135484431580955',
+        ['text'] = 'rbxassetid://88055218520083',
+        ['unavailable'] = 'rbxassetid://109907172631146',
+        ['working'] = 'rbxassetid://107311689715717',
 
         -- Standard UI cursors
         default = '',
