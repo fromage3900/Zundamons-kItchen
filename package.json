@@ -14,7 +14,9 @@
     "rojo:serve": "rojo serve default.project.json",
     "validate": "node scripts/validate-structure.mjs",
     "overnight": "node scripts/overnight-build.mjs",
-    "overnight:ps": "powershell -File scripts/overnight.ps1"
+    "overnight:ps": "powershell -File scripts/overnight.ps1",
+    "generate-quests": "python scripts/agent_orchestrator/run.py --generate-quests 10",
+    "deploy-models": "python scripts/agent_orchestrator/tools/model_deploy.py"
   },
   "version": "0.2.0"
 }
