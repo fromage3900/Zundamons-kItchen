@@ -2,6 +2,6 @@
 -- Bump `label` when verifying a fresh sync after git pull.
 
 return {
-	label = "main-2026-07-06-vn-llm-restore",
+	label = "main-2026-07-07-mcp-rojo-ports",
 	experienceId = "108617605497926",
 }

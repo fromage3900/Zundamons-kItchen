@@ -135,13 +135,25 @@ The workflow is:
 AI edits src/*.lua → Rojo syncs to Studio → Studio runs the game
 ```
 
-### Option C: Roblox Studio Plugin MCP
+### Option C: Roblox Studio Plugin MCP (`robloxstudio-mcp`)
 
-Some community plugins expose a local MCP server from within Roblox Studio:
+The community **`robloxstudio-mcp`** package connects Cursor/OpenCode to Roblox Studio via a local HTTP server.
 
-1. Install a Studio MCP plugin (search Roblox Creator Hub for "MCP" or "AI Bridge")
-2. The plugin runs a local HTTP server (e.g., `localhost:3002`)
-3. Configure your AI tool to connect to it
+- **Default port (v2.6+):** `58741` (older docs may say `3002`)
+- **Plugin URL in Studio:** `http://localhost:58741`
+- **Pin the port** in Cursor/OpenCode so server and plugin match
+
+This repo pins the port in [`opencode.json`](../opencode.json):
+
+```json
+"command": ["npx", "-y", "robloxstudio-mcp@latest", "--port", "58741"]
+```
+
+Cursor example: [`docs/cursor-mcp.example.json`](../docs/cursor-mcp.example.json)
+
+**Troubleshooting:** [`docs/studio-mcp-troubleshooting.md`](../docs/studio-mcp-troubleshooting.md)
+
+**v0.1 playtest:** Rojo on port **34872/34873** is sufficient; Studio MCP is optional.
 
 ### Claude Desktop Configuration (Roblox)
 
@@ -320,6 +332,8 @@ After configuring MCP servers:
 
 | Issue | Fix |
 |---|---|
+| MCP stuck on localhost:58741 | See [`studio-mcp-troubleshooting.md`](studio-mcp-troubleshooting.md) — kill stale node.exe, pin `--port 58741`, start server before Studio plugin |
+| Confused Rojo vs MCP ports | Rojo = **34872/34873**; Studio MCP = **58741** |
 | MCP server not starting | Check that `npx` is in your PATH; run the command manually to see errors |
 | Figma auth failed | Regenerate your Personal Access Token; ensure it has read scope |
 | Roblox auth failed | Check API key permissions include your Universe ID |

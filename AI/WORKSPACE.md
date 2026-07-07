@@ -1,6 +1,35 @@
 # Canonical workspace (all agents)
 
-**Last updated:** 2026-07-06 (org review) · Sync: `main-2026-07-06-org-review`
+**Last updated:** 2026-07-07 (MCP port + Rojo) · Sync: see `SyncConfig.lua`
+
+## Project identity (verify first)
+
+| Check | Expected |
+|-------|----------|
+| **Repo root (Windows)** | `G:\Zundamons-kItchen` |
+| **Git remote** | `github.com/fromage3900/Zundamons-kItchen` |
+| **Rojo project** | `G:\Zundamons-kItchen\default.project.json` |
+| **Roblox place** | Experience **`108617605497926`** |
+| **Game** | Zundamon's kItchen |
+
+```powershell
+G:
+cd G:\Zundamons-kItchen
+git remote -v
+git log -1 --oneline
+git pull origin main
+```
+
+Do **not** use `C:\Users\froma\Zundamons-kItchen-GitHub-Build` or other nested clones.
+
+## Two local ports (do not confuse)
+
+| Service | Port | Purpose |
+|---------|------|---------|
+| **Rojo** | `34872` (fallback `34873+`) | Syncs `src/` Lua → Studio (**required for v0.1**) |
+| **Studio MCP** | `58741` (v2.6+ default) | Optional AI bridge into Studio instances |
+
+MCP stuck on `localhost:58741`? See [`docs/studio-mcp-troubleshooting.md`](../docs/studio-mcp-troubleshooting.md). For playtesting, **Rojo alone is enough**.
 
 ## Windows — primary dev machine
 

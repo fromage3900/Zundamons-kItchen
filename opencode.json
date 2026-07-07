@@ -3,7 +3,7 @@
   "mcp": {
     "roblox-studio": {
       "type": "local",
-      "command": ["npx", "-y", "robloxstudio-mcp@latest"],
+      "command": ["npx", "-y", "robloxstudio-mcp@latest", "--port", "58741"],
       "enabled": true,
       "description": "Roblox Studio MCP — read/edit scripts, generate meshes/materials, run Luau, control play mode"
     },
