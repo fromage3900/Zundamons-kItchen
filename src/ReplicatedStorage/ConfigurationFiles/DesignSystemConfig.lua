@@ -1,6 +1,5 @@
+-- DEPRECATED: Use UIConfig.lua instead. This file was merged into UIConfig.
 -- Zundamon's Kitchen Design System Configuration
--- This module provides consistent design tokens for all UI elements
--- Based on the cozy, whimsical aesthetic of the game
 
 local DesignSystemConfig = {}
 

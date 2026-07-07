@@ -1,9 +1,9 @@
 --!strict
 -- [[ModuleScript] GameUIComponents]]
 -- Game-specific UI components for Zundamon's Kitchen
--- Integrates with DesignSystemConfig for consistent styling
+-- Integrates with UIConfig for consistent styling
 
-local DesignSystemConfig = require(script.Parent:WaitForChild("DesignSystemConfig"))
+local UIConfig = require(script.Parent:WaitForChild("UIConfig"))
 local TweenService = game:GetService("TweenService")
 
 local GameUIComponents = {}
@@ -28,12 +28,12 @@ function GameUIComponents.createRecipeCard(props: {
 	card.Name = "RecipeCard"
 	card.Size = p.Size or UDim2.fromOffset(200, 250)
 	card.Position = p.Position or UDim2.new()
-	card.BackgroundColor3 = DesignSystemConfig.COLORS.CreamWhite
+	card.BackgroundColor3 = UIConfig.COLORS.CreamWhite
 	card.BorderSizePixel = 0
 	
 	-- Border styling
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = DesignSystemConfig.COLORS.WoodLight
+	stroke.Color = UIConfig.COLORS.WoodLight
 	stroke.Thickness = 3
 	stroke.Parent = card
 	
@@ -46,7 +46,7 @@ function GameUIComponents.createRecipeCard(props: {
 	image.Name = "CardImage"
 	image.Size = UDim2.new(1, -16, 0, 120)
 	image.Position = UDim2.new(0, 8, 0, 8)
-	image.BackgroundColor3 = DesignSystemConfig.COLORS.CreamDark
+	image.BackgroundColor3 = UIConfig.COLORS.CreamDark
 	image.BorderSizePixel = 0
 	image.Parent = card
 	
@@ -67,9 +67,9 @@ function GameUIComponents.createRecipeCard(props: {
 	nameLabel.Size = UDim2.new(1, 0, 0, 24)
 	nameLabel.BackgroundTransparency = 1
 	nameLabel.Text = p.RecipeName or "Recipe Name"
-	nameLabel.Font = DesignSystemConfig.FONTS.Title
-	nameLabel.TextSize = DesignSystemConfig.FONT_SIZES.Heading
-	nameLabel.TextColor3 = DesignSystemConfig.COLORS.TextPrimary
+	nameLabel.Font = UIConfig.FONTS.Title
+	nameLabel.TextSize = UIConfig.FONT_SIZES.Heading
+	nameLabel.TextColor3 = UIConfig.COLORS.TextPrimary
 	nameLabel.TextXAlignment = Enum.TextXAlignment.Left
 	nameLabel.Parent = content
 	
@@ -79,9 +79,9 @@ function GameUIComponents.createRecipeCard(props: {
 	descLabel.Position = UDim2.new(0, 0, 0, 24)
 	descLabel.BackgroundTransparency = 1
 	descLabel.Text = p.Description or "Recipe description"
-	descLabel.Font = DesignSystemConfig.FONTS.Body
-	descLabel.TextSize = DesignSystemConfig.FONT_SIZES.Small
-	descLabel.TextColor3 = DesignSystemConfig.COLORS.TextSecondary
+	descLabel.Font = UIConfig.FONTS.Body
+	descLabel.TextSize = UIConfig.FONT_SIZES.Small
+	descLabel.TextColor3 = UIConfig.COLORS.TextSecondary
 	descLabel.TextWrapped = true
 	descLabel.TextXAlignment = Enum.TextXAlignment.Left
 	descLabel.TextYAlignment = Enum.TextYAlignment.Top
@@ -89,7 +89,7 @@ function GameUIComponents.createRecipeCard(props: {
 	
 	-- Rarity badge
 	if p.Rarity then
-		local rarityColor = DesignSystemConfig.COLORS["Rarity" .. p.Rarity] or DesignSystemConfig.COLORS.RarityCommon
+		local rarityColor = UIConfig.COLORS["Rarity" .. p.Rarity] or UIConfig.COLORS.RarityCommon
 		
 		local badge = Instance.new("TextLabel")
 		badge.Name = "RarityBadge"
@@ -97,9 +97,9 @@ function GameUIComponents.createRecipeCard(props: {
 		badge.Position = UDim2.new(1, -68, 0, 8)
 		badge.BackgroundColor3 = rarityColor
 		badge.Text = p.Rarity:upper():sub(1, 1)
-		badge.Font = DesignSystemConfig.FONTS.Heading
+		badge.Font = UIConfig.FONTS.Heading
 		badge.TextSize = 12
-		badge.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+		badge.TextColor3 = UIConfig.COLORS.TextWhite
 		badge.Parent = card
 		
 		local badgeCorner = Instance.new("UICorner")
@@ -114,11 +114,11 @@ function GameUIComponents.createRecipeCard(props: {
 		lockIcon.Name = "LockIcon"
 		lockIcon.Size = UDim2.new(0, 48, 0, 48)
 		lockIcon.Position = UDim2.new(0.5, -24, 0.5, -24)
-		lockIcon.BackgroundColor3 = DesignSystemConfig.COLORS.TextPrimary
+		lockIcon.BackgroundColor3 = UIConfig.COLORS.TextPrimary
 		lockIcon.Text = "🔒"
-		lockIcon.Font = DesignSystemConfig.FONTS.Title
+		lockIcon.Font = UIConfig.FONTS.Title
 		lockIcon.TextSize = 24
-		lockIcon.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+		lockIcon.TextColor3 = UIConfig.COLORS.TextWhite
 		lockIcon.TextScaled = true
 		lockIcon.Parent = card
 		
@@ -129,7 +129,7 @@ function GameUIComponents.createRecipeCard(props: {
 	
 	-- Selected state
 	if p.IsSelected then
-		stroke.Color = DesignSystemConfig.COLORS.PrimaryGreen
+		stroke.Color = UIConfig.COLORS.PrimaryGreen
 		stroke.Thickness = 4
 	end
 	
@@ -169,11 +169,11 @@ function GameUIComponents.createIngredientCard(props: {
 	card.Name = "IngredientCard"
 	card.Size = p.Size or UDim2.fromOffset(100, 120)
 	card.Position = p.Position or UDim2.new()
-	card.BackgroundColor3 = DesignSystemConfig.COLORS.CreamWhite
+	card.BackgroundColor3 = UIConfig.COLORS.CreamWhite
 	card.BorderSizePixel = 0
 	
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = DesignSystemConfig.COLORS.WoodLight
+	stroke.Color = UIConfig.COLORS.WoodLight
 	stroke.Thickness = 2
 	stroke.Parent = card
 	
@@ -188,9 +188,9 @@ function GameUIComponents.createIngredientCard(props: {
 	icon.Position = UDim2.new(0.5, -24, 0, 16)
 	icon.BackgroundTransparency = 1
 	icon.Text = p.Icon or "🫛"
-	icon.Font = DesignSystemConfig.FONTS.Title
+	icon.Font = UIConfig.FONTS.Title
 	icon.TextSize = 32
-	icon.TextColor3 = DesignSystemConfig.COLORS.TextPrimary
+	icon.TextColor3 = UIConfig.COLORS.TextPrimary
 	icon.Parent = card
 	
 	-- Name
@@ -200,9 +200,9 @@ function GameUIComponents.createIngredientCard(props: {
 	nameLabel.Position = UDim2.new(0, 0, 0, 72)
 	nameLabel.BackgroundTransparency = 1
 	nameLabel.Text = p.IngredientName or "Ingredient"
-	nameLabel.Font = DesignSystemConfig.FONTS.Title
-	nameLabel.TextSize = DesignSystemConfig.FONT_SIZES.Small
-	nameLabel.TextColor3 = DesignSystemConfig.COLORS.TextPrimary
+	nameLabel.Font = UIConfig.FONTS.Title
+	nameLabel.TextSize = UIConfig.FONT_SIZES.Small
+	nameLabel.TextColor3 = UIConfig.COLORS.TextPrimary
 	nameLabel.Parent = card
 	
 	-- Quantity
@@ -213,9 +213,9 @@ function GameUIComponents.createIngredientCard(props: {
 		qtyLabel.Position = UDim2.new(0, 0, 0, 92)
 		qtyLabel.BackgroundTransparency = 1
 		qtyLabel.Text = "x" .. p.Quantity
-		qtyLabel.Font = DesignSystemConfig.FONTS.Body
-		qtyLabel.TextSize = DesignSystemConfig.FONT_SIZES.Tiny
-		qtyLabel.TextColor3 = DesignSystemConfig.COLORS.TextSecondary
+		qtyLabel.Font = UIConfig.FONTS.Body
+		qtyLabel.TextSize = UIConfig.FONT_SIZES.Tiny
+		qtyLabel.TextColor3 = UIConfig.COLORS.TextSecondary
 		qtyLabel.Parent = card
 	end
 	
@@ -264,7 +264,7 @@ function GameUIComponents.createChefPill(props: {
 	corner.Parent = pill
 	
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = p.TierColor or DesignSystemConfig.COLORS.PrimaryGreen
+	stroke.Color = p.TierColor or UIConfig.COLORS.PrimaryGreen
 	stroke.Thickness = 2
 	stroke.Parent = pill
 	
@@ -275,9 +275,9 @@ function GameUIComponents.createChefPill(props: {
 	badge.Position = UDim2.new(0, 4, 0.5, -16)
 	badge.BackgroundTransparency = 1
 	badge.Text = p.TierBadge or "🌱"
-	badge.Font = DesignSystemConfig.FONTS.Title
+	badge.Font = UIConfig.FONTS.Title
 	badge.TextSize = 24
-	badge.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+	badge.TextColor3 = UIConfig.COLORS.TextWhite
 	badge.Parent = pill
 	
 	-- Tier label
@@ -287,9 +287,9 @@ function GameUIComponents.createChefPill(props: {
 	tierLabel.Position = UDim2.new(0, 40, 0, 0)
 	tierLabel.BackgroundTransparency = 1
 	tierLabel.Text = (p.TierName or "Chef") .. " · Lv " .. (p.Level or 1)
-	tierLabel.Font = DesignSystemConfig.FONTS.Heading
+	tierLabel.Font = UIConfig.FONTS.Heading
 	tierLabel.TextSize = 14
-	tierLabel.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+	tierLabel.TextColor3 = UIConfig.COLORS.TextWhite
 	tierLabel.TextXAlignment = Enum.TextXAlignment.Left
 	tierLabel.Parent = pill
 	
@@ -309,7 +309,7 @@ function GameUIComponents.createChefPill(props: {
 	local xpFill = Instance.new("Frame")
 	xpFill.Name = "Fill"
 	xpFill.Size = UDim2.new(0, 0, 1, 0)
-	xpFill.BackgroundColor3 = p.TierColor or DesignSystemConfig.COLORS.PrimaryGreen
+	xpFill.BackgroundColor3 = p.TierColor or UIConfig.COLORS.PrimaryGreen
 	xpFill.BorderSizePixel = 0
 	xpFill.Parent = xpBar
 	
@@ -354,7 +354,7 @@ function GameUIComponents.createComboMeter(props: {
 	corner.Parent = combo
 	
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = DesignSystemConfig.COLORS.Warning
+	stroke.Color = UIConfig.COLORS.Warning
 	stroke.Thickness = 2
 	stroke.Parent = combo
 	
@@ -365,9 +365,9 @@ function GameUIComponents.createComboMeter(props: {
 	countLabel.Position = UDim2.new(0, 0, 0, 8)
 	countLabel.BackgroundTransparency = 1
 	countLabel.Text = (p.Count or 0) .. " COMBO"
-	countLabel.Font = DesignSystemConfig.FONTS.Title
+	countLabel.Font = UIConfig.FONTS.Title
 	countLabel.TextSize = 16
-	countLabel.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+	countLabel.TextColor3 = UIConfig.COLORS.TextWhite
 	countLabel.Parent = combo
 	
 	-- Multiplier label
@@ -377,9 +377,9 @@ function GameUIComponents.createComboMeter(props: {
 	multLabel.Position = UDim2.new(0, 0, 0, 36)
 	multLabel.BackgroundTransparency = 1
 	multLabel.Text = "x" .. string.format("%.1f", p.Multiplier or 1)
-	multLabel.Font = DesignSystemConfig.FONTS.Title
+	multLabel.Font = UIConfig.FONTS.Title
 	multLabel.TextSize = 18
-	multLabel.TextColor3 = DesignSystemConfig.COLORS.Warning
+	multLabel.TextColor3 = UIConfig.COLORS.Warning
 	multLabel.Parent = combo
 	
 	if p.Parent then
@@ -414,7 +414,7 @@ function GameUIComponents.createAchievementToast(props: {
 	corner.Parent = toast
 	
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = DesignSystemConfig.COLORS.Warning
+	stroke.Color = UIConfig.COLORS.Warning
 	stroke.Thickness = 2
 	stroke.Parent = toast
 	
@@ -425,9 +425,9 @@ function GameUIComponents.createAchievementToast(props: {
 	icon.Position = UDim2.new(0, 8, 0, 7)
 	icon.BackgroundTransparency = 1
 	icon.Text = p.Icon or "🏆"
-	icon.Font = DesignSystemConfig.FONTS.Title
+	icon.Font = UIConfig.FONTS.Title
 	icon.TextSize = 32
-	icon.TextColor3 = DesignSystemConfig.COLORS.Warning
+	icon.TextColor3 = UIConfig.COLORS.Warning
 	icon.Parent = toast
 	
 	-- Title
@@ -437,9 +437,9 @@ function GameUIComponents.createAchievementToast(props: {
 	titleLabel.Position = UDim2.new(0, 72, 0, 6)
 	titleLabel.BackgroundTransparency = 1
 	titleLabel.Text = "🏆 " .. (p.Name or "Achievement")
-	titleLabel.Font = DesignSystemConfig.FONTS.Heading
+	titleLabel.Font = UIConfig.FONTS.Heading
 	titleLabel.TextSize = 14
-	titleLabel.TextColor3 = DesignSystemConfig.COLORS.Warning
+	titleLabel.TextColor3 = UIConfig.COLORS.Warning
 	titleLabel.TextXAlignment = Enum.TextXAlignment.Left
 	titleLabel.Parent = toast
 	
@@ -450,7 +450,7 @@ function GameUIComponents.createAchievementToast(props: {
 	descLabel.Position = UDim2.new(0, 72, 0, 38)
 	descLabel.BackgroundTransparency = 1
 	descLabel.Text = p.Description or "Achievement description"
-	descLabel.Font = DesignSystemConfig.FONTS.Body
+	descLabel.Font = UIConfig.FONTS.Body
 	descLabel.TextSize = 12
 	descLabel.TextColor3 = Color3.fromRGB(220, 220, 230)
 	descLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -508,7 +508,7 @@ function GameUIComponents.createLevelUpBanner(props: {
 	corner.Parent = banner
 	
 	local stroke = Instance.new("UIStroke")
-	stroke.Color = p.TierColor or DesignSystemConfig.COLORS.Warning
+	stroke.Color = p.TierColor or UIConfig.COLORS.Warning
 	stroke.Thickness = 3
 	stroke.Parent = banner
 	
@@ -520,7 +520,7 @@ function GameUIComponents.createLevelUpBanner(props: {
 	titleLabel.Text = "LEVEL UP!"
 	titleLabel.Font = Enum.Font.GothamBlack
 	titleLabel.TextSize = 32
-	titleLabel.TextColor3 = DesignSystemConfig.COLORS.Warning
+	titleLabel.TextColor3 = UIConfig.COLORS.Warning
 	titleLabel.Parent = banner
 	
 	-- Subtitle
@@ -531,7 +531,7 @@ function GameUIComponents.createLevelUpBanner(props: {
 	subTitleLabel.Text = (p.TierBadge or "") .. " " .. (p.TierName or "Chef") .. " · Lv " .. (p.Level or 1)
 	subTitleLabel.Font = Enum.Font.GothamBold
 	subTitleLabel.TextSize = 20
-	subTitleLabel.TextColor3 = DesignSystemConfig.COLORS.TextWhite
+	subTitleLabel.TextColor3 = UIConfig.COLORS.TextWhite
 	subTitleLabel.Parent = banner
 	
 	-- Animate in
