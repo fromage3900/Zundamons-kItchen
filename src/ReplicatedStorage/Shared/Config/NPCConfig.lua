@@ -10,7 +10,14 @@ NPCConfig.guestTemplates = {
 }
 
 NPCConfig.companionTemplates = {
-	Zundapal = { modelId = "", scale = 0.5, followSpeed = 8, sparkleEffect = "", buff = nil, price = 0 },
+	zundamon = { modelId = "rbxassetid://121481310719137", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = nil, price = 0 },
+	zundacat = { modelId = "rbxassetid://101663144452966", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = nil, price = 0 },
+	zundabunny = { modelId = "rbxassetid://76425192775041", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = nil, price = 0 },
+	tantanmon = { modelId = "rbxassetid://107150527246774", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = nil, price = 0 },
+	ankomon = { modelId = "rbxassetid://110290651922538", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = { stat = "gold", magnitude = 0.15 }, price = 500 },
+	cardamon = { modelId = "rbxassetid://91041813069462", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = { stat = "perfect_window", magnitude = 0.30 }, price = 500 },
+	antimon = { modelId = "rbxassetid://94125444857929", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = { stat = "extra_drop", magnitude = 0.20 }, price = 500 },
+	sakuradamon = { modelId = "rbxassetid://128478553136178", scale = 0.5, followSpeed = 8, sparkleEffect = "rbxassetid://241685484", buff = { stat = "xp", magnitude = 0.25 }, price = 500 },
 }
 
 NPCConfig.guestSpawnDefaults = {
