@@ -1,0 +1,179 @@
+/* Zundamon's Kitchen - Card Styles */
+
+.recipe-card {
+  background-color: var(--cream-white);
+  border: 3px solid var(--wood-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  position: relative;
+  cursor: pointer;
+}
+
+.recipe-card:hover {
+  border-color: var(--primary-green);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.recipe-card.selected {
+  border-color: var(--primary-green);
+  border-width: 4px;
+  box-shadow: 0 0 0 2px var(--primary-green-light);
+}
+
+.recipe-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.card-image {
+  width: 100%;
+  height: 120px;
+  background-color: var(--cream-dark);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+.card-content {
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.card-content h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.card-content p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.rarity-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  padding: 4px 12px;
+  border-radius: var(--radius-xs);
+  font-size: 10px;
+  font-weight: bold;
+  color: var(--text-white);
+  text-transform: uppercase;
+}
+
+.rarity-badge.common { background-color: var(--rarity-common); }
+.rarity-badge.uncommon { background-color: var(--rarity-uncommon); }
+.rarity-badge.rare { background-color: var(--rarity-rare); }
+.rarity-badge.epic { background-color: var(--rarity-epic); }
+.rarity-badge.legendary { background-color: var(--rarity-legendary); }
+
+.lock-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  background-color: var(--text-primary);
+  color: var(--text-white);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ingredient Card */
+.ingredient-card {
+  background-color: var(--cream-white);
+  border: 2px solid var(--wood-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.ingredient-card:hover {
+  border-color: var(--primary-green);
+  transform: scale(1.05);
+}
+
+.ingredient-icon {
+  font-size: 48px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.ingredient-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.ingredient-quantity {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Achievement Card */
+.achievement-card {
+  background: linear-gradient(135deg, var(--cream-white) 0%, var(--cream-light) 100%);
+  border: 2px solid var(--rarity-legendary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  transition: all var(--transition-normal);
+}
+
+.achievement-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.achievement-icon {
+  font-size: 32px;
+  background-color: var(--rarity-legendary);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.achievement-info h4 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.achievement-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.achievement-progress {
+  width: 100%;
+  height: 6px;
+  background-color: var(--cream-dark);
+  border-radius: var(--radius-xs);
+  margin-top: var(--spacing-sm);
+  overflow: hidden;
+}
+
+.achievement-progress-bar {
+  height: 100%;
+  background-color: var(--primary-green);
+  border-radius: var(--radius-xs);
+  transition: width var(--transition-normal);
+}

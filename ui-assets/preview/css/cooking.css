@@ -1,0 +1,236 @@
+/* Zundamon's Kitchen - Cooking Minigame Styles */
+
+.cooking-minigame {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl);
+}
+
+.cooking-panel {
+  background: linear-gradient(135deg, #F5FFF0 0%, #FFFAF5 50%, #E6FADC 100%);
+  border: 4px solid var(--primary-green);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  width: 100%;
+  max-width: 760px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+/* Decorative peas around panel */
+.cooking-panel::before,
+.cooking-panel::after {
+  content: '🫛';
+  position: absolute;
+  font-size: 36px;
+  opacity: 0.4;
+}
+
+.cooking-panel::before {
+  top: 14px;
+  left: 14px;
+  transform: rotate(-22deg);
+}
+
+.cooking-panel::after {
+  top: 16px;
+  right: -60px;
+  transform: rotate(20deg);
+}
+
+.cooking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.cooking-header h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 36px;
+  color: #44344E;
+}
+
+.score-display {
+  font-family: 'Gotham', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--primary-green);
+}
+
+.cooking-hint {
+  font-family: 'Gotham', sans-serif;
+  font-size: 16px;
+  color: #8C6EA0;
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Progress Dots */
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: var(--spacing-md);
+}
+
+.dot {
+  width: 18px;
+  height: 18px;
+  background-color: #E6DCE6;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+}
+
+.dot.active {
+  background-color: var(--primary-green);
+  transform: scale(1.4);
+}
+
+.dot.perfect {
+  background-color: var(--warning);
+}
+
+.dot.great {
+  background-color: var(--success);
+}
+
+.dot.miss {
+  background-color: var(--error);
+}
+
+/* Cooking Track */
+.cooking-track {
+  background-color: #EBFFE1;
+  border: 2px solid #8CD282;
+  border-radius: var(--radius-md);
+  height: 130px;
+  position: relative;
+  margin-bottom: var(--spacing-lg);
+  overflow: hidden;
+}
+
+.track-line {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  background-color: #A0DC96;
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+
+.hit-ring {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: #B4F5BE;
+  border: 4px solid #64C86E;
+  border-radius: 50%;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+
+.perfect-ring {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  background-color: #FFF0C8;
+  border: 3px solid #FFC864;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.4;
+}
+
+.pea-note {
+  position: absolute;
+  font-size: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #78C878;
+  transition: all var(--transition-fast);
+}
+
+.pea-note.near {
+  color: #8CDC64;
+}
+
+.pea-note.target {
+  color: #78C878;
+}
+
+/* Cook Button */
+.cook-button {
+  width: 100%;
+  max-width: 360px;
+  height: 78px;
+  background-color: #64C36E;
+  border: 3px solid #3C9B46;
+  border-radius: var(--radius-lg);
+  font-family: 'Fredoka One', cursive;
+  font-size: 38px;
+  color: var(--text-white);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin: 0 auto;
+  display: block;
+}
+
+.cook-button:hover {
+  background-color: #7CD37C;
+  transform: scale(1.02);
+}
+
+.cook-button:active {
+  background-color: #5AB35A;
+  transform: scale(0.98);
+}
+
+.result-label {
+  text-align: center;
+  font-family: 'Fredoka One', cursive;
+  font-size: 30px;
+  margin-top: var(--spacing-lg);
+  min-height: 42px;
+}
+
+.result-label.perfect {
+  color: var(--warning);
+}
+
+.result-label.great {
+  color: var(--success);
+}
+
+.result-label.ok {
+  color: #C89664;
+}
+
+/* Combo Display */
+.combo-display {
+  text-align: right;
+  margin-top: var(--spacing-sm);
+}
+
+.combo-count {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--warning);
+}
+
+.combo-mult {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: var(--warning);
+}
+
+.combo-display.fire .combo-count,
+.combo-display.fire .combo-mult {
+  color: #FF6450;
+}

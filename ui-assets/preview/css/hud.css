@@ -1,0 +1,318 @@
+/* Zundamon's Kitchen - HUD Styles */
+
+.hud-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-xl);
+  background-color: #281E3C;
+  border-radius: var(--radius-lg);
+}
+
+/* Chef Pill (Level Display) */
+.chef-pill {
+  background: linear-gradient(135deg, #3D2A4A 0%, #4A325A 100%);
+  border: 2px solid var(--primary-green);
+  border-radius: var(--radius-pill);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.badge {
+  font-size: 24px;
+  background: none;
+  border: none;
+}
+
+.tier-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-white);
+  white-space: nowrap;
+}
+
+.xp-bar {
+  width: 120px;
+  height: 8px;
+  background-color: #2D2A3A;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.xp-fill {
+  height: 100%;
+  background-color: var(--primary-green);
+  border-radius: 4px;
+  transition: width 0.4s ease-out;
+}
+
+.xp-fill.gold {
+  background-color: var(--warning);
+}
+
+.xp-fill.epic {
+  background-color: var(--rarity-epic);
+}
+
+.xp-fill.legendary {
+  background-color: var(--rarity-legendary);
+}
+
+/* Combo Meter */
+.combo-meter {
+  background: linear-gradient(135deg, #4A325A 0%, #5A3A6A 100%);
+  border: 2px solid var(--warning);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.combo-meter.visible {
+  opacity: 1;
+}
+
+.combo-count {
+  font-family: 'Fredoka One', cursive;
+  font-size: 16px;
+  color: var(--text-white);
+}
+
+.combo-mult {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: var(--warning);
+}
+
+.combo-meter.high .combo-mult {
+  color: #FF6450;
+}
+
+/* Daily Widget */
+.daily-widget {
+  background: linear-gradient(135deg, #3D2A4A 0%, #4A325A 100%);
+  border: 2px solid var(--wood-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.daily-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-white);
+}
+
+.daily-desc {
+  font-family: 'Gotham', sans-serif;
+  font-size: 12px;
+  color: #C8C8D8;
+}
+
+.daily-bar {
+  width: 100%;
+  height: 8px;
+  background-color: #2D2A3A;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.daily-fill {
+  height: 100%;
+  background-color: var(--success);
+  border-radius: 4px;
+  transition: width 0.3s ease-out;
+}
+
+/* Popup Notifications */
+.popup-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.popup {
+  position: absolute;
+  font-family: 'Fredoka One', cursive;
+  font-size: 24px;
+  color: var(--text-primary);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  animation: popupFloat 1.2s ease-out forwards;
+  pointer-events: none;
+}
+
+.popup.bonus {
+  font-size: 32px;
+}
+
+@keyframes popupFloat {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-90px);
+    opacity: 0;
+  }
+}
+
+/* Level Up Banner */
+.level-up-banner {
+  background: linear-gradient(135deg, #28203C 0%, #3A2A4A 100%);
+  border: 3px solid var(--warning);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  animation: bannerSlide 0.35s ease-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.level-up-banner h2 {
+  font-family: 'Gotham', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--warning);
+  margin-bottom: var(--spacing-sm);
+}
+
+.level-up-banner p {
+  font-family: 'Gotham', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-white);
+}
+
+@keyframes bannerSlide {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Achievement Toast */
+.achievement-toast {
+  background: linear-gradient(135deg, #28203C 0%, #3A2A4A 100%);
+  border: 2px solid var(--warning);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  animation: toastSlide 0.35s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-icon {
+  font-size: 32px;
+  background: none;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--warning);
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-title {
+  font-family: 'Gotham', sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: var(--warning);
+  margin-bottom: 2px;
+}
+
+.achievement-desc {
+  font-family: 'Gotham', sans-serif;
+  font-size: 12px;
+  color: #DCDCE8;
+}
+
+@keyframes toastSlide {
+  from {
+    transform: translateX(360px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Minimap */
+.minimap {
+  background: linear-gradient(135deg, #3D2A4A 0%, #4A325A 100%);
+  border: 2px solid var(--wood-light);
+  border-radius: var(--radius-md);
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.minimap-content {
+  width: 100%;
+  height: 100%;
+  background-color: #2D2A3A;
+  position: relative;
+}
+
+.player-marker {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--primary-green);
+  border: 2px solid var(--text-white);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px var(--primary-green);
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.quick-action {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #3D2A4A 0%, #4A325A 100%);
+  border: 2px solid var(--wood-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.quick-action:hover {
+  border-color: var(--primary-green);
+  transform: scale(1.1);
+}
+
+.quick-action:active {
+  transform: scale(0.95);
+}

@@ -3,7 +3,6 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
 local UIHelper = require(RS.Shared.Modules.UIHelper)
-local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local gui = script.Parent
 local pill = gui:WaitForChild("ChefPill")
 local badge = pill:WaitForChild("Badge")
@@ -27,11 +26,11 @@ local function spawnPopup(kind, text, color)
     lbl.Position = UDim2.new(0, math.random(-30, 30), 0, math.random(150, 250))
     lbl.BackgroundTransparency = 1
     lbl.Text = text
-    lbl.FontFace = (kind == "bonus") and UIConfig.FONTS.Title or UIConfig.FONTS.Heading
+    lbl.Font = (kind == "bonus") and Enum.Font.GothamBlack or Enum.Font.GothamBold
     lbl.TextScaled = true
-    lbl.TextColor3 = color or UIConfig.COLORS.TextPrimary
+    lbl.TextColor3 = color or Color3.fromRGB(255, 255, 255)
     lbl.TextStrokeTransparency = 0.3
-    lbl.TextStrokeColor3 = UIConfig.COLORS.Background
+    lbl.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
     lbl.Parent = popupRoot
 
     if kind == "bonus" then

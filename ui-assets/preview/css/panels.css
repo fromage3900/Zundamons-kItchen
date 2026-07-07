@@ -1,0 +1,253 @@
+/* Zundamon's Kitchen - Panel Styles */
+
+.info-panel {
+  background-color: var(--cream-white);
+  border: 3px solid var(--wood-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.info-panel h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.info-panel p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Modal Window */
+.modal-window {
+  background: linear-gradient(135deg, #F5FFF0 0%, #FFFAF5 50%, #E6FADC 100%);
+  border: 4px solid var(--primary-green);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  background-color: var(--primary-green);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 2px solid var(--primary-green-dark);
+}
+
+.modal-header h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--text-white);
+}
+
+.modal-content {
+  padding: var(--spacing-lg);
+}
+
+.modal-content p {
+  font-size: 16px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.modal-footer {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--cream-dark);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+}
+
+/* Progress Panel */
+.progress-panel {
+  background-color: var(--cream-white);
+  border: 3px solid var(--wood-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.progress-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.progress-panel-header h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.progress-close {
+  background-color: var(--error);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Tab Bar */
+.tab-bar {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.tab-button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--wood-light);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-white);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tab-button:hover {
+  background-color: var(--wood-default);
+}
+
+.tab-button.active {
+  background-color: var(--primary-green);
+}
+
+/* Progress Content */
+.progress-content {
+  background-color: var(--cream-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.progress-item {
+  background-color: var(--cream-white);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-item.unlocked {
+  background-color: #EBFAEB;
+}
+
+.progress-item.locked {
+  opacity: 0.7;
+}
+
+.progress-item-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.progress-item-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  visibility: hidden;
+  background-color: var(--text-primary);
+  color: var(--text-white);
+  text-align: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.tooltip:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Notification Panel */
+.notification-panel {
+  position: fixed;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.notification {
+  background-color: var(--cream-white);
+  border: 2px solid var(--wood-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.3s ease-out;
+  min-width: 300px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification.success {
+  border-color: var(--success);
+}
+
+.notification.error {
+  border-color: var(--error);
+}
+
+.notification.warning {
+  border-color: var(--warning);
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+}
+
+.notification-icon {
+  font-size: 20px;
+}
+
+.notification-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.notification-message {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
