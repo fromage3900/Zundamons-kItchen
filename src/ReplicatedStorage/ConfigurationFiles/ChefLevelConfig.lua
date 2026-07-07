@@ -22,11 +22,11 @@ function ChefLevelConfig.tierForLevel(level: number)
 	if level < 5 then
 		return { name = "Novice", color = Color3.fromRGB(150, 150, 150), badge = "" }
 	elseif level < 15 then
-		return { name = "Apprentice", color = Color3.fromRGB(100, 200, 100), badge = "rbxassetid://12345678" }
+		return { name = "Apprentice", color = Color3.fromRGB(100, 200, 100), badge = "" }
 	elseif level < 30 then
-		return { name = "Chef", color = Color3.fromRGB(255, 200, 50), badge = "rbxassetid://12345679" }
+		return { name = "Chef", color = Color3.fromRGB(255, 200, 50), badge = "" }
 	else
-		return { name = "Master Chef", color = Color3.fromRGB(255, 100, 100), badge = "rbxassetid://12345680" }
+		return { name = "Master Chef", color = Color3.fromRGB(255, 100, 100), badge = "" }
 	end
 end
 
