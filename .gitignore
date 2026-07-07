@@ -24,3 +24,7 @@ node_modules/
 sourcemap.json
 Assets/Generated/
 *.lock
+
+# Python
+__pycache__/
+*.pyc
