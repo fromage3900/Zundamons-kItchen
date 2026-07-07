@@ -16,7 +16,7 @@ local function WaitForChild(Parent, Name, TimeLimit)
 	local Warned    = false
 
 	while not Child and Parent do
-		wait(0)
+		task.wait(0)
 		Child = Parent:FindFirstChild(Name)
 		if not Warned and StartTime + (TimeLimit or 5) <= tick() then
 			Warned = true
@@ -135,12 +135,12 @@ local function RemovePartFromList(Part)
 end
 
 local function FlickerLightOff(Part, Light, Time)
-	spawn(function()
+	task.spawn(function()
 		local StartTime = tick()
 		
 		while LightStatus[Part] == nil and StartTime + Time >= tick() do
 			Light.Enabled = math.random(1,2) == 1
-			wait(0.1)
+			task.wait(0.1)
 		end
 		
 		Light.Enabled = false
@@ -148,7 +148,7 @@ local function FlickerLightOff(Part, Light, Time)
 end
 
 local function FadeLightOff(Part, Light, Time)
-	spawn(function()
+	task.spawn(function()
 		local StartTime = tick()
 		Light.Enabled = true
 
@@ -158,7 +158,7 @@ local function FadeLightOff(Part, Light, Time)
 			local Percent = TimeElapsed/Time
 						
 			Light.Brightness = Configuration.LightBrightness*(1-Percent)
-			wait(0.05)
+			task.wait(0.05)
 		end
 		
 		Light.Brightness = 0
@@ -167,7 +167,7 @@ local function FadeLightOff(Part, Light, Time)
 end
 
 local function FadeLightOn(Part, Light, Time)
-	spawn(function()
+	task.spawn(function()
 		local StartTime = tick()
 		Light.Enabled = true
 
@@ -177,7 +177,7 @@ local function FadeLightOn(Part, Light, Time)
 			local Percent = TimeElapsed/Time
 			
 			Light.Brightness = Configuration.LightBrightness*(Percent)
-			wait(0.05)
+			task.wait(0.05)
 		end
 		
 		Light.Brightness = Configuration.LightBrightness

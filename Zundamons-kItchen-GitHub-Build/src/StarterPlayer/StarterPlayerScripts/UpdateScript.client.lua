@@ -2,10 +2,7 @@
 -- Pink & Green Progression Panel UpdateScript
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-
 local player = Players.LocalPlayer
-local playerGui = player.PlayerGui
 
 -- Wait for GUI
 local panel = script.Parent
@@ -18,6 +15,7 @@ local progressLabel = mainFrame:WaitForChild("ProgressLabel")
 -- RemoteFunction for data
 local requestData = ReplicatedStorage:WaitForChild("RemoteFunctions", 10)
     and ReplicatedStorage.RemoteFunctions:WaitForChild("RequestData", 10)
+local popupEvent = ReplicatedStorage:FindFirstChild("RewardEvents") and ReplicatedStorage.RewardEvents:FindFirstChild("PopupEvent")
 
 -- Progression tiers (mirrors ProgressionConfig)
 local TIERS = {
@@ -70,8 +68,17 @@ local function updateUI()
     end
 end
 
--- Poll every 1.5 seconds
-while true do
-    updateUI()
-    task.wait(1.5)
+-- Event-driven refresh (PopupEvent fires on gold/XP changes)
+if popupEvent then
+    popupEvent.OnClientEvent:Connect(function()
+        updateUI()
+    end)
 end
+updateUI()
+-- Safety fallback poll
+task.spawn(function()
+    while true do
+        task.wait(60)
+        updateUI()
+    end
+end)

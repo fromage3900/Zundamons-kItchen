@@ -1,45 +1,45 @@
 {
-    "className": "Folder",
-    "children": [
-        {
-            "name": "OpenCompanionVN",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "ServeGuest",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "RequestData",
-            "className": "RemoteFunction",
-            "properties": {}
-        },
-        {
-            "name": "CraftFunction",
-            "className": "RemoteFunction",
-            "properties": {}
-        },
-        {
-            "name": "UpdateQuests",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "PurchaseCompanion",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "SetCompanion",
-            "className": "RemoteEvent",
-            "properties": {}
-        },
-        {
-            "name": "NotifyPlayer",
-            "className": "RemoteEvent",
-            "properties": {}
-        }
-    ]
+  "children": [
+    {
+      "className": "RemoteEvent",
+      "name": "OpenCompanionVN",
+      "properties": {}
+    },
+    {
+      "className": "RemoteEvent",
+      "name": "ServeGuest",
+      "properties": {}
+    },
+    {
+      "className": "RemoteFunction",
+      "name": "RequestData",
+      "properties": {}
+    },
+    {
+      "className": "RemoteFunction",
+      "name": "CraftFunction",
+      "properties": {}
+    },
+    {
+      "className": "RemoteEvent",
+      "name": "UpdateQuests",
+      "properties": {}
+    },
+    {
+      "className": "RemoteEvent",
+      "name": "PurchaseCompanion",
+      "properties": {}
+    },
+    {
+      "className": "RemoteEvent",
+      "name": "SetCompanion",
+      "properties": {}
+    },
+    {
+      "className": "RemoteEvent",
+      "name": "NotifyPlayer",
+      "properties": {}
+    }
+  ],
+  "className": "Folder"
 }

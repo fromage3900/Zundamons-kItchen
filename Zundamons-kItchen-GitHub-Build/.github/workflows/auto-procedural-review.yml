@@ -1,0 +1,62 @@
+name: Auto Procedural Review
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate project structure
+        run: npm run validate
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run auto review update script
+        run: node scripts/auto-review-update.mjs
+
+      - name: Create or update auto review pull request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Auto procedural review updates'
+          branch: 'auto/review-updates'
+          title: 'Auto procedural review updates'
+          body: |
+            Automated updates from the scheduled procedural geometry review workflow.
+            This PR is created or updated every 30 minutes when there are new changes.
+          labels: automated, auto-review
+          base: main
+          delete-branch: false
+          author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
+
+      - name: Merge auto review pull request
+        if: steps.create_pr.outputs.pull-request-number != ''
+        uses: peter-evans/merge-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          merge-method: squash
+          delete-branch: false

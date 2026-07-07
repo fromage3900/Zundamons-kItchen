@@ -15,15 +15,7 @@ local priceLists = mineableConfig.priceLists
 
 local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
-local RewardCore
-task.spawn(function()
-	local ok, mod = pcall(function()
-		return require(game.ServerScriptService:WaitForChild("RewardCore"))
-	end)
-	if ok then
-		RewardCore = mod
-	end
-end)
+local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
 local ChefLevelConfig = require(configFiles:WaitForChild("ChefLevelConfig"))
 
 local codes: { [string]: { { string } } } = {}
@@ -62,11 +54,8 @@ function handleOreSell(player, item)
 
 	local total = priceLists[item] * data[item]
 	data[item] = nil
-	if RewardCore then
-		total = RewardCore.addGold(player, total, "sell")
-	end
-	data.Gold = (data.Gold or 0) + total
-	return data.Gold
+	total = RewardCore.addGold(player, total, "sell")
+	return data.gold or 0
 end
 
 function loot_module.eraseData(player)
@@ -98,22 +87,20 @@ function assignLoot(player, lootname, myloot)
 	else
 		data[lootname] = data[lootname] + value
 	end
-	if RewardCore then
-		RewardCore.addXP(player, ChefLevelConfig.xpRewards.gather, "gather")
-		local popupEvt = game.ReplicatedStorage:FindFirstChild("RewardEvents")
-			and game.ReplicatedStorage.RewardEvents:FindFirstChild("PopupEvent")
-		if popupEvt then
-			popupEvt:FireClient(player, "item", "+" .. value .. " " .. lootname, Color3.fromRGB(160, 240, 170))
-		end
-		local extraChance = RewardCore.companionBuff and RewardCore.companionBuff(player, "extra_drop") or 0
-		if extraChance > 0 and math.random() < extraChance then
-			data[lootname] = (data[lootname] or 0) + value
-			if popupEvt then
-				popupEvt:FireClient(player, "bonus", "✨ " .. lootname .. " ×2 (Antimon!)", Color3.fromRGB(180, 240, 200))
-			end
-		end
-		RewardCore.notify(player, "gather", { item = lootname, count = value })
+	RewardCore.addXP(player, ChefLevelConfig.xpRewards.gather, "gather")
+	local popupEvt = game.ReplicatedStorage:FindFirstChild("RewardEvents")
+		and game.ReplicatedStorage.RewardEvents:FindFirstChild("PopupEvent")
+	if popupEvt then
+		popupEvt:FireClient(player, "item", "+" .. value .. " " .. lootname, Color3.fromRGB(160, 240, 170))
 	end
+	local extraChance = RewardCore.companionBuff and RewardCore.companionBuff(player, "extra_drop") or 0
+	if extraChance > 0 and math.random() < extraChance then
+		data[lootname] = (data[lootname] or 0) + value
+		if popupEvt then
+			popupEvt:FireClient(player, "bonus", "✨ " .. lootname .. " ×2 (Antimon!)", Color3.fromRGB(180, 240, 200))
+		end
+	end
+	RewardCore.notify(player, "gather", { item = lootname, count = value })
 	return true
 end
 

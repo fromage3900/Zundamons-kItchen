@@ -1,18 +1,23 @@
 {
-  "name": "Zundamon's kItchen",
-  "roblox": {
-    "experienceId": 108617605497926,
-    "placeId": null,
-    "placeVersion": null
-  },
-  "repo": {
-    "sourceOfTruth": "Rojo sync from src/ via default.project.json",
-    "sourceDirs": ["src/"],
-    "ignoredDirs": ["workspace/", "artifacts/"]
-  },
   "contribution": {
     "recommendedBranchPattern": "feature/<short-name>",
     "requiredExports": false,
     "syncTool": "rojo"
+  },
+  "name": "Zundamon's kItchen",
+  "repo": {
+    "ignoredDirs": [
+      "workspace/",
+      "artifacts/"
+    ],
+    "sourceDirs": [
+      "src/"
+    ],
+    "sourceOfTruth": "Rojo sync from src/ via default.project.json"
+  },
+  "roblox": {
+    "experienceId": 108617605497926,
+    "placeId": null,
+    "placeVersion": null
   }
 }

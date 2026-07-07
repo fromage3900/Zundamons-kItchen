@@ -31,7 +31,7 @@ function addFunction()
 			shoot = true
 			while shoot do
 				local resp = Activated()
-				wait(0.25)
+				task.wait(0.25)
 			end
 		end
 

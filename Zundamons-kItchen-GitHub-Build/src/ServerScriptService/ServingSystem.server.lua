@@ -37,6 +37,15 @@ local function playerNearGuest(player: Player, guestInstance: Instance): boolean
 	return (root.Position - guestPart.Position).Magnitude <= MAX_SERVE_DISTANCE
 end
 
+-- Rate limit
+local lastServe = {}
+local function rateLimited(player)
+	local now = os.clock()
+	if lastServe[player] and now - lastServe[player] < 0.2 then return true end
+	lastServe[player] = now
+	return false
+end
+
 local function lookupPayAmount(recipe: string, guestAttributePay: number?): number
 	if typeof(guestAttributePay) == "number" and guestAttributePay > 0 then
 		return guestAttributePay
@@ -45,6 +54,10 @@ local function lookupPayAmount(recipe: string, guestAttributePay: number?): numb
 end
 
 local function handleServeGuest(player, guestInstance, foodItemName)
+	if rateLimited(player) then
+		return false, "Too fast"
+	end
+
 	if typeof(foodItemName) ~= "string" then
 		return false, "Invalid food item"
 	end
@@ -81,7 +94,6 @@ local function handleServeGuest(player, guestInstance, foodItemName)
 
 	RewardCore.bumpCombo(player)
 	local awarded = RewardCore.addGold(player, payAmount, "serve")
-	playerData.Gold = (playerData.Gold or 0) + awarded
 	payAmount = awarded
 	RewardCore.addXP(player, ChefLevelConfig.xpRewards.serveGuest, "serve")
 	RewardCore.notify(player, "serve", { recipe = recipe, guestName = guestInstance.Name, gold = awarded })

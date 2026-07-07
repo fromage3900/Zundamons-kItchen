@@ -1,12 +1,12 @@
 {
-  "type": "pea_pod",
-  "pod_size": 1.3,
-  "opened": true,
-  "vertices": 124,
-  "triangles": 78,
-  "peas_visible": true,
   "color": "#FFD700",
-  "id": "ZundaPea_03",
   "description": "Large golden pea pod",
-  "export_path": "HarvestNodes/ZundaPea/"
+  "export_path": "HarvestNodes/ZundaPea/",
+  "id": "ZundaPea_03",
+  "opened": true,
+  "peas_visible": true,
+  "pod_size": 1.3,
+  "triangles": 78,
+  "type": "pea_pod",
+  "vertices": 124
 }

@@ -20,7 +20,7 @@ end
 function PlayerDataService.getOrCreate(player: Player): { [string]: any }
 	local key = tostring(player.UserId)
 	if not store[key] then
-		store[key] = {}
+		store[key] = createDefaultData()
 	end
 	return store[key]
 end

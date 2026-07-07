@@ -125,7 +125,7 @@ function makeLootLocal(myloot, position, generatedCode)
 			end
 		end
 	end)
-	wait(60)
+	task.wait(60)
 	destroy(obj, generatedCode)
 end
 

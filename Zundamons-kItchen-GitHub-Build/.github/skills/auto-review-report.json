@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-07-07T00:13:47.452Z",
+  "modifiedFiles": [
+    ".github/renovate.json",
+    ".vscode/extensions.json",
+    ".vscode/settings.json",
+    "Assets/Generated/Environment/Forest/Trees/ZundaTree_01.json",
+    "Assets/Generated/Environment/Forest/Trees/ZundaTree_02.json",
+    "Assets/Generated/Environment/Houses/Fences/GardenFence_01.json",
+    "Assets/Generated/Environment/Houses/Zunda/ZundaHouse_01.json",
+    "Assets/Generated/Environment/Kitchen/Counters/KitchenCounter_01.json",
+    "Assets/Generated/Environment/Kitchen/Utensils/CookingPot_01.json",
+    "Assets/Generated/HarvestNodes/GoldOre/GoldOre_Default.json",
+    "Assets/Generated/HarvestNodes/Rock/Rock_Common.json",
+    "Assets/Generated/HarvestNodes/Rock/Rock_Rare.json",
+    "Assets/Generated/HarvestNodes/Wheat/Wheat_01.json",
+    "Assets/Generated/HarvestNodes/Wheat/Wheat_02.json",
+    "Assets/Generated/HarvestNodes/Wheat/Wheat_03.json",
+    "Assets/Generated/HarvestNodes/ZundaBerry/BerryBush_01.json",
+    "Assets/Generated/HarvestNodes/ZundaBerry/BerryBush_02.json",
+    "Assets/Generated/HarvestNodes/ZundaBerry/BerryBush_03.json",
+    "Assets/Generated/HarvestNodes/ZundaFlower/ZundaFlower_Default.json",
+    "Assets/Generated/HarvestNodes/ZundaFlower/ZundaFlower_Rare.json",
+    "Assets/Generated/HarvestNodes/ZundaMushroom/Mushroom_01.json",
+    "Assets/Generated/HarvestNodes/ZundaMushroom/Mushroom_02.json",
+    "Assets/Generated/HarvestNodes/ZundaPea/ZundaPea_01.json",
+    "Assets/Generated/HarvestNodes/ZundaPea/ZundaPea_02.json",
+    "Assets/Generated/HarvestNodes/ZundaPea/ZundaPea_03.json",
+    "Assets/Generated/HarvestNodes/ZundaRoot/Root_01.json",
+    "Assets/Generated/HarvestNodes/ZundaRoot/Root_02.json",
+    "Assets/Generated/pipeline_summary.json",
+    "default.project.json",
+    "opencode.json",
+    "package-lock.json",
+    "package.json",
+    "roblox.project.json",
+    "sourcemap.json",
+    "src/ReplicatedStorage/RemoteEvents/init.meta.json"
+  ],
+  "notes": [
+    "Procedural-related files: scripts/auto-review-update.mjs, scripts/get_asset_ids.luau, scripts/import_harvest_meshes.luau, scripts/wire_all_assets.lua, scripts/wire_harvest_assets.luau, src/ReplicatedStorage/ConfigurationFiles/MeshAssets.lua, src/ReplicatedStorage/ConfigurationFiles/ScatterConfig.lua, src/ReplicatedStorage/Shared/Config/BlenderPipeline.lua, src/ReplicatedStorage/Shared/Config/HarvestNodeVariants.lua, src/ServerScriptService/CompanionManager.server.lua, src/ServerScriptService/Services/ScatterService.server.lua"
+  ]
+}

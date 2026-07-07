@@ -55,16 +55,16 @@ local function teleportToZone(player, fromPadName, toZoneName)
     
     -- Fade out
     fadePlayer(humanoidRootPart, true)
-    wait(TeleporterConfig.FADE_DURATION)
-    
+    task.wait(TeleporterConfig.FADE_DURATION)
+
     -- Teleport
     humanoidRootPart.CFrame = CFrame.new(destPos + Vector3.new(0, 3, 0))
-    
+
     -- Fade in
     fadePlayer(humanoidRootPart, false)
-    
+
     -- Wait for fade to complete
-    wait(TeleporterConfig.FADE_DURATION)
+    task.wait(TeleporterConfig.FADE_DURATION)
     
     playerTeleporting[player.UserId] = false
 end

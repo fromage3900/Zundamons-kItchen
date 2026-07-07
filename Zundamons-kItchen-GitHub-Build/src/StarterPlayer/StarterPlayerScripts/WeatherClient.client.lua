@@ -189,14 +189,13 @@ local stormShakeConn
 local function setStormShake(active)
     if stormShakeConn then stormShakeConn:Disconnect(); stormShakeConn = nil end
     if not active then return end
+    local baseCFrame = cam and cam.CFrame
+    if not baseCFrame then return end
     stormShakeConn = RunService.RenderStepped:Connect(function()
         if cam then
-            local jitter = CFrame.new(
-                (math.random() - 0.5) * 0.06,
-                (math.random() - 0.5) * 0.06,
-                0
-            )
-            cam.CFrame = cam.CFrame * jitter
+            local jitX = (math.random() - 0.5) * 0.06
+            local jitY = (math.random() - 0.5) * 0.06
+            cam.CFrame = baseCFrame * CFrame.new(jitX, jitY, 0)
         end
     end)
 end

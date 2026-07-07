@@ -88,7 +88,7 @@ local function teleportPlayer(player, doorName, isEntering)
     fadePlayer(humanoidRootPart, true)
     
     -- Wait for fade
-    wait(FADE_DURATION)
+    task.wait(FADE_DURATION)
     
     -- Teleport player
     if isEntering then
@@ -112,13 +112,13 @@ local function teleportPlayer(player, doorName, isEntering)
     end
     
     -- Wait for teleport to process
-    wait(0.1)
+    task.wait(0.1)
     
     -- Fade in player
     fadePlayer(humanoidRootPart, false)
     
     -- Close door after fade completes
-    wait(FADE_DURATION)
+    task.wait(FADE_DURATION)
     for _, doorPartName in pairs(buildingData.doorParts) do
         local doorPart = workspace:FindFirstChild(doorPartName, true)
         if doorPart then

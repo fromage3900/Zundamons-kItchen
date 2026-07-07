@@ -143,18 +143,29 @@ local chatEv = RE:FindFirstChild("CompanionChat")
 if not chatEv then
 	chatEv = Instance.new("RemoteEvent"); chatEv.Name = "CompanionChat"; chatEv.Parent = RE
 end
+local chatTimestamps = {}
 chatEv.OnServerEvent:Connect(function(player)
+	local now = os.clock()
+	local last = chatTimestamps[player]
+	if last and now - last < 2 then return end
+	chatTimestamps[player] = now
 	local d = PlayerDataService.getOrCreate(player)
 	d.companion_chats = (d.companion_chats or 0) + 1
 	d.companion_affection = math.min((d.companion_affection or 0) + 1, 100)
 end)
 
 -- NPC chat tracking
+local npcChatTimestamps = {}
 local npcChat = RE:FindFirstChild("NPCChat")
 if not npcChat then
 	npcChat = Instance.new("RemoteEvent"); npcChat.Name = "NPCChat"; npcChat.Parent = RE
 end
 npcChat.OnServerEvent:Connect(function(player, npcName)
+	if typeof(npcName) ~= "string" then return end
+	local now = os.clock()
+	local last = npcChatTimestamps[player]
+	if last and now - last < 2 then return end
+	npcChatTimestamps[player] = now
 	local d = PlayerDataService.getOrCreate(player)
 	if not d.npc_chats then d.npc_chats = {} end
 	d.npc_chats[npcName] = (d.npc_chats[npcName] or 0) + 1

@@ -1,33 +1,83 @@
 {
+  "better-comments.tags": [
+    {
+      "backgroundColor": "transparent",
+      "color": "#FF6B6B",
+      "strikethrough": false,
+      "tag": "!"
+    },
+    {
+      "backgroundColor": "transparent",
+      "color": "#FFE66D",
+      "strikethrough": false,
+      "tag": "?"
+    },
+    {
+      "backgroundColor": "transparent",
+      "color": "#4ECDC4",
+      "strikethrough": false,
+      "tag": "//"
+    },
+    {
+      "backgroundColor": "transparent",
+      "color": "#A78BFA",
+      "strikethrough": false,
+      "tag": "todo"
+    }
+  ],
+  "editor.formatOnSave": true,
   "editor.tokenColorCustomizations": {
     "textMateRules": [
-      { "scope": "keyword.custom.Collectible", "settings": { "foreground": "#FF6B6B", "fontStyle": "bold" } },
-      { "scope": "keyword.custom.Inventory",   "settings": { "foreground": "#4ECDC4", "fontStyle": "bold" } },
-      { "scope": "keyword.custom.RemoteEvent", "settings": { "foreground": "#FFE66D", "fontStyle": "bold" } },
-      { "scope": "keyword.custom.SaveData",    "settings": { "foreground": "#A78BFA", "fontStyle": "bold" } },
-      { "scope": "keyword.custom.Harvest",     "settings": { "foreground": "#34D399", "fontStyle": "bold" } }
+      {
+        "scope": "keyword.custom.Collectible",
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#FF6B6B"
+        }
+      },
+      {
+        "scope": "keyword.custom.Inventory",
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#4ECDC4"
+        }
+      },
+      {
+        "scope": "keyword.custom.RemoteEvent",
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#FFE66D"
+        }
+      },
+      {
+        "scope": "keyword.custom.SaveData",
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#A78BFA"
+        }
+      },
+      {
+        "scope": "keyword.custom.Harvest",
+        "settings": {
+          "fontStyle": "bold",
+          "foreground": "#34D399"
+        }
+      }
     ]
   },
-  "luau-lsp.require.mode": "relative",
-  "luau-lsp.sourcemap.enabled": true,
-  "stylua.targetReleaseVersion": "latest",
-  "selene.enable": true,
-  "editor.formatOnSave": true,
   "files.exclude": {
     "**/.git": true,
     "**/node_modules": true
   },
+  "luau-lsp.require.mode": "relative",
+  "luau-lsp.sourcemap.enabled": true,
+  "selene.enable": true,
+  "stylua.targetReleaseVersion": "latest",
   "todo-tree.general.tags": [
     "TODO",
     "FIXME",
     "HACK",
     "NOTE",
     "PERF"
-  ],
-  "better-comments.tags": [
-    { "tag": "!", "color": "#FF6B6B", "strikethrough": false, "backgroundColor": "transparent" },
-    { "tag": "?", "color": "#FFE66D", "strikethrough": false, "backgroundColor": "transparent" },
-    { "tag": "//", "color": "#4ECDC4", "strikethrough": false, "backgroundColor": "transparent" },
-    { "tag": "todo", "color": "#A78BFA", "strikethrough": false, "backgroundColor": "transparent" }
   ]
 }

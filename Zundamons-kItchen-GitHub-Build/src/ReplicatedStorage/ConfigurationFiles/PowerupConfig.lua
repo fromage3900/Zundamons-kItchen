@@ -3,16 +3,16 @@ return {
     LuckyCharm = {
         name = "Lucky Charm", icon = "🍀", desc = "+50% gold from sells & serves for 90s",
         duration = 90,
-        cost = { Gold = 150 },
+        cost = { gold = 150 },
     },
     IronWrist = {
         name = "Iron Wrist", icon = "💪", desc = "+25% gather drops for 90s",
         duration = 90,
-        cost = { Gold = 200 },
+        cost = { gold = 200 },
     },
     MastersApron = {
         name = "Master's Apron", icon = "👘", desc = "Wider perfect-cook window for 90s",
         duration = 90,
-        cost = { Gold = 250 },
+        cost = { gold = 250 },
     },
 }

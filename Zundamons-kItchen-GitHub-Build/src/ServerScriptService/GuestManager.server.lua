@@ -227,7 +227,7 @@ local function guestSpawnLoop()
 		-- Wait random interval between spawn attempts
 		local spawnDelay =
 			math.random(CONFIG.guest_settings.spawn_interval_min, CONFIG.guest_settings.spawn_interval_max)
-		wait(spawnDelay)
+		task.wait(spawnDelay)
 
 		-- Try to spawn a guest for each online player
 		for _, player in pairs(game.Players:GetPlayers()) do
@@ -242,7 +242,7 @@ end
 -- Main guest timeout/cleanup loop
 local function guestTimeoutLoop()
 	while true do
-		wait(5) -- Check timeouts every 5 seconds
+		task.wait(5) -- Check timeouts every 5 seconds
 
 		for guestName, guestData in pairs(activeGuests) do
 			local guest = guestData[1]
@@ -269,12 +269,12 @@ if GuestService and GuestService.setRemoveGuestCallback then
 end
 
 -- Start loops
-spawn(guestSpawnLoop)
-spawn(guestTimeoutLoop)
+task.spawn(guestSpawnLoop)
+task.spawn(guestTimeoutLoop)
 
 -- Spawn guest for players who join later
 Players.PlayerAdded:Connect(function(player)
-	wait(5) -- Wait for player to load
+	task.wait(5) -- Wait for player to load
 	local guest = createGuest(player)
 	if guest then
 		activeGuests[guest.Name] = { guest, player }

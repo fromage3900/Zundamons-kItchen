@@ -49,6 +49,13 @@ plantingEvent.OnServerEvent:Connect(function(player, seedName, planter)
 	if not planter or planter:GetAttribute("Seeded") == true then return end
 	if not data[seedName] or data[seedName] <= 0 then return end
 
+	-- Server-authoritative distance check
+	local char = player.Character
+	if not char then return end
+	local root = char:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+	if (root.Position - planter.Position).Magnitude > 16 then return end
+
 	PlayerDataService.update(player, function(d)
 		d[seedName] = d[seedName] - 1
 		if d[seedName] == 0 then

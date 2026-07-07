@@ -239,7 +239,7 @@ UsePowerup.OnServerInvoke = function(player, key)
     local d = PlayerDataService.get(player); if not d then return false, "no data" end
     local cfg = PowerupConfig[key]; if not cfg then return false, "unknown powerup" end
     
-    local cost = cfg.cost and cfg.cost.Gold or 0
+    local cost = cfg.cost and cfg.cost.gold or 0
     if (d.gold or 0) < cost then return false, "not enough gold" end
     
     d.gold = d.gold - cost

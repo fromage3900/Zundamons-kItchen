@@ -187,10 +187,10 @@ updateSkyColors()
 -- ---- INITIAL REFRESH ----
 task.wait(2)
 refresh()
--- Periodic re-sync in case events are missed
+-- Safety re-sync in case events are missed
 task.spawn(function()
 	while true do
-		task.wait(5)
+		task.wait(60)
 		refresh()
 	end
 end)

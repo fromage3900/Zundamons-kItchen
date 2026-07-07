@@ -196,9 +196,9 @@ local function applyHour(hour)
     end
 end
 
+shared.ZundaSky = { apply = applyHour, config = CONFIG }
 applyHour(START)
 Lighting:SetAttribute("CurrentHour", START)
-shared.ZundaSky = { apply = applyHour, config = CONFIG }
 
 -- ── MAIN LOOP ─────────────────────────────────────────────
 task.spawn(function()

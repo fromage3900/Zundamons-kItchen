@@ -1,12 +1,12 @@
 {
-  "type": "rock",
+  "color": "#4A4A4A",
+  "crystal": true,
+  "description": "Dark rock with crystals",
+  "export_path": "HarvestNodes/Rock/",
+  "id": "Rock_Rare",
   "roughness": 0.4,
   "size": 1.2,
-  "crystal": true,
-  "vertices": 66,
   "triangles": 116,
-  "color": "#4A4A4A",
-  "id": "Rock_Rare",
-  "description": "Dark rock with crystals",
-  "export_path": "HarvestNodes/Rock/"
+  "type": "rock",
+  "vertices": 66
 }

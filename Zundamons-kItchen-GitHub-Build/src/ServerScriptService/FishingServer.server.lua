@@ -27,12 +27,14 @@ FishingCast.OnServerInvoke = function(player, action, payload)
         if not rod then return { ok = false, reason = "no rod equipped" } end
 
         local fish = FishConfig.rollFish()
-        local diff = FishConfig.difficulty[fish.rarity]
+        if not fish then return { ok = false, reason = "bad config" } end
+        local diffTable = FishConfig.difficulty
+        local diff = diffTable and diffTable[fish.rarity]
         activeBites[player.Name] = { fish = fish, startTime = os.clock() }
         return {
             ok = true,
             fish = fish,
-            difficulty = diff,
+            difficulty = diff or 1,
         }
     elseif action == "result" then
         local bite = activeBites[player.Name]
@@ -46,8 +48,10 @@ FishingCast.OnServerInvoke = function(player, action, payload)
             RewardCore.addXP(player, fish.xp, "craft")
             -- Add to inventory (track count)
 			local data = PlayerDataService.getOrCreate(player)
-			local key = "Fish_" .. fish.name
-			data[key] = (data[key] or 0) + 1
+			if data then
+				local key = "Fish_" .. fish.name
+				data[key] = (data[key] or 0) + 1
+			end
             -- Notify popup
             local popup = RS:FindFirstChild("RewardEvents") and RS.RewardEvents:FindFirstChild("PopupEvent")
             if popup then

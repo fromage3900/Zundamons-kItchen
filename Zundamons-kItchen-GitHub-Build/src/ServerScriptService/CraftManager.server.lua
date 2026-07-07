@@ -34,7 +34,18 @@ local function ensureDataBucket(player)
 	return PlayerDataService.getOrCreate(player)
 end
 
+-- Rate limit
+local lastCraft = {}
+local function rateLimited(player)
+	local now = os.clock()
+	if lastCraft[player] and now - lastCraft[player] < 0.2 then return true end
+	lastCraft[player] = now
+	return false
+end
+
 local function craftItem(player, item, position, quality)
+    if rateLimited(player) then return "Fail" end
+
     quality = quality or "ok"
     if not QUALITY_BONUS[quality] then quality = "ok" end
 

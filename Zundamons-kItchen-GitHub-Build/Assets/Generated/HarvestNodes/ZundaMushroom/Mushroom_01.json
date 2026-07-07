@@ -1,12 +1,12 @@
 {
-  "type": "mushroom",
   "cap_radius": 0.6,
-  "stem_height": 0.8,
-  "spot_count": 3,
-  "vertices": 116,
-  "triangles": 74,
   "color": "#E1B9FF",
-  "id": "Mushroom_01",
   "description": "Small lavender mushroom",
-  "export_path": "HarvestNodes/ZundaMushroom/"
+  "export_path": "HarvestNodes/ZundaMushroom/",
+  "id": "Mushroom_01",
+  "spot_count": 3,
+  "stem_height": 0.8,
+  "triangles": 74,
+  "type": "mushroom",
+  "vertices": 116
 }

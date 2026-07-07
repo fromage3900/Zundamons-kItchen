@@ -93,7 +93,7 @@ function itemEvent(item)
 			else
 				local parent = obj.Parent
 				obj.Parent = nil
-				wait(item:GetAttribute("Respawn"))
+				task.wait(item:GetAttribute("Respawn"))
 				item:SetAttribute("Health", item:GetAttribute("MaxHealth"))
 				item:SetAttribute("Mined", false)
 				obj.Parent = parent

@@ -53,19 +53,19 @@ ProgressionConfig.guest_settings = {
 	max_guests_at_once = 6,
 	spawn_interval_min = 12,
 	spawn_interval_max = 25,
-	guest_patience = 120, -- seconds before guest leaves
-	patience_warning = 30, -- seconds left before warning color
-	patience_critical = 10, -- seconds left before critical color
+	guest_patience = 120,
+	patience_warning = 30,
+	patience_critical = 10,
 }
 
 -- Guest patience UI colors
 ProgressionConfig.patience_colors = {
-	normal = Color3.fromRGB(120, 200, 120), -- green
-	warning = Color3.fromRGB(220, 180, 80), -- yellow
-	critical = Color3.fromRGB(220, 80, 80), -- red
+	normal = Color3.fromRGB(120, 200, 120),
+	warning = Color3.fromRGB(220, 180, 80),
+	critical = Color3.fromRGB(220, 80, 80),
 }
 
--- Progression milestones (tier unlocks)
+-- Progression milestones (tier unlocks) - refined for cozy progression
 ProgressionConfig.milestones = {
 	{
 		name = "Village Loop",
@@ -78,8 +78,8 @@ ProgressionConfig.milestones = {
 		},
 	},
 	{
-		name = "Kitchen Garden",
-		guests_served = 15,
+		name = "Garden Tending",
+		guests_served = 5,
 		unlocks = {
 			recipes = { "Zunda Bread" },
 			cosmetics = {},
@@ -88,8 +88,18 @@ ProgressionConfig.milestones = {
 		},
 	},
 	{
-		name = "Garden Mastery",
-		guests_served = 40,
+		name = "Berry Sweet",
+		guests_served = 12,
+		unlocks = {
+			recipes = { "Cupcake" },
+			cosmetics = {},
+			furniture = {},
+			locations = {},
+		},
+	},
+	{
+		name = "Forest Foraging",
+		guests_served = 25,
 		unlocks = {
 			recipes = { "Zunda Mochi" },
 			cosmetics = {},
@@ -98,10 +108,10 @@ ProgressionConfig.milestones = {
 		},
 	},
 	{
-		name = "Promenade Market",
-		guests_served = 100,
+		name = "Peak Season",
+		guests_served = 50,
 		unlocks = {
-			recipes = { "Cupcake" },
+			recipes = { "Royal Stew" },
 			cosmetics = {},
 			furniture = {},
 			locations = {},

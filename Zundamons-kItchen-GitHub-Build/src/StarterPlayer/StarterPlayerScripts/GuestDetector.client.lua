@@ -56,7 +56,7 @@ end
 -- Detection loop
 local function detectionLoop()
 	while character and character.Parent do
-		wait(DETECTION_INTERVAL)
+		task.wait(DETECTION_INTERVAL)
 		
 		local newGuest = findNearbyGuest()
 		
