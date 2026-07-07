@@ -1,5 +1,31 @@
-{
-  "generated": true,
-  "output_dir": "Assets/Generated",
-  "category": "all"
+﻿{
+    "generated":  true,
+    "output_dir":  "Assets/Generated",
+    "category":  "all",
+    "asset_ids":  {
+                      "Root_02":  "122644985457254",
+                      "Root_01":  "106581238862764",
+                      "Rock_Common":  "74975285002856",
+                      "ZundaFlower_Rare":  "86582218951352",
+                      "BerryBush_03":  "76322051780722",
+                      "ZundaTree_02":  "82800772111144",
+                      "GardenFence_01":  "91113451607494",
+                      "CookingPot_01":  "115847445262264",
+                      "Rock_Rare":  "138139954211772",
+                      "BerryBush_02":  "74222048987638",
+                      "ZundaHouse_01":  "128006462810593",
+                      "Wheat_02":  "124905165003062",
+                      "Mushroom_01":  "96331224587968",
+                      "ZundaPea_03":  "107116519758062",
+                      "BerryBush_01":  "91224321091798",
+                      "KitchenCounter_01":  "104840247636112",
+                      "Wheat_01":  "120483243502197",
+                      "Wheat_03":  "127847933091778",
+                      "ZundaPea_01":  "106482523402868",
+                      "Mushroom_02":  "85124051974569",
+                      "ZundaTree_01":  "139609561607226",
+                      "ZundaFlower_Default":  "130899236683010",
+                      "ZundaPea_02":  "119452475051045",
+                      "GoldOre_Default":  "105153259339546"
+                  }
 }
