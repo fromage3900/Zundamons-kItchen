@@ -12,7 +12,7 @@ local Variants = {
 		},
 		resourceType = "Wheat",
 		swayRange = { min = 0.8, max = 1.2 },
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -23,7 +23,7 @@ local Variants = {
 		},
 		resourceType = "ZundaFlower",
 		spinSpeed = 0.5,
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.8, 1.2 },
 	},
 
@@ -34,7 +34,7 @@ local Variants = {
 			["ZundaPea_03"] = "rbxassetid://107116519758062",
 		},
 		resourceType = "ZundaPea",
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -45,7 +45,7 @@ local Variants = {
 		},
 		resourceType = "Zunda Mushroom",
 		bobHeight = 0.3,
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.7, 1.3 },
 	},
 
@@ -56,7 +56,7 @@ local Variants = {
 			["BerryBush_03"] = "rbxassetid://76322051780722",
 		},
 		resourceType = "Zunda Berry",
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.85, 1.15 },
 	},
 
@@ -66,7 +66,7 @@ local Variants = {
 			["Root_02"] = "rbxassetid://122644985457254",
 		},
 		resourceType = "Zunda Root",
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.9, 1.1 },
 	},
 
@@ -77,7 +77,7 @@ local Variants = {
 		},
 		resourceType = "Rock",
 		crackStages = 3,
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.8, 1.4 },
 	},
 
@@ -87,7 +87,7 @@ local Variants = {
 		},
 		resourceType = "Gold Ore",
 		glowColor = Color3.fromRGB(255, 215, 0),
-		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
+		harvestEffect = "rbxassetid://241685484",
 		scaleRange = { 0.9, 1.1 },
 	},
 }
