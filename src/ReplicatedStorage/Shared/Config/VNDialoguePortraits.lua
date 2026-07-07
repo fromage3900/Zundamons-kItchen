@@ -1,3 +1,8 @@
+-- VN portrait system. Portrait decal IDs reference rendered expressions
+-- from the Zundamon Live2D model (ZUNKO PJ, https://zunko.jp/).
+-- 18 expression presets available — see AI/VN_PERSONA_PLAN.md for mapping.
+-- Guest character portraits planned from Kenney Mini Characters (CC0, kenney.nl).
+-- See CREDITS.md for full attribution.
 local VNDialoguePortraits = {}
 
 -- Maps speaker keys to their portrait decal IDs and expressions

@@ -1,3 +1,6 @@
+-- Guest NPC models sourced from Kenney Mini Characters (CC0, kenney.nl)
+-- Companion character models based on Zundamon project (ZUNKO PJ, https://zunko.jp/)
+-- See CREDITS.md for full attribution.
 local NPCConfig = {
 	guestTemplates = {
 		Child = {

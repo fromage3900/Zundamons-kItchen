@@ -1,5 +1,7 @@
--- Mesh asset ID placeholders - to be replaced with actual rbxassetid:// values
--- after importing FBX/OBJ files into Roblox Studio
+-- Mesh asset IDs for harvest nodes and environment props.
+-- Imported from Kenney Survival Kit (CC0, kenney.nl) and custom-generated OBJ files.
+-- See CREDITS.md for full attribution.
+-- Replace placeholder values with real rbxassetid:// after importing into Studio.
 
 return {
 	meshes = {

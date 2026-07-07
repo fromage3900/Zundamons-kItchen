@@ -1,7 +1,9 @@
 --!strict
 -- [[ModuleScript] CursorConfig]
--- Maps cursor names to uploaded Decal asset IDs
--- Created by cursor_converter.py
+-- Maps cursor names to uploaded Decal asset IDs.
+-- Cursor designs inspired by Zundamon Cursor Set (MIT, wappon_28_dev)
+-- and zunda_arrow set (MIT, wappon_28_dev). See CREDITS.md for full attribution.
+-- Created by scripts/agent_orchestrator/tools/cursor_converter.py
 local CursorConfig = {
     cursors = {
         -- Zundamon themed cursors
