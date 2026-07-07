@@ -1,12 +1,16 @@
 {
-  "type": "rock",
-  "roughness": 0.5,
-  "size": 1.0,
-  "crystal": true,
-  "vertices": 66,
-  "triangles": 116,
   "color": "#8B4513",
-  "id": "GoldOre_Default",
+  "crystal": true,
   "description": "Gold vein rock",
-  "export_path": "HarvestNodes/GoldOre/"
+  "export_path": "HarvestNodes/GoldOre/",
+  "id": "GoldOre_Default",
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.021Z"
+  },
+  "roughness": 0.5,
+  "size": 1,
+  "triangles": 116,
+  "type": "rock",
+  "vertices": 66
 }

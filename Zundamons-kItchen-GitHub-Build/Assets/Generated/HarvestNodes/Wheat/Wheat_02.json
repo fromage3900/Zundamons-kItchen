@@ -1,12 +1,16 @@
 {
-  "type": "flower",
-  "petal_count": 4,
-  "stem_height": 1.4,
-  "vertices": 216,
-  "triangles": 160,
   "color": "#DAA520",
+  "description": "Medium golden wheat",
+  "export_path": "HarvestNodes/Wheat/",
   "glow": false,
   "id": "Wheat_02",
-  "description": "Medium golden wheat",
-  "export_path": "HarvestNodes/Wheat/"
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.024Z"
+  },
+  "petal_count": 4,
+  "stem_height": 1.4,
+  "triangles": 160,
+  "type": "flower",
+  "vertices": 216
 }

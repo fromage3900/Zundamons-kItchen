@@ -11,6 +11,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
 
 local ScatterConfig = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("ScatterConfig"))
+local MeshAssets = require(ReplicatedStorage:WaitForChild("ConfigurationFiles"):WaitForChild("MeshAssets"))
 
 local ScatterService = {}
 
@@ -103,7 +104,16 @@ local function spawnNode(nodeType: string, variantId: string, position: Vector3,
 		return nil
 	end
 
-	local part = Instance.new("Part")
+	local meshId = MeshAssets.meshes[nodeType] and MeshAssets.meshes[nodeType][variantId]
+	local part: BasePart
+	if meshId then
+		local mp = Instance.new("MeshPart")
+		mp.MeshId = meshId
+		part = mp
+	else
+		part = Instance.new("Part")
+	end
+
 	part.Name = nodeType .. "_" .. variantId
 	part.Size = Vector3.new(2, 2, 2)
 	part.Position = position + Vector3.new(0, nodeConfig.yOffset, 0)

@@ -1,12 +1,14 @@
 -- Harvest Node Variants Configuration
 -- FBX substitutes available in Downloads:\kenney_survival-kit\Models\FBX format\
 -- Rock/Grass can substitute for plants; see docs/asset-mapping.md for full list
+-- Deprecated: Use MeshAssets.lua (ConfigurationFiles) instead.
+-- Kept for reference / fallback.
 local Variants = {
 	Wheat = {
 		meshes = {
-			["Wheat_01"] = "rbxassetid://FILL_WHEAT_01", -- grass.fbx substitute
-			["Wheat_02"] = "rbxassetid://FILL_WHEAT_02", -- grass-large.fbx substitute
-			["Wheat_03"] = "rbxassetid://FILL_WHEAT_03", -- grass.fbx variant
+			["Wheat_01"] = "rbxassetid://120483243502197",
+			["Wheat_02"] = "rbxassetid://124905165003062",
+			["Wheat_03"] = "rbxassetid://127847933091778",
 		},
 		resourceType = "Wheat",
 		swayRange = { min = 0.8, max = 1.2 },
@@ -16,8 +18,8 @@ local Variants = {
 
 	ZundaFlower = {
 		meshes = {
-			["ZundaFlower_Default"] = "rbxassetid://FILL_ZUNDAFLOWER_DEFAULT",
-			["ZundaFlower_Rare"] = "rbxassetid://FILL_ZUNDAFLOWER_RARE",
+			["ZundaFlower_Default"] = "rbxassetid://130899236683010",
+			["ZundaFlower_Rare"] = "rbxassetid://86582218951352",
 		},
 		resourceType = "ZundaFlower",
 		spinSpeed = 0.5,
@@ -27,9 +29,9 @@ local Variants = {
 
 	ZundaPea = {
 		meshes = {
-			["ZundaPea_01"] = "rbxassetid://FILL_ZUNDAPEA_01",
-			["ZundaPea_02"] = "rbxassetid://FILL_ZUNDAPEA_02",
-			["ZundaPea_03"] = "rbxassetid://FILL_ZUNDAPEA_03",
+			["ZundaPea_01"] = "rbxassetid://106482523402868",
+			["ZundaPea_02"] = "rbxassetid://119452475051045",
+			["ZundaPea_03"] = "rbxassetid://107116519758062",
 		},
 		resourceType = "ZundaPea",
 		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
@@ -38,8 +40,8 @@ local Variants = {
 
 	["Zunda Mushroom"] = {
 		meshes = {
-			["Mushroom_01"] = "rbxassetid://FILL_MUSHROOM_01",
-			["Mushroom_02"] = "rbxassetid://FILL_MUSHROOM_02",
+			["Mushroom_01"] = "rbxassetid://96331224587968",
+			["Mushroom_02"] = "rbxassetid://85124051974569",
 		},
 		resourceType = "Zunda Mushroom",
 		bobHeight = 0.3,
@@ -49,9 +51,9 @@ local Variants = {
 
 	["Zunda Berry"] = {
 		meshes = {
-			["BerryBush_01"] = "rbxassetid://FILL_BERRY_01",
-			["BerryBush_02"] = "rbxassetid://FILL_BERRY_02",
-			["BerryBush_03"] = "rbxassetid://FILL_BERRY_03",
+			["BerryBush_01"] = "rbxassetid://91224321091798",
+			["BerryBush_02"] = "rbxassetid://74222048987638",
+			["BerryBush_03"] = "rbxassetid://76322051780722",
 		},
 		resourceType = "Zunda Berry",
 		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
@@ -60,8 +62,8 @@ local Variants = {
 
 	["Zunda Root"] = {
 		meshes = {
-			["Root_01"] = "rbxassetid://FILL_ROOT_01",
-			["Root_02"] = "rbxassetid://FILL_ROOT_02",
+			["Root_01"] = "rbxassetid://106581238862764",
+			["Root_02"] = "rbxassetid://122644985457254",
 		},
 		resourceType = "Zunda Root",
 		harvestEffect = "rbxasset://textures/particles/sparkle_main.dds",
@@ -70,8 +72,8 @@ local Variants = {
 
 	Rock = {
 		meshes = {
-			["Rock_Common"] = "rbxassetid://FILL_ROCK_COMMON",
-			["Rock_Rare"] = "rbxassetid://FILL_ROCK_RARE",
+			["Rock_Common"] = "rbxassetid://74975285002856",
+			["Rock_Rare"] = "rbxassetid://138139954211772",
 		},
 		resourceType = "Rock",
 		crackStages = 3,
@@ -81,7 +83,7 @@ local Variants = {
 
 	["Gold Ore"] = {
 		meshes = {
-			["GoldOre_Default"] = "rbxassetid://FILL_GOLDORE_DEFAULT",
+			["GoldOre_Default"] = "rbxassetid://105153259339546",
 		},
 		resourceType = "Gold Ore",
 		glowColor = Color3.fromRGB(255, 215, 0),
