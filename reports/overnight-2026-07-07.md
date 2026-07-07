@@ -7,7 +7,7 @@
 | Quests | 68 defined |
 | Chains | 6 active |
 | Scatter biomes | 5 configured |
-| Asset IDs | 161 total |
+| Asset IDs | 181 total |
 | Scripts | 43S + 43C + 70M |
 | WaitForChild unsafe | 232 |
 | Placeholder IDs | 0 |
@@ -87,4 +87,4 @@ None
 ✅ Passed
 
 ---
-Generated: 2026-07-07T18:34:55.891Z
+Generated: 2026-07-07T18:52:06.654Z
