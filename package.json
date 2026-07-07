@@ -12,7 +12,9 @@
     "lint:stylua": "npx stylua-bin --check src",
     "rojo:build": "rojo build default.project.json -o workspace/Zundamons-kItchen.rbxl",
     "rojo:serve": "rojo serve default.project.json",
-    "validate": "node scripts/validate-structure.mjs"
+    "validate": "node scripts/validate-structure.mjs",
+    "overnight": "node scripts/overnight-build.mjs",
+    "overnight:ps": "powershell -File scripts/overnight.ps1"
   },
   "version": "0.2.0"
 }
