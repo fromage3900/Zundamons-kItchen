@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zundamon's Kitchen - UI Preview</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/inputs.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/panels.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🫛 Zundamon's Kitchen UI Preview</h1>
+            <p>Design System Component Library</p>
+        </header>
+
+        <!-- Color Palette -->
+        <section class="section">
+            <h2>Color Palette</h2>
+            <div class="color-grid">
+                <div class="color-swatch" style="background-color: #7CB87C;">
+                    <span>Primary Green</span>
+                    <small>#7CB87C</small>
+                </div>
+                <div class="color-swatch" style="background-color: #A8D4A3;">
+                    <span>Primary Light</span>
+                    <small>#A8D4A3</small>
+                </div>
+                <div class="color-swatch" style="background-color: #5A9A5A;">
+                    <span>Primary Dark</span>
+                    <small>#5A9A5A</small>
+                </div>
+                <div class="color-swatch" style="background-color: #D4B896;">
+                    <span>Wood Light</span>
+                    <small>#D4B896</small>
+                </div>
+                <div class="color-swatch" style="background-color: #FCF8F0;">
+                    <span>Cream White</span>
+                    <small>#FCF8F0</small>
+                </div>
+                <div class="color-swatch" style="background-color: #2D2D2D;">
+                    <span>Text Primary</span>
+                    <small>#2D2D2D</small>
+                </div>
+                <div class="color-swatch" style="background-color: #7ED97E;">
+                    <span>Success</span>
+                    <small>#7ED97E</small>
+                </div>
+                <div class="color-swatch" style="background-color: #FFCF50;">
+                    <span>Warning</span>
+                    <small>#FFCF50</small>
+                </div>
+                <div class="color-swatch" style="background-color: #FF7878;">
+                    <span>Error</span>
+                    <small>#FF7878</small>
+                </div>
+                <div class="color-swatch" style="background-color: #FFCF50;">
+                    <span>Legendary</span>
+                    <small>#FFCF50</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buttons -->
+        <section class="section">
+            <h2>Buttons</h2>
+            <div class="button-group">
+                <button class="button-primary">Cook Recipe</button>
+                <button class="button-primary button-large">Large Button</button>
+                <button class="button-primary button-small">Small</button>
+            </div>
+            <div class="button-group">
+                <button class="button-secondary">Cancel</button>
+                <button class="button-secondary button-large">Large Secondary</button>
+                <button class="button-secondary button-small">Small</button>
+            </div>
+            <div class="button-group">
+                <button class="button-primary button-destructive">Delete</button>
+                <button class="button-primary button-icon-only">🫛</button>
+            </div>
+        </section>
+
+        <!-- Inputs -->
+        <section class="section">
+            <h2>Inputs</h2>
+            <div class="input-group">
+                <input type="text" class="text-input" placeholder="Enter text...">
+                <input type="text" class="text-input" value="Focused input" style="border-color: #7CB87C;">
+                <input type="text" class="text-input error" value="Error state">
+                <input type="text" class="text-input disabled" value="Disabled" disabled>
+            </div>
+            <div class="input-group">
+                <textarea class="text-area" placeholder="Enter description..."></textarea>
+            </div>
+        </section>
+
+        <!-- Recipe Cards -->
+        <section class="section">
+            <h2>Recipe Cards</h2>
+            <div class="card-grid">
+                <div class="recipe-card">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Vegetable Soup</h3>
+                        <p>A warm and comforting soup</p>
+                        <div class="rarity-badge epic">Epic</div>
+                    </div>
+                </div>
+                <div class="recipe-card hover">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Vegetable Soup</h3>
+                        <p>A warm and comforting soup</p>
+                        <div class="rarity-badge epic">Epic</div>
+                    </div>
+                </div>
+                <div class="recipe-card selected">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Vegetable Soup</h3>
+                        <p>A warm and comforting soup</p>
+                        <div class="rarity-badge epic">Epic</div>
+                    </div>
+                </div>
+                <div class="recipe-card locked">
+                    <div class="card-image"></div>
+                    <div class="card-content">
+                        <h3>Vegetable Soup</h3>
+                        <p>A warm and comforting soup</p>
+                        <div class="rarity-badge epic">Epic</div>
+                    </div>
+                    <div class="lock-icon">🔒</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panels -->
+        <section class="section">
+            <h2>Panels</h2>
+            <div class="panel-grid">
+                <div class="info-panel">
+                    <h3>Recipe Information</h3>
+                    <p>This panel displays detailed information about recipes, including ingredients, cooking time, and difficulty level.</p>
+                </div>
+                <div class="modal-window">
+                    <div class="modal-header">
+                        <h3>Cooking Complete!</h3>
+                    </div>
+                    <div class="modal-content">
+                        <p>Your vegetable soup is ready! You've earned 50 XP and discovered a new ingredient.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="button-primary">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cooking Minigame Preview -->
+        <section class="section">
+            <h2>Cooking Minigame</h2>
+            <div class="cooking-minigame">
+                <div class="cooking-panel">
+                    <div class="cooking-header">
+                        <h3>🫛 Cooking: Vegetable Soup</h3>
+                        <div class="score-display">Perfect 0/4</div>
+                    </div>
+                    <div class="cooking-hint">✨ Press SPACE or click COOK when each pea reaches the ring ✨</div>
+                    <div class="progress-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="cooking-track">
+                        <div class="track-line"></div>
+                        <div class="hit-ring">
+                            <div class="perfect-ring"></div>
+                        </div>
+                        <div class="pea-note" style="left: 20%;">🫛</div>
+                        <div class="pea-note" style="left: 50%;">🫛</div>
+                    </div>
+                    <button class="cook-button">🫛 COOK! 🫛</button>
+                    <div class="result-label"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HUD Preview -->
+        <section class="section">
+            <h2>HUD Elements</h2>
+            <div class="hud-preview">
+                <div class="chef-pill">
+                    <div class="badge">🌱</div>
+                    <div class="tier-label">Apprentice · Lv 5</div>
+                    <div class="xp-bar">
+                        <div class="xp-fill" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div class="combo-meter">
+                    <div class="combo-count">3 COMBO</div>
+                    <div class="combo-mult">x2.5</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

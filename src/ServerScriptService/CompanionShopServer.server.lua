@@ -3,14 +3,27 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local RS = game.ReplicatedStorage
-local RE = RS:WaitForChild("RemoteEvents")
-local RF = RS:WaitForChild("RemoteFunctions")
+local RE = RS:FindFirstChild("RemoteEvents") or RS:WaitForChild("RemoteEvents", 10)
+if not RE then warn("[CompanionShop] RemoteEvents missing"); return end
+local RF = RS:FindFirstChild("RemoteFunctions") or RS:WaitForChild("RemoteFunctions", 10)
+if not RF then warn("[CompanionShop] RemoteFunctions missing"); return end
 
-local PurchaseCompanion = RE:WaitForChild("PurchaseCompanion")
-local CompanionOwnedSync = RE:WaitForChild("CompanionOwnedSync")
-local SetCompanionRE = RE:WaitForChild("SetCompanion")
-local GetCompanionCatalog = RF:WaitForChild("GetCompanionCatalog")
-local GetOwnedCompanions = RF:WaitForChild("GetOwnedCompanions")
+local function ensureRemote(name, className)
+	local r = RE:FindFirstChild(name)
+	if not r then r = Instance.new(className or "RemoteEvent"); r.Name = name; r.Parent = RE end
+	return r
+end
+local function ensureFunc(name)
+	local r = RF:FindFirstChild(name)
+	if not r then r = Instance.new("RemoteFunction"); r.Name = name; r.Parent = RF end
+	return r
+end
+
+local PurchaseCompanion = ensureRemote("PurchaseCompanion")
+local CompanionOwnedSync = ensureRemote("CompanionOwnedSync")
+local SetCompanionRE = ensureRemote("SetCompanion")
+local GetCompanionCatalog = ensureFunc("GetCompanionCatalog")
+local GetOwnedCompanions = ensureFunc("GetOwnedCompanions")
 
 -- Placeholder DevProduct IDs (replace with real IDs after creating in Roblox Studio's Asset Manager)
 -- Pattern: each companion has its own DevProduct.

@@ -63,8 +63,10 @@ local COMPANIONS = {
 shared.ZundaCompanionCatalog = COMPANIONS
 
 -- ── RemoteEvents ───────────────────────────────────────────────
-local RE      = RS:WaitForChild("RemoteEvents")
-local setCompEv = RE:WaitForChild("SetCompanion")
+local RE      = RS:FindFirstChild("RemoteEvents") or RS:WaitForChild("RemoteEvents", 10)
+if not RE then warn("[CompanionManager] RemoteEvents not found"); return end
+local setCompEv = RE:FindFirstChild("SetCompanion")
+if not setCompEv then setCompEv = Instance.new("RemoteEvent"); setCompEv.Name = "SetCompanion"; setCompEv.Parent = RE end
 local vnEv    = RE:FindFirstChild("OpenCompanionVN")
 if not vnEv then
     vnEv = Instance.new("RemoteEvent"); vnEv.Name="OpenCompanionVN"; vnEv.Parent=RE

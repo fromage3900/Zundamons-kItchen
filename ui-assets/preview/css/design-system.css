@@ -1,0 +1,208 @@
+/* Zundamon's Kitchen - Design System Base Styles */
+/* Based on cozy, whimsical aesthetic for farming & cooking game */
+
+:root {
+  /* Primary Colors */
+  --primary-green: #7CB87C;
+  --primary-green-light: #A8D4A3;
+  --primary-green-dark: #5A9A5A;
+  --primary-green-deep: #3D7A3D;
+  
+  /* Leaf Greens */
+  --leaf-green: #8FC98F;
+  --leaf-green-light: #B8E0B8;
+  --leaf-green-dark: #6EAF6E;
+  
+  /* Wood Colors */
+  --wood-light: #D4B896;
+  --wood-default: #C4B494;
+  --wood-dark: #A89070;
+  
+  /* Background Colors */
+  --cream-white: #FCF8F0;
+  --cream-light: #FFFAF5;
+  --cream-dark: #F8F0E6;
+  
+  /* Text Colors */
+  --text-primary: #2D2D2D;
+  --text-secondary: #4D4D4D;
+  --text-tertiary: #6E6E6E;
+  --text-disabled: #909090;
+  --text-white: #FFFFFF;
+  
+  /* Semantic Colors */
+  --success: #7ED97E;
+  --warning: #FFCF50;
+  --error: #FF7878;
+  --info: #78B8F8;
+  
+  /* Rarity Colors */
+  --rarity-common: #A8A8A8;
+  --rarity-uncommon: #7ED97E;
+  --rarity-rare: #78B8F8;
+  --rarity-epic: #B89FF7;
+  --rarity-legendary: #FFCF50;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Border Radius */
+  --radius-pill: 24px;
+  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 300ms ease-out;
+  --transition-slow: 500ms ease-out;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', 'Gotham', sans-serif;
+  background-color: #F5F0E8;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background: linear-gradient(135deg, var(--cream-white) 0%, var(--cream-light) 100%);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--wood-light);
+}
+
+.header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 48px;
+  color: var(--primary-green-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.header p {
+  font-size: 18px;
+  color: var(--text-secondary);
+}
+
+/* Section */
+.section {
+  margin-bottom: var(--spacing-xxl);
+  padding: var(--spacing-xl);
+  background-color: var(--cream-white);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--wood-light);
+}
+
+.section h2 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 28px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--wood-light);
+  padding-bottom: var(--spacing-sm);
+}
+
+/* Color Grid */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.color-swatch {
+  aspect-ratio: 1;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-white);
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-fast);
+}
+
+.color-swatch:hover {
+  transform: scale(1.05);
+}
+
+.color-swatch small {
+  font-size: 10px;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Panel Grid */
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* Utility Classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
