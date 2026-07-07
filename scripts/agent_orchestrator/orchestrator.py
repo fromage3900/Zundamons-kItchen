@@ -56,17 +56,26 @@ class ZundaOrchestrator:
     def decompose(self, task: str) -> list[dict]:
         self.log_msg(f"Decomposing: {task[:80]}...")
         result = self.call_llm(task, ORCHESTRATOR_PROMPT, fmt="json")
+        import re
         try:
-            subtasks = json.loads(result)
-            self.log_msg(f"  -> {len(subtasks)} subtasks")
-            return subtasks
+            arr_match = re.search(r'\[.*?\]', result, re.DOTALL)
+            if arr_match:
+                subtasks = json.loads(arr_match.group())
+            else:
+                subtasks = json.loads(result)
+            if isinstance(subtasks, list) and len(subtasks) > 0:
+                self.log_msg(f"  -> {len(subtasks)} subtasks")
+                return subtasks
         except:
-            self.log_msg(f"  -> Failed to parse, running directly")
-            return [{"agent": "research", "task": task}]
+            pass
+        self.log_msg(f"  -> Running directly")
+        return [{"agent": "research", "task": task}]
 
-    def execute_subtask(self, subtask: dict, depth: int = 0) -> dict:
-        agent_type = subtask.get("agent", "research")
-        task = subtask.get("task", "")
+    def execute_subtask(self, subtask, depth: int = 0) -> dict:
+        if isinstance(subtask, str):
+            subtask = {"agent": "research", "task": subtask}
+        agent_type = subtask.get("agent", "research") if isinstance(subtask, dict) else "research"
+        task = subtask.get("task", "") if isinstance(subtask, dict) else str(subtask)
         result = {"agent": agent_type, "task": task, "depth": depth}
 
         if depth >= MAX_RECURSION_DEPTH:
@@ -156,6 +165,8 @@ class ZundaOrchestrator:
         subtasks = self.decompose(task_description)
         results = []
         for st in subtasks:
+            if isinstance(st, str):
+                st = {"agent": "research", "task": st}
             r = self.execute_subtask(st)
             results.append(r)
 
