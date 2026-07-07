@@ -97,13 +97,16 @@ local function setupTeleporterPad(padName)
         return
     end
     
-    -- Connect click event - for now, teleport to first destination
-    -- In full version, this would show a GUI with destination options
+    -- Click teleporter pad → show destination picker on client
     clickDetector.MouseClick:Connect(function(player)
-        -- Teleport to first available destination as demo
-        if padConfig.destinations and #padConfig.destinations > 0 then
-            local destZone = padConfig.destinations[1]
-            teleportToZone(player, padName, destZone)
+        local RE = game.ReplicatedStorage:WaitForChild("RemoteEvents")
+        local showTeleportUI = RE:FindFirstChild("ShowTeleportPicker")
+        if showTeleportUI then
+            showTeleportUI:FireClient(player, {
+                padName = padName,
+                displayName = padConfig.displayName or padName,
+                destinations = padConfig.destinations or {},
+            })
         end
     end)
     
@@ -114,6 +117,25 @@ end
 for padName, _ in pairs(TeleporterConfig.pads) do
     setupTeleporterPad(padName)
 end
+
+-- Global teleport request handler (outside pad loop)
+local RE = game.ReplicatedStorage:WaitForChild("RemoteEvents")
+local teleportFunc = RE:FindFirstChild("RequestTeleport")
+if not teleportFunc then
+    teleportFunc = Instance.new("RemoteEvent")
+    teleportFunc.Name = "RequestTeleport"
+    teleportFunc.Parent = RE
+end
+teleportFunc.OnServerEvent:Connect(function(player, padName, destZone)
+    if typeof(padName) ~= "string" or typeof(destZone) ~= "string" then return end
+    local padConfig = TeleporterConfig.pads[padName]
+    if not padConfig then return end
+    local valid = false
+    for _, d in ipairs(padConfig.destinations or {}) do if d == destZone then valid = true; break end end
+    if valid then
+        teleportToZone(player, padName, destZone)
+    end
+end)
 
 print("✓ TeleporterManager initialized")
 
