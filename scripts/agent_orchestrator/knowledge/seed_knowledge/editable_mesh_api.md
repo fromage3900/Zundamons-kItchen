@@ -1,0 +1,14 @@
+# EditableMesh API Summary
+- Create: AssetService:CreateEditableMesh() or CreateEditableMeshAsync(content, {FixedSize=false})
+- Vertices: AddVertex(Vector3), GetVertices(), SetPosition(id, pos), GetPosition(id)
+- Triangles: AddTriangle(v1, v2, v3) → faceId, GetFaces(), RemoveFace(id)
+- Normals: AddNormal(vec3?), SetFaceNormals(faceId, {nid,nid,nid}), ResetNormal(id)
+- UVs: AddUV(Vector2), SetFaceUVs(faceId, {uvid,uvid,uvid})
+- Colors: AddColor(Color3, alpha), SetFaceColors(faceId, {cid,cid,cid})
+- Merge: MergeVertices(tolerance) → {oldId→newId}
+- Cleanup: RemoveUnused()
+- Display: CreateMeshPartAsync(Content.fromObject(mesh), {CollisionFidelity=Hull})
+- Update existing: newPart = CreateMeshPartAsync(...); existing:ApplyMesh(newPart); newPart:Destroy()
+- Bake static: CreateDataModelContentAsync(Content.fromObject(mesh)) → content
+- Limits: 60k vertices, 20k triangles
+- Env: Requires Game Settings > Security > Allow Mesh & Image APIs

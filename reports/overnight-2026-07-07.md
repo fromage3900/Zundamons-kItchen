@@ -7,9 +7,9 @@
 | Quests | 68 defined |
 | Chains | 6 active |
 | Scatter biomes | 5 configured |
-| Asset IDs | 206 total |
-| Scripts | 41S + 42C + 55M |
-| WaitForChild unsafe | 236 |
+| Asset IDs | 205 total |
+| Scripts | 43S + 43C + 69M |
+| WaitForChild unsafe | 232 |
 | Placeholder IDs | 0 |
 | Errors | 0 |
 | Warnings | 1 |
@@ -46,7 +46,7 @@
 None
 
 ## Warnings
-- [WARN] 236 WaitForChild calls without timeout — potential startup hangs
+- [WARN] 232 WaitForChild calls without timeout — potential startup hangs
 
 ## Quest Types
 - serve
@@ -87,4 +87,4 @@ None
 ✅ Passed
 
 ---
-Generated: 2026-07-07T05:59:31.700Z
+Generated: 2026-07-07T07:33:55.865Z
