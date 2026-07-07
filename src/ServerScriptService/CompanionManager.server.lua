@@ -16,7 +16,7 @@ local COMPANION_MESHES = {
     sakuradamon = "rbxassetid://128478553136178",
 }
 
-local DEFAULT_COMPANION_MESH = "rbxassetid://113753628820808"
+local DEFAULT_COMPANION_MESH = "rbxassetid://103182526409237"
 
 -- ── Companion catalog ──────────────────────────────────────────
 local COMPANIONS = {
