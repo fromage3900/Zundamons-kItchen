@@ -111,11 +111,10 @@ async function main() {
 		findings.notes.push(`Procedural-related files: ${proceduralMatches.join(', ')}`);
 	}
 
-	// save report
+	// save report (do not commit this artifact)
 	try {
 		fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
 		fs.writeFileSync(REPORT_PATH, JSON.stringify(findings, null, 2) + '\n', 'utf8');
-		if (!modified.includes(REPORT_PATH)) modified.push(REPORT_PATH);
 	} catch (err) {
 		console.error('Failed to write report', err.message);
 	}
