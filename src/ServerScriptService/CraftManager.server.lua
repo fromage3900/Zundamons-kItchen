@@ -70,13 +70,13 @@ local function craftItem(player, item, position, quality)
         end
     end
 
-    -- Award the crafted dish as a world drop
-    loot_module.generateLoot(player, {item}, position)
+    -- Award the crafted dish as a world drop (with quality attribute)
+    loot_module.generateLoot(player, {item}, position, quality)
 
     -- Perfect bonus: small chance at an extra dish
     local bonus = QUALITY_BONUS[quality]
     if bonus.extraChance > 0 and math.random() < bonus.extraChance then
-        loot_module.generateLoot(player, {item}, position + Vector3.new(0, 1, 0))
+        loot_module.generateLoot(player, {item}, position + Vector3.new(0, 1, 0), quality)
     end
 
     -- Bonus gold for great/perfect timing (combo-multiplied)

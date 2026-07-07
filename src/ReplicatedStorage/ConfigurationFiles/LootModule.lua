@@ -136,12 +136,13 @@ function loot_module.lootMaker(totalLoot)
 	return selLoot
 end
 
-function loot_module.generateLoot(player, loottable, position)
+function loot_module.generateLoot(player, loottable, position, quality)
+	-- quality: optional string ("perfect", "great", "ok") for crafted food
 	for i = 1, #loottable do
 		local generatedCode = tick() .. "" .. math.random(600, 10000000)
 		local obj = loottable[i]
 		StoreCode(player, generatedCode, obj)
-		MakeLootEvent:FireClient(player, obj, position, generatedCode)
+		MakeLootEvent:FireClient(player, obj, position, generatedCode, quality)
 	end
 end
 

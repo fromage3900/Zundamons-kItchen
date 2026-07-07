@@ -6,7 +6,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 
 local NPCConfig = require(ReplicatedStorage.Shared.Config.NPCConfig)
-local PlayerDataService = require(ReplicatedStorage:WaitForChild("RemoteFunctions"):WaitForChild("GetPlayerData"))
+local RF = ReplicatedStorage:WaitForChild("RemoteFunctions")
+local purchaseRF = RF:WaitForChild("PurchaseGoldCompanion")
 
 -- Create shop UI
 local screenGui = Instance.new("ScreenGui")
@@ -73,7 +74,11 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	buffLabel.Size = UDim2.new(1, -20, 0, 20)
 	buffLabel.Position = UDim2.new(0, 10, 0, 35)
 	buffLabel.BackgroundTransparency = 1
-	buffLabel.Text = "Buff: " .. (companion.buff or "none") .. " | Level: " .. (companion.levelRequired or 1)
+	if companion.buff and type(companion.buff) == "table" then
+		buffLabel.Text = "Buff: " .. companion.buff.stat .. " | Level: " .. (companion.levelRequired or 1)
+	else
+		buffLabel.Text = "Buff: none | Level: " .. (companion.levelRequired or 1)
+	end
 	buffLabel.TextColor3 = Color3.fromRGB(120, 100, 150)
 	buffLabel.Font = Enum.Font.Gotham
 	buffLabel.TextScaled = true
@@ -92,8 +97,16 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	Instance.new("UICorner", buyBtn).CornerRadius = UDim.new(0, 4)
 
 	buyBtn.MouseButton1Click:Connect(function()
-		-- TODO: Wire to RemoteFunction purchase endpoint
-		print("[CompanionGoldShop] Purchasing " .. name .. " for " .. companion.price .. " gold")
+		local ok, msg = purchaseRF:InvokeServer(name)
+		if ok then
+			print("[CompanionGoldShop] Purchased " .. name .. "!")
+			buyBtn.Text = "Owned!"
+			buyBtn.BackgroundColor3 = Color3.fromRGB(180, 220, 180)
+		else
+			print("[CompanionGoldShop] Purchase failed: " .. tostring(msg))
+			buyBtn.Text = "Failed"
+			buyBtn.BackgroundColor3 = Color3.fromRGB(220, 100, 100)
+		end
 	end)
 
 	yPos = yPos + 90

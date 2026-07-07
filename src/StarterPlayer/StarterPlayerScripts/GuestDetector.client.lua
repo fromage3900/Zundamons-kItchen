@@ -36,6 +36,20 @@ local function findNearbyGuest()
 	return closestGuest
 end
 
+-- Get the food item the player is holding (checks backpack/inventory)
+local function getHeldFoodItem()
+	-- Check if player is holding a food item in their character
+	local char = player.Character
+	if char then
+		local tool = char:FindFirstChildOfClass("Tool")
+		if tool and tool:GetAttribute("Recipe") then
+			return tool.Name, tool:GetAttribute("Quality")
+		end
+	end
+	-- Fallback: check for food item near player (from loot drop)
+	return nil, nil
+end
+
 -- Handle mouse click on a guest - server checks if player has the guest's desired recipe
 local function onMouseClick()
 	if not nearbyGuest or not nearbyGuest.Parent then return end
@@ -43,8 +57,15 @@ local function onMouseClick()
 	local recipe = nearbyGuest:GetAttribute("PreferredRecipe")
 	if not recipe then return end
 	
-	-- Send the recipe name; server validates whether player has it in _G.data
-	local success, message = serveGuestRF:InvokeServer(nearbyGuest, recipe)
+	-- Get food item with quality
+	local foodItem, quality = getHeldFoodItem()
+	if not foodItem then
+		-- Try to get recipe from player data without quality
+		foodItem = recipe
+	end
+	
+	-- Send the recipe name and quality; server validates and applies multiplier
+	local success, message = serveGuestRF:InvokeServer(nearbyGuest, foodItem, quality)
 	if success then
 		print("Guest served! " .. tostring(message))
 		nearbyGuest = nil

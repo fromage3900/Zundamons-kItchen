@@ -40,6 +40,212 @@ LandscapeConfig.biomes = {
 			maxClusterSize = 5,
 		},
 	},
+	ZundaMarket = {
+		name = "ZundaMarket",
+		description = "A busy market square with stalls, lanterns, and food vendors.",
+		seed = 77,
+		zones = {
+			{ name = "MarketSquare", type = "central", size = 20, weight = 1.0, maxBuildings = 3, spawnProfile = "market_square" },
+			{ name = "VendorRow", type = "street", size = 18, weight = 0.95, maxBuildings = 4, spawnProfile = "vendor_row" },
+			{ name = "MarketGarden", type = "garden", size = 16, weight = 0.75, maxBuildings = 1, spawnProfile = "market_garden" },
+		},
+		assetProfiles = {
+			market_square = {
+				{ asset = "MarketHall", category = "buildings", weight = 0.8, required = true },
+				{ asset = "BakeryStall", category = "buildings", weight = 0.75 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.85 },
+				{ asset = "Bench", category = "street_props", weight = 0.65 },
+			},
+			vendor_row = {
+				{ asset = "BakeryStall", category = "buildings", weight = 0.9 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.8 },
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+			},
+			market_garden = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.95 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.75 },
+			},
+		},
+		constraints = {
+			pathSpacing = 5,
+			minBuildingGap = 7,
+			maxClusterSize = 6,
+		},
+	},
+	Promenade = {
+		name = "Promenade",
+		description = "A long scenic promenade lined with lights, benches, and decorative shrubs.",
+		seed = 91,
+		zones = {
+			{ name = "MainWalk", type = "street", size = 24, weight = 1.0, maxBuildings = 2, spawnProfile = "walk" },
+			{ name = "GardenNook", type = "garden", size = 16, weight = 0.8, maxBuildings = 1, spawnProfile = "nook" },
+			{ name = "ViewingPoint", type = "central", size = 14, weight = 0.7, maxBuildings = 1, spawnProfile = "view" },
+		},
+		assetProfiles = {
+			walk = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.95, required = true },
+				{ asset = "Bench", category = "street_props", weight = 0.9 },
+			},
+			nook = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.9 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.8 },
+			},
+			view = {
+				{ asset = "Bench", category = "street_props", weight = 0.8 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.75 },
+			},
+		},
+		constraints = {
+			pathSpacing = 4,
+			minBuildingGap = 6,
+			maxClusterSize = 4,
+		},
+	},
+	Forest = {
+		name = "Forest",
+		description = "A dense forest edge with winding paths, mushrooms, and hidden clearings.",
+		seed = 112,
+		zones = {
+			{ name = "CanopyEdge", type = "garden", size = 22, weight = 1.0, maxBuildings = 1, spawnProfile = "canopy" },
+			{ name = "MushroomRing", type = "path", size = 18, weight = 0.85, maxBuildings = 0, spawnProfile = "mushroom" },
+			{ name = "HiddenClearing", type = "central", size = 16, weight = 0.75, maxBuildings = 1, spawnProfile = "clearing" },
+		},
+		assetProfiles = {
+			canopy = {
+				{ asset = "ZundaMushroom", category = "foliage", weight = 0.95 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.7 },
+			},
+			mushroom = {
+				{ asset = "ZundaMushroom", category = "foliage", weight = 0.9 },
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.6 },
+			},
+			clearing = {
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.55 },
+			},
+		},
+		constraints = {
+			pathSpacing = 4,
+			minBuildingGap = 6,
+			maxClusterSize = 7,
+		},
+	},
+	BerryOrchard = {
+		name = "BerryOrchard",
+		description = "A bright berry orchard with winding rows, fruit clusters, and picnic nooks.",
+		seed = 123,
+		zones = {
+			{ name = "FruitRows", type = "garden", size = 20, weight = 1.0, maxBuildings = 1, spawnProfile = "rows" },
+			{ name = "PicnicNook", type = "central", size = 14, weight = 0.8, maxBuildings = 1, spawnProfile = "picnic" },
+			{ name = "PathEdge", type = "path", size = 16, weight = 0.75, maxBuildings = 0, spawnProfile = "edge" },
+		},
+		assetProfiles = {
+			rows = {
+				{ asset = "BerryBush", category = "foliage", weight = 0.95 },
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.8 },
+			},
+			picnic = {
+				{ asset = "Bench", category = "street_props", weight = 0.9 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.6 },
+			},
+			edge = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.75 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.7 },
+			},
+		},
+		constraints = {
+			pathSpacing = 5,
+			minBuildingGap = 6,
+			maxClusterSize = 5,
+		},
+	},
+	MeadowPlaza = {
+		name = "MeadowPlaza",
+		description = "A bright meadow plaza with open lawns, flower beds, and social gathering space.",
+		seed = 134,
+		zones = {
+			{ name = "CenterStage", type = "central", size = 18, weight = 1.0, maxBuildings = 2, spawnProfile = "center" },
+			{ name = "FlowerBeds", type = "garden", size = 20, weight = 0.9, maxBuildings = 1, spawnProfile = "flowers" },
+			{ name = "LanternWalk", type = "street", size = 16, weight = 0.8, maxBuildings = 2, spawnProfile = "lanterns" },
+		},
+		assetProfiles = {
+			center = {
+				{ asset = "Bench", category = "street_props", weight = 0.9, required = true },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.8 },
+			},
+			flowers = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.95 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.65 },
+			},
+			lanterns = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.95 },
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+			},
+		},
+		constraints = {
+			pathSpacing = 5,
+			minBuildingGap = 7,
+			maxClusterSize = 6,
+		},
+	},
+	SunsetGrove = {
+		name = "SunsetGrove",
+		description = "A warm sunset grove with soft lighting, benches, and layered shrubs.",
+		seed = 145,
+		zones = {
+			{ name = "GroveCenter", type = "central", size = 16, weight = 1.0, maxBuildings = 1, spawnProfile = "grove" },
+			{ name = "ShrubRing", type = "garden", size = 20, weight = 0.85, maxBuildings = 1, spawnProfile = "shrubs" },
+			{ name = "GlowPath", type = "street", size = 18, weight = 0.8, maxBuildings = 2, spawnProfile = "glow" },
+		},
+		assetProfiles = {
+			grove = {
+				{ asset = "Bench", category = "street_props", weight = 0.8 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.8 },
+			},
+			shrubs = {
+				{ asset = "BerryBush", category = "foliage", weight = 0.9 },
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.75 },
+			},
+			glow = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.95 },
+				{ asset = "Bench", category = "street_props", weight = 0.75 },
+			},
+		},
+		constraints = {
+			pathSpacing = 4,
+			minBuildingGap = 6,
+			maxClusterSize = 5,
+		},
+	},
+	MoonlitGarden = {
+		name = "MoonlitGarden",
+		description = "A serene moonlit garden with soft flora, lantern paths, and reflective clearings.",
+		seed = 156,
+		zones = {
+			{ name = "MoonClearing", type = "central", size = 16, weight = 1.0, maxBuildings = 1, spawnProfile = "moon" },
+			{ name = "LanternPath", type = "street", size = 18, weight = 0.9, maxBuildings = 2, spawnProfile = "lanternpath" },
+			{ name = "BloomRing", type = "garden", size = 20, weight = 0.85, maxBuildings = 0, spawnProfile = "bloom" },
+		},
+		assetProfiles = {
+			moon = {
+				{ asset = "Bench", category = "street_props", weight = 0.8 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.9 },
+			},
+			lanternpath = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.95 },
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+			},
+			bloom = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.95 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.75 },
+			},
+		},
+		constraints = {
+			pathSpacing = 4,
+			minBuildingGap = 6,
+			maxClusterSize = 6,
+		},
+	},
 }
 
 function LandscapeConfig.getBiome(name)

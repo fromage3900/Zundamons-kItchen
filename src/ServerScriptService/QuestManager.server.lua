@@ -131,6 +131,13 @@ local function checkDailyLogin(player)
 		end
 
 		d.gold = (d.gold or 0) + goldReward
+		d.chef = d.chef or { level = 1, xp = 0 }
+		d.chef.xp = (d.chef.xp or 0) + xpReward
+
+		-- Apply companion buff duration
+		if buffDuration > 0 then
+			d.active_buff = os.time() + buffDuration
+		end
 
 		print("[QuestManager] Daily login streak " .. streak .. " for " .. player.Name .. " (+" .. goldReward .. "g)")
 	end

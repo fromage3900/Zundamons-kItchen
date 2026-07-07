@@ -61,7 +61,7 @@ function PlacementRules.filterBySpacing(candidates, existing, spacing)
 	return filtered
 end
 
-function PlacementRules.selectAssets(profile, count)
+function PlacementRules.selectAssets(profile)
 	local selected = {}
 
 	for _, entry in ipairs(profile or {}) do
