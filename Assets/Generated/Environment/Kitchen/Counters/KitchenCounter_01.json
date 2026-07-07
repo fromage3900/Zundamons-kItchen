@@ -1,0 +1,13 @@
+{
+  "color": "#8B6514",
+  "depth": 2.5,
+  "description": "Wood counter, green trim",
+  "export_path": "Environment/Kitchen/Counters/",
+  "height": 1,
+  "id": "KitchenCounter_01",
+  "length": 4,
+  "triangles": 12,
+  "trim_color": "#78C882",
+  "type": "counter",
+  "vertices": 24
+}

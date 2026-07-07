@@ -1,0 +1,16 @@
+{
+  "color": "#82D68C",
+  "description": "Medium open pea pod",
+  "export_path": "HarvestNodes/ZundaPea/",
+  "id": "ZundaPea_02",
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.030Z"
+  },
+  "opened": true,
+  "peas_visible": true,
+  "pod_size": 1,
+  "triangles": 78,
+  "type": "pea_pod",
+  "vertices": 124
+}

@@ -1,0 +1,16 @@
+{
+  "color": "#78C882",
+  "description": "Standard Zunda flower",
+  "export_path": "HarvestNodes/ZundaFlower/",
+  "glow": false,
+  "id": "ZundaFlower_Default",
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.026Z"
+  },
+  "petal_count": 5,
+  "stem_height": 1.2,
+  "triangles": 180,
+  "type": "flower",
+  "vertices": 240
+}

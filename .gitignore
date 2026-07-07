@@ -1,24 +1,24 @@
-# Local build outputs
-/workspace/
+# Repo root hygiene
+source/
 *.rbxl
 *.rbxlx
+
+# Block .rbxmx everywhere except assets/studio/ (intentional model exports)
 *.rbxmx
+!assets/studio/**/*.rbxmx
+!assets/studio/**/*.rbxm
+extract_scripts.py
+rojo.zip
 
 # OS/editor
 .DS_Store
 .idea/
 
-# CI artifacts
-/artifacts/
-
 # Node
 node_modules/
 
-# Temp / generated files
-*.lock
-extract_scripts.py
-rojo.zip
-sourcemap.json
+# CI artifacts
+/artifacts/
 
-# Asset generation outputs
-Assets/Generated/
+# Generated
+sourcemap.json

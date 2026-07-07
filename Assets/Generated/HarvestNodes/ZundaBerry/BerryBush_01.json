@@ -1,0 +1,16 @@
+{
+  "berry_color": "#4A90D9",
+  "berry_count": 5,
+  "bush_radius": 1,
+  "color": "#78C882",
+  "description": "Small blue berry bush",
+  "export_path": "HarvestNodes/ZundaBerry/",
+  "id": "BerryBush_01",
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.025Z"
+  },
+  "triangles": 100,
+  "type": "berry_bush",
+  "vertices": 140
+}

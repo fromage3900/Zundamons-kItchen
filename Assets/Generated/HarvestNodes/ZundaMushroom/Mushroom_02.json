@@ -1,0 +1,16 @@
+{
+  "cap_radius": 0.5,
+  "color": "#FFB5D4",
+  "description": "Tall pink mushroom",
+  "export_path": "HarvestNodes/ZundaMushroom/",
+  "id": "Mushroom_02",
+  "metadata": {
+    "autoReviewed": true,
+    "reviewedAt": "2026-07-07T00:59:46.029Z"
+  },
+  "spot_count": 5,
+  "stem_height": 1.4,
+  "triangles": 90,
+  "type": "mushroom",
+  "vertices": 140
+}
