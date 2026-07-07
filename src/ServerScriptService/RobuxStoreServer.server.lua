@@ -1,6 +1,7 @@
 -- [[Script] RobuxStoreServer]]
 -- Wires MarketplaceService as the sole ProcessReceipt owner.
 local RS = game:GetService("ReplicatedStorage")
+local MPS = game:GetService("MarketplaceService")
 local MarketplaceService = require(script.Parent.Services.MarketplaceService)
 
 -- ── PRODUCT CATALOGUE ────────────────────────────────────────────────────────
@@ -40,6 +41,13 @@ if not promptRF then
 	promptRF = Instance.new("RemoteFunction")
 	promptRF.Name = "PromptRobuxPurchase"
 	promptRF.Parent = RF
+end
+
+-- Wire prompt: client asks to purchase → server opens Roblox purchase dialog
+promptRF.OnServerInvoke = function(player, productId)
+	if not PRODUCTS[productId] then return false end
+	MPS:PromptProductPurchase(player, productId)
+	return true
 end
 
 print("[RobuxStoreServer] Ready — "..#(function() local t={} for k in pairs(PRODUCTS) do t[#t+1]=k end return t end()).." products")

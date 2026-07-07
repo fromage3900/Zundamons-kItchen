@@ -3,7 +3,7 @@
 -- @author Quenty
 -- Last Modified February 3rd, 2014
 
-local Type = print(script.Parent:WaitForChild("Type"))
+local Type = require(script.Parent:WaitForChild("Type"))
 
 local lib = {}
 

@@ -204,6 +204,21 @@ markTut.OnServerInvoke = function(player)
 	return true
 end
 
+-- Periodic auto-save every 60s to prevent data loss on server crash
+task.spawn(function()
+	while true do
+		task.wait(60)
+		for _, player in ipairs(Players:GetPlayers()) do
+			local data = store[tostring(player.UserId)]
+			if data then
+				pcall(function()
+					progressionStore:SetAsync("player_" .. player.UserId, data)
+				end)
+			end
+		end
+	end
+end)
+
 Players.PlayerAdded:Connect(function(player)
 	PlayerDataService.loadPlayer(player)
 end)

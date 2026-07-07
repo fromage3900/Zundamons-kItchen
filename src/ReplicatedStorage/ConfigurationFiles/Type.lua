@@ -174,7 +174,7 @@ end
 
 function lib.isAnInt(value)
 	-- Returns whether 'value' is an interger or not
-	return type(value) == "number" and value % 1 == 1;
+	return type(value) == "number" and value % 1 == 0;
 end
 
 

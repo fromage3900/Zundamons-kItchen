@@ -63,6 +63,15 @@ ambient.Looped = true
 ambient.Volume = 0
 ambient.Parent = rig
 
+-- Aurora frame (full-screen colored overlay, used for aurora weather only)
+local sg = player:WaitForChild("PlayerGui")
+local auroraGui = Instance.new("ScreenGui")
+auroraGui.Name = "AuroraOverlay"
+auroraGui.IgnoreGuiInset = true
+auroraGui.DisplayOrder = -10
+auroraGui.ResetOnSpawn = false
+auroraGui.Parent = sg
+
 -- Lightning flash overlay (used during rain/storm at random)
 local lightningFrame = Instance.new("Frame", auroraGui)
 lightningFrame.Name = "LightningFlash"
@@ -72,15 +81,6 @@ lightningFrame.BackgroundTransparency = 1
 lightningFrame.BorderSizePixel = 0
 lightningFrame.ZIndex = -8
 lightningFrame.Visible = true
-
--- Aurora frame (full-screen colored overlay, used for aurora weather only)
-local sg = player:WaitForChild("PlayerGui")
-local auroraGui = Instance.new("ScreenGui")
-auroraGui.Name = "AuroraOverlay"
-auroraGui.IgnoreGuiInset = true
-auroraGui.DisplayOrder = -10
-auroraGui.ResetOnSpawn = false
-auroraGui.Parent = sg
 
 local auroraFrame = Instance.new("Frame", auroraGui)
 auroraFrame.Size = UDim2.new(1, 0, 0.45, 0)

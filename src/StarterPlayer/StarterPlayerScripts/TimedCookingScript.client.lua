@@ -26,21 +26,9 @@ local function getSoundId(assetKey, fallback)
 	return fallback
 end
 
--- Per-recipe difficulty: { noteCount, noteSpeed (sec to cross track) }
-local RECIPES = {
-    ["Bread"]              = { notes = 3, speed = 2.0 },
-    ["Apple Pie"]          = { notes = 4, speed = 1.9 },
-    ["Zunda Bread"]        = { notes = 5, speed = 1.9 },
-    ["Royal Stew"]         = { notes = 5, speed = 1.8 },
-    ["Zunda Mochi"]        = { notes = 5, speed = 1.7 },
-    ["Edamame Snack"]      = { notes = 3, speed = 2.2 },
-    ["Fancy Pie"]          = { notes = 6, speed = 1.6 },
-    ["Zundamon's Banquet"] = { notes = 7, speed = 1.5 },
-    ["Sweet Pea Cake"]     = { notes = 5, speed = 1.7 },
-    ["Pea Flower Tea"]     = { notes = 4, speed = 1.9 },
-    ["Ultimate Feast"]     = { notes = 8, speed = 1.4 },
-    ["Zunda Paradise"]     = { notes = 9, speed = 1.3 },
-}
+-- Per-recipe difficulty comes from shared CraftConfig (server validates against it)
+local CraftConfig = require(RS:WaitForChild("ConfigurationFiles"):WaitForChild("CraftConfig"))
+local RECIPES = CraftConfig.difficulty
 
 -- ── ROOT GUI ────────────────────────────────────────────────────────────
 local cookingGui = playerGui:FindFirstChild("CookingMinigame")
@@ -456,15 +444,12 @@ local function finishCooking()
         resultLabel.TextColor3 = Color3.fromRGB(200, 150, 100)
     end
 
-    local inGreenZone = quality ~= "ok"
-    local perfect = quality == "perfect"
-
     task.delay(2.2, function()
         panel.Visible = false
         backdrop.Visible = false
         if currentOnComplete then
             local cb = currentOnComplete; currentOnComplete = nil
-            cb(inGreenZone, perfect)
+            cb(quality, scores)
         end
     end)
 end

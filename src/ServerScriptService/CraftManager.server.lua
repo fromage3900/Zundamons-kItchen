@@ -34,19 +34,26 @@ local function ensureDataBucket(player)
 	return PlayerDataService.getOrCreate(player)
 end
 
--- Rate limit
+-- Rate limiter: 1 craft per second per player
 local lastCraft = {}
-local function rateLimited(player)
+local function checkRate(player)
 	local now = os.clock()
-	if lastCraft[player] and now - lastCraft[player] < 0.2 then return true end
+	local last = lastCraft[player]
+	if last and now - last < 1 then return false end
 	lastCraft[player] = now
-	return false
+	return true
 end
 
-local function craftItem(player, item, position, quality)
-    if rateLimited(player) then return "Fail" end
-
-    quality = quality or "ok"
+-- Shared quality calc from CraftConfig (replaces trust from client)
+local function craftItem(player, item, position, scores)
+    if not checkRate(player) then return "Fail" end
+    local quality = "ok"
+    if scores and type(scores) == "table" and #scores > 0 then
+        local diff = craftConfig.difficulty[item] or craftConfig.defaultDifficulty
+        if #scores <= diff.notes then
+            quality = craftConfig.calculateQuality(scores, diff.notes)
+        end
+    end
     if not QUALITY_BONUS[quality] then quality = "ok" end
 
     local values = craftData[item]
@@ -153,3 +160,7 @@ local function craftItem(player, item, position, quality)
 end
 
 craftfunction.OnServerInvoke = craftItem
+
+-- Memory cleanup
+local Players = game:GetService("Players")
+Players.PlayerRemoving:Connect(function(p) lastCraft[p] = nil end)

@@ -128,11 +128,11 @@ local function buildRecipeCard(recipe)
 			return
 		end
 
-		-- Helper: send craft to server with a quality tag (perfect/great/ok)
-		local function submitCraft(quality)
+		-- Helper: send craft to server with score data for server-authoritative quality
+		local function submitCraft(quality, scores)
 			craftBtn.Text = "\u{2728}" -- ✨ while server processes
 			local ok, result = pcall(function()
-				return craftFunc:InvokeServer(recipe.name, hrp.Position, quality)
+				return craftFunc:InvokeServer(recipe.name, hrp.Position, scores or {})
 			end)
 			if ok and result == "Success" then
 				if quality == "perfect" then
@@ -160,9 +160,8 @@ local function buildRecipeCard(recipe)
 		-- Run the timed cooking mini-game if available, otherwise fall through
 		if _G.TimedCooking and _G.TimedCooking.start then
 			craftBtn.Text = "Cooking\u{2026}"
-			local started = _G.TimedCooking.start(recipe.name, function(inGreen, perfect)
-				local quality = perfect and "perfect" or inGreen and "great" or "ok"
-				submitCraft(quality)
+			local started = _G.TimedCooking.start(recipe.name, function(quality, scores)
+				submitCraft(quality, scores)
 			end)
 			if not started then
 				craftBtn.Text = "Craft"

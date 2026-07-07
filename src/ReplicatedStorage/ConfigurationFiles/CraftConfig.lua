@@ -63,4 +63,39 @@ craft.cookingTimes = {
 	["Golden Harvest Platter"] = 13
 }
 
+-- Per-recipe minigame difficulty (shared: client spawns notes, server validates)
+craft.difficulty = {
+	["Bread"]              = { notes = 3, speed = 2.0 },
+	["Apple Pie"]          = { notes = 4, speed = 1.9 },
+	["Zunda Bread"]        = { notes = 5, speed = 1.9 },
+	["Royal Stew"]         = { notes = 5, speed = 1.8 },
+	["Zunda Mochi"]        = { notes = 5, speed = 1.7 },
+	["Edamame Snack"]      = { notes = 3, speed = 2.2 },
+	["Fancy Pie"]          = { notes = 6, speed = 1.6 },
+	["Zundamon's Banquet"] = { notes = 7, speed = 1.5 },
+	["Sweet Pea Cake"]     = { notes = 5, speed = 1.7 },
+	["Pea Flower Tea"]     = { notes = 4, speed = 1.9 },
+	["Ultimate Feast"]     = { notes = 8, speed = 1.4 },
+	["Zunda Paradise"]     = { notes = 9, speed = 1.3 },
+}
+craft.defaultDifficulty = { notes = 4, speed = 1.8 }
+
+-- Shared quality calculation from per-note scores (used by client + server)
+function craft.calculateQuality(scores, totalNotes)
+	if #scores < totalNotes then return "ok" end
+	local perfects, greats, hits = 0, 0, 0
+	for _, s in ipairs(scores) do
+		if s.tag == "perfect" then perfects = perfects + 1; hits = hits + 1
+		elseif s.tag == "great" then greats = greats + 1; hits = hits + 1
+		elseif s.tag == "good" then hits = hits + 1 end
+	end
+	if perfects == totalNotes or perfects >= math.ceil(totalNotes * 0.6) then
+		return "perfect"
+	elseif hits >= math.ceil(totalNotes * 0.5) then
+		return "great"
+	else
+		return "ok"
+	end
+end
+
 return craft
