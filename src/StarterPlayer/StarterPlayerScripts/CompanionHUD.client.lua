@@ -4,6 +4,7 @@ local RS = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local UIS = game:GetService("UserInputService")
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local setCompEv = RS.RemoteEvents:WaitForChild("SetCompanion")
 
 local COMPANIONS = shared and shared.ZundaCompanionCatalog or nil
@@ -18,12 +19,12 @@ local bar = Instance.new("Frame", gui)
 bar.Name = "Bar"
 bar.Size = UDim2.new(0, 200, 0, 44)
 bar.Position = UDim2.new(0, 10, 0.7, 0)
-bar.BackgroundColor3 = Color3.fromRGB(30, 24, 40)
+bar.BackgroundColor3 = UIConfig.GAME_COLORS.HUDBg
 bar.BackgroundTransparency = 0.2
 bar.BorderSizePixel = 0
 Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 12)
 local bStroke = Instance.new("UIStroke", bar)
-bStroke.Color = Color3.fromRGB(180, 150, 110)
+bStroke.Color = UIConfig.COLORS.PanelBorder
 bStroke.Thickness = 1.5
 
 local emojiLbl = Instance.new("TextLabel", bar)
@@ -43,7 +44,7 @@ nameLbl.BackgroundTransparency = 1
 nameLbl.Text = "Zundamon"
 nameLbl.Font = Enum.Font.GothamBold
 nameLbl.TextSize = 13
-nameLbl.TextColor3 = Color3.fromRGB(240, 230, 255)
+nameLbl.TextColor3 = UIConfig.GAME_COLORS.HUDText
 nameLbl.TextXAlignment = Enum.TextXAlignment.Left
 
 local buffLbl = Instance.new("TextLabel", bar)
@@ -54,7 +55,7 @@ buffLbl.BackgroundTransparency = 1
 buffLbl.Text = ""
 buffLbl.Font = Enum.Font.Gotham
 buffLbl.TextSize = 11
-buffLbl.TextColor3 = Color3.fromRGB(180, 200, 180)
+buffLbl.TextColor3 = UIConfig.COLORS.TextSecondary
 buffLbl.TextXAlignment = Enum.TextXAlignment.Left
 
 local function updateDisplay(compType)
@@ -68,12 +69,12 @@ local function updateDisplay(compType)
 	if def.buff and def.buff.stat then
 		local mult = def.buff.magnitude or 0
 		if buffDesc ~= "" then
-			buffLbl.TextColor3 = Color3.fromRGB(120, 255, 180)
+			buffLbl.TextColor3 = UIConfig.COLORS.Success
 		else
-			buffLbl.TextColor3 = Color3.fromRGB(180, 200, 180)
+			buffLbl.TextColor3 = UIConfig.COLORS.TextSecondary
 		end
 	else
-		buffLbl.TextColor3 = Color3.fromRGB(180, 200, 180)
+		buffLbl.TextColor3 = UIConfig.COLORS.TextSecondary
 	end
 end
 

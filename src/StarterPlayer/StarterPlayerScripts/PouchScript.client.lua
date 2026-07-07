@@ -16,15 +16,16 @@ local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local UIAssets = require(RS.Shared.Config.UIAssets)
 
 -- ─── COLORS ──────────────────────────────────────────────
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local C = {
-    bg      = Color3.fromRGB(252, 248, 240),
-    panel   = Color3.fromRGB(248, 243, 235),
-    border  = Color3.fromRGB(232, 152, 168),
-    text    = Color3.fromRGB(68,  52,  78),
-    subtext = Color3.fromRGB(140, 120, 140),
-    btnAct  = Color3.fromRGB(232, 152, 168),
-    btnIdle = Color3.fromRGB(240, 228, 235),
-    gold    = Color3.fromRGB(200, 150, 40),
+    bg      = UIConfig.COLORS.CreamWhite,
+    panel   = UIConfig.COLORS.CreamLight,
+    border  = UIConfig.COLORS.ZundamonPink,
+    text    = UIConfig.COLORS.TextDark,
+    subtext = UIConfig.COLORS.TextDarkSec,
+    btnAct  = UIConfig.COLORS.ZundamonPink,
+    btnIdle = UIConfig.COLORS.CreamDark,
+    gold    = UIConfig.COLORS.ZundamonGold,
 }
 
 -- ─── BUILD UI ────────────────────────────────────────────
@@ -55,8 +56,8 @@ titleLbl.Size = UDim2.new(0,260,1,0)
 titleLbl.Position = UDim2.new(0,0,0,0)
 titleLbl.BackgroundTransparency = 1
 titleLbl.Text = "🎒  Zunda Pouch"
-titleLbl.Font = Enum.Font.FredokaOne
-titleLbl.TextSize = 26
+titleLbl.FontFace = UIConfig.FONTS.Title
+titleLbl.TextSize = UIConfig.FONT_SIZES.Title
 titleLbl.TextColor3 = C.text
 titleLbl.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -67,8 +68,8 @@ goldLbl.Position = UDim2.new(0,260,0,10)
 goldLbl.BackgroundColor3 = Color3.fromRGB(255,242,180)
 goldLbl.BorderSizePixel = 0
 goldLbl.Text = "💰  ---"
-goldLbl.Font = Enum.Font.GothamBold
-goldLbl.TextSize = 16
+goldLbl.FontFace = UIConfig.FONTS.Heading
+goldLbl.TextSize = UIConfig.FONT_SIZES.Body
 goldLbl.TextColor3 = C.gold
 do
     local cr = Instance.new("UICorner"); cr.CornerRadius = UDim.new(0,12); cr.Parent = goldLbl
@@ -82,9 +83,9 @@ closeBtn.Size = UDim2.new(0,38,0,38)
 closeBtn.Position = UDim2.new(1,-42,0,9)
 closeBtn.BackgroundColor3 = C.border
 closeBtn.Text = "✕"
-closeBtn.Font = Enum.Font.GothamBold
-closeBtn.TextSize = 16
-closeBtn.TextColor3 = Color3.fromRGB(252,248,240)
+closeBtn.FontFace = UIConfig.FONTS.Heading
+closeBtn.TextSize = UIConfig.FONT_SIZES.Small
+closeBtn.TextColor3 = UIConfig.COLORS.TextWhite
 closeBtn.BorderSizePixel = 0
 do
     local cr = Instance.new("UICorner"); cr.CornerRadius = UDim.new(0,10); cr.Parent = closeBtn
@@ -119,9 +120,9 @@ for i, t in ipairs(TABS) do
     btn.BackgroundColor3 = i==1 and C.btnAct or C.btnIdle
     btn.BorderSizePixel = 0
     btn.Text = t.emoji.."  "..t.label
-    btn.Font = Enum.Font.GothamBold
-    btn.TextSize = 14
-    btn.TextColor3 = i==1 and Color3.fromRGB(255,255,255) or C.text
+    btn.FontFace = UIConfig.FONTS.Heading
+    btn.TextSize = UIConfig.FONT_SIZES.Small
+    btn.TextColor3 = i==1 and UIConfig.COLORS.TextWhite or C.text
     local cr = Instance.new("UICorner"); cr.CornerRadius = UDim.new(0,10); cr.Parent = btn
     tabBtns[t.id] = btn
 end
@@ -133,8 +134,8 @@ countLbl.Size = UDim2.new(1,-32,0,20)
 countLbl.Position = UDim2.new(0,16,0,116)
 countLbl.BackgroundTransparency = 1
 countLbl.Text = ""
-countLbl.Font = Enum.Font.Gotham
-countLbl.TextSize = 13
+countLbl.FontFace = UIConfig.FONTS.Body
+countLbl.TextSize = UIConfig.FONT_SIZES.Caption
 countLbl.TextColor3 = C.subtext
 countLbl.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -167,8 +168,8 @@ emptyLbl.Size = UDim2.new(1,-20,0,120)
 emptyLbl.Position = UDim2.new(0,10,0,40)
 emptyLbl.BackgroundTransparency = 1
 emptyLbl.Text = "Your pouch is empty!\nGather some Zunda treasures 🌸"
-emptyLbl.Font = Enum.Font.GothamMedium
-emptyLbl.TextSize = 15
+emptyLbl.FontFace = UIConfig.FONTS.Body
+emptyLbl.TextSize = UIConfig.FONT_SIZES.Small
 emptyLbl.TextColor3 = C.subtext
 emptyLbl.TextWrapped = true
 emptyLbl.Visible = false

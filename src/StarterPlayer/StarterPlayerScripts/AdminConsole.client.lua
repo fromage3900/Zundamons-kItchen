@@ -4,6 +4,7 @@ local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
 local RS = game:GetService("ReplicatedStorage")
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local RF = RS:FindFirstChild("RemoteFunctions") or RS:WaitForChild("RemoteFunctions", 10)
 local executeCmd = RF:FindFirstChild("ExecuteAdminCommand")
 if not executeCmd then
@@ -22,7 +23,7 @@ screenGui.Parent = playerGui
 local bg = Instance.new("Frame")
 bg.Size = UDim2.new(1, 0, 1, 0)
 bg.BackgroundTransparency = 0.6
-bg.BackgroundColor3 = Color3.fromRGB(10, 10, 20)
+bg.BackgroundColor3 = UIConfig.COLORS.Background
 bg.BorderSizePixel = 0
 bg.Parent = screenGui
 
@@ -39,10 +40,10 @@ output.Parent = bg
 local inputBox = Instance.new("TextBox")
 inputBox.Size = UDim2.new(1, -20, 0, 30)
 inputBox.Position = UDim2.new(0, 10, 1, -40)
-inputBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-inputBox.TextColor3 = Color3.fromRGB(200, 220, 255)
-inputBox.FontFace = Font.new("rbxasset://fonts/families/RobotoMono.json")
-inputBox.TextSize = 14
+inputBox.BackgroundColor3 = UIConfig.COLORS.SurfaceLight
+inputBox.TextColor3 = UIConfig.COLORS.TextSecondary
+inputBox.FontFace = UIConfig.FONTS.Mono
+inputBox.TextSize = UIConfig.FONT_SIZES.Caption + 2
 inputBox.PlaceholderText = "Type /help for commands..."
 inputBox.ClearTextOnFocus = false
 inputBox.BorderSizePixel = 0
@@ -54,9 +55,9 @@ local function addOutput(text, color)
 	label.AutomaticSize = Enum.AutomaticSize.Y
 	label.BackgroundTransparency = 1
 	label.Text = tostring(text)
-	label.TextColor3 = color or Color3.fromRGB(180, 200, 255)
-	label.FontFace = Font.new("rbxasset://fonts/families/RobotoMono.json")
-	label.TextSize = 13
+	label.TextColor3 = color or UIConfig.COLORS.TextSecondary
+	label.FontFace = UIConfig.FONTS.Mono
+	label.TextSize = UIConfig.FONT_SIZES.Caption + 1
 	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.TextWrapped = true
 	label.RichText = true
@@ -67,14 +68,14 @@ end
 
 local function processCommand(input)
 	if not input or input == "" then return end
-	addOutput("> " .. input, Color3.fromRGB(255, 255, 200))
+	addOutput("> " .. input, UIConfig.COLORS.Warning)
 	local ok, result = pcall(function()
 		return executeCmd:InvokeServer(input)
 	end)
 	if ok and result then
-		addOutput(result, Color3.fromRGB(180, 255, 180))
+		addOutput(result, UIConfig.COLORS.Success)
 	elseif not ok then
-		addOutput("Error: " .. tostring(result), Color3.fromRGB(255, 100, 100))
+		addOutput("Error: " .. tostring(result), UIConfig.COLORS.Danger)
 	end
 end
 
@@ -95,8 +96,8 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 	end
 end)
 
-addOutput("=== Admin Console ===", Color3.fromRGB(255, 200, 100))
-addOutput("Press F2 or ~ to toggle", Color3.fromRGB(150, 180, 200))
-addOutput("Type /help for commands", Color3.fromRGB(150, 180, 200))
+addOutput("=== Admin Console ===", UIConfig.COLORS.Secondary)
+addOutput("Press F2 or ~ to toggle", UIConfig.COLORS.TextSecondary)
+addOutput("Type /help for commands", UIConfig.COLORS.TextSecondary)
 
 print("[AdminConsole] Ready — press F2 to open")

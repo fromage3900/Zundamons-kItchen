@@ -25,6 +25,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaVNGui", 40)
 
 local UIHelper = require(RS.Shared.Modules.UIHelper)
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 
 -- Expose side dialogues for other scripts to trigger
 _G.ZundaSideDialogues = SIDE_DIALOGUES
@@ -34,11 +35,11 @@ local PANEL_W = 780
 local PANEL_H = 185
 local PORT_W  = 110
 
-local C_cream = Color3.fromRGB(255, 248, 235)
-local C_border = Color3.fromRGB(180, 150, 110)
-local C_text = Color3.fromRGB(80, 55, 35)
-local C_textLight = Color3.fromRGB(140, 110, 80)
-local C_close = Color3.fromRGB(200, 140, 120)
+local C_cream = UIConfig.COLORS.PanelBg
+local C_border = UIConfig.COLORS.PanelBorder
+local C_text = UIConfig.COLORS.TextDark
+local C_textLight = UIConfig.COLORS.TextDarkSec
+local C_close = UIConfig.COLORS.Danger
 
 -- Very subtle dimmer
 local dimmer = Instance.new("Frame", gui)
@@ -68,7 +69,7 @@ pStroke.Color = C_border; pStroke.Thickness = 3
 local portrait = Instance.new("Frame", panel)
 portrait.Name = "Portrait"
 portrait.Size = UDim2.new(0, PORT_W, 1, 0)
-portrait.BackgroundColor3 = Color3.fromRGB(180, 220, 170)
+portrait.BackgroundColor3 = UIConfig.GAME_COLORS.CookingTrack
 portrait.BorderSizePixel = 0
 portrait.ZIndex = 11
 Instance.new("UICorner", portrait).CornerRadius = UDim.new(0, 18)
@@ -154,7 +155,7 @@ closeBtn.BorderSizePixel = 0
 closeBtn.Text = "✕"
 closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextSize = 14
-closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 closeBtn.ZIndex = 100
 closeBtn.Active = true
 Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0.5, 0)
@@ -224,7 +225,7 @@ local chatSend = Instance.new("TextButton", chatBar)
 chatSend.Name = "Send"
 chatSend.Size = UDim2.new(0, 52, 1, 0)
 chatSend.Position = UDim2.new(1, -52, 0, 0)
-chatSend.BackgroundColor3 = Color3.fromRGB(160, 210, 150)
+chatSend.BackgroundColor3 = UIConfig.COLORS.Success
 chatSend.Text = "Send"
 chatSend.Font = Enum.Font.GothamBold
 chatSend.TextSize = 13
@@ -240,7 +241,7 @@ chatExit.BackgroundColor3 = C_close
 chatExit.Text = "Back"
 chatExit.Font = Enum.Font.GothamBold
 chatExit.TextSize = 12
-chatExit.TextColor3 = Color3.fromRGB(255, 255, 255)
+chatExit.TextColor3 = UIConfig.GAME_COLORS.HUDText
 chatExit.BorderSizePixel = 0
 Instance.new("UICorner", chatExit).CornerRadius = UDim.new(0, 8)
 
@@ -296,13 +297,16 @@ local function setSpeaker(key)
 end
 
 local function openPanel()
+    print("[VN.openPanel] Opening panel")
     isOpen = true
     panel.Visible = true
     dimmer.Visible = true
+    print("[VN.openPanel] Panel visible:", panel.Visible)
     TweenS:Create(dimmer, TweenInfo.new(0.25), {BackgroundTransparency = 0.85}):Play()
     panel.Position = HIDE_POS
     TweenS:Create(panel, TweenInfo.new(0.32, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
         {Position = SHOW_POS}):Play()
+    print("[VN.openPanel] Panel opened")
 end
 
 -- closePanel(force): when called from a user dismiss action (close X or Escape),
@@ -346,6 +350,7 @@ end
 
 -- Typewriter effect
 local function typeWrite(text)
+    print("[VN.typeWrite] Starting with text:", text)
     text = text:gsub("{player}", Players.LocalPlayer and Players.LocalPlayer.Name or "Chef")
     typing = true
     advArrow.Visible = false
@@ -358,6 +363,7 @@ local function typeWrite(text)
         task.wait(delay)
     end
     dlgText.Text = text
+    print("[VN.typeWrite] Complete, final text:", dlgText.Text)
     typing = false
     advArrow.Visible = true
     -- Blink arrow
@@ -383,7 +389,9 @@ local function skipTyping()
 end
 
 local function showLine(idx)
+    print("[VN.showLine] Showing line", idx, "of", #seqLines)
     if idx > #seqLines then
+        print("[VN.showLine] No more lines, closing panel")
         closePanel()
         return
     end
@@ -396,8 +404,10 @@ local function showLine(idx)
         speakerKey = entry.speaker or "zundamon"
         text = entry.text or ""
     end
+    print("[VN.showLine] Speaker:", speakerKey, "Text:", text)
     setSpeaker(speakerKey)
     typeThread = task.spawn(function() typeWrite(text) end)
+    print("[VN.showLine] TypeWrite spawned")
 end
 
 local function advanceLine()
@@ -508,8 +518,13 @@ end
 -- ── Public API ───────────────────────────────────────────────
 _G.ZundaVN = {
     show = function(speakerKey, lines, onComplete)
-        if type(lines) ~= "table" or #lines == 0 then return end
+        print("[VN.show] Called with speaker:", speakerKey, "lines count:", #lines)
+        if type(lines) ~= "table" or #lines == 0 then 
+            warn("[VN.show] Invalid lines parameter")
+            return 
+        end
         if isOpen then
+            print("[VN.show] Panel already open, queuing")
             table.insert(seqQueue, {speaker=speakerKey, lines=lines, onComplete=onComplete})
             return
         end
@@ -517,9 +532,13 @@ _G.ZundaVN = {
         seqLines._defaultSpeaker = speakerKey
         seqIdx = 1
         completeCb = onComplete
+        print("[VN.show] Opening panel")
         openPanel()
+        print("[VN.show] Setting speaker")
         setSpeaker(speakerKey)
+        print("[VN.show] Showing line 1")
         showLine(1)
+        print("[VN.show] Complete")
     end,
     showBranching = function(rootNode)
         playNode(rootNode)
@@ -747,12 +766,20 @@ end)
 
 -- Wait for _G.ZundaVN to be ready then fire welcome dialogue
 task.delay(2.5, function()
-    _G.ZundaVN.show("zundamon", {
-        "Welcome to Zunda Village, "..player.Name.."! 🌸",
-        "I'm Zundamon — I'll guide you through your culinary adventure!",
-        "Press M for the map  •  I for your pouch  •  J for quests~",
-        "Your Zundapal companion is right beside you — click them to chat! 🍡",
-    })
+    print("[VN] Starting welcome dialogue...")
+    print("[VN] _G.ZundaVN exists:", _G.ZundaVN ~= nil)
+    if _G.ZundaVN and _G.ZundaVN.show then
+        print("[VN] Calling show with welcome text")
+        _G.ZundaVN.show("zundamon", {
+            "Welcome to Zunda Village, "..player.Name.."! 🌸",
+            "I'm Zundamon — I'll guide you through your culinary adventure!",
+            "Press M for the map  •  I for your pouch  •  J for quests~",
+            "Your Zundapal companion is right beside you — click them to chat! 🍡",
+        })
+        print("[VN] Welcome dialogue triggered")
+    else
+        warn("[VN] _G.ZundaVN.show not available!")
+    end
 end)
 
 print("[ZundaVN] Unified VN controller ready — all triggers wired")

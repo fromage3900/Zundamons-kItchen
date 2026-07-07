@@ -10,6 +10,7 @@ local Tween      = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local cam    = workspace.CurrentCamera
 
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local WeatherRE = RS:WaitForChild("RemoteEvents"):WaitForChild("WeatherChanged")
 
 -- ============================================================
@@ -244,7 +245,7 @@ if hud then
             pill.BorderSizePixel = 0
             local cr = Instance.new("UICorner", pill); cr.CornerRadius = UDim.new(0, 15)
             local st = Instance.new("UIStroke", pill); st.Thickness = 1.5
-            st.Color = Color3.fromRGB(255,255,255); st.Transparency = 0.4
+            st.Color = UIConfig.GAME_COLORS.HUDText; st.Transparency = 0.4
             local lbl = Instance.new("TextLabel", pill)
             lbl.Name = "WeatherText"
             lbl.Size = UDim2.new(1, -12, 1, 0)
@@ -252,7 +253,7 @@ if hud then
             lbl.BackgroundTransparency = 1
             lbl.Text = "\u{2600}\u{FE0F} Clear"
             lbl.Font = Enum.Font.FredokaOne
-            lbl.TextColor3 = Color3.fromRGB(68,52,78)
+            lbl.TextColor3 = UIConfig.COLORS.TextDark
             lbl.TextSize = 14
 
             -- Listen for weather changes and update label

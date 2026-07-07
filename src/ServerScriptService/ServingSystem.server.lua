@@ -90,10 +90,22 @@ local function handleServeGuest(player, guestInstance, foodItemName, quality)
 		payAmount = math.floor(payAmount * qualityMultiplier)
 	end
 
-	if foodItemName ~= recipe then
-		print("[ServingSystem] " .. player.Name .. " tried to serve " .. foodItemName .. " but guest wanted " .. tostring(recipe))
-		return false, "Wrong food! Guest wants " .. tostring(recipe)
-	end
+    if foodItemName ~= recipe then
+        print("[ServingSystem] " .. player.Name .. " tried to serve " .. foodItemName .. " but guest wanted " .. tostring(recipe))
+        
+        -- Trigger VN dialogue for wrong dish
+        local meshType = guestInstance:GetAttribute("MeshType")
+        local VNDialogueData = require(game.ReplicatedStorage.ConfigurationFiles.VNDialogueData)
+        local dialogue = VNDialogueData.GUEST_BY_TYPE[meshType]
+        if dialogue then
+            local VNEvent = game.ReplicatedStorage.RemoteEvents:FindFirstChild("ShowVNDialgue")
+            if VNEvent then
+                VNEvent:FireClient(player, "guest", dialogue.wrong_dish)
+            end
+        end
+        
+        return false, "Wrong food! Guest wants " .. tostring(recipe)
+    end
 
 	if not playerData[foodItemName] or playerData[foodItemName] <= 0 then
 		return false, "You don't have " .. foodItemName
@@ -131,12 +143,24 @@ local function handleServeGuest(player, guestInstance, foodItemName, quality)
 	playerData.guests_served = (playerData.guests_served or 0) + 1
 	playerData.total_gold_earned = (playerData.total_gold_earned or 0) + payAmount
 
-	print(
-		"[ServingSystem] " .. player.Name .. " served guest " .. recipe .. " (+" .. payAmount .. " gold, total guests: " .. playerData.guests_served .. ")"
-	)
+    print(
+        "[ServingSystem] " .. player.Name .. " served guest " .. recipe .. " (+" .. payAmount .. " gold, total guests: " .. playerData.guests_served .. ")"
+    )
 
-	PlayerDataService.checkAndUnlockTiers(player)
-	GuestService.removeGuestByInstance(guestInstance, "served")
+    -- Trigger VN dialogue for successful serve
+    local meshType = guestInstance:GetAttribute("MeshType")
+    local VNDialogueData = require(game.ReplicatedStorage.ConfigurationFiles.VNDialogueData)
+    local dialogue = VNDialogueData.GUEST_BY_TYPE[meshType]
+    if dialogue then
+        local text = dialogue.served:gsub("{gold}", tostring(payAmount))
+        local VNEvent = game.ReplicatedStorage.RemoteEvents:FindFirstChild("ShowVNDialgue")
+        if VNEvent then
+            VNEvent:FireClient(player, "guest", text)
+        end
+    end
+
+    PlayerDataService.checkAndUnlockTiers(player)
+    GuestService.removeGuestByInstance(guestInstance, "served")
 
 	return true, "Served! +" .. payAmount .. " gold"
 end

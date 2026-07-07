@@ -11,6 +11,10 @@
         "$className": "Folder",
         "$path": "src/ReplicatedStorage/Models"
       },
+      "Meshes": {
+        "$className": "Folder",
+        "$path": "src/ReplicatedStorage/Meshes"
+      },
       "QuestConfig": {
         "$path": "src/ReplicatedStorage/QuestConfig.lua"
       },

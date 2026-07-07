@@ -2,6 +2,7 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -25,13 +26,13 @@ local card = Instance.new("Frame", gui)
 card.Name = "Card"
 card.Size = UDim2.new(0, 340, 0, 240)
 card.Position = UDim2.new(0.5, -170, 0.5, -120)
-card.BackgroundColor3 = Color3.fromRGB(255, 248, 235)
+card.BackgroundColor3 = UIConfig.COLORS.PanelBg
 card.BorderSizePixel = 0
 card.Visible = false
 card.BackgroundTransparency = 1
 Instance.new("UICorner", card).CornerRadius = UDim.new(0, 18)
 local cStroke = Instance.new("UIStroke", card)
-cStroke.Color = Color3.fromRGB(180, 150, 110)
+cStroke.Color = UIConfig.COLORS.PanelBorder
 cStroke.Thickness = 3
 cStroke.Transparency = 1
 
@@ -43,7 +44,7 @@ titleLbl.BackgroundTransparency = 1
 titleLbl.Text = ""
 titleLbl.Font = Enum.Font.GothamBold
 titleLbl.TextSize = 18
-titleLbl.TextColor3 = Color3.fromRGB(80, 40, 30)
+titleLbl.TextColor3 = UIConfig.COLORS.TextDark
 titleLbl.TextTransparency = 1
 
 local starsLbl = Instance.new("TextLabel", card)
@@ -55,7 +56,7 @@ starsLbl.Text = ""
 starsLbl.Font = Enum.Font.FredokaOne
 starsLbl.TextSize = 24
 starsLbl.TextStrokeTransparency = 0.4
-starsLbl.TextStrokeColor3 = Color3.fromRGB(255, 200, 50)
+starsLbl.TextStrokeColor3 = UIConfig.GAME_COLORS.SparkleGold
 starsLbl.TextTransparency = 1
 
 local goldLbl = Instance.new("TextLabel", card)
@@ -66,7 +67,7 @@ goldLbl.BackgroundTransparency = 1
 goldLbl.Text = ""
 goldLbl.Font = Enum.Font.Gotham
 goldLbl.TextSize = 15
-goldLbl.TextColor3 = Color3.fromRGB(200, 150, 0)
+goldLbl.TextColor3 = UIConfig.COLORS.Warning
 goldLbl.TextTransparency = 1
 
 local streakLbl = Instance.new("TextLabel", card)
@@ -77,7 +78,7 @@ streakLbl.BackgroundTransparency = 1
 streakLbl.Text = ""
 streakLbl.Font = Enum.Font.Gotham
 streakLbl.TextSize = 14
-streakLbl.TextColor3 = Color3.fromRGB(100, 200, 150)
+streakLbl.TextColor3 = UIConfig.COLORS.Success
 streakLbl.TextTransparency = 1
 
 local masteryLbl = Instance.new("TextLabel", card)
@@ -88,15 +89,15 @@ masteryLbl.BackgroundTransparency = 1
 masteryLbl.Text = ""
 masteryLbl.Font = Enum.Font.Gotham
 masteryLbl.TextSize = 13
-masteryLbl.TextColor3 = Color3.fromRGB(140, 100, 80)
+masteryLbl.TextColor3 = UIConfig.COLORS.TextDarkSec
 masteryLbl.TextTransparency = 1
 
 local dismissBtn = Instance.new("TextButton", card)
 dismissBtn.Size = UDim2.new(0, 120, 0, 32)
 dismissBtn.Position = UDim2.new(0.5, -60, 1, -42)
-dismissBtn.BackgroundColor3 = Color3.fromRGB(120, 200, 120)
+dismissBtn.BackgroundColor3 = UIConfig.COLORS.Success
 dismissBtn.Text = "OK!"
-dismissBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+dismissBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 dismissBtn.Font = Enum.Font.GothamBold
 dismissBtn.TextSize = 16
 dismissBtn.BorderSizePixel = 0

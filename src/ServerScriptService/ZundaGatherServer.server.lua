@@ -14,6 +14,8 @@ if not lootMod then
 	return {}
 end
 
+local GrowthStageConfig = require(game.ReplicatedStorage.ConfigurationFiles.GrowthStageConfig)
+
 -- HarvestValidator for server-side validation (distance, rate limit, cooldown)
 local HarvestValidator = SSS:FindFirstChild("Validation") and SSS.Validation:FindFirstChild("HarvestValidator")
 local validateHarvest = HarvestValidator and require(HarvestValidator).validateHarvest
@@ -71,6 +73,25 @@ local function notify(player, message)
 	end
 end
 
+-- Update node mesh based on growth stage
+local function updateNodeMesh(node, stageIndex)
+	local rtype = node:GetAttribute("ResourceType")
+	if rtype ~= "CarrotPlot" then return end -- Only for CarrotPlot nodes
+	
+	local stages = GrowthStageConfig.getStages("CarrotPlot")
+	if not stages or not stages[stageIndex] then return end
+	
+	local stage = stages[stageIndex]
+	local meshId = GrowthStageConfig.getMeshId(stage)
+	
+	if meshId ~= "" and node:IsA("MeshPart") then
+		node.MeshId = meshId
+		node.Size = Vector3.new(2, 2, 2) * stage.scale
+		node:SetAttribute("GrowthStage", stageIndex)
+		node:SetAttribute("GrowthStageName", stage.name)
+	end
+end
+
 -- Hide the node visually + re-enable after respawn
 local function consumeNode(node, respawnSec)
 	node:SetAttribute("Available", false)
@@ -104,6 +125,12 @@ local function bindNode(node)
 	end
 	-- Store original size for respawn
 	node:SetAttribute("_origSize", node.Size)
+	
+	-- Initialize CarrotPlot growth stage
+	if node:GetAttribute("ResourceType") == "CarrotPlot" then
+		local currentStage = node:GetAttribute("GrowthStage") or 1
+		updateNodeMesh(node, currentStage)
+	end
 
 	cd.MouseClick:Connect(function(player)
 		-- Validate harvest (distance, rate limit, cooldown)
@@ -198,6 +225,32 @@ local function bindNode(node)
 			grantItems(player, items)
 			notify(player, "💐 +" .. yield .. " Salted Pea Bouquet")
 			consumeNode(node, RESPAWN_BOUQUET)
+		elseif rtype == "CarrotPlot" then
+			-- CarrotPlot uses growth stages
+			local currentStage = node:GetAttribute("GrowthStage") or 1
+			local stages = GrowthStageConfig.getStages("CarrotPlot")
+			
+			-- Check if harvestable (final stage)
+			if stages[currentStage] and stages[currentStage].harvestable then
+				local yield = node:GetAttribute("Yield") or 3
+				local items = {}
+				for i = 1, yield do
+					table.insert(items, "Carrot")
+				end
+				grantItems(player, items)
+				notify(player, "🥕 +" .. yield .. " Carrot")
+				
+				-- Reset to first stage instead of hiding
+				updateNodeMesh(node, 1)
+				node:SetAttribute("Available", true)
+			else
+				-- Grow to next stage
+				local nextStage = currentStage + 1
+				if stages[nextStage] then
+					updateNodeMesh(node, nextStage)
+					notify(player, "🌱 Carrot grew to " .. stages[nextStage].name .. " stage")
+				end
+			end
 		end
 	end)
 end

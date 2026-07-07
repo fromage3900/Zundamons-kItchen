@@ -51,6 +51,18 @@ local UIConfig = {
 		RarityRare    = Color3.fromRGB(120, 184, 248),
 		RarityEpic    = Color3.fromRGB(184, 159, 247),
 		RarityLegendary = Color3.fromRGB(255, 207, 80),
+
+		-- Zundamon Brand Colors
+		ZundamonGreen = Color3.fromRGB(124, 184, 124),
+		PeaGreen = Color3.fromRGB(143, 201, 143),
+		PeaLight = Color3.fromRGB(184, 224, 184),
+		PeaDark = Color3.fromRGB(110, 175, 110),
+		ZundamonPink = Color3.fromRGB(232, 152, 168),
+		ZundamonGold = Color3.fromRGB(255, 200, 80),
+
+		-- Kitchen Theme
+		KitchenCream = Color3.fromRGB(252, 248, 240),
+		KitchenWood = Color3.fromRGB(196, 180, 148),
 	},
 
 	-- Transparency presets (0 = opaque, 1 = invisible)

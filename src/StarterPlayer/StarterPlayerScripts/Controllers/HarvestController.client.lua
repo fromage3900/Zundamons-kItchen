@@ -10,6 +10,7 @@ local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local UIConfig = require(ReplicatedStorage.ConfigurationFiles.UIConfig)
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
@@ -54,7 +55,7 @@ local function createProgressBar()
 	progressContainer.Name = "HarvestProgressContainer"
 	progressContainer.Size = UDim2.new(0, 200, 0, 24)
 	progressContainer.Position = UDim2.new(0.5, -100, 0.5, 50)
-	progressContainer.BackgroundColor3 = Color3.fromRGB(40, 30, 20)
+	progressContainer.BackgroundColor3 = UIConfig.COLORS.Background
 	progressContainer.BackgroundTransparency = 0.3
 	progressContainer.BorderSizePixel = 0
 	progressContainer.Visible = false
@@ -65,7 +66,7 @@ local function createProgressBar()
 	uiCorner.Parent = progressContainer
 
 	local uiStroke = Instance.new("UIStroke")
-	uiStroke.Color = Color3.fromRGB(200, 180, 150)
+	uiStroke.Color = UIConfig.COLORS.PanelBorder
 	uiStroke.Thickness = 2
 	uiStroke.Parent = progressContainer
 
@@ -73,7 +74,7 @@ local function createProgressBar()
 	progressFill.Name = "Fill"
 	progressFill.Size = UDim2.new(0, 0, 1, -4)
 	progressFill.Position = UDim2.new(0, 2, 0, 2)
-	progressFill.BackgroundColor3 = Color3.fromRGB(100, 200, 80)
+	progressFill.BackgroundColor3 = UIConfig.COLORS.Success
 	progressFill.BorderSizePixel = 0
 	progressFill.Parent = progressContainer
 
@@ -86,7 +87,7 @@ local function createProgressBar()
 	label.Size = UDim2.new(1, 0, 1, 0)
 	label.BackgroundTransparency = 1
 	label.Text = "Harvesting..."
-	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	label.TextColor3 = UIConfig.GAME_COLORS.HUDText
 	label.TextScaled = true
 	label.Font = Enum.Font.GothamBold
 	label.Parent = progressContainer

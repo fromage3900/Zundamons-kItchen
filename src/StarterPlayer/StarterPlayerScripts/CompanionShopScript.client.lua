@@ -12,12 +12,19 @@ local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
 local gui = ClientGuiBootstrap.createScreenGui(player, "CompanionShopGui", 28)
 
 local RE = RS:WaitForChild("RemoteEvents")
+print("[CompanionShop] RemoteEvents found")
 local RF = RS:WaitForChild("RemoteFunctions")
+print("[CompanionShop] RemoteFunctions found")
 local PurchaseCompanion = RE:WaitForChild("PurchaseCompanion")
+print("[CompanionShop] PurchaseCompanion found")
 local SetCompanion = RE:WaitForChild("SetCompanion")
+print("[CompanionShop] SetCompanion found")
 local CompanionOwnedSync = RE:WaitForChild("CompanionOwnedSync")
+print("[CompanionShop] CompanionOwnedSync found")
 local GetCompanionCatalog = RF:WaitForChild("GetCompanionCatalog")
+print("[CompanionShop] GetCompanionCatalog found")
 local GetOwnedCompanions = RF:WaitForChild("GetOwnedCompanions")
+print("[CompanionShop] GetOwnedCompanions found")
 
 -- ── Backdrop
 local backdrop = Instance.new("Frame", gui)
@@ -304,17 +311,32 @@ end)
 
 -- Public API
 local function open()
+    print("[CompanionShop.open] Opening shop...")
     backdrop.Visible = true
     panel.Visible = true
-    catalog = GetCompanionCatalog:InvokeServer() or {}
-    owned = GetOwnedCompanions:InvokeServer() or {}
+    print("[CompanionShop.open] Fetching catalog...")
+    local success1, catalogData = pcall(function()
+        return GetCompanionCatalog:InvokeServer()
+    end)
+    print("[CompanionShop.open] Catalog success:", success1)
+    catalog = catalogData or {}
+    
+    print("[CompanionShop.open] Fetching owned companions...")
+    local success2, ownedData = pcall(function()
+        return GetOwnedCompanions:InvokeServer()
+    end)
+    print("[CompanionShop.open] Owned success:", success2)
+    owned = ownedData or {}
+    
     if owned.__active then currentKey = owned.__active end
+    print("[CompanionShop.open] Building UI...")
     buildTabs()
     refreshDetail()
     refreshTabs()
     panel.Size = UDim2.new(0, 780, 0, 510)
     TweenService:Create(panel, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
         { Size = UDim2.new(0, 820, 0, 540) }):Play()
+    print("[CompanionShop.open] Shop opened")
 end
 
 local function close()

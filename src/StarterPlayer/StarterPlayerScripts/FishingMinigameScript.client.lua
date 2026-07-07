@@ -9,6 +9,8 @@ local UIS = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 
+local RS = game:GetService("ReplicatedStorage")
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local gui = script.Parent
@@ -16,7 +18,7 @@ local gui = script.Parent
 -- Backdrop
 local backdrop = Instance.new("Frame", gui)
 backdrop.Size = UDim2.new(1, 0, 1, 0)
-backdrop.BackgroundColor3 = Color3.fromRGB(15, 25, 45)
+backdrop.BackgroundColor3 = UIConfig.GAME_COLORS.HUDBg
 backdrop.BackgroundTransparency = 0.5
 backdrop.BorderSizePixel = 0
 backdrop.Visible = false
@@ -27,13 +29,13 @@ local panel = Instance.new("Frame", gui)
 panel.Name = "Panel"
 panel.Size = UDim2.new(0, 720, 0, 460)
 panel.Position = UDim2.new(0.5, -360, 0.5, -230)
-panel.BackgroundColor3 = Color3.fromRGB(232, 244, 252)
+panel.BackgroundColor3 = UIConfig.COLORS.PanelBg
 panel.BorderSizePixel = 0
 panel.Visible = false
 panel.ZIndex = 2
 Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 26)
 local pStroke = Instance.new("UIStroke", panel)
-pStroke.Color = Color3.fromRGB(120, 180, 220)
+pStroke.Color = UIConfig.COLORS.PanelBorder
 pStroke.Thickness = 4
 
 -- Decorative water ripple gradient
@@ -53,7 +55,7 @@ fishLabel.BackgroundTransparency = 1
 fishLabel.Text = "🎣 Fish on the line!"
 fishLabel.Font = Enum.Font.FredokaOne
 fishLabel.TextSize = 38
-fishLabel.TextColor3 = Color3.fromRGB(35, 60, 100)
+fishLabel.TextColor3 = UIConfig.COLORS.TextDark
 fishLabel.ZIndex = 3
 
 local hint = Instance.new("TextLabel", panel)
@@ -63,7 +65,7 @@ hint.BackgroundTransparency = 1
 hint.Text = "Hold SPACE or click REEL — don't let TENSION peak!"
 hint.Font = Enum.Font.Gotham
 hint.TextSize = 16
-hint.TextColor3 = Color3.fromRGB(90, 110, 150)
+hint.TextColor3 = UIConfig.COLORS.TextDarkSec
 hint.ZIndex = 3
 
 -- Tension bar (top)
@@ -74,7 +76,7 @@ tensionLabel.BackgroundTransparency = 1
 tensionLabel.Text = "TENSION"
 tensionLabel.Font = Enum.Font.GothamBold
 tensionLabel.TextSize = 14
-tensionLabel.TextColor3 = Color3.fromRGB(200, 70, 70)
+tensionLabel.TextColor3 = UIConfig.COLORS.Danger
 tensionLabel.TextXAlignment = Enum.TextXAlignment.Left
 tensionLabel.ZIndex = 3
 
@@ -88,7 +90,7 @@ Instance.new("UICorner", tensionTrack).CornerRadius = UDim.new(1, 0)
 
 local tensionFill = Instance.new("Frame", tensionTrack)
 tensionFill.Size = UDim2.new(0.2, 0, 1, 0)
-tensionFill.BackgroundColor3 = Color3.fromRGB(220, 80, 80)
+tensionFill.BackgroundColor3 = UIConfig.COLORS.Danger
 tensionFill.BorderSizePixel = 0
 tensionFill.ZIndex = 4
 Instance.new("UICorner", tensionFill).CornerRadius = UDim.new(1, 0)
@@ -101,7 +103,7 @@ progressLabel.BackgroundTransparency = 1
 progressLabel.Text = "REEL PROGRESS"
 progressLabel.Font = Enum.Font.GothamBold
 progressLabel.TextSize = 14
-progressLabel.TextColor3 = Color3.fromRGB(60, 150, 90)
+progressLabel.TextColor3 = UIConfig.COLORS.Success
 progressLabel.TextXAlignment = Enum.TextXAlignment.Left
 progressLabel.ZIndex = 3
 
@@ -115,7 +117,7 @@ Instance.new("UICorner", progressTrack).CornerRadius = UDim.new(1, 0)
 
 local progressFill = Instance.new("Frame", progressTrack)
 progressFill.Size = UDim2.new(0, 0, 1, 0)
-progressFill.BackgroundColor3 = Color3.fromRGB(120, 200, 130)
+progressFill.BackgroundColor3 = UIConfig.GAME_COLORS.HUDAccent
 progressFill.BorderSizePixel = 0
 progressFill.ZIndex = 4
 Instance.new("UICorner", progressFill).CornerRadius = UDim.new(1, 0)
@@ -124,11 +126,11 @@ Instance.new("UICorner", progressFill).CornerRadius = UDim.new(1, 0)
 local reelBtn = Instance.new("TextButton", panel)
 reelBtn.Size = UDim2.new(0, 360, 0, 92)
 reelBtn.Position = UDim2.new(0.5, -180, 0, 264)
-reelBtn.BackgroundColor3 = Color3.fromRGB(120, 180, 220)
+reelBtn.BackgroundColor3 = UIConfig.COLORS.Primary
 reelBtn.Text = "🎣  REEL  🎣"
 reelBtn.Font = Enum.Font.FredokaOne
 reelBtn.TextSize = 44
-reelBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+reelBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 reelBtn.AutoButtonColor = false
 reelBtn.BorderSizePixel = 0
 reelBtn.ZIndex = 3
@@ -186,11 +188,11 @@ local function finish(success)
     stop()
     if success then
         resultLabel.Text = "🎉 Caught a " .. fishData.name .. "!"
-        resultLabel.TextColor3 = Color3.fromRGB(80, 180, 100)
+        resultLabel.TextColor3 = UIConfig.COLORS.Success
         spawnSplash()
     else
         resultLabel.Text = "💔 The line snapped..."
-        resultLabel.TextColor3 = Color3.fromRGB(200, 80, 80)
+        resultLabel.TextColor3 = UIConfig.COLORS.Danger
     end
     task.delay(2.0, function()
         panel.Visible = false
@@ -219,7 +221,7 @@ local function start(fish, diff, cb)
     difficulty = diff
     callback = cb
     fishLabel.Text = "🎣 Something's biting!  (rarity " .. fish.rarity .. ")"
-    fishLabel.TextColor3 = fish.color or Color3.fromRGB(35, 60, 100)
+    fishLabel.TextColor3 = fish.color or UIConfig.COLORS.TextDark
     resultLabel.Text = ""
     tensionFill.Size = UDim2.new(tension, 0, 1, 0)
     progressFill.Size = UDim2.new(progress, 0, 1, 0)

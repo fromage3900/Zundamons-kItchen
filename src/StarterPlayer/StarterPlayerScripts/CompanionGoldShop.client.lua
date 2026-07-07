@@ -5,6 +5,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 
+local UIConfig = require(ReplicatedStorage.ConfigurationFiles.UIConfig)
 local NPCConfig = require(ReplicatedStorage.Shared.Config.NPCConfig)
 local RF = ReplicatedStorage:WaitForChild("RemoteFunctions")
 local purchaseRF = RF:WaitForChild("PurchaseGoldCompanion")
@@ -17,7 +18,7 @@ screenGui.Parent = player:WaitForChild("PlayerGui")
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 300, 0, 400)
 frame.Position = UDim2.new(0.5, -150, 0.5, -200)
-frame.BackgroundColor3 = Color3.fromRGB(255, 250, 220)
+frame.BackgroundColor3 = UIConfig.COLORS.PanelBg
 frame.Parent = screenGui
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 
@@ -26,7 +27,7 @@ local title = Instance.new("TextLabel")
 title.Size = UDim2.new(1, 0, 0, 40)
 title.BackgroundTransparency = 1
 title.Text = "Companion Shop"
-title.TextColor3 = Color3.fromRGB(45, 45, 45)
+title.TextColor3 = UIConfig.COLORS.TextDark
 title.Font = Enum.Font.GothamBold
 title.TextScaled = true
 title.Parent = frame
@@ -53,7 +54,7 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	nameLabel.Position = UDim2.new(0, 10, 0, 5)
 	nameLabel.BackgroundTransparency = 1
 	nameLabel.Text = name
-	nameLabel.TextColor3 = Color3.fromRGB(45, 45, 45)
+	nameLabel.TextColor3 = UIConfig.COLORS.TextDark
 	nameLabel.Font = Enum.Font.GothamBold
 	nameLabel.TextScaled = true
 	nameLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -64,7 +65,7 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	priceLabel.Position = UDim2.new(0.5, 0, 0, 5)
 	priceLabel.BackgroundTransparency = 1
 	priceLabel.Text = "💰 " .. companion.price .. "g"
-	priceLabel.TextColor3 = Color3.fromRGB(200, 150, 0)
+	priceLabel.TextColor3 = UIConfig.COLORS.Warning
 	priceLabel.Font = Enum.Font.Gotham
 	priceLabel.TextScaled = true
 	priceLabel.TextXAlignment = Enum.TextXAlignment.Right
@@ -79,7 +80,7 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	else
 		buffLabel.Text = "Buff: none | Level: " .. (companion.levelRequired or 1)
 	end
-	buffLabel.TextColor3 = Color3.fromRGB(120, 100, 150)
+	buffLabel.TextColor3 = UIConfig.COLORS.TextDarkSec
 	buffLabel.Font = Enum.Font.Gotham
 	buffLabel.TextScaled = true
 	buffLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -88,9 +89,9 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 	local buyBtn = Instance.new("TextButton")
 	buyBtn.Size = UDim2.new(0, 80, 0, 24)
 	buyBtn.Position = UDim2.new(1, -90, 0, 50)
-	buyBtn.BackgroundColor3 = Color3.fromRGB(120, 200, 120)
+	buyBtn.BackgroundColor3 = UIConfig.COLORS.Success
 	buyBtn.Text = "Buy"
-	buyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	buyBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 	buyBtn.Font = Enum.Font.GothamBold
 	buyBtn.TextScaled = true
 	buyBtn.Parent = card
@@ -101,11 +102,11 @@ for name, companion in pairs(NPCConfig.goldShopCompanions) do
 		if ok then
 			print("[CompanionGoldShop] Purchased " .. name .. "!")
 			buyBtn.Text = "Owned!"
-			buyBtn.BackgroundColor3 = Color3.fromRGB(180, 220, 180)
+			buyBtn.BackgroundColor3 = UIConfig.COLORS.Success
 		else
 			print("[CompanionGoldShop] Purchase failed: " .. tostring(msg))
 			buyBtn.Text = "Failed"
-			buyBtn.BackgroundColor3 = Color3.fromRGB(220, 100, 100)
+			buyBtn.BackgroundColor3 = UIConfig.COLORS.Danger
 		end
 	end)
 
@@ -117,9 +118,9 @@ scrolling.CanvasSize = UDim2.new(0, 0, 0, yPos)
 local closeBtn = Instance.new("TextButton")
 closeBtn.Size = UDim2.new(0, 30, 0, 30)
 closeBtn.Position = UDim2.new(1, -35, 0, 5)
-closeBtn.BackgroundColor3 = Color3.fromRGB(220, 100, 100)
+closeBtn.BackgroundColor3 = UIConfig.COLORS.Danger
 closeBtn.Text = "X"
-closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 closeBtn.Font = Enum.Font.GothamBold
 closeBtn.TextScaled = true
 closeBtn.Parent = frame

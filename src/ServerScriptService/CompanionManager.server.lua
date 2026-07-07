@@ -1,8 +1,9 @@
 -- [[Script] CompanionManager (ref: RBXA3D4133A29B940DFBEF7B3E9A3CDF820)]]
--- CompanionManager v3: clones real Zundapal mesh, sparkle VFX, VN click interaction
+-- CompanionManager v4: loads full companion models with textures, sparkle VFX, VN click interaction
 local Players    = game:GetService("Players")
 local Tween      = game:GetService("TweenService")
 local RS         = game:GetService("ReplicatedStorage")
+local InsertService = game:GetService("InsertService")
 
 -- Per-companion mesh IDs
 local COMPANION_MESHES = {
@@ -17,6 +18,42 @@ local COMPANION_MESHES = {
 }
 
 local DEFAULT_COMPANION_MESH = "rbxassetid://103182526409237"
+
+-- Cache loaded companion models
+local companionModelCache = {}
+
+local function loadCompanionModel(compType)
+    if companionModelCache[compType] then
+        print("[CompanionManager.loadCompanionModel] Using cached model for", compType)
+        return companionModelCache[compType]:Clone()
+    end
+    
+    local meshId = COMPANION_MESHES[compType] or DEFAULT_COMPANION_MESH
+    print("[CompanionManager.loadCompanionModel] Loading model for", compType, "meshId:", meshId)
+    
+    local success, model = pcall(function()
+        local assetId = tonumber(meshId:match("%d+"))
+        return InsertService:LoadAsset(assetId)
+    end)
+    
+    if not success or not model then
+        warn("[CompanionManager.loadCompanionModel] Failed to load model:", compType, model)
+        return nil
+    end
+    
+    -- Find the primary part for positioning
+    local primaryPart = model:FindFirstChildWhichIsA("BasePart")
+    if not primaryPart then
+        warn("[CompanionManager.loadCompanionModel] Model has no BasePart:", compType)
+        model:Destroy()
+        return nil
+    end
+    
+    model.PrimaryPart = primaryPart
+    companionModelCache[compType] = model
+    print("[CompanionManager.loadCompanionModel] Model cached successfully for", compType)
+    return model:Clone()
+end
 
 -- ── Companion catalog ──────────────────────────────────────────
 local COMPANIONS = {
@@ -74,34 +111,27 @@ local activeCompanions = {}
 
 -- ── Build companion ────────────────────────────────────────────
 local function buildCompanion(player, compType)
+    print("[CompanionManager.buildCompanion] Building companion for", player.Name, "type:", compType)
     local def = COMPANIONS[compType] or COMPANIONS.zundamon
     local name = "ZundaCompanion_" .. player.Name
 
     -- Remove existing
     local existing = workspace:FindFirstChild(name)
-    if existing then existing:Destroy() end
+    if existing then 
+        print("[CompanionManager.buildCompanion] Removing existing companion")
+        existing:Destroy() 
+    end
     local prev = activeCompanions[player.Name]
     if prev then pcall(function() prev:Destroy() end) end
 
-    local model = Instance.new("Model")
-    model.Name = name
-    model.Parent = workspace
-
-    -- ── Body: per-companion mesh ──
-    local body
-    local meshId = COMPANION_MESHES[compType] or DEFAULT_COMPANION_MESH
-
-    if meshId then
-        body = Instance.new("MeshPart")
-        body.Name = "Body"
-        body.MeshId = meshId
-        body.Size = Vector3.new(3, 3, 3)
-        body.Anchored = false
-        body.CanCollide = false
-        body.CastShadow = false
-        body.Massless = true
-    else
-        body = Instance.new("Part")
+    -- Load the full companion model with all parts and textures
+    local companionModel = loadCompanionModel(compType)
+    
+    if not companionModel then
+        warn("[CompanionManager.buildCompanion] Failed to load companion model, using fallback")
+        -- Create fallback model
+        companionModel = Instance.new("Model")
+        local body = Instance.new("Part")
         body.Name = "Body"
         body.Shape = Enum.PartType.Ball
         body.Size = Vector3.new(3, 3, 3)
@@ -111,14 +141,35 @@ local function buildCompanion(player, compType)
         body.CanCollide = false
         body.CastShadow = false
         body.Massless = true
+        body.Parent = companionModel
+        companionModel.PrimaryPart = body
+    end
+    
+    companionModel.Name = name
+    companionModel.Parent = workspace
+    print("[CompanionManager.buildCompanion] Model loaded and parented to workspace")
+
+    local body = companionModel.PrimaryPart
+    if not body then
+        body = companionModel:FindFirstChildWhichIsA("BasePart")
+        companionModel.PrimaryPart = body
     end
 
     -- Start near player
     local char = player.Character
     local hrp  = char and char:FindFirstChild("HumanoidRootPart")
     body.CFrame = hrp and (hrp.CFrame * CFrame.new(4, 1, 0)) or CFrame.new(47, 8, -74)
-    body.Parent = model
-    model.PrimaryPart = body
+    
+    -- Make all parts non-collidable and massless
+    for _, part in ipairs(companionModel:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+            part.Massless = true
+            part.CastShadow = false
+        end
+    end
+    
+    print("[CompanionManager.buildCompanion] Body positioned and configured")
 
     -- ── Sparkle ParticleEmitter ────────────────────────────────
     local sparkle = Instance.new("ParticleEmitter", body)
@@ -207,12 +258,14 @@ local function buildCompanion(player, compType)
         vnEv:FireClient(clicker, compType, def.emoji)
     end)
 
-    activeCompanions[player.Name] = model
+    activeCompanions[player.Name] = companionModel
+    print("[CompanionManager.buildCompanion] Companion added to activeCompanions")
 
     -- ── Smooth follow loop ─────────────────────────────────────
     task.spawn(function()
+        print("[CompanionManager.follow] Starting follow loop for", player.Name)
         local t = 0
-        while body and body.Parent and model.Parent do
+        while body and body.Parent and companionModel.Parent do
             t = t + 0.05
             local char2 = player.Character
             local hrp2  = char2 and char2:FindFirstChild("HumanoidRootPart")
@@ -227,20 +280,26 @@ local function buildCompanion(player, compType)
             end
             task.wait(0.05)
         end
+        print("[CompanionManager.follow] Follow loop ended for", player.Name)
     end)
 
-    return model
+    print("[CompanionManager.buildCompanion] Companion build complete for", player.Name)
+    return companionModel
 end
 
 -- ── Player lifecycle ───────────────────────────────────────────
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 local function onPlayerAdded(player)
-	player.CharacterAdded:Connect(function()
-		task.wait(2)
-		local data = PlayerDataService.getOrCreate(player)
-		buildCompanion(player, data.active_companion or "zundamon")
-	end)
+    print("[CompanionManager.onPlayerAdded] Player added:", player.Name)
+    player.CharacterAdded:Connect(function()
+        print("[CompanionManager.onPlayerAdded] Character added for", player.Name)
+        task.wait(2)
+        local data = PlayerDataService.getOrCreate(player)
+        local compType = data.active_companion or "zundamon"
+        print("[CompanionManager.onPlayerAdded] Building companion type:", compType)
+        buildCompanion(player, compType)
+    end)
 end
 
 setCompEv.OnServerEvent:Connect(function(player, compType)
@@ -267,4 +326,5 @@ Players.PlayerRemoving:Connect(function(player)
     if m then m:Destroy(); activeCompanions[player.Name] = nil end
 end)
 
-print("[CompanionManager v3] Zundapal mesh clone + sparkles + VN click ready")
+print("[CompanionManager v4] Full model loading with textures + sparkles + VN click ready")
+print("[CompanionManager v4] Rojo live sync active - changes will appear in Studio automatically")

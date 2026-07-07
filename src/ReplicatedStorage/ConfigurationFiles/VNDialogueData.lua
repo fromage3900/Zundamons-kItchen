@@ -118,8 +118,71 @@ SIDE_DIALOGUES.seasonal = {
 	},
 }
 
+-- Guest dialogue triggers
+local GUEST_DIALOGUE = {}
+GUEST_DIALOGUE.spawn = {
+    speaker = "guest",
+    text = "Hi there! I'd love some {recipe}! 🍽️",
+}
+GUEST_DIALOGUE.served = {
+    speaker = "guest",
+    text = "Thank you! This is delicious! 😋 +{gold} gold",
+}
+GUEST_DIALOGUE.timeout = {
+    speaker = "guest",
+    text = "I've been waiting too long... I'm leaving! 😞",
+}
+GUEST_DIALOGUE.wrong_dish = {
+    speaker = "guest",
+    text = "This isn't what I ordered... 🤔",
+}
+
+-- Guest type-specific dialogues
+local GUEST_BY_TYPE = {}
+GUEST_BY_TYPE.female = {
+    spawn = "Hello! Could I get some {recipe}? 💕",
+    served = "Perfect! Thank you so much! ✨",
+    timeout = "I can't wait any longer... 💔",
+    wrong_dish = "This isn't what I wanted... 😢",
+}
+GUEST_BY_TYPE.male = {
+    spawn = "Hey, got any {recipe}? 🍽️",
+    served = "Awesome! Thanks, chef! 👍",
+    timeout = "Gotta go, can't wait forever! 🚶",
+    wrong_dish = "Wrong order, buddy! 😕",
+}
+GUEST_BY_TYPE.parrot = {
+    spawn = "Squawk! {recipe}! Squawk! 🦜",
+    served = "Pretty good! Squawk! 🎉",
+    timeout = "Squawk! Too slow! Fly away! 🦜💨",
+    wrong_dish = "Squawk! Wrong! Squawk! ❌",
+}
+GUEST_BY_TYPE.lotus = {
+    spawn = "I seek the essence of {recipe}... 🌸",
+    served = "The flavors bloom... thank you. 🌺",
+    timeout = "The petals wilt... I must depart. 🥀",
+    wrong_dish = "This is not the essence I seek... 🌑",
+}
+GUEST_BY_TYPE.cupcake = {
+    spawn = "I'm craving something sweet! {recipe}? 🧁",
+    served = "So yummy! Thank you! 🍰",
+    timeout = "My sweet tooth is losing patience... 🍬",
+    wrong_dish = "This isn't sweet enough... 😕",
+}
+GUEST_BY_TYPE.zundamon = {
+    spawn = "Zunda! I want {recipe}! 🍙",
+    served = "Zunda-zunda! Delicious! 🎊",
+    timeout = "Zunda... too slow... leaving now! 😤",
+    wrong_dish = "Not zunda enough! 😠",
+}
+
+-- Add guest speaker to SPEAKERS table
+SPEAKERS.guest = { name = "Guest", emoji = "🍽️", accent = RGB(220, 200, 170), portrait = RGB(230, 220, 200) }
+
 return {
-	SPEAKERS = SPEAKERS,
-	COMPANION_DIALOGUE = COMPANION_DIALOGUE,
-	SIDE_DIALOGUES = SIDE_DIALOGUES,
+    SPEAKERS = SPEAKERS,
+    COMPANION_DIALOGUE = COMPANION_DIALOGUE,
+    SIDE_DIALOGUES = SIDE_DIALOGUES,
+    GUEST_DIALOGUE = GUEST_DIALOGUE,
+    GUEST_BY_TYPE = GUEST_BY_TYPE,
 }

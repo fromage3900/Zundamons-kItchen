@@ -16,6 +16,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local UIAssets = require(RS.Shared.Config.UIAssets)
 local UIHelper = require(RS.Shared.Modules.UIHelper)
+local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 local GetCompanionBuff = RS:WaitForChild("RemoteFunctions"):WaitForChild("GetActiveCompanionBuff")
 
 local function getSoundId(assetKey, fallback)
@@ -44,7 +45,7 @@ cookingGui.Parent = playerGui
 local backdrop = Instance.new("Frame", cookingGui)
 backdrop.Name = "Backdrop"
 backdrop.Size = UDim2.new(1, 0, 1, 0)
-backdrop.BackgroundColor3 = Color3.fromRGB(20, 14, 30)
+backdrop.BackgroundColor3 = UIConfig.GAME_COLORS.HUDBg
 backdrop.BackgroundTransparency = 0.55
 backdrop.BorderSizePixel = 0
 backdrop.Visible = false
@@ -55,14 +56,14 @@ local panel = Instance.new("Frame", cookingGui)
 panel.Name = "Panel"
 panel.Size = UDim2.new(0, 760, 0, 480)
 panel.Position = UDim2.new(0.5, -380, 0.5, -240)
-panel.BackgroundColor3 = Color3.fromRGB(252, 248, 240)
+panel.BackgroundColor3 = UIConfig.COLORS.PanelBg
 panel.BorderSizePixel = 0
 panel.Visible = false
 panel.ZIndex = 2
 local panelCorner = Instance.new("UICorner", panel); panelCorner.CornerRadius = UDim.new(0, 28)
 local panelStroke = Instance.new("UIStroke", panel)
 panelStroke.Thickness = 4
-panelStroke.Color = Color3.fromRGB(120, 200, 130)
+panelStroke.Color = UIConfig.GAME_COLORS.HUDAccent
 
 -- Subtle gradient backdrop
 local gradient = Instance.new("UIGradient", panel)
@@ -101,7 +102,7 @@ recipeTitle.BackgroundTransparency = 1
 recipeTitle.Text = "🫛  Zunda Kitchen"
 recipeTitle.Font = Enum.Font.FredokaOne
 recipeTitle.TextSize = 36
-recipeTitle.TextColor3 = Color3.fromRGB(68, 52, 78)
+recipeTitle.TextColor3 = UIConfig.COLORS.TextDark
 recipeTitle.ZIndex = 3
 
 -- Subtitle: hint + score
@@ -113,7 +114,7 @@ hint.BackgroundTransparency = 1
 hint.Text = "✨ Press SPACE or click COOK when each pea reaches the ring ✨"
 hint.Font = Enum.Font.Gotham
 hint.TextSize = 16
-hint.TextColor3 = Color3.fromRGB(140, 110, 160)
+hint.TextColor3 = UIConfig.COLORS.TextDarkSec
 hint.ZIndex = 3
 
 -- Score label
@@ -125,7 +126,7 @@ scoreLabel.BackgroundTransparency = 1
 scoreLabel.Text = ""
 scoreLabel.Font = Enum.Font.GothamBold
 scoreLabel.TextSize = 22
-scoreLabel.TextColor3 = Color3.fromRGB(120, 200, 130)
+scoreLabel.TextColor3 = UIConfig.GAME_COLORS.HUDAccent
 scoreLabel.TextXAlignment = Enum.TextXAlignment.Right
 scoreLabel.ZIndex = 3
 
@@ -137,7 +138,7 @@ comboLabel.BackgroundTransparency = 1
 comboLabel.Text = ""
 comboLabel.Font = Enum.Font.FredokaOne
 comboLabel.TextSize = 20
-comboLabel.TextColor3 = Color3.fromRGB(255, 180, 50)
+comboLabel.TextColor3 = UIConfig.GAME_COLORS.ComboWarm
 comboLabel.TextXAlignment = Enum.TextXAlignment.Right
 comboLabel.ZIndex = 3
 
@@ -146,7 +147,7 @@ local trackContainer = Instance.new("Frame", panel)
 trackContainer.Name = "TrackContainer"
 trackContainer.Size = UDim2.new(1, -80, 0, 130)
 trackContainer.Position = UDim2.new(0, 40, 0, 130)
-trackContainer.BackgroundColor3 = Color3.fromRGB(235, 255, 225)
+trackContainer.BackgroundColor3 = UIConfig.GAME_COLORS.CookingTrack
 trackContainer.BorderSizePixel = 0
 trackContainer.ZIndex = 3
 local tcCorner = Instance.new("UICorner", trackContainer); tcCorner.CornerRadius = UDim.new(0, 22)
@@ -168,7 +169,7 @@ local hitRing = Instance.new("Frame", trackContainer)
 hitRing.Name = "HitRing"
 hitRing.Size = UDim2.new(0, 80, 0, 80)
 hitRing.Position = UDim2.new(TARGET_X, -40, 0.5, -40)
-hitRing.BackgroundColor3 = Color3.fromRGB(180, 245, 190)
+hitRing.BackgroundColor3 = UIConfig.GAME_COLORS.CookingTarget
 hitRing.BackgroundTransparency = 0.5
 hitRing.BorderSizePixel = 0
 hitRing.ZIndex = 4
@@ -191,11 +192,11 @@ local clickBtn = Instance.new("TextButton", panel)
 clickBtn.Name = "CookButton"
 clickBtn.Size = UDim2.new(0, 360, 0, 78)
 clickBtn.Position = UDim2.new(0.5, -180, 0, 290)
-clickBtn.BackgroundColor3 = Color3.fromRGB(100, 195, 110)
+clickBtn.BackgroundColor3 = UIConfig.COLORS.Success
 clickBtn.Text = "🫛  COOK!  🫛"
 clickBtn.Font = Enum.Font.FredokaOne
 clickBtn.TextSize = 38
-clickBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+clickBtn.TextColor3 = UIConfig.GAME_COLORS.HUDText
 clickBtn.BorderSizePixel = 0
 clickBtn.AutoButtonColor = false
 clickBtn.ZIndex = 4
@@ -211,7 +212,7 @@ resultLabel.BackgroundTransparency = 1
 resultLabel.Text = ""
 resultLabel.Font = Enum.Font.FredokaOne
 resultLabel.TextSize = 30
-resultLabel.TextColor3 = Color3.fromRGB(68, 52, 78)
+resultLabel.TextColor3 = UIConfig.COLORS.TextDark
 resultLabel.ZIndex = 4
 
 -- Progress dots row (one dot per note, lit as you go)
@@ -335,13 +336,13 @@ local function judgeFirstUnhitNote()
     local greatThresh   = 45 * (1 + cardamonBoost * 0.5)
     local tag, color
     if bestDist < perfectThresh then
-        tag, color = "perfect", Color3.fromRGB(255, 200, 80)
+        tag, color = "perfect", UIConfig.GAME_COLORS.CookingPerfect
     elseif bestDist < greatThresh then
-        tag, color = "great", Color3.fromRGB(120, 220, 140)
+        tag, color = "great", UIConfig.GAME_COLORS.CookingGreat
     elseif bestDist < 80 then
-        tag, color = "good", Color3.fromRGB(180, 180, 220)
+        tag, color = "good", UIConfig.GAME_COLORS.CookingGood
     else
-        tag, color = "miss", Color3.fromRGB(220, 100, 110)
+        tag, color = "miss", UIConfig.GAME_COLORS.CookingMiss
     end
     n.scoreTag = tag
     table.insert(scores, { tag = tag })
@@ -403,7 +404,7 @@ local function judgeFirstUnhitNote()
     end
     if currentCombo >= 2 then
         comboLabel.Text = "🔥 " .. currentCombo .. "x combo"
-        comboLabel.TextColor3 = currentCombo >= 5 and Color3.fromRGB(255, 80, 80) or Color3.fromRGB(255, 180, 50)
+        comboLabel.TextColor3 = currentCombo >= 5 and UIConfig.GAME_COLORS.ComboFire or UIConfig.GAME_COLORS.ComboWarm
     else
         comboLabel.Text = ""
     end
@@ -427,21 +428,21 @@ local function finishCooking()
     if perfects == totalNotesPlanned then
         quality = "perfect"
         resultLabel.Text = "✨ FLAWLESS! ALL PERFECTS! ✨"
-        resultLabel.TextColor3 = Color3.fromRGB(255, 180, 50)
-        spawnSparkles(panel, panel.AbsoluteSize.X / 2, 280, Color3.fromRGB(255, 200, 100), 40)
+        resultLabel.TextColor3 = UIConfig.GAME_COLORS.ComboWarm
+        spawnSparkles(panel, panel.AbsoluteSize.X / 2, 280, UIConfig.GAME_COLORS.SparkleGold, 40)
     elseif perfects >= math.ceil(totalNotesPlanned * 0.6) then
         quality = "perfect"
         resultLabel.Text = "🌟 PERFECT DISH! 🌟"
-        resultLabel.TextColor3 = Color3.fromRGB(255, 180, 50)
-        spawnSparkles(panel, panel.AbsoluteSize.X / 2, 280, Color3.fromRGB(255, 200, 100), 25)
+        resultLabel.TextColor3 = UIConfig.GAME_COLORS.ComboWarm
+        spawnSparkles(panel, panel.AbsoluteSize.X / 2, 280, UIConfig.GAME_COLORS.SparkleGold, 25)
     elseif hits >= math.ceil(totalNotesPlanned * 0.5) then
         quality = "great"
         resultLabel.Text = "👍 Great timing!"
-        resultLabel.TextColor3 = Color3.fromRGB(100, 200, 100)
+        resultLabel.TextColor3 = UIConfig.COLORS.Success
     else
         quality = "ok"
         resultLabel.Text = "😅 A bit off… but it works!"
-        resultLabel.TextColor3 = Color3.fromRGB(200, 150, 100)
+        resultLabel.TextColor3 = UIConfig.COLORS.TextSecondary
     end
 
     task.delay(2.2, function()

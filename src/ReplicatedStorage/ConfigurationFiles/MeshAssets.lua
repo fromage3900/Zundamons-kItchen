@@ -7,6 +7,16 @@ local MeshAssets = {}
 
 MeshAssets.meshes = {
 	-- Harvest Nodes - Zunda Forest & Kitchen Garden
+	-- Using asset 74045703734999 (carrot plot with growth stages)
+	CarrotPlot = {
+		["Seed"] = "rbxassetid://132798405534424",
+		["SeedLeaf1"] = "rbxassetid://110157288415078",
+		["SeedLeaf2"] = "rbxassetid://110157288415078",
+		["SeedPack"] = "rbxassetid://94366688581103",
+		["Leaf"] = "rbxassetid://118786859560292",
+		["Mature"] = "rbxassetid://85258154641863",
+		["Processed"] = "rbxassetid://86749155295155",
+	},
 	ZundaFlower = {
 		["ZundaFlower_Default"] = "rbxassetid://130899236683010",
 		["ZundaFlower_Rare"] = "rbxassetid://86582218951352",
@@ -51,6 +61,17 @@ MeshAssets.meshes = {
 	},
 	["Neon"] = {
 		["neon heart"] = "rbxassetid://601198887",
+	},
+	-- User-provided assets
+	["Mushroom"] = {
+		["Default"] = "rbxassetid://96844649112031",
+	},
+	["Tree"] = {
+		["Variant1"] = "rbxassetid://82622166538467",
+		["Variant2"] = "rbxassetid://80371673720142",
+	},
+	["Bee"] = {
+		["Default"] = "rbxassetid://91701180154526",
 	},
 }
 

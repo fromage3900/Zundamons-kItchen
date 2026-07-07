@@ -74,17 +74,22 @@ local C = {
 }
 
 local function checkTutorialDone()
-	local rf = RS:WaitForChild("RemoteFunctions"):FindFirstChild("MarkTutorialDone")
-	if not rf then return false end
-	local ok, result = pcall(function()
-		local req = RS:WaitForChild("RemoteFunctions"):FindFirstChild("RequestData")
-		if req then
-			local data = req:InvokeServer()
-			return data and data.tutorial_done
-		end
-		return false
-	end)
-	return ok and result or false
+    print("[Tutorial.checkTutorialDone] Checking...")
+    local rf = RS:WaitForChild("RemoteFunctions"):FindFirstChild("MarkTutorialDone")
+    print("[Tutorial.checkTutorialDone] MarkTutorialDone exists:", rf ~= nil)
+    if not rf then return false end
+    local ok, result = pcall(function()
+        local req = RS:WaitForChild("RemoteFunctions"):FindFirstChild("RequestData")
+        print("[Tutorial.checkTutorialDone] RequestData exists:", req ~= nil)
+        if req then
+            local data = req:InvokeServer()
+            print("[Tutorial.checkTutorialDone] Data received:", data ~= nil)
+            return data and data.tutorial_done
+        end
+        return false
+    end)
+    print("[Tutorial.checkTutorialDone] Result:", ok and result or false)
+    return ok and result or false
 end
 
 local function markTutorialDone()
@@ -173,25 +178,32 @@ local currentStep = 1
 local animating = false
 
 local function showStep(idx)
-	if idx < 1 or idx > #STEPS then return end
-	currentStep = idx
-	local step = STEPS[idx]
-	titleLbl.Text = step.title
-	descLbl.Text = step.desc
+    print("[Tutorial.showStep] Showing step", idx)
+    if idx < 1 or idx > #STEPS then 
+        warn("[Tutorial.showStep] Invalid step index:", idx)
+        return 
+    end
+    currentStep = idx
+    local step = STEPS[idx]
+    print("[Tutorial.showStep] Step title:", step.title)
+    titleLbl.Text = step.title
+    descLbl.Text = step.desc
 
-	for i, dot in ipairs(dots) do
-		dot.BackgroundColor3 = i == idx and C.button or Color3.fromRGB(210, 200, 185)
-		dot:TweenSize(UDim2.new(i == idx and 14 or 10, 0, 10, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.2, true)
-	end
+    for i, dot in ipairs(dots) do
+        dot.BackgroundColor3 = i == idx and C.button or Color3.fromRGB(210, 200, 185)
+        dot:TweenSize(UDim2.new(i == idx and 14 or 10, 0, 10, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Back, 0.2, true)
+    end
 
-	local isLast = idx == #STEPS
-	nextBtn.Text = isLast and "Done! ✨" or "Next →"
-	skipBtn.Visible = not isLast
+    local isLast = idx == #STEPS
+    nextBtn.Text = isLast and "Done! ✨" or "Next →"
+    skipBtn.Visible = not isLast
 
-	card.Visible = true
-	card.Size = UDim2.new(0, 440, 0, 10)
-	Tween:Create(card, TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-		{ Size = UDim2.new(0, 440, 0, 220) }):Play()
+    card.Visible = true
+    print("[Tutorial.showStep] Card visible:", card.Visible)
+    card.Size = UDim2.new(0, 440, 0, 10)
+    Tween:Create(card, TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        { Size = UDim2.new(0, 440, 0, 220) }):Play()
+    print("[Tutorial.showStep] Step shown")
 end
 
 local function dismiss()
@@ -238,10 +250,19 @@ end
 
 -- Wait for character spawn + PlayerGui, then start
 task.spawn(function()
-	player:WaitForChild("PlayerGui")
-	waitForSpawn()
-	if checkTutorialDone() then return end
-	task.wait(1.5)
-	showStep(1)
-	print("[TutorialController] Onboarding sequence ready — 7 steps")
+    print("[Tutorial] Starting initialization...")
+    player:WaitForChild("PlayerGui")
+    print("[Tutorial] PlayerGui ready, waiting for spawn...")
+    waitForSpawn()
+    print("[Tutorial] Character spawned, checking if tutorial done...")
+    local tutorialDone = checkTutorialDone()
+    print("[Tutorial] Tutorial done:", tutorialDone)
+    if tutorialDone then 
+        print("[Tutorial] Tutorial already completed, skipping")
+        return 
+    end
+    task.wait(1.5)
+    print("[Tutorial] Showing step 1")
+    showStep(1)
+    print("[TutorialController] Onboarding sequence ready — 7 steps")
 end)

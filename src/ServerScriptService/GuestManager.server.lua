@@ -48,54 +48,136 @@ local function refreshSpawnPoints()
 end
 refreshSpawnPoints()
 
+local NPCConfig = require(RS.Shared.Config.NPCConfig)
+local InsertService = game:GetService("InsertService")
+
+-- Cache loaded mesh templates
+local meshTemplateCache = {}
+
+local function loadMeshTemplate(meshType)
+    if meshTemplateCache[meshType] then
+        return meshTemplateCache[meshType]:Clone()
+    end
+    
+    local template = NPCConfig.guestTemplates[meshType]
+    if not template then
+        warn("[GuestManager] Unknown mesh type:", meshType)
+        return nil
+    end
+    
+    local success, model = pcall(function()
+        local assetId = tonumber(template.meshId:match("%d+"))
+        return InsertService:LoadAsset(assetId)
+    end)
+    
+    if not success or not model then
+        warn("[GuestManager] Failed to load mesh:", meshType, model)
+        return nil
+    end
+    
+    -- Ensure model has required structure
+    if not model:FindFirstChild("Torso") then
+        warn("[GuestManager] Mesh missing Torso:", meshType)
+        model:Destroy()
+        return nil
+    end
+    
+    meshTemplateCache[meshType] = model
+    return model:Clone()
+end
+
 -- Create a guest for a specific player
 local function createGuest(player)
-	-- Respect max concurrent guests
-	local guestCount = 0
-	for _ in pairs(activeGuests) do
-		guestCount = guestCount + 1
-		if guestCount >= CONFIG.guest_settings.max_guests_at_once then
-			return nil
-		end
-	end
+    -- Respect max concurrent guests
+    local guestCount = 0
+    for _ in pairs(activeGuests) do
+        guestCount = guestCount + 1
+        if guestCount >= CONFIG.guest_settings.max_guests_at_once then
+            return nil
+        end
+    end
 
-	-- Clone template
-	local guest = guestTemplate:Clone()
-	guestIdCounter = guestIdCounter + 1
-	guest.Name = "Guest_" .. guestIdCounter
+    -- Clone template
+    local guest = guestTemplate:Clone()
+    guestIdCounter = guestIdCounter + 1
+    guest.Name = "Guest_" .. guestIdCounter
 
-	-- If template has no BasePart, build a procedural capsule guest
-	if not guest:FindFirstChildWhichIsA("BasePart") then
-		local prefs = CONFIG.guest_preferences
-		local pref = prefs[math.random(1, #prefs)]
-		local npcColor = Color3.fromRGB(180, 120, 80)
-		if pref.name == "Food Critic" then npcColor = Color3.fromRGB(100, 180, 220)
-		elseif pref.name == "Regular Customer" then npcColor = Color3.fromRGB(220, 160, 100)
-		elseif pref.name == "Picnic Guest" then npcColor = Color3.fromRGB(200, 180, 60)
-		elseif pref.name and pref.name:find("Challenge") then npcColor = Color3.fromRGB(220, 80, 80) end
-		local torso = Instance.new("Part")
-		torso.Name = "Torso"
-		torso.Size = Vector3.new(2, 2.5, 1)
-		torso.Color = npcColor
-		torso.Anchored = false
-		torso.CanCollide = false
-		torso.Parent = guest
-		local head = Instance.new("Part")
-		head.Name = "Head"
-		head.Size = Vector3.new(1.2, 1.2, 1.2)
-		head.Color = npcColor
-		head.Anchored = false
-		head.CanCollide = false
-		head.Position = Vector3.new(0, 2, 0)
-		head.Parent = guest
-		local weld = Instance.new("WeldConstraint")
-		weld.Part0 = torso
-		weld.Part1 = head
-		weld.Parent = torso
-		local humanoid = Instance.new("Humanoid")
-		humanoid.Parent = guest
-		guest.PrimaryPart = torso
-	end
+    -- Select random mesh type
+    local meshTypes = {}
+    for meshType in pairs(NPCConfig.guestTemplates) do
+        table.insert(meshTypes, meshType)
+    end
+    local selectedMeshType = meshTypes[math.random(1, #meshTypes)]
+
+    -- Try to load mesh template
+    local meshModel = loadMeshTemplate(selectedMeshType)
+    if meshModel then
+        -- Use mesh-based guest
+        guest:ClearAllChildren()
+        for _, child in ipairs(meshModel:GetChildren()) do
+            child.Parent = guest
+        end
+        meshModel:Destroy()
+        
+        -- Apply scale
+        local scale = NPCConfig.guestTemplates[selectedMeshType].scale
+        local torso = guest:FindFirstChild("Torso")
+        if torso then
+            torso.Size = torso.Size * scale
+        end
+        
+        print("[GuestManager] Using mesh guest:", selectedMeshType)
+    else
+        -- Fallback to procedural capsule
+        warn("[GuestManager] Using procedural capsule for guest")
+        local prefs = CONFIG.guest_preferences
+        local pref = prefs[math.random(1, #prefs)]
+        local npcColor = Color3.fromRGB(180, 120, 80)
+        if pref.name == "Food Critic" then npcColor = Color3.fromRGB(100, 180, 220)
+        elseif pref.name == "Regular Customer" then npcColor = Color3.fromRGB(220, 160, 100)
+        elseif pref.name == "Picnic Guest" then npcColor = Color3.fromRGB(200, 180, 60)
+        elseif pref.name and pref.name:find("Challenge") then npcColor = Color3.fromRGB(220, 80, 80) end
+        local torso = Instance.new("Part")
+        torso.Name = "Torso"
+        torso.Size = Vector3.new(2, 2.5, 1)
+        torso.Color = npcColor
+        torso.Anchored = false
+        torso.CanCollide = false
+        torso.Parent = guest
+        local head = Instance.new("Part")
+        head.Name = "Head"
+        head.Size = Vector3.new(1.2, 1.2, 1.2)
+        head.Color = npcColor
+        head.Anchored = false
+        head.CanCollide = false
+        head.Position = Vector3.new(0, 2, 0)
+        head.Parent = guest
+        local weld = Instance.new("WeldConstraint")
+        weld.Part0 = torso
+        weld.Part1 = head
+        weld.Parent = torso
+        local humanoid = Instance.new("Humanoid")
+        humanoid.Parent = guest
+        guest.PrimaryPart = torso
+    end
+
+    -- Set mesh type attribute
+    guest:SetAttribute("MeshType", selectedMeshType)
+
+    -- Trigger VN dialogue for guest spawn
+    local VNDialogueData = require(RS.ConfigurationFiles.VNDialogueData)
+    local dialogue = VNDialogueData.GUEST_BY_TYPE[selectedMeshType]
+    if dialogue then
+        local text = dialogue.spawn:gsub("{recipe}", recipe)
+        -- Fire client event to show VN dialogue
+        local VNEvent = RS.RemoteEvents:FindFirstChild("ShowVNDialgue")
+        if not VNEvent then
+            VNEvent = Instance.new("RemoteEvent")
+            VNEvent.Name = "ShowVNDialgue"
+            VNEvent.Parent = RS.RemoteEvents
+        end
+        VNEvent:FireClient(player, "guest", text)
+    end
 
 	-- Pick a random guest preference
 	local preference = CONFIG.guest_preferences[math.random(1, #CONFIG.guest_preferences)]
@@ -273,17 +355,33 @@ end
 
 -- Remove a guest (served or timed out)
 local function removeGuest(guest, reason)
-	if not guest or not guest.Parent then
-		return
-	end
+    if not guest or not guest.Parent then
+        return
+    end
 
-	local guestName = guest.Name
-	local playerName = guest:GetAttribute("ServingPlayer")
+    local guestName = guest.Name
+    local playerName = guest:GetAttribute("ServingPlayer")
 
-	print("[GuestManager] Guest " .. guestName .. " removed (" .. reason .. ")")
+    print("[GuestManager] Guest " .. guestName .. " removed (" .. reason .. ")")
 
-	guest:Destroy()
-	activeGuests[guestName] = nil
+    -- Trigger VN dialogue for timeout
+    if reason == "timeout" then
+        local meshType = guest:GetAttribute("MeshType")
+        local VNDialogueData = require(RS.ConfigurationFiles.VNDialogueData)
+        local dialogue = VNDialogueData.GUEST_BY_TYPE[meshType]
+        if dialogue then
+            local VNEvent = RS.RemoteEvents:FindFirstChild("ShowVNDialgue")
+            if VNEvent then
+                local servingPlayer = game.Players:FindFirstChild(playerName)
+                if servingPlayer then
+                    VNEvent:FireClient(servingPlayer, "guest", dialogue.timeout)
+                end
+            end
+        end
+    end
+
+    guest:Destroy()
+    activeGuests[guestName] = nil
 end
 
 -- Main guest spawning loop
