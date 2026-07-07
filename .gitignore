@@ -31,3 +31,8 @@ __pycache__/
 
 # Generated quests
 reports/generated/
+
+# Batch import generated files
+reports/mesh_pipeline/
+
+reports/orchestrator-*.json

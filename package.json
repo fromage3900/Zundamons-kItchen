@@ -16,7 +16,10 @@
     "overnight": "node scripts/overnight-build.mjs",
     "overnight:ps": "powershell -File scripts/overnight.ps1",
     "generate-quests": "python scripts/agent_orchestrator/run.py --generate-quests 10",
-    "deploy-models": "python scripts/agent_orchestrator/tools/model_deploy.py"
+    "deploy-models": "python scripts/agent_orchestrator/tools/model_deploy.py",
+    "import:scan": "python scripts/agent_orchestrator/tools/batch_import.py --scan",
+    "import:apply": "python scripts/agent_orchestrator/tools/batch_import.py --apply",
+    "agent:task": "python scripts/agent_orchestrator/run.py"
   },
   "version": "0.2.0"
 }

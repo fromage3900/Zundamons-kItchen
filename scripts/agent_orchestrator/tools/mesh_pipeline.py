@@ -137,10 +137,11 @@ class MeshPipeline:
             print(f"  Paste this into Studio command bar to import all meshes")
 
             print(f"\n=== Pipeline Complete ===")
-            print(f"1. Copy the script from: reports/mesh_pipeline/studio_import.luau")
+            print(f"1. Copy the script: reports/mesh_pipeline/studio_import.luau")
             print(f"2. Paste into Studio command bar")
-            print(f"3. Copy the resulting asset IDs")
-            print(f"4. Update MeshAssets.lua with new IDs")
+            print(f"3. Save Studio output JSON to: reports/mesh_pipeline/import_results.json")
+            print(f"4. Auto-update configs: npm run import:apply")
+            print(f"   Or: python scripts/agent_orchestrator/tools/batch_import.py --apply")
         else:
             print(f"\n=== No Files to Process ===")
             print(f"Place OBJ/FBX files in: {ASSETS_DIR / 'Upload'}")
