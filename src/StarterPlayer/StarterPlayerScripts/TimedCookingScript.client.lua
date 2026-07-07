@@ -141,6 +141,18 @@ scoreLabel.TextColor3 = Color3.fromRGB(120, 200, 130)
 scoreLabel.TextXAlignment = Enum.TextXAlignment.Right
 scoreLabel.ZIndex = 3
 
+local comboLabel = Instance.new("TextLabel", panel)
+comboLabel.Name = "ComboLabel"
+comboLabel.Size = UDim2.new(0, 160, 0, 28)
+comboLabel.Position = UDim2.new(1, -180, 0, 56)
+comboLabel.BackgroundTransparency = 1
+comboLabel.Text = ""
+comboLabel.Font = Enum.Font.FredokaOne
+comboLabel.TextSize = 20
+comboLabel.TextColor3 = Color3.fromRGB(255, 180, 50)
+comboLabel.TextXAlignment = Enum.TextXAlignment.Right
+comboLabel.ZIndex = 3
+
 -- ── TRACK ───────────────────────────────────────────────────────────────
 local trackContainer = Instance.new("Frame", panel)
 trackContainer.Name = "TrackContainer"
@@ -276,6 +288,7 @@ local isCooking = false
 local activeNotes = {}      -- { note=Frame, hit=bool, scoreTag=string, spawnTime=number }
 local scores = {}           -- list of { tag = "perfect"|"great"|"good"|"miss" }
 local totalNotesPlanned = 0
+local currentCombo = 0
 local stepConn = nil
 local currentRecipe = nil
 local currentRecipeCfg = nil
@@ -394,6 +407,19 @@ local function judgeFirstUnhitNote()
         playSound(getSoundId("gather_fail", "rbxasset://sounds/button-09.mp3"), 0.4, 0.7)
     end
 
+    -- Update combo
+    if tag == "perfect" or tag == "great" then
+        currentCombo = currentCombo + 1
+    else
+        currentCombo = 0
+    end
+    if currentCombo >= 2 then
+        comboLabel.Text = "🔥 " .. currentCombo .. "x combo"
+        comboLabel.TextColor3 = currentCombo >= 5 and Color3.fromRGB(255, 80, 80) or Color3.fromRGB(255, 180, 50)
+    else
+        comboLabel.Text = ""
+    end
+
     -- Update score label
     local pCount = 0
     for _, s in ipairs(scores) do if s.tag == "perfect" then pCount = pCount + 1 end end
@@ -476,6 +502,8 @@ local function startCooking(recipeName, onComplete)
     recipeTitle.Text = "🍳 Cooking: " .. recipeName
     resultLabel.Text = ""
     scoreLabel.Text = ("Perfect 0/%d"):format(totalNotesPlanned)
+    currentCombo = 0
+    comboLabel.Text = ""
     backdrop.Visible = true
     panel.Visible = true
     playSound(getSoundId("craft_start", "rbxasset://sounds/electronicpingshort.wav"), 0.4, 1.0)

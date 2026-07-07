@@ -14,6 +14,7 @@ local VNDialogueData = require(RS.ConfigurationFiles:WaitForChild("VNDialogueDat
 local SPEAKERS = VNDialogueData.SPEAKERS
 local COMPANION_DIALOGUE = VNDialogueData.COMPANION_DIALOGUE
 local SIDE_DIALOGUES = VNDialogueData.SIDE_DIALOGUES
+local VNDialoguePortraits = require(RS.Shared.Config.VNDialoguePortraits)
 
 local function RGB(r: number, g: number, b: number): Color3
 	return Color3.fromRGB(r, g, b)
@@ -72,7 +73,18 @@ local pStroke = Instance.new("UIStroke", panel)
 pStroke.Color = C_border
 pStroke.Thickness = 3
 
--- Portrait box
+-- Full-body background art (Persona-style, right side)
+local fullArt = Instance.new("ImageLabel", panel)
+fullArt.Name = "FullArt"
+fullArt.Size = UDim2.new(0, 200, 1, -20)
+fullArt.Position = UDim2.new(1, -200, 0, 10)
+fullArt.BackgroundTransparency = 1
+fullArt.Image = ""
+fullArt.ImageTransparency = 0.7
+fullArt.ScaleType = Enum.ScaleType.Fit
+fullArt.ZIndex = 10
+
+-- Portrait box (face close-up, left side)
 local portrait = Instance.new("Frame", panel)
 portrait.Name = "Portrait"
 portrait.Size = UDim2.new(0, PORT_W, 1, 0)
@@ -81,22 +93,21 @@ portrait.BorderSizePixel = 0
 portrait.ZIndex = 11
 Instance.new("UICorner", portrait).CornerRadius = UDim.new(0, 18)
 
--- Portrait emoji
-local pEmoji = Instance.new("TextLabel", portrait)
-pEmoji.Name = "Emoji"
-pEmoji.Size = UDim2.new(0.9, 0, 0.7, 0)
-pEmoji.AnchorPoint = Vector2.new(0.5, 0.5)
-pEmoji.Position = UDim2.new(0.5, 0, 0.5, 0)
-pEmoji.BackgroundTransparency = 1
-pEmoji.Text = "🍙"
-pEmoji.Font = Enum.Font.GothamBold
-pEmoji.TextSize = 52
-pEmoji.ZIndex = 13
+-- Portrait face image (replaces emoji TextLabel)
+local pFace = Instance.new("ImageLabel", portrait)
+pFace.Name = "Face"
+pFace.Size = UDim2.new(0.9, 0, 0.9, 0)
+pFace.AnchorPoint = Vector2.new(0.5, 0.5)
+pFace.Position = UDim2.new(0.5, 0, 0.5, 0)
+pFace.BackgroundTransparency = 1
+pFace.Image = ""
+pFace.ScaleType = Enum.ScaleType.Fit
+pFace.ZIndex = 13
 
--- Text area
+-- Text area (squeezed between portrait and full art)
 local textArea = Instance.new("Frame", panel)
 textArea.Name = "TextArea"
-textArea.Size = UDim2.new(1, -(PORT_W + 16), 1, -16)
+textArea.Size = UDim2.new(1, -(PORT_W + 220), 1, -16)
 textArea.Position = UDim2.new(0, PORT_W + 12, 0, 8)
 textArea.BackgroundTransparency = 1
 textArea.ZIndex = 11
@@ -203,9 +214,8 @@ choiceLayout.FillDirection = Enum.FillDirection.Vertical
 choiceLayout.Padding = UDim.new(0, 6)
 choiceLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 
-local function setSpeaker(key)
+local function setSpeaker(key, expression)
 	local sp = SPEAKERS[key] or SPEAKERS.zundamon
-	pEmoji.Text = sp.emoji
 	portrait.BackgroundColor3 = sp.portrait
 	nameBanner.BackgroundColor3 = sp.accent
 	pStroke.Color = C_border
@@ -216,6 +226,25 @@ local function setSpeaker(key)
 		nameLabel.Text = sp.name
 	end
 	dlgText.TextColor3 = C_text
+	-- Load persona-style portraits
+	local portraitData = VNDialoguePortraits.getPortrait(key, expression or "default")
+	if portraitData then
+		if portraitData.face and portraitData.face ~= "" then
+			pFace.Image = portraitData.face
+			pFace.Visible = true
+		else
+			pFace.Visible = false
+		end
+		if portraitData.full and portraitData.full ~= "" then
+			fullArt.Image = portraitData.full
+			fullArt.Visible = true
+		else
+			fullArt.Visible = false
+		end
+		if portraitData.accent then
+			nameBanner.BackgroundColor3 = portraitData.accent
+		end
+	end
 end
 
 local function openPanel()
@@ -309,6 +338,10 @@ local function skipTyping()
 		end
 		local entry = seqLines[seqIdx]
 		dlgText.Text = type(entry) == "string" and entry or (entry.text or "")
+		if type(entry) == "table" and entry.expression then
+			local sk = entry.speaker or seqLines._defaultSpeaker or "zundamon"
+			setSpeaker(sk, entry.expression)
+		end
 		advArrow.Visible = true
 	end
 end
@@ -319,15 +352,17 @@ local function showLine(idx)
 		return
 	end
 	local entry = seqLines[idx]
-	local speakerKey, text
+	local speakerKey, text, expression
 	if type(entry) == "string" then
 		text = entry
 		speakerKey = seqLines._defaultSpeaker or "zundamon"
+		expression = seqLines._defaultExpression
 	else
 		speakerKey = entry.speaker or "zundamon"
 		text = entry.text or ""
+		expression = entry.expression or seqLines._defaultExpression
 	end
-	setSpeaker(speakerKey)
+	setSpeaker(speakerKey, expression)
 	typeThread = task.spawn(function()
 		typeWrite(text)
 	end)
@@ -514,140 +549,261 @@ UIS.InputBegan:Connect(function(inp, gpe)
 	end
 end)
 
+-- ── Player Level Tracking ────────────────────────────────────
+local playerLevel = 1
+local rewardEvents = RS:WaitForChild("RewardEvents")
+local chefLevelUpdate = rewardEvents:FindFirstChild("ChefLevelUpdate")
+if chefLevelUpdate then
+	chefLevelUpdate.OnClientEvent:Connect(function(level)
+		playerLevel = level
+	end)
+end
+
+-- ── Side Dialogue Auto-Trigger ───────────────────────────────
+-- Exposed as _G.ZundaTriggerSideDialogue(key) so any script can fire it
+_G.ZundaTriggerSideDialogue = function(key)
+	local sd = SIDE_DIALOGUES[key]
+	if not sd then return end
+	local speaker = sd.speaker or "zundamon"
+	local lines = {}
+	if sd.text then table.insert(lines, { speaker = speaker, text = sd.text }) end
+	if sd.lore then table.insert(lines, { speaker = speaker, text = sd.lore }) end
+	if sd.hint then table.insert(lines, { speaker = speaker, text = sd.hint }) end
+	if sd.tip then table.insert(lines, { speaker = speaker, text = sd.tip }) end
+	if sd.recipe then table.insert(lines, { speaker = speaker, text = sd.recipe }) end
+	if #lines > 0 then
+		_G.ZundaVN.show(speaker, lines)
+	end
+end
+
+-- Listen for remote side dialogue triggers
+local sideDlgRE = RE:FindFirstChild("TriggerSideDialogue")
+if sideDlgRE then
+	sideDlgRE.OnClientEvent:Connect(function(key)
+		_G.ZundaTriggerSideDialogue(key)
+	end)
+end
+
 -- ── Event listeners ───────────────────────────────────────────
 local RE = RS:WaitForChild("RemoteEvents")
 
--- ── BRANCHING ZUNDAPAL DIALOGUE TREE ─────────────────────────────
-local function buildCompanionTree()
+-- ── COMPANION DIALOGUE TREE BUILDER ───────────────────────────
+-- Builds a branching dialogue tree unique to each companion type
+local function buildCompanionTree(compType)
 	local hour = tonumber(Lighting:GetAttribute("CurrentHour")) or 12
 	local slot = hour >= 5 and hour < 12 and "morning"
 		or hour >= 12 and hour < 18 and "afternoon"
 		or hour >= 18 and hour < 21 and "evening"
 		or "night"
-	local greeting = COMPANION_DIALOGUE[slot]
 
-	-- LEAVES
-	local leafEnd = {
-		speaker = "zundapal",
-		lines = {
-			{ speaker = "zundapal", text = "SCREAM AT ME WHENEVER YOU WANT, " .. player.Name .. "!!! \u{1F49B}\u{1F49B}\u{1F49B}" },
-		},
-	}
-
-	local cookingTipsNode = {
-		speaker = "zundapal",
-		lines = {
-			{ speaker = "zundapal", text = "COOKING TIP TIME!!!! EVERYBODY PANIC \u{1F468}\u{200D}\u{1F373}\u{2728}" },
-			{
-				speaker = "zundapal",
-				text = "Watch the bar. THE GLOWY BAR. When it hits PEAK GREEN…",
-			},
-			{
-				speaker = "zundapal",
-				text = "…THAT'S A PERFECT COOK!!! BONUS GOLD!!! FREE EXTRA DISH!!! ABSOLUTE CINEMA!!! ✨\u{1F389}",
-			},
-		},
-		prompt = "WANT MORE????????",
-		choices = {
-			{
-				text = "What about Zunda Mochi??",
-				next = {
-					speaker = "zundapal",
-					lines = {
-						{ speaker = "zundapal", text = "ZUNDA MOCHI!!! 5 ZUNDA PEAS + 8 WHEAT = PEA HEAVEN \u{1F361}\u{1F361}" },
-						{ speaker = "zundapal", text = "The peas are in the Kitchen Garden!!! THEY SPARKLE PINK!!! STARE AT THEM UNTIL THEY SUBMIT \u{1F495}\u{1F495}" },
-					},
-				},
-			},
-			{
-				text = "And the LEGENDARY Zunda Paradise???",
-				next = {
-					speaker = "zundapal",
-					lines = {
-						{ speaker = "zundapal", text = "OOOOOH YOU'RE AMBITIOUS I LIKE IT \u{2728}\u{2728}" },
-						{
-							speaker = "zundapal",
-							text = "ZUNDA PARADISE: 15 ZUNDA PEAS + 10 EDAMAME + 5 SWEET PEAS + 3 PEA FLOWERS. GO BIG OR GO HOME.",
-						},
-						{ speaker = "zundapal", text = "ONLY TRUE PEA MASTERS CAN PULL IT OFF!!! ARE YOU THE ONE??? \u{1F9E1}\u{1F9E1}" },
-					},
-				},
-			},
-			{ text = "I'm full. Thanks.", next = leafEnd },
-		},
-	}
-
-	local questHintsNode = {
-		speaker = "zundapal",
-		lines = {
-			{ speaker = "zundapal", text = "QUEST BOARD!!! MY BELOVED!!! \u{1F4DC}\u{1F4DC}" },
-		},
-		prompt = "WHAT DO YOU WANT TO KNOW???? (SCREAM IT)",
-		choices = {
-			{
-				text = "WHERE ARE THE ZUNDA PEAS",
-				next = {
-					speaker = "zundapal",
-					lines = {
-						{ speaker = "zundapal", text = "KITCHEN GARDEN!!! BEHIND THE BAKERY!!! RUN DON'T WALK \u{1F3C3}\u{200D}\u{2642}\u{FE0F}" },
-						{ speaker = "zundapal", text = "THEY SPARKLE PINK YOU LITERALLY CANNOT MISS THEM \u{1F495}\u{1F495}" },
-					},
-				},
-			},
-			{
-				text = "HOW DO I SERVE GUESTS",
-				next = {
-					speaker = "zundapal",
-					lines = {
-						{ speaker = "zundapal", text = "COOK THE THING THEY WANT. PUT IT IN YOUR POUCH. WALK UP TO THEM. DOMINANCE." },
-						{ speaker = "zundapal", text = "CLICK THE GUEST!!! THEY EXPLODE INTO GOLD AND GRATITUDE \u{2728}" },
-					},
-				},
-			},
-			{
-				text = "TELL ME ABOUT THE VILLAGE WHISPER",
-				next = {
-					speaker = "elder",
-					lines = {
-						{ speaker = "elder", text = "...Zunda Village. Founded by chef-monks who REALLY liked peas. \u{1F3ED}" },
-						{ speaker = "elder", text = "Every dish here carries their obsession. COOK IT PROUDLY. \u{1F9E1}" },
-					},
-				},
-			},
-			{ text = "Never mind (coward)", next = leafEnd },
-		},
-	}
-
-	-- ROOT
-	local greetingLines = {}
-	if math.random() < 0.5 then
-		table.insert(greetingLines, { speaker = "narrator", text = "[ Zundapal explodes into view with sparkling eyes and pea aura ] \u{1F4A5}" })
-	else
-		table.insert(greetingLines, { speaker = "narrator", text = "[ Zundapal is vibrating with kitchen energy ] \u{26A1}" })
+	-- Pull the companion's dialogue data (fallback to zundapal)
+	local compData = COMPANION_DIALOGUE[compType] or COMPANION_DIALOGUE.zundapal
+	local greeting = compData[slot] or {}
+	local levelGreeting = {}
+	if playerLevel >= 21 and compData.level21_50 then
+		levelGreeting = compData.level21_50
+	elseif playerLevel >= 11 and compData.level11_20 then
+		levelGreeting = compData.level11_20
+	elseif compData.level1_10 then
+		levelGreeting = compData.level1_10
 	end
-	for _, l in ipairs(greeting) do
-		table.insert(greetingLines, { speaker = "zundapal", text = l })
+
+	-- Branching leaf nodes (shared across companions with unique flavor)
+	local leafEnd = {
+		speaker = compType,
+		lines = { { speaker = compType, text = "Call me anytime, chef! 🔥" } },
+	}
+
+	-- ── Cook tips sub-tree ────────────────────────────────────
+	local function buildCookingTips()
+		if compType == "ankomon" then
+			return {
+				speaker = "ankomon",
+				lines = {
+					{ speaker = "ankomon", text = "🫘🥊 COOKING TIP: FOCUS. DISCIPLINE. BEANS." },
+					{ speaker = "ankomon", text = "Watch the TIMING BAR like it's your RIVAL IN THE RING. When it glows — STRIKE." },
+					{ speaker = "ankomon", text = "PERFECT COOKS BUILD MUSCLE!!! (and gold. and glory.) 💪🔥" },
+				},
+				prompt = "MORE WISDOM???",
+				choices = {
+					{ text = "Best protein dish?", next = { speaker = "ankomon", lines = { { speaker = "ankomon", text = "ANKOMON'S PROTEIN PUNCH!!! 5 Edamame Pods + 3 Zunda Peas + 1 Gold. It's not a meal, it's a STATEMENT." } } } },
+					{ text = "How to train harder?", next = { speaker = "ankomon", lines = { { speaker = "ankomon", text = "COOK. SERVE. REPEAT. Every dish is a rep. Every perfect cook is a PERSONAL BEST. THE KITCHEN IS YOUR GYM. 🏋️🫘" } } } },
+					{ text = "That's enough flexing", next = leafEnd },
+				},
+			}
+		elseif compType == "cardamon" then
+			return {
+				speaker = "cardamon",
+				lines = {
+					{ speaker = "cardamon", text = "🌿🍋 A cooking tip... breathe first. Then cook." },
+					{ speaker = "cardamon", text = "The timing bar is not a threat — it's a MEDITATION TOOL. When you're calm, your window WIDENS." },
+					{ speaker = "cardamon", text = "I expand your perfect window by 30%. USE IT WISELY. Rushing disrespects the ingredients. 🧘" },
+				},
+				prompt = "Deeper wisdom?",
+				choices = {
+					{ text = "What's the most calming dish?", next = { speaker = "cardamon", lines = { { speaker = "cardamon", text = "Cardamon's Calm Cup. 3 Pea Flowers + 2 Zunda Leaves + 1 Sweet Pea. Sip. Exist. TRANSCEND. 🍵🌿" } } } },
+					{ text = "How do I find peace in the chaos?", next = { speaker = "cardamon", lines = { { speaker = "cardamon", text = "The chaos IS the peace. Every sizzle. Every chop. Every perfect ding of the timer. Be present. Cook present. 🔥🧘" } } } },
+					{ text = "I'm peaceful enough, thanks", next = leafEnd },
+				},
+			}
+		elseif compType == "antimon" then
+			return {
+				speaker = "antimon",
+				lines = {
+					{ speaker = "antimon", text = "⚡💨 SPEED TIP: GO FASTER!!! THE BAR MOVES, YOU MOVE WITH IT!!!" },
+					{ speaker = "antimon", text = "Don't WAIT for the perfect moment — CREATE IT!!! TIMING IS ILLUSION, SPEED IS TRUTH!!!" },
+					{ speaker = "antimon", text = "Antimon's Speed Soup cooks in 3 SECONDS. THREE. That's not cooking, that's MAGIC AT MACH SPEED!!!" },
+				},
+				prompt = "FASTER???",
+				choices = {
+					{ text = "What's your favorite fast dish?", next = { speaker = "antimon", lines = { { speaker = "antimon", text = "ANTIMON'S SPEED SOUP!!! 4 Zunda Mushrooms + 3 Zunda Leaves. IN. OUT. DONE. TASTES LIKE LIGHTNING. ⚡🍄" } } } },
+					{ text = "How do I gather faster?", next = { speaker = "antimon", lines = { { speaker = "antimon", text = "MY BUFF GIVES YOU +20% EXTRA DROPS!!! I'll WHISPER where the good stuff hides. WHISPERS AT THE SPEED OF SOUND. LISTEN CAREFULLY. 🏃‍♂️💨" } } } },
+					{ text = "I need to rest...", next = leafEnd },
+				},
+			}
+		elseif compType == "sakuradamon" then
+			return {
+				speaker = "sakuradamon",
+				lines = {
+					{ speaker = "sakuradamon", text = "🌸💥 COOKING TIP FROM THE BLOSSOM REALM!!!" },
+					{ speaker = "sakuradamon", text = "Every dish is a FLOWER. Nurture it. Watch it BLOOM in the pan. Don't rush the petals!" },
+					{ speaker = "sakuradamon", text = "PERFECT COOKS are like cherry blossoms — rare, beautiful, and worth every moment of patience. 🌸✨" },
+				},
+				prompt = "🌸 Petal more wisdom?",
+				choices = {
+					{ text = "Tell me about Blossom Bites!", next = { speaker = "sakuradamon", lines = { { speaker = "sakuradamon", text = "SAKURADAMON'S BLOSSOM BITES!!! 4 Pea Flowers + 3 Zunda Berries. Each one BLOOMS on your tongue!!! 🌸💥" } } } },
+					{ text = "How do I find rare ingredients?", next = { speaker = "sakuradamon", lines = { { speaker = "sakuradamon", text = "The rare ones HIDE. But with +25% XP from my blessing, you'll LEVEL UP faster and unlock SECRET GATHERING SPOTS. Follow the glowing petals! 🔍🌸" } } } },
+					{ text = "The petals are calling me away", next = leafEnd },
+				},
+			}
+		end
+		-- Default (zundapal)
+		return {
+			speaker = compType,
+			lines = {
+				{ speaker = compType, text = "COOKING TIP TIME!!!! EVERYBODY PANIC 👨‍🍳✨" },
+				{ speaker = compType, text = "Watch the bar. THE GLOWY BAR. When it hits PEAK GREEN…" },
+				{ speaker = compType, text = "…THAT'S A PERFECT COOK!!! BONUS GOLD!!! FREE EXTRA DISH!!! ABSOLUTE CINEMA!!! ✨🎉" },
+			},
+			prompt = "WANT MORE????????",
+			choices = {
+				{ text = "What about Zunda Mochi??", next = { speaker = compType, lines = { { speaker = compType, text = "ZUNDA MOCHI!!! 5 ZUNDA PEAS + 8 WHEAT = PEA HEAVEN 🍡🍡" }, { speaker = compType, text = "The peas are in the Kitchen Garden!!! THEY SPARKLE PINK!!! STARE AT THEM UNTIL THEY SUBMIT 💕💕" } } } },
+				{ text = "And the LEGENDARY Zunda Paradise???", next = { speaker = compType, lines = { { speaker = compType, text = "OOOOOH YOU'RE AMBITIOUS I LIKE IT ✨✨" }, { speaker = compType, text = "ZUNDA PARADISE: 15 ZUNDA PEAS + 10 EDAMAME + 5 SWEET PEAS + 3 PEA FLOWERS. GO BIG OR GO HOME." }, { speaker = compType, text = "ONLY TRUE PEA MASTERS CAN PULL IT OFF!!! ARE YOU THE ONE??? 💛💛" } } } },
+				{ text = "I'm full. Thanks.", next = leafEnd },
+			},
+		}
+	end
+
+	-- ── Quest hints sub-tree ──────────────────────────────────
+	local function buildQuestHints()
+		if compType == "ankomon" then
+			return {
+				speaker = "ankomon",
+				lines = { { speaker = "ankomon", text = "QUESTS ARE TRAINING. COMPLETE THEM. GROW STRONGER. 🫘💪" } },
+				prompt = "What quest knowledge do you seek?",
+				choices = {
+					{ text = "Where to find Edamame Pods?", next = { speaker = "ankomon", lines = { { speaker = "ankomon", text = "THE EDAMAME THICKET!!! Past the wheat fields, under the giant leaves. They hang like GREEN LANTERNS waiting for a warrior to claim them. 🌿👊" } } } },
+					{ text = "Best gold-making quest?", next = { speaker = "ankomon", lines = { { speaker = "ankomon", text = "GOLD RUSH CHAIN!!! Start with Pocket Change (250g) and work up to Gold Rush Baron (10,000g). EACH STEP FORTIFIES THE BEAN WITHIN. 🫘💰" } } } },
+					{ text = "I'll train on my own", next = leafEnd },
+				},
+			}
+		elseif compType == "cardamon" then
+			return {
+				speaker = "cardamon",
+				lines = { { speaker = "cardamon", text = "Quests are a journey... not a sprint. Walk each one mindfully. 🌿" } },
+				prompt = "Which path shall we explore?",
+				choices = {
+					{ text = "Which quest is most peaceful?", next = { speaker = "cardamon", lines = { { speaker = "cardamon", text = "Cardamon's Path of Patience. Cook 5 GREAT dishes. Not good. GREAT. Each one a meditation. Each one a MASTERPIECE. 🧘🍳" } } } },
+					{ text = "How do I unlock seasonal dishes?", next = { speaker = "cardamon", lines = { { speaker = "cardamon", text = "The Four Seasons Chef chain. Cook Seasonal Salad AND Warm Winter Stew. The seasons demand balance. 🌸❄️" } } } },
+					{ text = "I'll meditate on it", next = leafEnd },
+				},
+			}
+		elseif compType == "antimon" then
+			return {
+				speaker = "antimon",
+				lines = { { speaker = "antimon", text = "QUESTS!!! COMPLETE THEM AT MAXIMUM VELOCITY!!! ⚡" } },
+				prompt = "WHICH QUEST DO YOU NEED SPEED-BLITZED???",
+				choices = {
+					{ text = "Fastest quest to complete?", next = { speaker = "antimon", lines = { { speaker = "antimon", text = "ANTIMON'S SPEED TRIAL!!! Cook 3 dishes under 4 seconds EACH. That's not a quest, that's a SPRINT. GO GO GO!!! ⚡🏃‍♂️💨" } } } },
+					{ text = "Best quest for rare loot?", next = { speaker = "antimon", lines = { { speaker = "antimon", text = "THE GREAT ZUNDA HUNT!!! 4 quests to gather EVERY Zunda ingredient. Rare drops EVERYWHERE. I CAN ALREADY SENSE THE LOOT. 👁️⚡" } } } },
+					{ text = "Too slow for me (lol)", next = leafEnd },
+				},
+			}
+		elseif compType == "sakuradamon" then
+			return {
+				speaker = "sakuradamon",
+				lines = { { speaker = "sakuradamon", text = "🌸 The quests bloom before you like a garden of potential... which flower shall we pick?" } },
+				prompt = "🌸✨",
+				choices = {
+					{ text = "Tell me about exploration quests!", next = { speaker = "sakuradamon", lines = { { speaker = "sakuradamon", text = "THE MAP IS A FLOWER YET TO BLOOM!!! Visit every corner — the Garden Alcove, the Old Well, the Waterfall Cave. 10 locations. 10 SECRETS. 🗺️🌸" } } } },
+					{ text = "Which quest suits a blossom spirit?", next = { speaker = "sakuradamon", lines = { { speaker = "sakuradamon", text = "Sakuradamon's Blossom Festival!!! 3 Blossom Bites cooked with LOVE AND PETALS. Each one a celebration of BEAUTIFUL IMPERMANENCE. 🌸💥" } } } },
+					{ text = "The wind carries me away", next = leafEnd },
+				},
+			}
+		end
+		-- Default (zundapal)
+		return {
+			speaker = compType,
+			lines = { { speaker = compType, text = "QUEST BOARD!!! MY BELOVED!!! 📜📜" } },
+			prompt = "WHAT DO YOU WANT TO KNOW???? (SCREAM IT)",
+			choices = {
+				{ text = "WHERE ARE THE ZUNDA PEAS", next = { speaker = compType, lines = { { speaker = compType, text = "KITCHEN GARDEN!!! BEHIND THE BAKERY!!! RUN DON'T WALK 🏃‍♂️" }, { speaker = compType, text = "THEY SPARKLE PINK YOU LITERALLY CANNOT MISS THEM 💕💕" } } } },
+				{ text = "HOW DO I SERVE GUESTS", next = { speaker = compType, lines = { { speaker = compType, text = "COOK THE THING THEY WANT. PUT IT IN YOUR POUCH. WALK UP TO THEM. DOMINANCE." }, { speaker = compType, text = "CLICK THE GUEST!!! THEY EXPLODE INTO GOLD AND GRATITUDE ✨" } } } },
+				{ text = "TELL ME ABOUT THE VILLAGE WHISPER", next = { speaker = "elder", lines = { { speaker = "elder", text = "...Zunda Village. Founded by chef-monks who REALLY liked peas. 🏭" }, { speaker = "elder", text = "Every dish here carries their obsession. COOK IT PROUDLY. 💛" } } } },
+				{ text = "Never mind (coward)", next = leafEnd },
+			},
+		}
+	end
+
+	-- ── Companion identity sub-tree ───────────────────────────
+	local function buildIdentityNode()
+		local flavorTexts = {
+			ankomon = { "I'm a RED BEAN SPIRIT 🫘🥊", "I buff YOUR GOLD by 15%. Every coin you earn? That's ME flexing from the spirit realm. 💪💰" },
+			cardamon = { "I am CARDAMON 🌿🍋", "I expand your PERFECT COOKING WINDOW by 30%. More time. More precision. MORE GLORY. Breathe in. Cook well. 🧘" },
+			antimon = { "I'M ANTIMON ⚡💨", "I grant +20% EXTRA DROP CHANCE. Ingredients literally CANNOT hide from me. I'll point. You gather. FAST. 🏃‍♂️" },
+			sakuradamon = { "I AM SAKURADAMON 🌸💥", "I bless you with +25% XP from EVERYTHING. Every dish. Every serve. Every moment near a stove. MY PETALS CARRY KNOWLEDGE. 📚🌸" },
+		}
+		local ft = flavorTexts[compType]
+		if ft then
+			return { speaker = compType, lines = { { speaker = compType, text = ft[1] }, { speaker = compType, text = ft[2] }, { speaker = compType, text = "I chose YOU to cook alongside. Don't make me regret it (you won't). 🔥" } } }
+		end
+		return { speaker = compType, lines = { { speaker = compType, text = "I'M YOUR COMPANION!!! AND I'M THE BEST THING THAT'S HAPPENED TO YOUR KITCHEN EVER!!! 💚💚" } } }
+	end
+
+	-- ── BUILD ROOT ───────────────────────────────────────────
+	local greetingLines = {}
+	local compDisplay = compType or "zundapal"
+
+	if #levelGreeting > 0 then
+		table.insert(greetingLines, { speaker = "narrator", text = "[ Your companion senses your GROWING POWER and speaks with newfound respect... ] ⚡✨" })
+		for _, l in ipairs(levelGreeting) do
+			table.insert(greetingLines, { speaker = compDisplay, text = l })
+		end
+	elseif #greeting > 0 then
+		local narratorIntros = {
+			zundapal = "[ Zundapal explodes into view with sparkling eyes and pea aura ] 💥",
+			ankomon = "[ Ankomon cracks his knuckles. BEAN AURA INTENSIFIES. ] 🫘🔥",
+			cardamon = "[ Cardamon drifts in on a gentle herb-scented breeze... ] 🌿🍃",
+			antimon = "[ ANTIMON ZOOMS INTO EXISTENCE AT TERMINAL VELOCITY ] ⚡💨",
+			sakuradamon = "[ Sakura petals swirl as Sakuradamon descends from the cherry heavens... ] 🌸✨",
+		}
+		table.insert(greetingLines, { speaker = "narrator", text = narratorIntros[compType] or narratorIntros.zundapal })
+		for _, l in ipairs(greeting) do
+			table.insert(greetingLines, { speaker = compDisplay, text = l })
+		end
+	else
+		table.insert(greetingLines, { speaker = "narrator", text = "[ Your companion awaits your command... ] 🎤" })
+		table.insert(greetingLines, { speaker = compDisplay, text = "Hey " .. player.Name .. "! Ready to cook something AMAZING? 🔥" })
 	end
 
 	return {
-		speaker = "zundapal",
+		speaker = compDisplay,
 		lines = greetingLines,
 		prompt = "WHAT NOW??? 🎤",
 		choices = {
-			{ text = "GIVE ME A COOKING TIP OR ELSE \u{1F373}\u{1F525}", next = cookingTipsNode },
-			{ text = "I NEED QUEST HELP (I'M LOST) \u{1F4DC}", next = questHintsNode },
-			{
-				text = "Just saying hi I love you \u{1F495}",
-				next = {
-					speaker = "zundapal",
-					lines = {
-						{ speaker = "zundapal", text = "HIII!!!! I LOVE YOU TOO \u{1F49A}\u{1F49A}" },
-						{ speaker = "zundapal", text = "YOUR FACE IS MY FAVORITE THING TODAY, "
-							.. player.Name
-							.. "!!! AND EVERY DAY!!! \u{2728}" },
-					},
-				},
-			},
+			{ text = "GIVE ME A COOKING TIP 🍳🔥", next = buildCookingTips() },
+			{ text = "I NEED QUEST HELP 📜", next = buildQuestHints() },
+			{ text = "TELL ME ABOUT YOURSELF ✨", next = buildIdentityNode() },
 			{ text = "BYE OR I'LL CRY", next = leafEnd },
 		},
 	}
@@ -659,7 +815,7 @@ RE:WaitForChild("OpenCompanionVN").OnClientEvent:Connect(function(compType, emoj
 		closePanel(true)
 		return
 	end
-	_G.ZundaVN.showBranching(buildCompanionTree())
+	_G.ZundaVN.showBranching(buildCompanionTree(compType))
 end)
 
 -- Quest completed

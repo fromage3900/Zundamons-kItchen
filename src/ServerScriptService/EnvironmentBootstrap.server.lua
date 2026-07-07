@@ -101,6 +101,14 @@ local function ensureWorkspaceStructure()
 	end
 end
 
+-- Runtime landscape spawner
+local landscapeSpawner = ServerScriptService:FindFirstChild("ProceduralLandscapeSpawner.server")
+if landscapeSpawner then
+	task.delay(3, function()
+		require(landscapeSpawner)
+	end)
+end
+
 ensureWorkspaceStructure()
 bootstrapEnvironment()
 bootstrapNPC()

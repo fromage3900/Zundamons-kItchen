@@ -15,6 +15,7 @@ local HarvestValidator = SSS:FindFirstChild("Validation") and SSS.Validation:Fin
 local validateHarvest = HarvestValidator and require(HarvestValidator).validateHarvest
 
 local RE_notify = RS:FindFirstChild("RemoteEvents") and RS.RemoteEvents:FindFirstChild("NotifyPlayer")
+local RE_SideDlg = RS:FindFirstChild("RemoteEvents") and RS.RemoteEvents:FindFirstChild("TriggerSideDialogue")
 
 -- Respawn timing (seconds)
 local RESPAWN_FLOWER = 25
@@ -38,6 +39,8 @@ local MYSTERY_LOOT = {
 }
 
 -- Grant items to player using LootModule
+local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+
 local function grantItems(player, items)
 	local char = player.Character
 	local hrp = char and char:FindFirstChild("HumanoidRootPart")
@@ -47,6 +50,13 @@ local function grantItems(player, items)
 	-- generateLoot signature: (player, lootTable, position)
 	pcall(function()
 		lootMod.generateLoot(player, items, hrp.Position)
+	end)
+	-- Track unique gathered items for quest system
+	PlayerDataService.update(player, function(d)
+		if not d.gathered_items then d.gathered_items = {} end
+		for _, item in ipairs(items) do
+			d.gathered_items[item] = true
+		end
 	end)
 end
 
@@ -105,6 +115,10 @@ local function bindNode(node)
 		end
 		local rtype = node:GetAttribute("ResourceType")
 
+		-- Check first-time gather for side dialogue
+		local d = PlayerDataService.get(player)
+		local had_before = d and d.gathered_items or {}
+
 		if rtype == "ZundaFlower" then
 			local yield = node:GetAttribute("Yield") or 3
 			local items = {}
@@ -113,6 +127,9 @@ local function bindNode(node)
 			end
 			grantItems(player, items)
 			notify(player, "🌼 +" .. yield .. " Zunda Flower")
+			if not had_before["Zunda Flower"] and RE_SideDlg then
+				pcall(function() RE_SideDlg:FireClient(player, "zunda_flower") end)
+			end
 			consumeNode(node, RESPAWN_FLOWER)
 		elseif rtype == "ZundaPea" then
 			local yield = node:GetAttribute("Yield") or 2
@@ -131,6 +148,9 @@ local function bindNode(node)
 			end
 			grantItems(player, items)
 			notify(player, "🝄 +" .. yield .. " Zunda Mushroom")
+			if not had_before["Zunda Mushroom"] and RE_SideDlg then
+				pcall(function() RE_SideDlg:FireClient(player, "zunda_mushroom") end)
+			end
 			consumeNode(node, RESPAWN_MUSHROOM)
 		elseif rtype == "Zunda Berry" then
 			local yield = node:GetAttribute("Yield") or 4
@@ -140,6 +160,9 @@ local function bindNode(node)
 			end
 			grantItems(player, items)
 			notify(player, "🝓 +" .. yield .. " Zunda Berry")
+			if not had_before["Zunda Berry"] and RE_SideDlg then
+				pcall(function() RE_SideDlg:FireClient(player, "zunda_berry") end)
+			end
 			consumeNode(node, RESPAWN_BERRY)
 		elseif rtype == "Zunda Root" then
 			local yield = node:GetAttribute("Yield") or 3
@@ -149,9 +172,11 @@ local function bindNode(node)
 			end
 			grantItems(player, items)
 			notify(player, "🥜 +" .. yield .. " Zunda Root")
+			if not had_before["Zunda Root"] and RE_SideDlg then
+				pcall(function() RE_SideDlg:FireClient(player, "zunda_root") end)
+			end
 			consumeNode(node, RESPAWN_ROOT)
 		elseif rtype == "MysteryLoot" then
-			-- Pick 2-3 random items from the mystery table
 			local items = {}
 			local n = math.random(2, 3)
 			for i = 1, n do
@@ -161,7 +186,6 @@ local function bindNode(node)
 			notify(player, "✨ Mystery loot found!")
 			consumeNode(node, RESPAWN_MYSTERY)
 		elseif rtype == "SaltedPeaBouquet" then
-			-- Rare bouquet: yields 1 "Salted Pea Bouquet" item per pick
 			local yield = node:GetAttribute("Yield") or 1
 			local items = {}
 			for i = 1, yield do

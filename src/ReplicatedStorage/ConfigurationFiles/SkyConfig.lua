@@ -33,11 +33,14 @@ SkyConfig.sky = {
     sun_angular_size   = 24,
     moon_angular_size  = 16,
     star_count         = 5500,
-    skybox_bk = "", skybox_dn = "",
-    skybox_ft = "", skybox_lf = "",
-    skybox_rt = "", skybox_up = "",
-    sun_texture  = "",
-    moon_texture = "",
+    skybox_bk = "rbxassetid://84226376723302",
+    skybox_dn = "rbxassetid://84226376723302",
+    skybox_ft = "rbxassetid://84226376723302",
+    skybox_lf = "rbxassetid://84226376723302",
+    skybox_rt = "rbxassetid://84226376723302",
+    skybox_up = "rbxassetid://84226376723302",
+    sun_texture  = "rbxassetid://123736711329002",
+    moon_texture = "rbxassetid://85079237605725",
 }
 
 -- ============================================================

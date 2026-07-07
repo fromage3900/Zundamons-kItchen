@@ -101,6 +101,12 @@ local function craftItem(player, item, position, quality)
         })
     end)
 
+    -- Check if first time crafting this recipe (for side dialogue trigger)
+    local RE_re = RS:WaitForChild("RemoteEvents")
+    local sideDlgRE = RE_re:FindFirstChild("TriggerSideDialogue")
+    local bucket_before = PlayerDataService.get(player)
+    local was_first_craft = bucket_before and not bucket_before.recipes_served_count or not bucket_before.recipes_served_count[item]
+
     -- Track cooking quality for quest system
     PlayerDataService.update(player, function(d)
         if quality == "perfect" then
@@ -115,7 +121,32 @@ local function craftItem(player, item, position, quality)
         end
         if not d.recipes_served_count then d.recipes_served_count = {} end
         d.recipes_served_count[item] = (d.recipes_served_count[item] or 0) + 1
+        -- Track speed cooks (cooking time ≤ threshold)
+        if quality == "perfect" or quality == "great" then
+            local cookTime = craftConfig.cookingTimes[item] or 5
+            if cookTime <= 4 then
+                d.speed_cooks = (d.speed_cooks or 0) + 1
+            end
+        end
     end)
+
+    -- Trigger side dialogue on first-time craft
+    if was_first_craft and sideDlgRE then
+        local dlgKey = ({
+            ["Antimon's Speed Soup"] = "antimon_speed_soup",
+            ["Cardamon's Calm Cup"] = "cardamon_calm_cup",
+            ["Seasonal Salad"] = "seasonal_salad",
+            ["Sakuradamon's Blossom Bites"] = "sakuradamon_blossom_bites",
+            ["Warm Winter Stew"] = "warm_winter_stew",
+            ["Ankomon's Protein Punch"] = "ankomon_protein_punch",
+            ["Golden Harvest Platter"] = "golden_harvest_platter",
+            ["Zunda Mochi"] = "zunda_mochi",
+            ["Royal Stew"] = "royal_stew",
+        })[item]
+        if dlgKey then
+            pcall(function() sideDlgRE:FireClient(player, dlgKey) end)
+        end
+    end
 
     return "Success"
 end

@@ -70,6 +70,28 @@ local ArchitectureVariants = {
 			},
 		},
 	},
+
+	foliage = {
+		ZundaFlower = {
+			meshes = {
+				ZundaFlower_Default = "rbxassetid://130899236683010",
+				ZundaFlower_Rare = "rbxassetid://86582218951352",
+			},
+		},
+		BerryBush = {
+			meshes = {
+				BerryBush_01 = "rbxassetid://91224321091798",
+				BerryBush_02 = "rbxassetid://74222048987638",
+				BerryBush_03 = "rbxassetid://76322051780722",
+			},
+		},
+		ZundaMushroom = {
+			meshes = {
+				Mushroom_01 = "rbxassetid://96331224587968",
+				Mushroom_02 = "rbxassetid://85124051974569",
+			},
+		},
+	},
 }
 
 return ArchitectureVariants

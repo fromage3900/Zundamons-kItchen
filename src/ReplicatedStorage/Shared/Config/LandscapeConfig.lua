@@ -217,6 +217,64 @@ LandscapeConfig.biomes = {
 			maxClusterSize = 5,
 		},
 	},
+	WheatField = {
+		name = "WheatField",
+		description = "A golden wheat field with tall grass, scarecrows, and hidden paths through the grain.",
+		seed = 167,
+		zones = {
+			{ name = "GrainCenter", type = "central", size = 22, weight = 1.0, maxBuildings = 2, spawnProfile = "grain" },
+			{ name = "TallGrassRing", type = "garden", size = 26, weight = 0.9, maxBuildings = 0, spawnProfile = "tallgrass" },
+			{ name = "ScarecrowRow", type = "street", size = 18, weight = 0.8, maxBuildings = 2, spawnProfile = "scarecrow" },
+		},
+		assetProfiles = {
+			grain = {
+				{ asset = "Bench", category = "street_props", weight = 0.75 },
+				{ asset = "StreetLamp", category = "street_props", weight = 0.7 },
+			},
+			tallgrass = {
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.85 },
+				{ asset = "BerryBush", category = "foliage", weight = 0.8 },
+			},
+			scarecrow = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.9 },
+				{ asset = "Bench", category = "street_props", weight = 0.65 },
+			},
+		},
+		constraints = {
+			pathSpacing = 6,
+			minBuildingGap = 8,
+			maxClusterSize = 7,
+		},
+	},
+	WheatCrystalGarden = {
+		name = "CrystalGarden",
+		description = "A shimmering garden with crystalline flora, glowing mushrooms, and luminescent pathways.",
+		seed = 178,
+		zones = {
+			{ name = "CrystalHeart", type = "central", size = 18, weight = 1.0, maxBuildings = 1, spawnProfile = "crystal" },
+			{ name = "GlowShroomRing", type = "garden", size = 22, weight = 0.9, maxBuildings = 0, spawnProfile = "glowshroom" },
+			{ name = "CrystalPath", type = "street", size = 16, weight = 0.8, maxBuildings = 2, spawnProfile = "crystalpath" },
+		},
+		assetProfiles = {
+			crystal = {
+				{ asset = "ZundaMushroom", category = "foliage", weight = 0.95 },
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+			},
+			glowshroom = {
+				{ asset = "ZundaMushroom", category = "foliage", weight = 0.9 },
+				{ asset = "ZundaFlower", category = "foliage", weight = 0.75 },
+			},
+			crystalpath = {
+				{ asset = "StreetLamp", category = "street_props", weight = 0.95 },
+				{ asset = "Bench", category = "street_props", weight = 0.7 },
+			},
+		},
+		constraints = {
+			pathSpacing = 4,
+			minBuildingGap = 6,
+			maxClusterSize = 6,
+		},
+	},
 	MoonlitGarden = {
 		name = "MoonlitGarden",
 		description = "A serene moonlit garden with soft flora, lantern paths, and reflective clearings.",

@@ -21,7 +21,7 @@ function playHitSound(handle)
 	local preloaded = handle:FindFirstChild("HitSound")
 	if preloaded then preloaded:Play(); return end
 	local s = Instance.new("Sound")
-	s.SoundId = "rbxasset://sounds/impact_water.mp3"
+	s.SoundId = "rbxassetid://14133663945"
 	s.Volume = 0.5
 	s.Parent = handle
 	s:Play()

@@ -60,6 +60,11 @@ local function createDefaultData(): { [string]: any }
 		owned_plot = nil,
 		recipes_unlocked_count = 0,
 		recipes_served_count = {},
+		speed_cooks = 0,
+		gathered_items = {},
+		companions_set = {},
+		npc_chats = {},
+		zones_visited = {},
 		Apple = 5,
 		Wheat = 5,
 		Wood = 5,
@@ -147,9 +152,11 @@ function PlayerDataService.checkAndUnlockTiers(player: Player)
 		local milestone = CONFIG.milestones[milestoneId]
 		if data.guests_served >= milestone.guests_served then
 			data.tier = milestoneId
+			local newRecipes = {}
 			for _, recipe in ipairs(milestone.unlocks.recipes) do
 				if not table.find(data.recipes_unlocked, recipe) then
 					table.insert(data.recipes_unlocked, recipe)
+					table.insert(newRecipes, recipe)
 				end
 			end
 			for _, cosmetic in ipairs(milestone.unlocks.cosmetics) do
@@ -166,6 +173,16 @@ function PlayerDataService.checkAndUnlockTiers(player: Player)
 				if not table.find(data.locations_unlocked, location) then
 					table.insert(data.locations_unlocked, location)
 				end
+			end
+			if #newRecipes > 0 then
+				local reFolder = game.ReplicatedStorage:WaitForChild("RemoteEvents")
+				local unlockEv = reFolder:FindFirstChild("RecipeUnlocked")
+				if not unlockEv then
+					unlockEv = Instance.new("RemoteEvent")
+					unlockEv.Name = "RecipeUnlocked"
+					unlockEv.Parent = reFolder
+				end
+				unlockEv:FireClient(player, { tier = milestoneId, tierName = milestone.name, recipes = newRecipes })
 			end
 			print("[PlayerDataService] " .. player.Name .. " unlocked tier " .. milestoneId .. ": " .. milestone.name)
 		end

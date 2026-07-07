@@ -27,6 +27,13 @@ local UIAssets = {
 		level_up = "rbxassetid://9038472644",
 		gather_fail = "rbxassetid://14133663945",
 		ui_click = "rbxassetid://87437544236708",
+		-- Weather ambient sounds (reuse existing IDs until dedicated weather audio is uploaded)
+		rain = "rbxassetid://9114369623",
+		storm = "rbxassetid://9114369623",
+		snow = "rbxassetid://9114369767",
+		cherry_blossom = "rbxassetid://9114369767",
+		aurora = "rbxassetid://9114369767",
+		fog = "rbxassetid://9114369767",
 	},
 
 	particles = {
@@ -44,9 +51,9 @@ local UIAssets = {
 	},
 
 	animations = {
-		harvest_loop = "rbxassetid://0",
-		cook_victory = "rbxassetid://0",
-		cook_fail = "rbxassetid://0",
+		harvest_loop = "rbxassetid://2510798496",
+		cook_victory = "rbxassetid://2510798496",
+		cook_fail = "rbxassetid://2510798496",
 	},
 }
 

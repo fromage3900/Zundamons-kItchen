@@ -23,7 +23,7 @@ local HarvestConfig = {
 	MOVE_CANCEL_THRESHOLD = 1.5,
 
 	-- Animation
-	HARVEST_ANIMATION_ID = "rbxassetid://0",
+	HARVEST_ANIMATION_ID = "rbxassetid://2510798496",
 	HARVEST_ANIMATION_PRIORITY = Enum.AnimationPriority.Action,
 
 	-- Sound

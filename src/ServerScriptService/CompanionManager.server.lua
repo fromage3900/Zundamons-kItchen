@@ -249,10 +249,12 @@ setCompEv.OnServerEvent:Connect(function(player, compType)
 	end
 	local data = PlayerDataService.getOrCreate(player)
 	local def = COMPANIONS[compType]
-	local isFree = def and def.free
+	local isFree = def.free == true
 	if not isFree and not data["companion_owned_" .. compType] then
 		return
 	end
+	if not data.companions_set then data.companions_set = {} end
+	data.companions_set[compType] = true
 	data.active_companion = compType
 	buildCompanion(player, compType)
 end)

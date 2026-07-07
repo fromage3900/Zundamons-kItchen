@@ -43,13 +43,19 @@ emitter.EmissionDirection = Enum.NormalId.Bottom
 emitter.Parent = rig
 
 -- Per-weather ambient sound (rain / wind etc.)
+local UIAssets = require(RS.Shared.Config.UIAssets)
+local function resolveWeatherSound(key)
+    local id = UIAssets.sounds[key]
+    if id and not UIAssets.isPlaceholder(id) then return id end
+    return UIAssets.sounds.harvest_start
+end
 local WEATHER_SOUNDS = {
-    rain         = "rbxasset://sounds/rain.mp3",
-    storm        = "rbxasset://sounds/rain.mp3",
-    snow         = "rbxasset://sounds/wind.mp3",
-    cherry_blossom = "rbxasset://sounds/wind.mp3",
-    aurora       = "rbxasset://sounds/wind.mp3",
-    fog          = "rbxasset://sounds/wind.mp3",
+    rain         = resolveWeatherSound("rain"),
+    storm        = resolveWeatherSound("storm"),
+    snow         = resolveWeatherSound("snow"),
+    cherry_blossom = resolveWeatherSound("cherry_blossom"),
+    aurora       = resolveWeatherSound("aurora"),
+    fog          = resolveWeatherSound("fog"),
 }
 local ambient = Instance.new("Sound")
 ambient.Name = "WeatherSound"
@@ -158,7 +164,7 @@ end
 -- Lightning flash routine: fires a quick double-strobe during storm/rain only
 local currentWeatherKey = "clear"
 local thunderSound = Instance.new("Sound", rig)
-thunderSound.SoundId = "rbxasset://sounds/Halt.wav"
+thunderSound.SoundId = UIAssets.sounds.harvest_complete
 thunderSound.Volume = 0.4
 
 local function lightningStrobe()

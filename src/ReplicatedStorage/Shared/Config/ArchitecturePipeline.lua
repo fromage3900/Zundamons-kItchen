@@ -87,6 +87,62 @@ local ArchitecturePipeline = {
 			fbx_export_path = "Assets/Generated/Architecture/Decor/Balcony/",
 		},
 	},
+
+	foliage = {
+		ZundaFlower = {
+			variants = {
+				{
+					id = "ZundaFlower_Default",
+					description = "A gentle flower that glows with morning dew",
+					params = { height = 1.2, color = "#E1B9FF" },
+				},
+				{
+					id = "ZundaFlower_Rare",
+					description = "A rare glowing variant of the Zunda Flower",
+					params = { height = 1.5, color = "#FFD700" },
+				},
+			},
+			target_slot = "ArchitectureVariants.ZundaFlower.meshes",
+			fbx_export_path = "Assets/Generated/Architecture/Foliage/ZundaFlower/",
+		},
+		BerryBush = {
+			variants = {
+				{
+					id = "BerryBush_01",
+					description = "Small berry bush with ripe fruits",
+					params = { height = 1.0, berry_color = "#FF69B4" },
+				},
+				{
+					id = "BerryBush_02",
+					description = "Tall berry bush with abundant clusters",
+					params = { height = 1.8, berry_color = "#FF4500" },
+				},
+				{
+					id = "BerryBush_03",
+					description = "Wild berry thicket with hidden fruits",
+					params = { height = 2.0, berry_color = "#8B008B" },
+				},
+			},
+			target_slot = "ArchitectureVariants.BerryBush.meshes",
+			fbx_export_path = "Assets/Generated/Architecture/Foliage/BerryBush/",
+		},
+		ZundaMushroom = {
+			variants = {
+				{
+					id = "Mushroom_01",
+					description = "Tiny bioluminescent mushroom cluster",
+					params = { height = 0.6, cap_color = "#E1B9FF" },
+				},
+				{
+					id = "Mushroom_02",
+					description = "Large capped forest mushroom",
+					params = { height = 1.2, cap_color = "#FF6347" },
+				},
+			},
+			target_slot = "ArchitectureVariants.ZundaMushroom.meshes",
+			fbx_export_path = "Assets/Generated/Architecture/Foliage/ZundaMushroom/",
+		},
+	},
 }
 
 return ArchitecturePipeline

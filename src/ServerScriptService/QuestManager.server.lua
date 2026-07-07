@@ -7,6 +7,15 @@ local qcEv = RE:FindFirstChild("QuestCompleted")
 if not qcEv then qcEv = Instance.new("RemoteEvent"); qcEv.Name = "QuestCompleted"; qcEv.Parent = RE end
 local qcBatch = RE:FindFirstChild("QuestCompletedBatch")
 if not qcBatch then qcBatch = Instance.new("RemoteEvent"); qcBatch.Name = "QuestCompletedBatch"; qcBatch.Parent = RE end
+-- Side dialogue trigger (client listens for this)
+local sideDlgRE = RE:FindFirstChild("TriggerSideDialogue")
+if not sideDlgRE then sideDlgRE = Instance.new("RemoteEvent"); sideDlgRE.Name = "TriggerSideDialogue"; sideDlgRE.Parent = RE end
+
+-- Helper: fire side dialogue to a player
+local function triggerSideDialogue(player, key)
+	if not player or not key then return end
+	pcall(function() sideDlgRE:FireClient(player, key) end)
+end
 
 local QuestConfig = require(RS.ConfigurationFiles.QuestConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
@@ -88,6 +97,26 @@ local function questCheck(d, q, player)
 		local zunda_recipes = { ["Zunda Bread"] = true, ["Zunda Mochi"] = true, ["Zunda Paradise"] = true,
 			["Sweet Pea Cake"] = true, ["Pea Flower Tea"] = true, ["Edamame Snack"] = true }
 		for name in pairs(rsc) do if zunda_recipes[name] then cur = cur + 1 end end
+	elseif q.type == "cook_quality" then
+		local qualField = q.quality == "perfect" and "perfect_cooks" or "great_cooks"
+		cur = d[qualField] or 0
+	elseif q.type == "cook_speed" then
+		cur = d.speed_cooks or 0
+	elseif q.type == "cook_unique_seasonal" then
+		local rsc = d.recipes_served_count or {}
+		local seasonal = { ["Seasonal Salad"] = true, ["Warm Winter Stew"] = true }
+		for name in pairs(rsc) do if seasonal[name] then cur = cur + 1 end end
+	elseif q.type == "gather_unique" then
+		local gathered = d.gathered_items or {}
+		cur = 0
+		for _ in pairs(gathered) do cur = cur + 1 end
+	elseif q.type == "set_companion" then
+		local comps = d.companions_set or {}
+		cur = comps[q.target_companion] and 1 or 0
+	elseif q.type == "npc_chat_all" then
+		local npcs = d.npc_chats or {}
+		cur = 0
+		for _ in pairs(npcs) do cur = cur + 1 end
 	end
 	return cur, t
 end
@@ -164,6 +193,32 @@ local function eval(player)
 					desc = q.description,
 					unlock_hint = q.unlock_hint or "",
 				})
+				-- Chain completion celebration
+				if q.chain_id then
+					if not d.chains_progress then d.chains_progress = {} end
+					if not d.chains_progress[q.chain_id] then d.chains_progress[q.chain_id] = {} end
+					d.chains_progress[q.chain_id][q.chain_step] = true
+					local allDone = true
+					local chainBonus = 0
+					for _, cq in ipairs(QUESTS) do
+						if cq.chain_id == q.chain_id then
+							if not d.chains_progress[q.chain_id][cq.chain_step] then
+								allDone = false
+							end
+							chainBonus = chainBonus + (cq.rewards.gold or 0)
+						end
+					end
+					if allDone then
+						if not d.chains_completed then d.chains_completed = {} end
+						if not d.chains_completed[q.chain_id] then
+							d.chains_completed[q.chain_id] = true
+							local celebrationBonus = math.floor(chainBonus * 0.3)
+							d.gold = (d.gold or 0) + celebrationBonus
+							print("[QuestManager] Chain complete: " .. q.chain_id .. " for " .. player.Name .. " +" .. celebrationBonus .. "g (bonus)")
+							triggerSideDialogue(player, "quest_chain_complete")
+						end
+					end
+				end
 			end
 		end
 	end

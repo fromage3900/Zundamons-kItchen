@@ -8,19 +8,36 @@ craft.recipes = {
 	
 	-- Tier 2: Intermediate recipes (unlock after 5 guests)
 	["Zunda Bread"] = {["Wheat"] = 15, ["Apple"] = 2},
-	["Royal Stew"] = {["Wheat"] = 8, ["Apple"] = 5, ["Gold"] = 1}, -- uses 1 gold as premium ingredient
-	["Zunda Mochi"] = {["Zunda Pea"] = 5, ["Wheat"] = 8}, -- NEW: Zunda specialty!
-	["Edamame Snack"] = {["Edamame Pod"] = 3, ["Zunda Leaf"] = 2}, -- NEW
+	["Royal Stew"] = {["Wheat"] = 8, ["Apple"] = 5, ["Gold"] = 1},
+	["Zunda Mochi"] = {["Zunda Pea"] = 5, ["Wheat"] = 8},
+	["Edamame Snack"] = {["Edamame Pod"] = 3, ["Zunda Leaf"] = 2},
 	
 	-- Tier 3: Advanced recipes (unlock after 20 guests)
 	["Fancy Pie"] = {["Apple"] = 7, ["Wheat"] = 12, ["Gold"] = 2},
 	["Zundamon's Banquet"] = {["Wheat"] = 20, ["Apple"] = 10, ["Gold"] = 3},
-	["Sweet Pea Cake"] = {["Sweet Pea"] = 4, ["Wheat"] = 10, ["Zunda Pea"] = 3}, -- NEW
-	["Pea Flower Tea"] = {["Pea Flower"] = 5, ["Zunda Leaf"] = 3}, -- NEW
+	["Sweet Pea Cake"] = {["Sweet Pea"] = 4, ["Wheat"] = 10, ["Zunda Pea"] = 3},
+	["Pea Flower Tea"] = {["Pea Flower"] = 5, ["Zunda Leaf"] = 3},
 	
 	-- Tier 4: Expert recipe (unlock after 50 guests)
 	["Ultimate Feast"] = {["Wheat"] = 30, ["Apple"] = 20, ["Gold"] = 5},
-	["Zunda Paradise"] = {["Zunda Pea"] = 15, ["Edamame Pod"] = 10, ["Sweet Pea"] = 5, ["Pea Flower"] = 3} -- NEW: Ultimate Zunda dish!
+	["Zunda Paradise"] = {["Zunda Pea"] = 15, ["Edamame Pod"] = 10, ["Sweet Pea"] = 5, ["Pea Flower"] = 3},
+	
+	-- ════════════════════════════════════════════════════════
+	-- NEW RECIPES v2 — Seasonal, companion-themed, mastery dishes
+	-- ════════════════════════════════════════════════════════
+	
+	-- Tier 2
+	["Antimon's Speed Soup"] = {["Zunda Mushroom"] = 4, ["Zunda Leaf"] = 3},
+	["Cardamon's Calm Cup"] = {["Pea Flower"] = 3, ["Zunda Leaf"] = 2, ["Sweet Pea"] = 1},
+	
+	-- Tier 3
+	["Seasonal Salad"] = {["Zunda Berry"] = 3, ["Zunda Leaf"] = 2},
+	["Sakuradamon's Blossom Bites"] = {["Pea Flower"] = 4, ["Zunda Berry"] = 3},
+	
+	-- Tier 4
+	["Warm Winter Stew"] = {["Zunda Root"] = 3, ["Zunda Mushroom"] = 2, ["Gold"] = 1},
+	["Ankomon's Protein Punch"] = {["Edamame Pod"] = 5, ["Zunda Pea"] = 3, ["Gold"] = 1},
+	["Golden Harvest Platter"] = {["Apple"] = 5, ["Wheat"] = 8, ["Gold"] = 2, ["Sweet Pea"] = 3},
 }
 
 -- Cooking time multipliers (for timed cooking mechanic)
@@ -36,7 +53,14 @@ craft.cookingTimes = {
 	["Sweet Pea Cake"] = 9,
 	["Pea Flower Tea"] = 4,
 	["Ultimate Feast"] = 15,
-	["Zunda Paradise"] = 20
+	["Zunda Paradise"] = 20,
+	["Antimon's Speed Soup"] = 3,
+	["Cardamon's Calm Cup"] = 5,
+	["Seasonal Salad"] = 4,
+	["Sakuradamon's Blossom Bites"] = 7,
+	["Warm Winter Stew"] = 9,
+	["Ankomon's Protein Punch"] = 10,
+	["Golden Harvest Platter"] = 13
 }
 
 return craft

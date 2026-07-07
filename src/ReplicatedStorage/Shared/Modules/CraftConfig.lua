@@ -76,6 +76,47 @@ CraftConfig.recipes = {
 		["Pea Flower"] = 3,
 		locked = true,
 	},
+	-- v2 recipes
+	["Antimon's Speed Soup"] = {
+		["Zunda Mushroom"] = 4,
+		["Zunda Leaf"] = 3,
+		locked = true,
+	},
+	["Cardamon's Calm Cup"] = {
+		["Pea Flower"] = 3,
+		["Zunda Leaf"] = 2,
+		["Sweet Pea"] = 1,
+		locked = true,
+	},
+	["Seasonal Salad"] = {
+		["Zunda Berry"] = 3,
+		["Zunda Leaf"] = 2,
+		locked = true,
+	},
+	["Sakuradamon's Blossom Bites"] = {
+		["Pea Flower"] = 4,
+		["Zunda Berry"] = 3,
+		locked = true,
+	},
+	["Warm Winter Stew"] = {
+		["Zunda Root"] = 3,
+		["Zunda Mushroom"] = 2,
+		["Gold Ore"] = 1,
+		locked = true,
+	},
+	["Ankomon's Protein Punch"] = {
+		["Edamame Pod"] = 5,
+		["Zunda Pea"] = 3,
+		["Gold Ore"] = 1,
+		locked = true,
+	},
+	["Golden Harvest Platter"] = {
+		Apple = 5,
+		Wheat = 8,
+		["Gold Ore"] = 2,
+		["Sweet Pea"] = 3,
+		locked = true,
+	},
 }
 
 -- Unlock conditions for recipes
