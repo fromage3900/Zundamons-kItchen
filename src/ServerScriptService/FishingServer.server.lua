@@ -6,7 +6,7 @@ local FishingCast = toolRemotes:WaitForChild("FishingCast")
 local FishConfig = require(RS.ConfigurationFiles.FishConfig)
 local CS = game:GetService("CollectionService")
 
-local RewardCore = require(SSS:WaitForChild("RewardCore"))
+local RewardCore = require(RS.ConfigurationFiles.RewardCore)
 local ChefLevelConfig = require(RS.ConfigurationFiles.ChefLevelConfig)
 local PlayerDataService = require(SSS.Services.PlayerDataService)
 

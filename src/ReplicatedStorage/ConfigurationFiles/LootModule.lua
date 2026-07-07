@@ -19,7 +19,7 @@ local priceLists = mineableConfig and mineableConfig.priceLists or {}
 
 local PlayerDataService = require(game.ServerScriptService.Services.PlayerDataService)
 
-local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore", 10))
+local RewardCore = require(game.ReplicatedStorage.ConfigurationFiles.RewardCore)
 local ChefLevelConfig = configFiles and require(configFiles:WaitForChild("ChefLevelConfig", 10))
 
 local codes: { [string]: { { string } } } = {}

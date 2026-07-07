@@ -8,8 +8,7 @@ local SSS = game:GetService("ServerScriptService")
 local Debris = game:GetService("Debris")
 local TweenS = game:GetService("TweenService")
 
-local sharedFolder = RS:FindFirstChild("Shared")
-local lootMod = sharedFolder and require(sharedFolder:WaitForChild("Modules", 10):WaitForChild("LootModule", 10))
+local lootMod = require(game.ReplicatedStorage.ConfigurationFiles.LootModule)
 if not lootMod then
 	warn("[ZundaGatherServer] LootModule not found — gather disabled")
 	return {}

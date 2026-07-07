@@ -5,7 +5,7 @@ local Players = game:GetService("Players")
 local SSS = game:GetService("ServerScriptService")
 local RS = game:GetService("ReplicatedStorage")
 
-local loot_module = require(SSS:WaitForChild("LootModule"))
+local loot_module = require(RS.ConfigurationFiles.LootModule)
 local mineableConfig = require(RS:WaitForChild("ConfigurationFiles"):WaitForChild("MineableConfig"))
 local mineableList = mineableConfig.Mineables
 

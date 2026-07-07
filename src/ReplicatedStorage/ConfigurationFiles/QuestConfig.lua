@@ -829,6 +829,5 @@ local QuestConfig = {
 		},
 	}
 }
-}
 
 return QuestConfig

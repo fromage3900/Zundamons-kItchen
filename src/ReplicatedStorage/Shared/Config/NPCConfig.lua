@@ -34,4 +34,13 @@ NPCConfig.spawnPoints = {
 	Vector3.new(212, -518, -415),
 }
 
+function NPCConfig.getQualityMultiplier(quality)
+	if quality == "perfect" then
+		return 1.5
+	elseif quality == "great" then
+		return 1.2
+	end
+	return 1.0
+end
+
 return NPCConfig
