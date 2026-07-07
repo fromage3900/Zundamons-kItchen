@@ -6,7 +6,7 @@ local RS         = game:GetService("ReplicatedStorage")
 
 -- Per-companion mesh IDs
 local COMPANION_MESHES = {
-    zundamon   = "rbxassetid://113753628820808",
+    zundamon   = "rbxassetid://121481310719137",
     zundacat   = "rbxassetid://101663144452966",
     zundabunny = "rbxassetid://76425192775041",
     tantanmon  = "rbxassetid://107150527246774",

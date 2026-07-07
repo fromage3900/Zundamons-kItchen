@@ -198,24 +198,24 @@ ScatterConfig.discoveryHints = {
 
 ScatterConfig.seasonalEffects = {
 	summer = {
-		ambientParticles = "rbxassetid://FILL_TEX_BUTTERFLY",
+		ambientParticles = "rbxassetid://72344118179281",
 		skyTint = Color3.fromRGB(180, 220, 255),
-		postEffect = "rbxassetid://FILL_EFFECT_SUMMER",
+		postEffect = "rbxassetid://119265360193579",
 	},
 	winter = {
-		ambientParticles = "rbxassetid://FILL_TEX_SNOW",
+		ambientParticles = "rbxassetid://138168954342394",
 		skyTint = Color3.fromRGB(220, 230, 255),
-		postEffect = "rbxassetid://FILL_EFFECT_WINTER",
+		postEffect = "rbxassetid://114503978860772",
 	},
 	spring = {
-		ambientParticles = "rbxassetid://FILL_TEX_FLOWER_PETAL",
+		ambientParticles = "rbxassetid://116106071236569",
 		skyTint = Color3.fromRGB(200, 240, 200),
-		postEffect = "rbxassetid://FILL_EFFECT_SPRING",
+		postEffect = "rbxassetid://102598103777829",
 	},
 	fall = {
-		ambientParticles = "rbxassetid://FILL_TEX_LEAF",
+		ambientParticles = "rbxassetid://97345770028831",
 		skyTint = Color3.fromRGB(255, 200, 150),
-		postEffect = "rbxassetid://FILL_EFFECT_FALL",
+		postEffect = "rbxassetid://74694163979163",
 	},
 }
 

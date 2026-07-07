@@ -6,13 +6,13 @@ local ArchitectureVariants = {
 	buildings = {
 		MarketHall = {
 			meshes = {
-				MarketHall_01 = "rbxassetid://FILL_ASSET_ID_MARKETHALL_01",
-				MarketHall_02 = "rbxassetid://FILL_ASSET_ID_MARKETHALL_02",
+				MarketHall_01 = "rbxassetid://123291677534606",
+				MarketHall_02 = "rbxassetid://136185276682595",
 			},
 		},
 		BakeryStall = {
 			meshes = {
-				BakeryStall_01 = "rbxassetid://FILL_ASSET_ID_BAKERYSTALL_01",
+				BakeryStall_01 = "rbxassetid://137235619082706",
 			},
 		},
 	},
@@ -20,12 +20,12 @@ local ArchitectureVariants = {
 	street_props = {
 		StreetLamp = {
 			meshes = {
-				StreetLamp_01 = "rbxassetid://FILL_ASSET_ID_STREETLAMP_01",
+				StreetLamp_01 = "rbxassetid://87975976577216",
 			},
 		},
 		Bench = {
 			meshes = {
-				Bench_01 = "rbxassetid://FILL_ASSET_ID_BENCH_01",
+				Bench_01 = "rbxassetid://136635427702568",
 			},
 		},
 	},
@@ -33,7 +33,7 @@ local ArchitectureVariants = {
 	interiors = {
 		CounterIsland = {
 			meshes = {
-				CounterIsland_01 = "rbxassetid://FILL_ASSET_ID_COUNTERISLAND_01",
+				CounterIsland_01 = "rbxassetid://98998809643433",
 			},
 		},
 	},
@@ -41,7 +41,7 @@ local ArchitectureVariants = {
 	decor = {
 		Balcony = {
 			meshes = {
-				Balcony_01 = "rbxassetid://FILL_ASSET_ID_BALCONY_01",
+				Balcony_01 = "rbxassetid://135653097559455",
 			},
 		},
 	},
