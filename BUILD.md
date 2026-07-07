@@ -1,6 +1,13 @@
 # Build Guide — From Clone to Running Game
 
-## First-Time Setup
+## For Absolute Beginners
+
+If you've never used git or a terminal before, start here instead:
+👉 **[GETTING_STARTED.md](GETTING_STARTED.md)**
+
+It explains everything from installing VS Code to making your first commit — no prior knowledge needed.
+
+## First-Time Setup (for people who know git)
 
 ```powershell
 # 1. Clone the repo
@@ -72,6 +79,38 @@ npm run overnight     # Full config audit + asset check
 npm run lint          # Style check
 rojo build            # Verify build succeeds
 ```
+
+## Asset Import Pipeline
+
+After placing OBJ/FBX files in `Assets/Upload/`:
+
+```powershell
+# Step 1: Generate Studio import script
+npm run import:scan
+
+# Step 2: Paste reports/mesh_pipeline/batch_import.luau into Studio command bar
+# Step 3: Save the JSON output to reports/mesh_pipeline/import_results.json
+
+# Step 4: Auto-update all config files with new asset IDs
+npm run import:apply
+
+# Step 5: Verify everything
+npm run overnight
+```
+
+The config updater maps 30+ asset name patterns to their correct files (MeshAssets.lua, NPCConfig, UIAssets, CompanionManager, ArchitectureVariants, DecorationConfig).
+
+## VN Persona Placeholders
+
+Licensed Zundamon character assets in `C:\Users\froma\Downloads\`:
+
+| Source | Use | Files |
+|--------|-----|-------|
+| `Zundamon/` | Companion VN portrait (zundamon, zundapal) | FBX + 8 textures including expression sheet |
+| `young-lady-zundamon-lowpoly/` | Alternative companion portrait | Low-poly model + texture maps |
+| `kenney_mini-characters/` | Guest NPC portraits (12 unique chars) | FBX/GLB/OBJ + colormap, CC0 license |
+
+See `AI/VN_PERSONA_PLAN.md` for full integration steps.
 
 ## CI/CD Pipeline
 

@@ -1,10 +1,15 @@
-# Zundamon's Kitchen — Roblox + Rojo + AI Agent Toolkit
+# 🫛 Zundamon's Kitchen
 
-A cozy cooking RPG for Roblox. Gather ingredients, cook recipes, serve guests, and build your kitchen. Built with Rojo, Luau, and an AI agent orchestrator for autonomous content generation.
+A cozy cooking RPG for Roblox. Gather ingredients, cook recipes, serve guests, build your kitchen. Built with Rojo, Luau, and AI agents.
 
 ---
 
-## Quick Start
+## 🆕 New Here? Start Here
+
+👉 **[GETTING_STARTED.md](GETTING_STARTED.md)** — For people who have NEVER used git, VS Code, or Roblox Studio.
+It assumes you know NOTHING. Follow it step by step.
+
+## Quick Start (if you know what you're doing)
 
 ```bash
 # 1. Sync scripts to Studio
@@ -13,6 +18,16 @@ npm run rojo:serve
 # 2. In Studio: connect Rojo plugin to localhost:34872
 # 3. Press Play to test
 ```
+
+## For Contributors
+
+| If you want to... | Read this |
+|-------------------|-----------|
+| Install from scratch | [`GETTING_STARTED.md`](GETTING_STARTED.md) |
+| Build from clone to game | [`BUILD.md`](BUILD.md) |
+| See current tasks | [`AI/WORK_QUEUE.md`](AI/WORK_QUEUE.md) |
+| See asset integration plan | [`AI/ASSET_INTEGRATION_PLAN.md`](AI/ASSET_INTEGRATION_PLAN.md) |
+| See AI agent delegation | [`AI/DELEGATION_PLAN.md`](AI/DELEGATION_PLAN.md) |
 
 ---
 
