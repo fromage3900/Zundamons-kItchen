@@ -6,11 +6,11 @@ local PlacementRules = require(script.Parent.PlacementRules)
 
 local ProceduralLandscape = {}
 
-local function round(value: number)
+local function round(value)
 	return math.floor(value + 0.5)
 end
 
-function ProceduralLandscape.generateBiomePlan(biomeName: string?, options)
+function ProceduralLandscape.generateBiomePlan(biomeName, options)
 	local biome = LandscapeConfig.getBiome(biomeName)
 	local plan = {
 		biomeName = biome.name,

@@ -42,7 +42,7 @@ LandscapeConfig.biomes = {
 	},
 }
 
-function LandscapeConfig.getBiome(name: string?)
+function LandscapeConfig.getBiome(name)
 	if not name then
 		return LandscapeConfig.biomes.GardenVillage
 	end

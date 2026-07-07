@@ -92,6 +92,50 @@ local function questCheck(d, q, player)
 	return cur, t
 end
 
+-- Daily login streak rewards
+local function checkDailyLogin(player)
+	local d = PlayerDataService.get(player)
+	if not d then return end
+
+	local today = os.date("%Y-%m-%d")
+	local lastLogin = d.last_login_date or ""
+
+	-- Calculate streak
+	if lastLogin ~= today then
+		if d.login_streak then
+			-- Check if yesterday's login to continue streak
+			local yesterday = os.date("%Y-%m-%d", os.time() - 86400)
+			if lastLogin == yesterday then
+				d.login_streak = d.login_streak + 1
+			else
+				d.login_streak = 1
+			end
+		else
+			d.login_streak = 1
+		end
+		d.last_login_date = today
+
+		-- Award streak rewards
+		local streak = d.login_streak
+		local goldReward = 50
+		local xpReward = 50
+		local buffDuration = 0
+
+		if streak >= 7 then
+			goldReward = 250
+			xpReward = 200
+			buffDuration = 3600 -- 1 hour companion buff
+		elseif streak >= 3 then
+			goldReward = 100
+			xpReward = 100
+		end
+
+		d.gold = (d.gold or 0) + goldReward
+
+		print("[QuestManager] Daily login streak " .. streak .. " for " .. player.Name .. " (+" .. goldReward .. "g)")
+	end
+end
+
 local function eval(player)
 	local d = PlayerDataService.get(player)
 	if not d then return end

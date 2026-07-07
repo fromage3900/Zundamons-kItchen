@@ -3,11 +3,11 @@
 
 local PlacementRules = {}
 
-local function round(value: number)
+local function round(value)
 	return math.floor(value + 0.5)
 end
 
-local function clamp(value: number, min: number, max: number)
+local function clamp(value, min, max)
 	if value < min then
 		return min
 	end
@@ -17,7 +17,7 @@ local function clamp(value: number, min: number, max: number)
 	return value
 end
 
-function PlacementRules.generateCandidates(zone, seed: number)
+function PlacementRules.generateCandidates(zone, seed)
 	local count = math.max(1, math.floor((zone.size or 12) / 4))
 	local candidates = {}
 
@@ -38,7 +38,7 @@ function PlacementRules.generateCandidates(zone, seed: number)
 	return candidates
 end
 
-function PlacementRules.filterBySpacing(candidates, existing, spacing: number)
+function PlacementRules.filterBySpacing(candidates, existing, spacing)
 	local filtered = {}
 
 	for _, candidate in ipairs(candidates) do
@@ -61,7 +61,7 @@ function PlacementRules.filterBySpacing(candidates, existing, spacing: number)
 	return filtered
 end
 
-function PlacementRules.selectAssets(profile, count: number)
+function PlacementRules.selectAssets(profile, count)
 	local selected = {}
 
 	for _, entry in ipairs(profile or {}) do
