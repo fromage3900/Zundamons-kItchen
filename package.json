@@ -19,7 +19,8 @@
     "deploy-models": "python scripts/agent_orchestrator/tools/model_deploy.py",
     "import:scan": "python scripts/agent_orchestrator/tools/batch_import.py --scan",
     "import:apply": "python scripts/agent_orchestrator/tools/batch_import.py --apply",
-    "agent:task": "python scripts/agent_orchestrator/run.py"
+    "agent:task": "python scripts/agent_orchestrator/run.py",
+    "fix:mesh": "powershell -File scripts/fix_mesh_ids.ps1"
   },
   "version": "0.2.0"
 }
