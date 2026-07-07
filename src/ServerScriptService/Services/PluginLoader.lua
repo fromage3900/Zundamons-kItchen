@@ -3,13 +3,18 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local PluginLoader = {}
 local loadedPlugins = {}
 
-local PLUGINS_FOLDER = ServerScriptService:FindFirstChild("Plugins")
+function PluginLoader.getPluginsFolder()
+	local folder = ServerScriptService:FindFirstChild("Plugins")
+	if not folder then
+		folder = Instance.new("Folder")
+		folder.Name = "Plugins"
+		folder.Parent = ServerScriptService
+	end
+	return folder
+end
 
 function PluginLoader.loadAll()
-	if not PLUGINS_FOLDER then
-		warn("[PluginLoader] No Plugins folder found in ServerScriptService")
-		return {}
-	end
+	local PLUGINS_FOLDER = PluginLoader.getPluginsFolder()
 	local count = 0
 	for _, child in ipairs(PLUGINS_FOLDER:GetChildren()) do
 		if child:IsA("ModuleScript") then
@@ -48,11 +53,12 @@ function PluginLoader.unloadAll()
 end
 
 function PluginLoader.reload(name)
+	local folder = PluginLoader.getPluginsFolder()
 	if name then
 		local plugin = loadedPlugins[name]
 		if plugin and plugin.cleanup then pcall(plugin.cleanup) end
 		loadedPlugins[name] = nil
-		local module = PLUGINS_FOLDER and PLUGINS_FOLDER:FindFirstChild(name)
+		local module = folder:FindFirstChild(name)
 		if module and module:IsA("ModuleScript") then
 			pcall(function() module:ClearAllChildren() end)
 			local ok, newPlugin = pcall(require, module)
@@ -64,7 +70,7 @@ function PluginLoader.reload(name)
 		end
 		return ("Plugin '%s' not found"):format(name)
 	end
-	for _, child in ipairs(PLUGINS_FOLDER and PLUGINS_FOLDER:GetChildren() or {}) do
+	for _, child in ipairs(folder:GetChildren()) do
 		if child:IsA("ModuleScript") then
 			PluginLoader.reload(child.Name)
 		end

@@ -29,6 +29,14 @@ function extractEntries(src, pattern) {
   return [...new Set(results)];
 }
 
+function extractEntriesWithDupes(src, pattern) {
+  const results = [];
+  const regex = new RegExp(pattern, "g");
+  let match;
+  while ((match = regex.exec(src)) !== null) results.push(match[1] || match[0]);
+  return results;
+}
+
 function countPattern(src, pattern) {
   return (src.match(new RegExp(pattern, "g")) || []).length;
 }
@@ -109,7 +117,7 @@ if (missingIngredients.length > 0) {
 }
 
 // Extract progression milestones
-const milestoneRecipes = extractEntries(progressionConfig, /recipes\s*=\s*\{([^}]+)\}/g);
+const milestoneRecipes = extractEntries(progressionConfig, /[{\s]recipes\s*=\s*\{([^}]+)\}/g);
 const unlockedRecipes = milestoneRecipes.flatMap(m => extractEntries(m, /"([^"]+)"/g));
 log(`  Progression milestones: ${countPattern(progressionConfig, "guests_served")} tiers`);
 log(`  Recipes unlocked by milestones: ${unlockedRecipes.length}`);
@@ -126,7 +134,7 @@ log("Phase 3: Quest audit...");
 
 const questIds = extractEntries(questConfig, /id\s*=\s*"([^"]+)"/g);
 const questTypes = extractEntries(questConfig, /type\s*=\s*"([^"]+)"/g);
-const questChains = extractEntries(questConfig, /chain_id\s*=\s*"([^"]+)"/g);
+const questChains = extractEntriesWithDupes(questConfig, /chain_id\s*=\s*"([^"]+)"/g);
 const questRewards = extractEntries(questConfig, /items\s*=\s*\{([^}]+)\}/g);
 
 log(`  ${questIds.length} quests`);

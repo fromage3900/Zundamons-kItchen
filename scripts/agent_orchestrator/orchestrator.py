@@ -1,5 +1,21 @@
 import json, sys, os
 from pathlib import Path
+
+# Ensure we're running from project root (find default.project.json)
+_script_dir = Path(__file__).resolve().parent
+_possible_roots = [_script_dir, _script_dir.parent.parent, _script_dir.parent]
+_root_found = False
+for _p in _possible_roots:
+    if (_p / "default.project.json").exists():
+        os.chdir(str(_p))
+        _root_found = True
+        break
+if not _root_found:
+    print("Error: Run this script from G:\\Zundamons-kItchen")
+    print(f"  cd G:\\Zundamons-kItchen")
+    print(f"  python scripts\\agent_orchestrator\\run.py <task>")
+    sys.exit(1)
+
 sys.path.insert(0, str(Path(__file__).parent))
 
 from tools.ollama_client import OllamaClient
