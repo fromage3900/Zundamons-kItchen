@@ -34,6 +34,7 @@ local function updateUI()
         return requestData:InvokeServer()
     end)
     if not ok or not data then return end
+    _G.data = data
     
     local gold = data.gold or 0
     local guests = data.guests_served or 0

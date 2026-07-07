@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/ReplicatedStorage/Shared/Config/NPCConfig.lua
 local NPCConfig = {
 	guestTemplates = {
 		Child = {
@@ -43,7 +42,7 @@ local NPCConfig = {
 			scale = 0.6,
 			followSpeed = 6,
 			sparkleEffect = "rbxassetid://241685484",
-			buff = "double_xp",
+			buff = { stat = "gold", magnitude = 0.15, description = "+15% gold from serving guests" },
 			price = 250,
 		},
 		Cardamon = {
@@ -51,7 +50,7 @@ local NPCConfig = {
 			scale = 0.5,
 			followSpeed = 7,
 			sparkleEffect = "rbxassetid://241685484",
-			buff = "wider_timing",
+			buff = { stat = "perfect_window", magnitude = 0.30, description = "+30% wider perfect cooking window" },
 			price = 150,
 		},
 		Antimon = {
@@ -59,7 +58,7 @@ local NPCConfig = {
 			scale = 0.4,
 			followSpeed = 12,
 			sparkleEffect = "rbxassetid://241685484",
-			buff = "faster_craft",
+			buff = { stat = "extra_drop", magnitude = 0.20, description = "+20% chance of extra drop on gather" },
 			price = 100,
 		},
 		Sakuradamon = {
@@ -67,135 +66,60 @@ local NPCConfig = {
 			scale = 0.55,
 			followSpeed = 8,
 			sparkleEffect = "rbxassetid://241685484",
-			buff = "rare_drops",
+			buff = { stat = "xp", magnitude = 0.25, description = "+25% XP from crafting & serving" },
 			price = 300,
-=======
-local NPCConfig = {}
-
-NPCConfig.guestTemplates = {
-	Child = {
-		modelId = "rbxassetid://85728145615215",
-		scale = 0.7,
-		animations = {
-			idle = "rbxassetid://FILL_ANIM_IDLE",
-			walk = "rbxassetid://FILL_ANIM_WALK",
-			eat = "rbxassetid://FILL_ANIM_EAT",
 		},
 	},
-	Adult = {
-		modelId = "rbxassetid://89611587152743",
-		scale = 1.0,
-		animations = {
-			idle = "rbxassetid://FILL_ANIM_IDLE",
-			walk = "rbxassetid://FILL_ANIM_WALK",
-			eat = "rbxassetid://FILL_ANIM_EAT",
->>>>>>> e782c9f (🎮 quests: add gold shop companions (BerryBud, RootWarden, MycoMon) + quality payout multipliers + expanded achievements):Zundamons-kItchen-GitHub-Build/src/ReplicatedStorage/Shared/Config/NPCConfig.lua
+
+	goldShopCompanions = {
+		BerryBud = {
+			modelId = "rbxassetid://110290651922538",
+			scale = 0.5,
+			followSpeed = 6,
+			sparkleEffect = "rbxassetid://241685484",
+			buff = { stat = "berry_finder", magnitude = 1, description = "Increased berry harvest chance" },
+			price = 1200,
+			levelRequired = 8,
+		},
+		RootWarden = {
+			modelId = "rbxassetid://91041813069462",
+			scale = 0.6,
+			followSpeed = 5,
+			sparkleEffect = "rbxassetid://241685484",
+			buff = { stat = "root_finder", magnitude = 1, description = "Find rare roots more often" },
+			price = 1500,
+			levelRequired = 12,
+		},
+		MycoMon = {
+			modelId = "rbxassetid://94125444857929",
+			scale = 0.45,
+			followSpeed = 7,
+			sparkleEffect = "rbxassetid://241685484",
+			buff = { stat = "mushroom_finder", magnitude = 1, description = "Mushrooms appear more frequently" },
+			price = 800,
+			levelRequired = 6,
 		},
 	},
-	Elder = {
-		modelId = "rbxassetid://121639150484362",
-		scale = 0.9,
-		animations = {
-			idle = "rbxassetid://FILL_ANIM_IDLE",
-			walk = "rbxassetid://FILL_ANIM_WALK",
-			eat = "rbxassetid://FILL_ANIM_EAT",
-		},
-	},
-}
 
-NPCConfig.companionTemplates = {
-	Zundapal = {
-		modelId = "rbxassetid://113753628820808",
-		scale = 0.5,
-		followSpeed = 8,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_SPARKLE",
-		buff = nil,
-		price = 0,
+	qualityMultipliers = {
+		perfect = 1.5,
+		great = 1.2,
+		ok = 1.0,
 	},
-	Ankomon = {
-		modelId = "rbxassetid://110290651922538",
-		scale = 0.6,
-		followSpeed = 6,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_GOLD",
-		buff = { stat = "gold", magnitude = 0.15, description = "+15% gold from serving guests" },
-		price = 250,
-	},
-	Cardamon = {
-		modelId = "rbxassetid://91041813069462",
-		scale = 0.5,
-		followSpeed = 7,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_LAVENDER",
-		buff = { stat = "perfect_window", magnitude = 0.30, description = "+30% wider perfect cooking window" },
-		price = 150,
-	},
-	Antimon = {
-		modelId = "rbxassetid://94125444857929",
-		scale = 0.4,
-		followSpeed = 12,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_YELLOW",
-		buff = { stat = "extra_drop", magnitude = 0.20, description = "+20% chance of extra drop on gather" },
-		price = 100,
-	},
-	Sakuradamon = {
-		modelId = "rbxassetid://128478553136178",
-		scale = 0.55,
-		followSpeed = 8,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_PINK",
-		buff = { stat = "xp", magnitude = 0.25, description = "+25% XP from crafting & serving" },
-		price = 300,
-	},
-}
 
--- Gold Shop Companions (Kenney asset variants)
-NPCConfig.goldShopCompanions = {
-	BerryBud = {
-		modelId = "rbxassetid://110290651922538",
-		scale = 0.5,
-		followSpeed = 6,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_GREEN",
-		buff = { stat = "berry_finder", magnitude = 1, description = "Increased berry harvest chance" },
-		price = 1200,
-		levelRequired = 8,
+	guestSpawnDefaults = {
+		spawnInterval = 15,
+		maxGuests = 8,
+		timeoutDuration = 120,
+		maxQueueDistance = 24,
 	},
-	RootWarden = {
-		modelId = "rbxassetid://91041813069462",
-		scale = 0.6,
-		followSpeed = 5,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_BROWN",
-		buff = { stat = "root_finder", magnitude = 1, description = "Find rare roots more often" },
-		price = 1500,
-		levelRequired = 12,
+
+	spawnPoints = {
+		Vector3.new(188, -518, -415),
+		Vector3.new(196, -518, -415),
+		Vector3.new(204, -518, -415),
+		Vector3.new(212, -518, -415),
 	},
-	MycoMon = {
-		modelId = "rbxassetid://94125444857929",
-		scale = 0.45,
-		followSpeed = 7,
-		sparkleEffect = "rbxassetid://FILL_EFFECT_SPOTTY",
-		buff = { stat = "mushroom_finder", magnitude = 1, description = "Mushrooms appear more frequently" },
-		price = 800,
-		levelRequired = 6,
-	},
-}
-
--- Serve quality payout multipliers
-NPCConfig.qualityMultipliers = {
-	perfect = 1.5,
-	great = 1.2,
-	ok = 1.0,
-}
-
-NPCConfig.guestSpawnDefaults = {
-	spawnInterval = 15,
-	maxGuests = 8,
-	timeoutDuration = 120,
-	maxQueueDistance = 24,
-}
-
-NPCConfig.spawnPoints = {
-	Vector3.new(188, -518, -415),
-	Vector3.new(196, -518, -415),
-	Vector3.new(204, -518, -415),
-	Vector3.new(212, -518, -415),
 }
 
 function NPCConfig.getTemplate(modelName)

@@ -8,7 +8,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player            = Players.LocalPlayer
 
 local RE       = ReplicatedStorage:WaitForChild("RemoteEvents")
-local notifyRE = RE:WaitForChild("NotifyPlayer")
+local notifyRE = RE:FindFirstChild("NotifyPlayer") or Instance.new("RemoteEvent")
+notifyRE.Name = "NotifyPlayer"
+notifyRE.Parent = RE
 
 -- Create the toast container in PlayerGui
 local gui = script.Parent

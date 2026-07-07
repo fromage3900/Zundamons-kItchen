@@ -9,7 +9,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 local RE = ReplicatedStorage:WaitForChild("RemoteEvents")
-local notifyRE = RE:WaitForChild("NotifyPlayer")
+local notifyRE = RE:FindFirstChild("NotifyPlayer") or Instance.new("RemoteEvent")
+notifyRE.Name = "NotifyPlayer"
+notifyRE.Parent = RE
 
 local PLOT_REQUIREMENTS = {1, 10, 25, 50}  -- guests_served needed per plot
 local PLOT_CENTERS = {
