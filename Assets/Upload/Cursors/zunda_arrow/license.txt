@@ -1,0 +1,8 @@
+自動インストーラーのライセンス：
+
+cursor_setup
+
+Copyright (c) 2022 wappon_28_dev
+
+This software is released under the MIT License.
+see https://opensource.org/licenses/MIT
