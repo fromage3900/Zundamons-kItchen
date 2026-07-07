@@ -1,5 +1,5 @@
 -- [[LocalScript] CraftingScript (ref: RBX0DC7A0732A82493992F3FC69FDF2E0AA)]]
--- CraftingScript: Client-side crafting UI controller
+-- CraftingScript: Client-side crafting UI controller (Rojo bootstrap)
 -- Press K to toggle the crafting panel, click a recipe to craft it.
 
 local Players = game:GetService("Players")
@@ -7,37 +7,84 @@ local UIS = game:GetService("UserInputService")
 local RS = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
-local panel = script.Parent:WaitForChild("Panel")
-local closeBtn = panel:WaitForChild("TitleBar"):WaitForChild("CloseBtn")
-local scroll = panel:WaitForChild("RecipeList")
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaCraftGui", 24)
 
 local craftFunc = RS:WaitForChild("RemoteFunctions"):WaitForChild("CraftFunction")
-local requestData = RS:WaitForChild("RemoteFunctions"):WaitForChild("RequestData")
-
--- Load recipes from server config to avoid sync issues
--- Recipes are read-only; locked recipes handled server-side
-local craftConfig = require(RS.ConfigurationFiles:WaitForChild("CraftConfig"))
+local craftConfig = require(RS.Shared.Modules.CraftConfig)
 local UIHelper = require(RS.Shared.Modules.UIHelper)
 local UIConfig = require(RS.ConfigurationFiles.UIConfig)
 
--- Build RECIPES array from Config (format for UI display)
+local panel = Instance.new("Frame")
+panel.Name = "Panel"
+panel.Size = UDim2.new(0, 420, 0, 520)
+panel.AnchorPoint = Vector2.new(0.5, 0.5)
+panel.Position = UDim2.new(0.5, 0, 0.5, 0)
+panel.BackgroundColor3 = Color3.fromRGB(255, 248, 235)
+panel.BorderSizePixel = 0
+panel.Visible = false
+panel.Parent = gui
+Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 16)
+
+local titleBar = Instance.new("Frame")
+titleBar.Name = "TitleBar"
+titleBar.Size = UDim2.new(1, 0, 0, 44)
+titleBar.BackgroundColor3 = Color3.fromRGB(120, 200, 130)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = panel
+Instance.new("UICorner", titleBar).CornerRadius = UDim.new(0, 16)
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, -50, 1, 0)
+titleLabel.Position = UDim2.new(0, 12, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "🍳 Crafting"
+titleLabel.Font = Enum.Font.FredokaOne
+titleLabel.TextSize = 22
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.Parent = titleBar
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Name = "CloseBtn"
+closeBtn.Size = UDim2.new(0, 36, 0, 36)
+closeBtn.Position = UDim2.new(1, -40, 0, 4)
+closeBtn.Text = "✕"
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 18
+closeBtn.BackgroundColor3 = Color3.fromRGB(200, 100, 100)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.BorderSizePixel = 0
+closeBtn.Parent = titleBar
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 8)
+
+local scroll = Instance.new("ScrollingFrame")
+scroll.Name = "RecipeList"
+scroll.Size = UDim2.new(1, -20, 1, -54)
+scroll.Position = UDim2.new(0, 10, 0, 48)
+scroll.BackgroundTransparency = 1
+scroll.BorderSizePixel = 0
+scroll.ScrollBarThickness = 6
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scroll.Parent = panel
+local listLayout = Instance.new("UIListLayout", scroll)
+listLayout.Padding = UDim.new(0, 8)
+
 local RECIPES = {}
 for recipeName, ings in pairs(craftConfig.recipes) do
 	local locked = ings.locked == true
-	-- Convert locked flag to separate table
 	local recipeEntry = {
 		name = recipeName,
 		ings = ings,
 		locked = locked,
 	}
-	-- Remove the locked key from ings for display
 	if locked then
 		ings.locked = nil
 	end
 	table.insert(RECIPES, recipeEntry)
 end
 
--- Helper: build ingredient labels with icons
 local function buildIngredientLine(parent, xPos, yPos, width, item, count)
 	local row = Instance.new("Frame")
 	row.Size = UDim2.new(0, width, 0, 24)
@@ -61,7 +108,6 @@ local function buildIngredientLine(parent, xPos, yPos, width, item, count)
 	lbl.Parent = row
 end
 
--- Build a card for each recipe
 local function buildRecipeCard(recipe)
 	local card = Instance.new("Frame")
 	card.Name = "Recipe_" .. recipe.name
@@ -82,36 +128,36 @@ local function buildRecipeCard(recipe)
 	nameLabel.Font = Enum.Font.GothamBold
 	nameLabel.Parent = card
 
-	-- Unlock hint for locked recipes
-	local hintLabel = Instance.new("TextLabel")
-	hintLabel.Name = "HintLabel"
-	hintLabel.Size = UDim2.new(0.7, 0, 0, 16)
-	hintLabel.Position = UDim2.new(0, 10, 0, 32)
-	hintLabel.BackgroundTransparency = 1
-	hintLabel.Text = recipe.locked and "🔒 Unlocks at Tier 2 (15 guests)" or ""
-	hintLabel.TextColor3 = Color3.fromRGB(180, 100, 120)
-	hintLabel.TextXAlignment = Enum.TextXAlignment.Left
-	hintLabel.TextScaled = true
-	hintLabel.Font = Enum.Font.Gotham
-	hintLabel.Visible = recipe.locked
-	hintLabel.Parent = card
-
-	local ingY = 0
-	for item, count in recipe.ings do
-		buildIngredientLine(card, 10, 50 + ingY, 280, item, count)
-		ingY = ingY + 22
+	local yPos = 32
+	local xPos = 10
+	for item, count in pairs(recipe.ings) do
+		if item ~= "locked" then
+			buildIngredientLine(card, xPos, yPos, 160, item, count)
+			xPos += 170
+			if xPos > 280 then
+				xPos = 10
+				yPos += 26
+			end
+		end
 	end
 
 	local craftBtn = Instance.new("TextButton")
-	craftBtn.Size = UDim2.new(0, 90, 0, 50)
-	craftBtn.Position = UDim2.new(1, -100, 0, 10)
-	craftBtn.BackgroundColor3 = Color3.fromRGB(120, 200, 120)
+	craftBtn.Name = "CraftBtn"
+	craftBtn.Size = UDim2.new(0, 80, 0, 32)
+	craftBtn.Position = UDim2.new(1, -90, 0.5, -16)
+	craftBtn.BackgroundColor3 = recipe.locked and Color3.fromRGB(180, 180, 180) or Color3.fromRGB(120, 200, 120)
+	craftBtn.Text = recipe.locked and "Locked" or "Craft"
 	craftBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-	craftBtn.Text = "Craft"
-	craftBtn.TextScaled = true
 	craftBtn.Font = Enum.Font.GothamBold
+	craftBtn.TextScaled = true
+	craftBtn.BorderSizePixel = 0
+	craftBtn.AutoButtonColor = not recipe.locked
 	craftBtn.Parent = card
-	Instance.new("UICorner", craftBtn).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", craftBtn).CornerRadius = UDim.new(0, 8)
+
+	if recipe.locked then
+		return
+	end
 
 	craftBtn.MouseButton1Click:Connect(function()
 		local pos = craftBtn.AbsolutePosition
@@ -123,28 +169,25 @@ local function buildRecipeCard(recipe)
 			return
 		end
 
-		-- Prevent double-tap while a cook is running
 		if _G.TimedCooking and _G.TimedCooking.isCooking() then
 			return
 		end
 
-		-- Helper: send craft to server with a quality tag (perfect/great/ok)
-		local function submitCraft(quality)
-			craftBtn.Text = "\u{2728}" -- ✨ while server processes
+		local function submitCraft(payload)
+			craftBtn.Text = "✨"
 			local ok, result = pcall(function()
-				return craftFunc:InvokeServer(recipe.name, hrp.Position, quality)
+				return craftFunc:InvokeServer(recipe.name, hrp.Position, payload)
 			end)
 			if ok and result == "Success" then
+				local quality = type(payload) == "table" and payload.quality or payload
 				if quality == "perfect" then
-					craftBtn.Text = "PERFECT \u{2728}"
+					craftBtn.Text = "PERFECT ✨"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(255, 200, 80)
-					UIHelper.spawnSparkles(craftBtn.Parent, pos.X + sz.X / 2, pos.Y, Color3.fromRGB(255, 220, 80), 12)
 				elseif quality == "great" then
-					craftBtn.Text = "Great \u{2713}"
+					craftBtn.Text = "Great ✓"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(80, 200, 80)
-					UIHelper.spawnSparkles(craftBtn.Parent, pos.X + sz.X / 2, pos.Y, Color3.fromRGB(120, 255, 120), 8)
 				else
-					craftBtn.Text = "OK \u{2713}"
+					craftBtn.Text = "OK ✓"
 					craftBtn.BackgroundColor3 = Color3.fromRGB(160, 200, 120)
 				end
 			else
@@ -157,12 +200,13 @@ local function buildRecipeCard(recipe)
 			end)
 		end
 
-		-- Run the timed cooking mini-game if available, otherwise fall through
 		if _G.TimedCooking and _G.TimedCooking.start then
-			craftBtn.Text = "Cooking\u{2026}"
-			local started = _G.TimedCooking.start(recipe.name, function(inGreen, perfect)
-				local quality = perfect and "perfect" or inGreen and "great" or "ok"
-				submitCraft(quality)
+			craftBtn.Text = "Cooking…"
+			local started = _G.TimedCooking.start(recipe.name, function(inGreen, perfect, timings, noteCount)
+				submitCraft({
+					timings = timings or {},
+					noteCount = noteCount or #(timings or {}),
+				})
 			end)
 			if not started then
 				craftBtn.Text = "Craft"
@@ -173,12 +217,10 @@ local function buildRecipeCard(recipe)
 	end)
 end
 
--- Build all recipe cards once on load
 for _, r in ipairs(RECIPES) do
 	buildRecipeCard(r)
 end
 
--- Toggle panel
 local function setOpen(state)
 	panel.Visible = state
 end
@@ -196,7 +238,6 @@ UIS.InputBegan:Connect(function(input, processed)
 	end
 end)
 
--- Wire the ZundaHUD button if present (added in HudButtons row)
 task.spawn(function()
 	local pg = player:WaitForChild("PlayerGui")
 	local hud = pg:WaitForChild("ZundaHUD", 5)

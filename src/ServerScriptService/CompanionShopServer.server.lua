@@ -30,10 +30,11 @@ for k, v in pairs(DEVPRODUCT_IDS) do if v ~= 0 then productToComp[v] = k end end
 -- Pending purchases per player so we can credit on success
 local pending = {}
 
+local CompanionConfig = require(RS.ConfigurationFiles.CompanionConfig)
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
 PurchaseCompanion.OnServerEvent:Connect(function(player, compType)
-    local cat = shared.ZundaCompanionCatalog
+    local cat = CompanionConfig.companions
     if not cat then return end
     local def = cat[compType]
     if not def or def.free then return end
@@ -60,7 +61,7 @@ end)
 -- ProcessReceipt delegated to MarketplaceService.lua (unified handler)
 
 GetCompanionCatalog.OnServerInvoke = function(player)
-    return shared.ZundaCompanionCatalog
+    return CompanionConfig.companions
 end
 
 GetOwnedCompanions.OnServerInvoke = function(player)

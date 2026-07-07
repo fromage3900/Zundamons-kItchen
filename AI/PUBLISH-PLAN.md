@@ -1,6 +1,6 @@
 # 🫛 Publish Plan — Zundamon's kItchen (July 2026)
 
-**Place:** `108617605497926` · **Repo:** `G:\Zundamons-kItchen` · **Sync:** `main-2026-07-06-org-review`
+**Place:** `108617605497926` · **Repo:** `G:\Zundamons-kItchen` · **Sync:** `main-2026-07-07-systematic-fix`
 
 Master knock-off list. See also [`docs/PROJECT-REVIEW-2026-07-06.md`](../docs/PROJECT-REVIEW-2026-07-06.md) and [`AGENT-WORK-REVIEW.md`](AGENT-WORK-REVIEW.md).
 
@@ -15,7 +15,7 @@ Master knock-off list. See also [`docs/PROJECT-REVIEW-2026-07-06.md`](../docs/PR
 | 0.3 | Save place to Roblox | Human | ⬜ |
 | 0.4 | Smoke: gather → craft → serve ([`studio-playtest-smoke.md`](../docs/studio-playtest-smoke.md)) | Human | ⬜ |
 | 0.5 | Fix companion mesh (`NPCConfig` / place mesh, not `FILL_COMPANION_ZUNDAPAL`) | Studio | ⬜ |
-| 0.6 | VN intro: ensure `ZundaVN` ScreenGui in StarterGui **or** restore code-built `ZundaVNGui` | Cursor | ⬜ |
+| 0.6 | VN intro: ensure `ZundaVN` ScreenGui in StarterGui **or** restore code-built `ZundaVNGui` | Cursor | ✅ code-built |
 
 **Pass criteria:** No grey fullscreen, pouch/quest open, gold updates on serve, Output shows `[ROJO SYNC OK]`.
 
@@ -26,11 +26,11 @@ Master knock-off list. See also [`docs/PROJECT-REVIEW-2026-07-06.md`](../docs/PR
 | # | Task | Files | Status |
 |---|------|-------|--------|
 | 1.1 | Remove duplicate `ReplicatedStorage/QuestConfig` (use `ConfigurationFiles` only) | `default.project.json` | ✅ this PR |
-| 1.2 | Restore LLM stack lost in `de6316d` merge | `ZundapalLLMService`, chat servers, clients | ⬜ |
-| 1.3 | VN self-bootstrap (`ZundaVNGui` in code, not `script.Parent`) | `VNController.client.lua` | ⬜ |
-| 1.4 | Migrate remaining `script.Parent` HUD scripts to `ClientGuiBootstrap` | `HudScript`, `CraftingScript`, … | ⬜ |
-| 1.5 | Unify gold field (`gold` only, migrate `current_gold` / `Gold`) | `PlayerDataService`, clients | ⬜ |
-| 1.6 | Align `CraftConfig` server ↔ `CraftingScript` client recipes | `Shared/Modules/CraftConfig.lua` | ⬜ |
+| 1.2 | Restore LLM stack lost in `de6316d` merge | `ZundapalLLMService`, chat servers, clients | ✅ |
+| 1.3 | VN self-bootstrap (`ZundaVNGui` in code, not `script.Parent`) | `VNController.client.lua` | ✅ |
+| 1.4 | Migrate remaining `script.Parent` HUD scripts to `ClientGuiBootstrap` | `HudScript`, `CraftingScript`, … | ✅ |
+| 1.5 | Unify gold field (`gold` only, migrate `current_gold` / `Gold`) | `PlayerDataService`, clients | ✅ |
+| 1.6 | Align `CraftConfig` server ↔ `CraftingScript` client recipes | `Shared/Modules/CraftConfig.lua` | ✅ |
 | 1.7 | Wire `npm run verify:safety` + `security` in CI | `package.json`, `.github/workflows` | ✅ this PR |
 
 ---
@@ -56,7 +56,7 @@ Master knock-off list. See also [`docs/PROJECT-REVIEW-2026-07-06.md`](../docs/PR
 | 3.2 | `STRICT_PUBLISH=1 npm run security` | After real IDs |
 | 3.3 | Creator Hub generative-AI questionnaire | [`legal-publish-checklist.md`](../docs/legal-publish-checklist.md) |
 | 3.4 | Experience description + `PRIVACY.md` link | Template in legal doc |
-| 3.5 | LLM: API key + HttpService + whitelist **or** ship without AI | Restore stack first |
+| 3.5 | LLM: API key + HttpService + whitelist **or** ship without AI | See [`docs/llm-production-setup.md`](../docs/llm-production-setup.md) |
 | 3.6 | DataStore enabled for published place | Not just Studio API |
 
 ---
@@ -65,8 +65,8 @@ Master knock-off list. See also [`docs/PROJECT-REVIEW-2026-07-06.md`](../docs/PR
 
 | Agent | Next tasks | Branch prefix |
 |-------|------------|---------------|
-| **Cursor** | VN bootstrap, LLM restore, merge review | `cursor/*-594f` |
-| **Cline** | `RewardCore` → service, Mineable validator, economy | `cline/*` |
+| **Cursor** | Studio playtest, assets, optional MasterChefZunda | `cursor/*-25ba` |
+| **Cline** | Mesh import when unblocked | `cline/*` |
 | **OpenCode** | `UIComponents` adoption, quest UI polish | `opencode/*` |
 
 Claim tasks in [`WORK_QUEUE.md`](WORK_QUEUE.md) before coding.

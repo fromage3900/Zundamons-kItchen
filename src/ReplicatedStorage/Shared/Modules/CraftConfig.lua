@@ -97,4 +97,19 @@ function CraftConfig.getUnlockedRecipes(playerLevel: number, unlockedRecipeIds: 
 	return unlocked
 end
 
+CraftConfig.cookingTimes = {
+	Bread = 4,
+	["Apple Pie"] = 5,
+	["Zunda Bread"] = 6,
+	["Royal Stew"] = 8,
+	["Zunda Mochi"] = 7,
+	["Edamame Snack"] = 3,
+	["Fancy Pie"] = 10,
+	["Zundamon's Banquet"] = 12,
+	["Sweet Pea Cake"] = 9,
+	["Pea Flower Tea"] = 4,
+	["Ultimate Feast"] = 15,
+	["Zunda Paradise"] = 20,
+}
+
 return CraftConfig

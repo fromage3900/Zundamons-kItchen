@@ -22,6 +22,21 @@
 ## Validation
 - Use dedicated validator scripts (e.g., `HarvestValidator.server.lua`) to check client requests against server-side logic.
 - `HarvestValidator` is wired into `Mineable.server.lua` and `ZundaGatherServer.server.lua`.
+- `CookValidator` validates rhythm-cooking quality server-side from client timing payloads.
+
+## Modifier stacking (companion buffs + powerups + combo)
+
+All buffs are defined in `CompanionConfig.lua` (companions) and `PowerupConfig.lua` (timed powerups). Application is inline at each touchpoint:
+
+| Action | Formula |
+|--------|---------|
+| Gold on serve | `floor(base * combo * luckyCharm * (1 + ankomon))` where luckyCharm = 1.5x if active |
+| XP on craft/serve | `floor(base * (1 + sakuradamon))` |
+| Gather extra drop | Independent rolls: Antimon (+20% chance), IronWrist (+25% chance) |
+| Cooking window | Cardamon (+30% perfect window), MastersApron (+25% window) — validated server-side via `CookValidator` |
+| Combo cap | 5.0x max (RewardSystem) |
+
+Canonical companion catalog: `CompanionConfig.lua`. Visual mesh data: `NPCConfig.lua` (no buff/price fields).
 
 ## Data Flow Diagram
 ```

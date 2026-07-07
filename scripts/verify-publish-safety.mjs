@@ -30,6 +30,8 @@ const requiredFiles = [
 	"docs/ELECTRA-SETUP.md",
 	"AI/PUBLISH-PLAN.md",
 	"src/ServerScriptService/Services/ZundapalLLMService.lua",
+	"src/ServerScriptService/Services/RewardSystem.lua",
+	"src/ServerScriptService/Services/CookValidator.lua",
 	"src/ServerScriptService/ZundapalChatServer.server.lua",
 	"src/StarterPlayer/StarterPlayerScripts/ZundapalChat.client.lua",
 	"src/ReplicatedStorage/RemoteFunctions/init.meta.json",
@@ -73,9 +75,14 @@ const requiredPatterns = [
 		label: "Rojo project includes RemoteFunctions",
 	},
 	{
-		file: "src/ServerScriptService/Services/ZundapalLLMService.lua",
-		pattern: /maxDailyMessagesPerUser|llm_disclaimer_accepted/,
-		label: "LLM daily cap + disclaimer enforcement",
+		file: "src/ServerScriptService/Services/RewardSystem.lua",
+		pattern: /CompanionConfig|addGold|RequestRewardSync/,
+		label: "RewardSystem service with companion buffs and sync",
+	},
+	{
+		file: "src/ServerScriptService/CompanionManager.server.lua",
+		pattern: /CompanionConfig\.getCompanion/,
+		label: "CompanionManager uses canonical CompanionConfig",
 	},
 ];
 

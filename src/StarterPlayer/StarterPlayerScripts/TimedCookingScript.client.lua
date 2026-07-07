@@ -16,7 +16,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 local UIAssets = require(RS.Shared.Config.UIAssets)
 local UIHelper = require(RS.Shared.Modules.UIHelper)
-local GetCompanionBuff = RS:WaitForChild("RemoteFunctions"):WaitForChild("GetActiveCompanionBuff")
+local GetCookingWindowBoost = RS:WaitForChild("RemoteFunctions"):WaitForChild("GetCookingWindowBoost")
 
 local function getSoundId(assetKey, fallback)
 	local id = UIAssets.sounds[assetKey]
@@ -327,11 +327,12 @@ local function judgeFirstUnhitNote()
     local n = activeNotes[bestIdx]
     n.hit = true
     -- Tier judgement based on pixel distance from ring center
-    -- Cardamon companion: widens the perfect window
-    local cardamonBoost = 0
-    pcall(function() cardamonBoost = GetCompanionBuff:InvokeServer("perfect_window") or 0 end)
-    local perfectThresh = 20 * (1 + cardamonBoost)
-    local greatThresh   = 45 * (1 + cardamonBoost * 0.5)
+    local cardamonBoost, apronBoost = 0, 0
+    pcall(function()
+        cardamonBoost, apronBoost = GetCookingWindowBoost:InvokeServer()
+    end)
+    local perfectThresh = 20 * (1 + cardamonBoost + apronBoost)
+    local greatThresh   = 45 * (1 + cardamonBoost * 0.5 + apronBoost * 0.5)
     local tag, color
     if bestDist < perfectThresh then
         tag, color = "perfect", Color3.fromRGB(255, 200, 80)
@@ -343,7 +344,7 @@ local function judgeFirstUnhitNote()
         tag, color = "miss", Color3.fromRGB(220, 100, 110)
     end
     n.scoreTag = tag
-    table.insert(scores, { tag = tag })
+    table.insert(scores, { tag = tag, distance = bestDist })
 
     -- Mark progress dot
     local dot = progressRow:FindFirstChild("Dot" .. #scores)
@@ -437,8 +438,13 @@ local function finishCooking()
         panel.Visible = false
         backdrop.Visible = false
         if currentOnComplete then
-            local cb = currentOnComplete; currentOnComplete = nil
-            cb(inGreenZone, perfect)
+            local cb = currentOnComplete
+            currentOnComplete = nil
+            local timings = {}
+            for _, s in ipairs(scores) do
+                table.insert(timings, s.distance or 999)
+            end
+            cb(inGreenZone, perfect, timings, totalNotesPlanned)
         end
     end)
 end
@@ -522,7 +528,7 @@ local function startCooking(recipeName, onComplete)
                 if (noteX(n.note) - ringX()) > 90 then
                     n.hit = true
                     n.scoreTag = "miss"
-                    table.insert(scores, { tag = "miss" })
+                    table.insert(scores, { tag = "miss", distance = 999 })
                     local dot = progressRow:FindFirstChild("Dot" .. #scores)
                     if dot then dot.BackgroundColor3 = Color3.fromRGB(220, 100, 110) end
                     TweenService:Create(n.note, TweenInfo.new(0.3), { TextTransparency = 1 }):Play()

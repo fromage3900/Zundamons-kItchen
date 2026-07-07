@@ -114,8 +114,8 @@ local function craftableNow(data: { [string]: any }): { string }
 		local canCraft = true
 		for ingredient, amount in pairs(ingredients) do
 			local owned = data[ingredient]
-			if ingredient == "Gold" then
-				owned = data.Gold or data.current_gold or 0
+		if ingredient == "Gold" then
+				owned = data.gold or 0
 			end
 			if type(owned) ~= "number" or owned < amount then
 				canCraft = false
@@ -173,7 +173,7 @@ function ZundapalContextBuilder.buildSnapshot(data: { [string]: any }, env: { [s
 	local companionDef = CompanionConfig.getCompanion(activeKey)
 
 	return {
-		gold = data.Gold or data.current_gold or 0,
+		gold = data.gold or 0,
 		totalGoldEarned = data.total_gold_earned or 0,
 		guestsServed = data.guests_served or 0,
 		tier = data.tier or 1,

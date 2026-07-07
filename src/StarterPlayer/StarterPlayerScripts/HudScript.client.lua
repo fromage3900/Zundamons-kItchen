@@ -3,7 +3,145 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RS = game:GetService("ReplicatedStorage")
 local UIHelper = require(RS.Shared.Modules.UIHelper)
-local gui = script.Parent
+local ClientGuiBootstrap = require(RS.ConfigurationFiles.ClientGuiBootstrap)
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function ensureHudShell(): ScreenGui
+	local existing = playerGui:FindFirstChild("ZundaHUD")
+	if existing and existing:IsA("ScreenGui") then
+		return existing
+	end
+
+	local gui = ClientGuiBootstrap.createScreenGui(player, "ZundaHUD", 10)
+
+	local pill = Instance.new("Frame")
+	pill.Name = "ChefPill"
+	pill.Size = UDim2.new(0, 220, 0, 56)
+	pill.Position = UDim2.new(0, 16, 0, 16)
+	pill.BackgroundColor3 = Color3.fromRGB(40, 32, 60)
+	pill.BorderSizePixel = 0
+	pill.Parent = gui
+	Instance.new("UICorner", pill).CornerRadius = UDim.new(0, 14)
+	local ps = Instance.new("UIStroke", pill)
+	ps.Color = Color3.fromRGB(120, 200, 130)
+
+	local badge = Instance.new("TextLabel", pill)
+	badge.Name = "Badge"
+	badge.Size = UDim2.new(0, 40, 0, 40)
+	badge.Position = UDim2.new(0, 8, 0.5, -20)
+	badge.BackgroundTransparency = 1
+	badge.Text = "🌱"
+	badge.TextScaled = true
+
+	local tierLabel = Instance.new("TextLabel", pill)
+	tierLabel.Name = "TierLabel"
+	tierLabel.Size = UDim2.new(1, -56, 0, 22)
+	tierLabel.Position = UDim2.new(0, 52, 0, 8)
+	tierLabel.BackgroundTransparency = 1
+	tierLabel.Text = "Apprentice · Lv 1"
+	tierLabel.Font = Enum.Font.GothamBold
+	tierLabel.TextSize = 14
+	tierLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	tierLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+	local xpBar = Instance.new("Frame", pill)
+	xpBar.Name = "XPBar"
+	xpBar.Size = UDim2.new(1, -60, 0, 10)
+	xpBar.Position = UDim2.new(0, 52, 0, 36)
+	xpBar.BackgroundColor3 = Color3.fromRGB(60, 50, 80)
+	xpBar.BorderSizePixel = 0
+	Instance.new("UICorner", xpBar).CornerRadius = UDim.new(1, 0)
+	local fill = Instance.new("Frame", xpBar)
+	fill.Name = "Fill"
+	fill.Size = UDim2.new(0, 0, 1, 0)
+	fill.BackgroundColor3 = Color3.fromRGB(120, 200, 130)
+	fill.BorderSizePixel = 0
+	Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+
+	local combo = Instance.new("Frame", gui)
+	combo.Name = "ComboMeter"
+	combo.Size = UDim2.new(0, 220, 0, 70)
+	combo.Position = UDim2.new(0.5, -110, 0, 80)
+	combo.BackgroundColor3 = Color3.fromRGB(40, 32, 60)
+	combo.BackgroundTransparency = 1
+	combo.Visible = false
+	combo.BorderSizePixel = 0
+	Instance.new("UICorner", combo).CornerRadius = UDim.new(0, 14)
+
+	local cCount = Instance.new("TextLabel", combo)
+	cCount.Name = "Count"
+	cCount.Size = UDim2.new(1, 0, 0.5, 0)
+	cCount.BackgroundTransparency = 1
+	cCount.Text = "0 COMBO"
+	cCount.Font = Enum.Font.GothamBlack
+	cCount.TextScaled = true
+	cCount.TextColor3 = Color3.fromRGB(255, 240, 180)
+
+	local cMult = Instance.new("TextLabel", combo)
+	cMult.Name = "Mult"
+	cMult.Size = UDim2.new(1, 0, 0.5, 0)
+	cMult.Position = UDim2.new(0, 0, 0.5, 0)
+	cMult.BackgroundTransparency = 1
+	cMult.Text = "x1.0"
+	cMult.Font = Enum.Font.GothamBold
+	cMult.TextScaled = true
+	cMult.TextColor3 = Color3.fromRGB(255, 240, 180)
+
+	local popupRoot = Instance.new("Frame", gui)
+	popupRoot.Name = "PopupRoot"
+	popupRoot.Size = UDim2.new(1, 0, 1, 0)
+	popupRoot.BackgroundTransparency = 1
+
+	local daily = Instance.new("Frame", gui)
+	daily.Name = "DailyWidget"
+	daily.Size = UDim2.new(0, 260, 0, 72)
+	daily.Position = UDim2.new(1, -276, 0, 16)
+	daily.BackgroundColor3 = Color3.fromRGB(40, 32, 60)
+	daily.BorderSizePixel = 0
+	Instance.new("UICorner", daily).CornerRadius = UDim.new(0, 12)
+
+	local dTitle = Instance.new("TextLabel", daily)
+	dTitle.Name = "Title"
+	dTitle.Size = UDim2.new(1, -12, 0, 24)
+	dTitle.Position = UDim2.new(0, 6, 0, 6)
+	dTitle.BackgroundTransparency = 1
+	dTitle.Text = "📋 Daily Quest"
+	dTitle.Font = Enum.Font.GothamBold
+	dTitle.TextSize = 14
+	dTitle.TextColor3 = Color3.fromRGB(255, 220, 120)
+	dTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+	local dDesc = Instance.new("TextLabel", daily)
+	dDesc.Name = "Desc"
+	dDesc.Size = UDim2.new(1, -12, 0, 20)
+	dDesc.Position = UDim2.new(0, 6, 0, 28)
+	dDesc.BackgroundTransparency = 1
+	dDesc.Text = "Loading…"
+	dDesc.Font = Enum.Font.Gotham
+	dDesc.TextSize = 12
+	dDesc.TextColor3 = Color3.fromRGB(220, 220, 230)
+	dDesc.TextXAlignment = Enum.TextXAlignment.Left
+
+	local bar = Instance.new("Frame", daily)
+	bar.Name = "Bar"
+	bar.Size = UDim2.new(1, -12, 0, 8)
+	bar.Position = UDim2.new(0, 6, 1, -16)
+	bar.BackgroundColor3 = Color3.fromRGB(60, 50, 80)
+	bar.BorderSizePixel = 0
+	Instance.new("UICorner", bar).CornerRadius = UDim.new(1, 0)
+	local dFill = Instance.new("Frame", bar)
+	dFill.Name = "Fill"
+	dFill.Size = UDim2.new(0, 0, 1, 0)
+	dFill.BackgroundColor3 = Color3.fromRGB(120, 200, 130)
+	dFill.BorderSizePixel = 0
+	Instance.new("UICorner", dFill).CornerRadius = UDim.new(1, 0)
+
+	return gui
+end
+
+local gui = ensureHudShell()
 local pill = gui:WaitForChild("ChefPill")
 local badge = pill:WaitForChild("Badge")
 local tierLabel = pill:WaitForChild("TierLabel")
@@ -394,7 +532,7 @@ local function renderTab(name)
             label.TextWrapped = true; label.Parent = row
             local btn = Instance.new("TextButton")
             btn.Size = UDim2.new(0.28, -8, 0, 50); btn.Position = UDim2.new(0.72, 0, 0.5, -25)
-            btn.Text = "Use  " .. (cfg.cost.gold or "?") .. "g"; btn.Font = Enum.Font.FredokaOne; btn.TextSize = 14
+            btn.Text = "Use  " .. (cfg.cost.Gold or cfg.cost.gold or "?") .. "g"; btn.Font = Enum.Font.FredokaOne; btn.TextSize = 14
             btn.BackgroundColor3 = active and Color3.fromRGB(210, 200, 185) or C.accent
             btn.TextColor3 = C.white; btn.BorderSizePixel = 0; btn.Parent = row
             btn.AutoButtonColor = not active

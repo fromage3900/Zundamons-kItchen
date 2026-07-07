@@ -28,46 +28,37 @@ local NPCConfig = {
 			},
 		},
 	},
+	-- Visual/asset fields only. Buffs and prices: CompanionConfig.lua
 	companionTemplates = {
 		Zundapal = {
 			modelId = "rbxassetid://FILL_COMPANION_ZUNDAPAL",
 			scale = 0.5,
 			followSpeed = 8,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_SPARKLE",
-			buff = nil, -- free companion
-			price = 0,
 		},
 		Ankomon = {
 			modelId = "rbxassetid://FILL_COMPANION_ANKOMON",
 			scale = 0.6,
 			followSpeed = 6,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_GOLD",
-			buff = "double_xp",
-			price = 250,
 		},
 		Cardamon = {
 			modelId = "rbxassetid://FILL_COMPANION_CARDAMON",
 			scale = 0.5,
 			followSpeed = 7,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_LAVENDER",
-			buff = "wider_timing",
-			price = 150,
 		},
 		Antimon = {
 			modelId = "rbxassetid://FILL_COMPANION_ANTIMON",
 			scale = 0.4,
 			followSpeed = 12,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_YELLOW",
-			buff = "faster_craft",
-			price = 100,
 		},
 		Sakuradamon = {
 			modelId = "rbxassetid://FILL_COMPANION_SAKURA",
 			scale = 0.55,
 			followSpeed = 8,
 			sparkleEffect = "rbxassetid://FILL_EFFECT_PINK",
-			buff = "rare_drops",
-			price = 300,
 		},
 	},
 	guestSpawnDefaults = {
