@@ -194,6 +194,12 @@ NotifyAction.Event:Connect(function(player, action, payload)
                 m.level = m.level + 1
                 PopupEvent:FireClient(player, "bonus", "📖 " .. payload.recipe .. " mastery " .. m.level, Color3.fromRGB(180, 220, 255))
                 RewardCore.addXP(player, 30, "mastery")
+                RewardCore.addGold(player, m.level * 5, "mastery")
+                if m.level == 5 then
+                    PopupEvent:FireClient(player, "bonus", "🌟 Perk: bonus dish +10% for " .. payload.recipe, Color3.fromRGB(255, 220, 100))
+                elseif m.level == 10 then
+                    PopupEvent:FireClient(player, "bonus", "🏆 Perk: gold +15% for " .. payload.recipe, Color3.fromRGB(255, 200, 50))
+                end
             end
         end
         progressDaily(player, "serve", 1)

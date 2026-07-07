@@ -12,7 +12,7 @@ local removeRF = RF:WaitForChild("RemoveFurniture")
 local DecorationConfig = require(RS.ConfigurationFiles.DecorationConfig)
 
 local gui = Instance.new("ScreenGui")
-gui.Name = "FurnitureGUI"
+gui.Name = "FurniturePlacementGui"
 gui.ResetOnSpawn = false
 gui.DisplayOrder = 80
 gui.Enabled = false

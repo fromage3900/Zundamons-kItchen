@@ -16,6 +16,21 @@ local function findItem(itemId)
 	return nil
 end
 
+local function recomputeDecorBuffs(player)
+	local d = PlayerDataService.get(player)
+	if not d then return end
+	d.active_decor_buffs = { patience = 0, gold = 0, xp = 0 }
+	for _, p in ipairs(d.placed_furniture or {}) do
+		local item = findItem(p.itemId)
+		if item and item.buff then
+			local m = d.active_decor_buffs[item.buff.stat]
+			if m ~= nil then
+				d.active_decor_buffs[item.buff.stat] = m + item.buff.magnitude
+			end
+		end
+	end
+end
+
 -- PurchaseFurniture(player, itemId) → success, message
 local purchaseRF = RF:FindFirstChild("PurchaseFurniture")
 if not purchaseRF then purchaseRF = Instance.new("RemoteFunction"); purchaseRF.Name = "PurchaseFurniture"; purchaseRF.Parent = RF end
@@ -54,6 +69,7 @@ placeRF.OnServerInvoke = function(player, itemId, posX, posY, posZ, rotX, rotY, 
 		x = posX, y = posY, z = posZ,
 		rx = rotX or 0, ry = rotY or 0, rz = rotZ or 0,
 	})
+	recomputeDecorBuffs(player)
 	print("[Furniture] " .. player.Name .. " placed " .. itemId .. " at " .. tostring(pos))
 	return true, "Placed!"
 end
@@ -66,6 +82,7 @@ removeRF.OnServerInvoke = function(player, index)
 	if not d then return false, "Data not ready" end
 	if not d.placed_furniture or not d.placed_furniture[index] then return false, "Not found" end
 	table.remove(d.placed_furniture, index)
+	recomputeDecorBuffs(player)
 	print("[Furniture] " .. player.Name .. " removed placement index " .. index)
 	return true, "Removed"
 end

@@ -68,15 +68,19 @@ function RewardCore.addGold(player, amount, reason)
     if reason == "serve" or reason == "craft" or reason == "perfect" then
         mult = d.combo.multiplier
     end
-    -- Apply Lucky Charm powerup
-    if d.powerups.LuckyCharm and d.powerups.LuckyCharm > os.time() then
-        mult = mult * 1.5
-    end
-    -- Companion gold buff (Ankomon)
-    if reason == "serve" then
-        mult = mult * (1 + companionBuff(player, "gold"))
-    end
-    local finalAmount = math.floor(amount * mult)
+	-- Apply Lucky Charm powerup
+	if d.powerups.LuckyCharm and d.powerups.LuckyCharm > os.time() then
+		mult = mult * 1.5
+	end
+	-- Companion gold buff (Ankomon)
+	if reason == "serve" then
+		mult = mult * (1 + companionBuff(player, "gold"))
+	end
+	-- Decoration gold buff
+	if d.active_decor_buffs and d.active_decor_buffs.gold > 0 then
+		mult = mult * (1 + d.active_decor_buffs.gold)
+	end
+	local finalAmount = math.floor(amount * mult)
     d.gold = d.gold + finalAmount
     popup(player, "gold", "+" .. finalAmount .. "g", Color3.fromRGB(255, 220, 90))
     if mult > 1 then
@@ -88,10 +92,14 @@ end
 function RewardCore.addXP(player, amount, reason)
     if amount <= 0 then return end
     local d = ensureProfile(player)
-    -- Companion XP buff (Sakuradamon)
-    local xpBuff = companionBuff(player, "xp")
-    if xpBuff > 0 then amount = math.floor(amount * (1 + xpBuff)) end
-    d.chef.xp = d.chef.xp + amount
+	-- Companion XP buff (Sakuradamon)
+	local xpBuff = companionBuff(player, "xp")
+	if xpBuff > 0 then amount = math.floor(amount * (1 + xpBuff)) end
+	-- Decoration XP buff
+	if d.active_decor_buffs and d.active_decor_buffs.xp > 0 then
+		amount = math.floor(amount * (1 + d.active_decor_buffs.xp))
+	end
+	d.chef.xp = d.chef.xp + amount
     popup(player, "xp", "+" .. amount .. " XP", Color3.fromRGB(180, 130, 255))
 
     -- Level up check

@@ -74,11 +74,17 @@ local C = {
 }
 
 local function checkTutorialDone()
-	local ok, data = pcall(function()
-		return RS:WaitForChild("RemoteFunctions"):WaitForChild("RequestData"):InvokeServer()
+	local rf = RS:WaitForChild("RemoteFunctions"):FindFirstChild("MarkTutorialDone")
+	if not rf then return false end
+	local ok, result = pcall(function()
+		local req = RS:WaitForChild("RemoteFunctions"):FindFirstChild("RequestData")
+		if req then
+			local data = req:InvokeServer()
+			return data and data.tutorial_done
+		end
+		return false
 	end)
-	if ok and data and data.tutorial_done then return true end
-	return false
+	return ok and result or false
 end
 
 local function markTutorialDone()
@@ -88,7 +94,11 @@ local function markTutorialDone()
 	end
 end
 
-if checkTutorialDone() then return end
+-- Wait for character spawn before checking tutorial status
+local function waitForSpawn()
+	player.CharacterAdded:Wait()
+	task.wait(1.5)
+end
 
 local overlay = Instance.new("Frame", gui)
 overlay.Name = "TutorialOverlay"
@@ -226,11 +236,12 @@ showStep = function(idx)
 	resetAutoTimer(STEPS[idx])
 end
 
--- Wait for PlayerGui, then start
+-- Wait for character spawn + PlayerGui, then start
 task.spawn(function()
-	local pg = player:WaitForChild("PlayerGui")
-	task.wait(2.5)
+	player:WaitForChild("PlayerGui")
+	waitForSpawn()
+	if checkTutorialDone() then return end
+	task.wait(1.5)
 	showStep(1)
+	print("[TutorialController] Onboarding sequence ready — 7 steps")
 end)
-
-print("[TutorialController] Onboarding sequence ready — 7 steps")

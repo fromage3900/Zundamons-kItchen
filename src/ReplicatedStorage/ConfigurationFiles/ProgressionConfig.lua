@@ -46,6 +46,12 @@ ProgressionConfig.guest_preferences = {
 		pay_range = { 30, 45 },
 		preferred_recipes = { "Cupcake", "Apple Pie" },
 	},
+	{
+		name = "⭐ Timed Challenge!",
+		pay_range = { 80, 120 },
+		preferred_recipes = { "Royal Stew", "Zunda Mochi", "Cupcake" },
+		challenge = { patience = 30, bonus_gold = 60 },
+	},
 }
 
 -- Guest spawning settings

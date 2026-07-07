@@ -104,6 +104,14 @@ local function handleServeGuest(player, guestInstance, foodItemName, quality)
 	RewardCore.bumpCombo(player)
 	local awarded = RewardCore.addGold(player, payAmount, "serve")
 	payAmount = awarded
+	local isChallenge = guestInstance:GetAttribute("IsChallenge") or false
+	if isChallenge then
+		local bonus = guestInstance:GetAttribute("BonusGold") or 0
+		if bonus > 0 then
+			RewardCore.addGold(player, bonus, "challenge_bonus")
+			payAmount = payAmount + bonus
+		end
+	end
 	RewardCore.addXP(player, ChefLevelConfig.xpRewards.serveGuest, "serve")
 	RewardCore.notify(player, "serve", { recipe = recipe, guestName = guestInstance.Name, gold = awarded })
 

@@ -218,4 +218,22 @@ for _, player in ipairs(Players:GetPlayers()) do
 	end
 end
 
+-- Auto-save every 60 seconds to prevent data loss
+task.spawn(function()
+	while true do
+		task.wait(60)
+		for _, player in ipairs(Players:GetPlayers()) do
+			local data = store[tostring(player.UserId)]
+			if data then
+				local ok, err = pcall(function()
+					progressionStore:SetAsync("player_" .. player.UserId, data)
+				end)
+				if not ok then
+					print("[PlayerDataService] Auto-save failed for " .. player.Name .. ": " .. tostring(err))
+				end
+			end
+		end
+	end
+end)
+
 return PlayerDataService

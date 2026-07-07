@@ -60,14 +60,28 @@ local function createGuest(player)
 	local preference = CONFIG.guest_preferences[math.random(1, #CONFIG.guest_preferences)]
 	local recipe = preference.preferred_recipes[math.random(1, #preference.preferred_recipes)]
 	local pay = math.random(preference.pay_range[1], preference.pay_range[2])
+	local patience = CONFIG.guest_settings.guest_patience
+	if preference.challenge then
+		patience = preference.challenge.patience
+	end
 
 	-- Set guest attributes
 	guest:SetAttribute("GuestName", preference.name)
 	guest:SetAttribute("PreferredRecipe", recipe)
 	guest:SetAttribute("PayAmount", pay)
 	guest:SetAttribute("SpawnTime", tick())
-	guest:SetAttribute("Patience", CONFIG.guest_settings.guest_patience)
+	guest:SetAttribute("Patience", patience)
 	guest:SetAttribute("ServingPlayer", player.Name)
+	guest:SetAttribute("IsChallenge", preference.challenge and true or false)
+	guest:SetAttribute("BonusGold", preference.challenge and preference.challenge.bonus_gold or 0)
+
+	-- Apply decoration patience buffs
+	local PlayerDataService = require(script.Parent.Services.PlayerDataService)
+	local d = PlayerDataService.get(player)
+	if d and d.active_decor_buffs and d.active_decor_buffs.patience > 0 then
+		local buffMult = 1 + d.active_decor_buffs.patience
+		guest:SetAttribute("Patience", math.floor(patience * buffMult))
+	end
 
 	-- Position at a free spawn slot
 	local usedSlots = {}
@@ -124,9 +138,10 @@ local function createGuest(player)
 	end
 
 	-- Billboard GUI above guest showing their order + patience bar
+	local billSize = preference.challenge and 180 or 160
 	local bill = Instance.new("BillboardGui")
 	bill.Name = "OrderBubble"
-	bill.Size = UDim2.new(0, 160, 0, 90)
+	bill.Size = UDim2.new(0, billSize, 0, 90)
 	bill.StudsOffset = Vector3.new(0, 4.5, 0)
 	bill.AlwaysOnTop = false
 	bill.Parent = torso
@@ -152,10 +167,19 @@ local function createGuest(player)
 	local patienceFill = Instance.new("Frame")
 	patienceFill.Name = "PatienceFill"
 	patienceFill.Size = UDim2.new(1, 0, 1, 0)
-	patienceFill.BackgroundColor3 = CONFIG.patience_colors.normal
+	patienceFill.BackgroundColor3 = preference.challenge and Color3.fromRGB(220, 80, 80) or CONFIG.patience_colors.normal
 	patienceFill.BorderSizePixel = 0
 	patienceFill.Parent = patienceBg
 	Instance.new("UICorner", patienceFill).CornerRadius = UDim.new(1, 0)
+	if preference.challenge then
+		local star = Instance.new("TextLabel")
+		star.Size = UDim2.new(0, 20, 0, 20)
+		star.Position = UDim2.new(1, -22, 0, 2)
+		star.BackgroundTransparency = 1
+		star.Text = "⭐"
+		star.TextScaled = true
+		star.Parent = bill
+	end
 
 	local orderLabel = Instance.new("TextLabel")
 	orderLabel.Name = "OrderLabel"
@@ -173,7 +197,7 @@ local function createGuest(player)
 	payLabel.Size = UDim2.new(1, -8, 0, 22)
 	payLabel.Position = UDim2.new(0, 4, 0, 44)
 	payLabel.BackgroundTransparency = 1
-	payLabel.Text = "+ " .. pay .. " Gold"
+	payLabel.Text = preference.challenge and "+ " .. pay .. " ⭐ +" .. preference.challenge.bonus_gold .. " bonus" or "+ " .. pay .. " Gold"
 	payLabel.TextColor3 = Color3.fromRGB(200, 150, 0)
 	payLabel.TextScaled = true
 	payLabel.Font = Enum.Font.Gotham
