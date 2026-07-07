@@ -28,3 +28,6 @@ Assets/Generated/
 # Python
 __pycache__/
 *.pyc
+
+# Generated quests
+reports/generated/
