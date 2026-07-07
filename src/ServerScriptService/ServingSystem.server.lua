@@ -3,12 +3,15 @@
 
 local Players = game:GetService("Players")
 
-local CONFIG = require(game.ReplicatedStorage.ConfigurationFiles.ProgressionConfig)
+local configFolder = game.ReplicatedStorage:FindFirstChild("ConfigurationFiles")
+if not configFolder then configFolder = game.ReplicatedStorage:WaitForChild("ConfigurationFiles", 10) end
+local CONFIG = configFolder and require(configFolder:WaitForChild("ProgressionConfig", 10))
+if not CONFIG then warn("[ServingSystem] ProgressionConfig not found"); return {} end
 local NPCConfig = require(game.ReplicatedStorage.Shared.Config.NPCConfig)
-local RF = game.ReplicatedStorage:WaitForChild("RemoteFunctions")
-local serveGuestRF = RF:WaitForChild("ServeGuest")
-local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
-local ChefLevelConfig = require(game.ReplicatedStorage.ConfigurationFiles.ChefLevelConfig)
+local RF = game.ReplicatedStorage:FindFirstChild("RemoteFunctions") or game.ReplicatedStorage:WaitForChild("RemoteFunctions", 10)
+local serveGuestRF = RF and RF:FindFirstChild("ServeGuest") or RF:WaitForChild("ServeGuest", 10)
+local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore", 10))
+local ChefLevelConfig = configFolder and require(configFolder:WaitForChild("ChefLevelConfig", 10))
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 local GuestService = require(script.Parent.Services.GuestService)
 

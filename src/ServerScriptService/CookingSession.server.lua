@@ -3,8 +3,8 @@
 -- Tracks cooking sessions and derives quality based on perfect hit count
 
 local RS = game:GetService("ReplicatedStorage")
-local RF = RS:WaitForChild("RemoteFunctions")
-local RE = RS:WaitForChild("RemoteEvents")
+local RF = RS:FindFirstChild("RemoteFunctions") or RS:WaitForChild("RemoteFunctions", 10)
+local RE = RS:FindFirstChild("RemoteEvents") or RS:WaitForChild("RemoteEvents", 10)
 
 local PlayerDataService = require(script.Parent.Services.PlayerDataService)
 
