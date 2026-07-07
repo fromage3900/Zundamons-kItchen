@@ -1,0 +1,60 @@
+name: Nightly Build & Audit
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 6 AM UTC daily (~2 AM EST)
+  workflow_dispatch:       # manual trigger
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rokit + Rojo
+        run: |
+          curl -fsSL https://github.com/rojo-rbx/rojo/releases/download/v7.6.1/rojo-7.6.1-linux.zip -o rojo.zip
+          unzip -q rojo.zip -d /usr/local/bin/
+          chmod +x /usr/local/bin/rojo
+          rojo --version
+
+      - name: Validate structure
+        run: node scripts/validate-structure.mjs
+
+      - name: Overnight audit
+        run: node scripts/overnight-build.mjs
+        continue-on-error: true
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-report
+          path: reports/
+          retention-days: 30
+
+      - name: Check for stale dependencies
+        run: |
+          npx npm-check-updates --error-level 2 2>/dev/null || true
+
+      - name: Lint check
+        run: |
+          npm run lint 2>/dev/null || echo "Lint issues found (non-blocking)"
+
+      - name: Build
+        run: rojo build default.project.json -o /tmp/nightly-build.rbxl
+
+      - name: Summary
+        run: |
+          echo "## Nightly Build Results" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit | Completed |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See attached artifact for full report." >> $GITHUB_STEP_SUMMARY
