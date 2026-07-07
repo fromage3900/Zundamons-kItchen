@@ -4,6 +4,7 @@
 local Players = game:GetService("Players")
 
 local CONFIG = require(game.ReplicatedStorage.ConfigurationFiles.ProgressionConfig)
+local NPCConfig = require(game.ReplicatedStorage.Shared.Config.NPCConfig)
 local RF = game.ReplicatedStorage:WaitForChild("RemoteFunctions")
 local serveGuestRF = RF:WaitForChild("ServeGuest")
 local RewardCore = require(game.ServerScriptService:WaitForChild("RewardCore"))
@@ -13,7 +14,7 @@ local GuestService = require(script.Parent.Services.GuestService)
 
 local MAX_SERVE_DISTANCE = 20
 
-local function isValidGuest(guestInstance: Instance?): boolean
+local function isValidGuest(guestInstance)
 	if not guestInstance or not guestInstance.Parent then
 		return false
 	end
@@ -24,7 +25,7 @@ local function isValidGuest(guestInstance: Instance?): boolean
 	return guestInstance:IsDescendantOf(guestsFolder)
 end
 
-local function playerNearGuest(player: Player, guestInstance: Instance): boolean
+local function playerNearGuest(player, guestInstance)
 	local character = player.Character
 	if not character then
 		return false
@@ -41,19 +42,21 @@ end
 local lastServe = {}
 local function rateLimited(player)
 	local now = os.clock()
-	if lastServe[player] and now - lastServe[player] < 0.2 then return true end
+	if lastServe[player] and now - lastServe[player] < 0.2 then
+		return true
+	end
 	lastServe[player] = now
 	return false
 end
 
-local function lookupPayAmount(recipe: string, guestAttributePay: number?): number
+local function lookupPayAmount(recipe, guestAttributePay)
 	if typeof(guestAttributePay) == "number" and guestAttributePay > 0 then
 		return guestAttributePay
 	end
 	return 10
 end
 
-local function handleServeGuest(player, guestInstance, foodItemName)
+local function handleServeGuest(player, guestInstance, foodItemName, quality)
 	if rateLimited(player) then
 		return false, "Too fast"
 	end
@@ -77,6 +80,12 @@ local function handleServeGuest(player, guestInstance, foodItemName)
 
 	local recipe = guestInstance:GetAttribute("PreferredRecipe")
 	local payAmount = lookupPayAmount(recipe, guestInstance:GetAttribute("PayAmount"))
+
+	-- Apply quality multiplier to pay amount
+	if quality then
+		local qualityMultiplier = NPCConfig.getQualityMultiplier(quality)
+		payAmount = math.floor(payAmount * qualityMultiplier)
+	end
 
 	if foodItemName ~= recipe then
 		print("[ServingSystem] " .. player.Name .. " tried to serve " .. foodItemName .. " but guest wanted " .. tostring(recipe))
@@ -112,15 +121,7 @@ local function handleServeGuest(player, guestInstance, foodItemName)
 	playerData.total_gold_earned = (playerData.total_gold_earned or 0) + payAmount
 
 	print(
-		"[ServingSystem] "
-			.. player.Name
-			.. " served guest "
-			.. recipe
-			.. " (+"
-			.. payAmount
-			.. " gold, total guests: "
-			.. playerData.guests_served
-			.. ")"
+		"[ServingSystem] " .. player.Name .. " served guest " .. recipe .. " (+" .. payAmount .. " gold, total guests: " .. playerData.guests_served .. ")"
 	)
 
 	PlayerDataService.checkAndUnlockTiers(player)
