@@ -30,13 +30,7 @@ if ($PullModels -or $All) {
 if ($SeedKB -or $All) {
     Write-Output "`nStep 3: Seeding knowledge base..."
     $seedDir = "$ORCH_DIR\knowledge\seed_knowledge"
-    
-    # Copy key project docs as seed knowledge
-    @(
-        "$ZUNDA_ROOT\AI\DESIGN_SYSTEM.md",
-        "$ZUNDA_ROOT\AI\ARCHITECTURE.md",
-        "$ZUNDA_ROOT\AI\STYLE_GUIDE.md"
-    ) | ForEach-Object {
+    @("$ZUNDA_ROOT\AI\DESIGN_SYSTEM.md", "$ZUNDA_ROOT\AI\ARCHITECTURE.md", "$ZUNDA_ROOT\AI\STYLE_GUIDE.md") | ForEach-Object {
         if (Test-Path $_) {
             Copy-Item $_ "$seedDir\" -Force
             Write-Output "  Seeded: $_"
@@ -51,10 +45,12 @@ try {
     $resp = Invoke-RestMethod -Uri "http://localhost:11434/api/tags" -Method Get -TimeoutSec 5
     Write-Output "  Ollama: Connected ($($resp.models.Count) models available)"
 } catch {
-    Write-Output "  Ollama: Not running — start with 'ollama serve'"
+    Write-Output "  Ollama: Not running - start with 'ollama serve'"
 }
 
 Write-Output "`n=== Setup Complete ==="
 Write-Output ""
-Write-Output "Run a task:   python scripts\agent_orchestrator\run.py 'Implement BendModifier'"
-Write-Output "Daemon mode:  python scripts\agent_orchestrator\run.py --daemon"
+$taskCmd = "python scripts\agent_orchestrator\run.py 'Implement BendModifier'"
+Write-Output "Run a task:   $taskCmd"
+$daemonCmd = "python scripts\agent_orchestrator\run.py --daemon"
+Write-Output "Daemon mode:  $daemonCmd"
