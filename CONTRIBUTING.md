@@ -2,54 +2,65 @@
 
 Thanks for helping build **Zundamon's kItchen**!
 
-## Development model
+## Development model (Option C)
 
-- Use **feature branches**: `feature/<short-name>` or `cursor/<descriptive-name>-<id>`
+- **Code** in `src/` → git → Rojo live sync → cloud place `108617605497926`
+- **World** (map, meshes, guests) → Studio → **Save to Roblox** (not git)
+
+Read [`docs/git-workflow.md`](docs/git-workflow.md) and [`docs/rojo-workflow.md`](docs/rojo-workflow.md) before your first PR.
+
+Migrating from the old 48MB `.rbxlx`? [`docs/migration-from-legacy-place.md`](docs/migration-from-legacy-place.md).
+
+## Branches
+
+- `cursor/<task>-594f`, `cline/<task>`, `opencode/<task>`, or `feature/<name>`
 - Open a **Pull Request** targeting `main`
-- Prefer small PRs with clear system notes and playtest steps
+- Prefer small PRs with playtest steps
 
-## Source of truth: Rojo + `src/`
+## Source of truth
 
-All gameplay **code and config modules** are committed under `src/` and synced via Rojo.
+All gameplay **code and config modules** live under `src/` and sync via Rojo.
 
 **Do not commit:**
 
-- `*.rbxl`, `*.rbxlx`, `*.rbxmx` place/model exports
+- `*.rbxl`, `*.rbxlx`, `*.rbxmx` place exports
 - `workspace/` build outputs
+- Secrets or API keys
 
 **Do commit:**
 
-- Changes to `.lua` files under `src/`
-- Updates to `default.project.json` when the Studio hierarchy changes
-- Docs when conventions or architecture change
+- `src/**/*.lua`
+- `default.project.json` when Rojo hierarchy changes
+- `docs/` when workflow or conventions change
+- Bump `SyncConfig.label` on meaningful merges
 
 ## Local setup
 
-```bash
-cd Zundamons-kItchen-GitHub-Build
+```powershell
+G:
+cd G:\Zundamons-kItchen
+git pull origin main
 npm install
 npm run rojo:serve
 ```
 
-Connect Roblox Studio via the Rojo plugin. See `docs/rojo-workflow.md`.
+Open **cloud place** `108617605497926` in Studio; connect Rojo plugin.
 
 ## PR checklist
 
-- [ ] `src/` changes included for any code/config edits
-- [ ] `npm run validate` passes locally
-- [ ] Playtested in Studio with Rojo connected
-- [ ] No `workspace/` or place export files committed
-- [ ] Patch notes included (if user-facing changes)
+- [ ] Changes in `src/` for any code/config edits
+- [ ] `npm run validate` passes
+- [ ] Playtested with Rojo connected; `[ROJO SYNC OK]` in Output
+- [ ] No place export files committed
+- [ ] World changes noted if teammate must re-open place / you Saved to Roblox
+- [ ] `SyncConfig.label` bumped if appropriate
 
-## Code & architecture standards
+## Standards
 
-See:
-
-- `docs/rojo-workflow.md`
-- `docs/style-guide.md`
-- `docs/review-checklist.md`
-- `docs/code-review.md` (known issues and improvement backlog)
+- [`docs/rojo-workflow.md`](docs/rojo-workflow.md)
+- [`AI/STYLE_GUIDE.md`](AI/STYLE_GUIDE.md)
+- [`AI/ONBOARDING.md`](AI/ONBOARDING.md)
 
 ## Reporting issues
 
-Use GitHub Issues with repro steps and which systems are affected.
+GitHub Issues with repro steps, place ID `108617605497926`, and whether Rojo was connected.

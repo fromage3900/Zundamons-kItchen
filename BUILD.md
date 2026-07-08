@@ -1,133 +1,127 @@
-# Build Guide — From Clone to Running Game
+# Build Guide — Clone to Running Game (Option C)
 
-## For Absolute Beginners
+**New to git / VS Code?** Start with **[GETTING_STARTED.md](GETTING_STARTED.md)** (written for Electra).
 
-If you've never used git or a terminal before, start here instead:
-👉 **[GETTING_STARTED.md](GETTING_STARTED.md)**
+**Migrating from the old 48MB place?** **[docs/migration-from-legacy-place.md](docs/migration-from-legacy-place.md)** first.
 
-It explains everything from installing VS Code to making your first commit — no prior knowledge needed.
+---
 
-## First-Time Setup (for people who know git)
+## Architecture (two containers)
+
+| Container | Location | Sync |
+|-----------|----------|------|
+| **Code** | `G:\Zundamons-kItchen\src\` | `npm run rojo:serve` |
+| **World** | Cloud place `108617605497926` | Studio → Save to Roblox |
+
+Do **not** treat a local `.rbxlx` (~48–49MB) as the daily driver. It is not a Rojo project. Scripts in git will not reach a place file you open offline unless Rojo is connected to the **cloud place**.
+
+---
+
+## First-time setup
 
 ```powershell
-# 1. Clone the repo
 git clone https://github.com/fromage3900/Zundamons-kItchen.git
 cd Zundamons-kItchen
-
-# 2. Install Node dependencies (Rojo CLI, linters)
 npm install
-
-# 3. Install Python dependencies (agent orchestrator)
-pip install -r scripts/agent_orchestrator/requirements.txt
-
-# 4. Deploy AI models (requires Ollama running)
-ollama serve              # Start Ollama in background
-npm run deploy-models     # Auto-pull all needed models
 ```
 
-## Daily Build Loop
+Optional (AI agent orchestrator):
 
 ```powershell
-# Terminal 1: Start Rojo sync
-npm run rojo:serve
-# Keeps running — syncs src/ changes to Studio live
-
-# Studio: Connect Rojo plugin to localhost:34872
-# Edit scripts in src/ — they auto-sync
+pip install -r scripts/agent_orchestrator/requirements.txt
+ollama serve
+npm run deploy-models
 ```
 
-## Populate the World (One-Time)
+---
 
-After syncing scripts, run in Studio command bar:
+## Daily build loop (Option C — canonical)
+
+```powershell
+G:
+cd G:\Zundamons-kItchen
+git pull origin main
+npm run rojo:serve
+```
+
+Studio:
+
+1. Open place **`108617605497926`**
+2. Rojo → Connect (`34872` / `34873`)
+3. Play → `[ROJO SYNC OK]` in Output
+4. Edit `src/` — live sync
+
+Git workflow: [`docs/git-workflow.md`](docs/git-workflow.md)  
+Rojo details: [`docs/rojo-workflow.md`](docs/rojo-workflow.md)
+
+---
+
+## Populate dev nodes (optional)
+
+If the world has no gather nodes yet, run in Studio command bar:
+
 ```lua
 require(game.ServerScriptService.DevTools["PopulateWorld.dev"]).populate()
 ```
 
-This places:
-- Colored cube gathering nodes in a grid
-- 4 guest spawn points with yellow markers
-- 6 patrol waypoints
-- 1 scatter region (for ScatterService)
-- Run `/scatter zunda_forest` to scatter via ScatterService
+This spawns **colored cube** placeholders — enough for gather-craft-serve testing. Real meshes come from Studio import + `MeshAssets.lua`.
 
-## Import Meshes (As You Go)
+---
 
-```powershell
-# 1. Place OBJ/FBX/GLB files in Assets/Upload/
-# 2. Scan and generate import script:
-python scripts/agent_orchestrator/tools/mesh_pipeline.py
-# 3. Open reports/mesh_pipeline/studio_import.luau
-# 4. Paste contents into Studio command bar
-# 5. Copy resulting rbxassetid:// values
-# 6. Update MeshAssets.lua or config with new IDs
-```
+## Mesh import (as you go)
 
-## Generate Quest Content
+Meshes are **not** in git as 48MB place files. Pipeline:
 
 ```powershell
-# Auto-generate quests for uncovered recipes
-npm run generate-quests
-# Output: reports/generated/generated_quests_<timestamp>.lua
-# Review then merge into QuestConfig.lua
-```
-
-## Validate Before Commit
-
-```powershell
-npm run validate      # Check project structure
-npm run overnight     # Full config audit + asset check
-npm run lint          # Style check
-rojo build            # Verify build succeeds
-```
-
-## Asset Import Pipeline
-
-After placing OBJ/FBX files in `Assets/Upload/`:
-
-```powershell
-# Step 1: Generate Studio import script
+# 1. Drop OBJ/FBX in Assets/Upload/
+# 2. Generate import script
 npm run import:scan
-
-# Step 2: Paste reports/mesh_pipeline/batch_import.luau into Studio command bar
-# Step 3: Save the JSON output to reports/mesh_pipeline/import_results.json
-
-# Step 4: Auto-update all config files with new asset IDs
-npm run import:apply
-
-# Step 5: Verify everything
-npm run overnight
+# 3. Run output in Studio command bar
+# 4. Save JSON → npm run import:apply
 ```
 
-The config updater maps 30+ asset name patterns to their correct files (MeshAssets.lua, NPCConfig, UIAssets, CompanionManager, ArchitectureVariants, DecorationConfig).
+See `docs/MESH_IMPORT_WORKFLOW.md` (note: localized meshes live in cloud place, not committed rbxlx).
 
-## VN Persona Placeholders
+---
 
-Licensed Zundamon character assets in `C:\Users\froma\Downloads\`:
+## Validate before commit
 
-| Source | Use | Files |
-|--------|-----|-------|
-| `Zundamon/` | Companion VN portrait (zundamon, zundapal) | FBX + 8 textures including expression sheet |
-| `young-lady-zundamon-lowpoly/` | Alternative companion portrait | Low-poly model + texture maps |
-| `kenney_mini-characters/` | Guest NPC portraits (12 unique chars) | FBX/GLB/OBJ + colormap, CC0 license |
+```powershell
+npm run validate      # Structure check (run every commit)
+npm run lint          # Style (optional)
+npm run overnight     # Full audit (optional, not every PR)
+rojo build            # CI-style build smoke test
+```
 
-See `AI/VN_PERSONA_PLAN.md` for full integration steps.
+---
 
-## CI/CD Pipeline
+## What NOT to use daily
 
-| Trigger | What runs | When |
-|---------|-----------|------|
-| Push to main | Structure validation + lint | Every push |
-| Daily 6AM UTC | Full audit + build test | Nightly |
-| Manual dispatch | Same as nightly | On demand |
+| Command / file | Why |
+|----------------|-----|
+| `npm run rojo:build` + open `.rbxl` | Code-only; no world |
+| Local `Zundamons-kItchen.rbxlx` | Legacy; not Rojo-synced daily driver |
+| `export_world_structure` to `src/` | One-off rescue only — see migration doc |
+
+---
 
 ## Troubleshooting
 
 | Symptom | Fix |
 |---------|-----|
-| `rojo serve` fails to start | Port 34872 in use — `netstat -ano | findstr 34872` then `taskkill /PID <id>` |
-| Studio shows "Rojo disconnected" | Restart `rojo serve` + reconnect in Studio plugin |
-| Scripts not syncing | Check `default.project.json` paths exist in `src/` |
-| `npm run generate-quests` fails | Run `npm run deploy-models` first |
-| Game starts but nothing visible | Run `PopulateWorld.dev` in command bar |
-| Guests are invisible cubes | Place `GuestSpawn`-tagged parts in world, or use hardcoded fallback |
-| Companion mesh missing | Import `zundapalupdate2.fbx` via mesh pipeline |
+| `rojo serve` port in use | `netstat -ano \| findstr 34872` → kill PID, or use `34873` |
+| Rojo disconnected | Restart serve + reconnect |
+| Scripts not syncing | Wrong place open — use `108617605497926` |
+| Game different from teammate | They pulled git but you didn't Save world to Roblox (or vice versa) |
+| Nothing visible | Run `PopulateWorld.dev` or complete migration Phase 1 |
+
+---
+
+## CI/CD
+
+| Trigger | Runs |
+|---------|------|
+| Push to `main` | Structure validation + lint |
+| Nightly | Full audit + build test |
+
+See `.github/workflows/` for details.
