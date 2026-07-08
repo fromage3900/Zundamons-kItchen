@@ -110,6 +110,7 @@ npm run rojo:serve
 ## 💖 You DID IT! 
 
 If something breaks:
+- **Rojo `protocolVersion` error?** Plugin 7.7.0 needs matching CLI — run `git pull`, `npm install`, restart `npm run rojo:serve`. See [`docs/rojo-workflow.md`](docs/rojo-workflow.md).
 - Close VS Code and open it again
 - Make sure you ran `npm install`
 - Ask in the chat — everyone was new once!

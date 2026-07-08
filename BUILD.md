@@ -124,6 +124,7 @@ See `AI/VN_PERSONA_PLAN.md` for full integration steps.
 
 | Symptom | Fix |
 |---------|-----|
+| `protocolVersion` / `rejectWrongProtocolVersion` on Connect | Plugin vs CLI mismatch — `git pull`, `npm install`, restart `rojo:serve`. See [`docs/rojo-workflow.md`](docs/rojo-workflow.md) |
 | `rojo serve` fails to start | Port 34872 in use — `netstat -ano | findstr 34872` then `taskkill /PID <id>` |
 | Studio shows "Rojo disconnected" | Restart `rojo serve` + reconnect in Studio plugin |
 | Scripts not syncing | Check `default.project.json` paths exist in `src/` |
