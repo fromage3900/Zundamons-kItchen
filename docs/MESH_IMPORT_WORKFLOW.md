@@ -1,5 +1,7 @@
 # Mesh Import Workflow for Collaborative Use
 
+> **2026-07-08:** Daily workflow is **Option C** — code in git (`src/`), world in **cloud place `108617605497926`**. Localized meshes live in the cloud place after import; they are **not** committed as `.rbxlx`. See [`migration-from-legacy-place.md`](migration-from-legacy-place.md) and [`git-workflow.md`](git-workflow.md).
+
 ## Problem
 Previously, meshes were referenced by `rbxassetid://` IDs that only worked if the asset owner had them in their inventory. Collaborators couldn't see the meshes.
 

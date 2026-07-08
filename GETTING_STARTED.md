@@ -1,117 +1,145 @@
-# ✨ Welcome to Zundamon's Kitchen, Electra! ✨
+# Welcome to Zundamon's Kitchen, Electra!
 
-**Roblox:** @tekashiwannaminaj 🎀
+**Roblox:** @tekashiwannaminaj  
+**Repo:** `G:\Zundamons-kItchen`  
+**Studio place:** `108617605497926` (cloud — **not** the old 48MB file on disk)
 
-This guide is written JUST for you. Carry your laptop, follow each step one at a time, and you'll be building in no time!
+This guide assumes you're new to git and VS Code. Follow one step at a time.
 
----
-
-## 🌸 Step 1: Install the Basics
-
-Even if you've never coded before, you can do these:
-
-### 📥 1a. Download Visual Studio Code
-1. Ask your browser to go to: **https://code.visualstudio.com/**
-2. Click the big blue **Download** button ✨
-3. Open the downloaded file when it finishes
-4. Keep clicking "Next" until it installs
-5. Open VS Code once it's done
-
-### 📥 1b. Download Git
-1. Ask your browser to go to: **https://git-scm.com/download/win**
-2. It should download automatically — open the file
-3. Keep clicking "Next" on every page (don't change anything!)
-4. When it finishes, Git is installed 🎉
+**Coming from the old ~48MB place file?** Read [`docs/migration-from-legacy-place.md`](docs/migration-from-legacy-place.md) once, then return here.
 
 ---
 
-## 🌸 Step 2: Get the Game Project
+## How this project works (30 seconds)
 
-1. Open VS Code ✨
-2. Press **Ctrl + \`** (that's the key to the top-left of your keyboard, above Tab)
-   - A black panel should appear at the bottom — that's the **terminal** 🖥️
-3. **Copy** this line below by highlighting it and pressing Ctrl+C, then **paste** it into the terminal with Ctrl+V, and press **Enter**:
+```
+You edit src/  →  npm run rojo:serve  →  Roblox Studio (cloud place)  →  Play
+```
+
+- **Code** lives in git (`src/` folder).
+- **World** (map, meshes, guests) lives in Roblox cloud place `108617605497926`.
+- **Never** use the old `.rbxlx` file for daily work after migration.
+
+---
+
+## Step 1: Install the basics
+
+### Visual Studio Code
+1. https://code.visualstudio.com/ → Download → install → open once.
+
+### Git
+1. https://git-scm.com/download/win → install (keep all defaults).
+
+### Node.js
+1. https://nodejs.org/ → download **LTS** → install.
+2. Restart VS Code after installing Node.
+
+---
+
+## Step 2: Get the project
+
+1. Open VS Code.
+2. Press **Ctrl + `** to open the terminal.
+3. Run these one at a time:
+
 ```powershell
+G:
 cd G:\
-```
-4. Now copy and paste this, press Enter:
-```powershell
 git clone https://github.com/fromage3900/Zundamons-kItchen.git
-```
-5. Wait for it to finish (you'll see the blinking cursor come back) ⏳
-6. Then paste this and press Enter:
-```powershell
 cd Zundamons-kItchen
-```
-
-**You're now inside the project!** 🎉 You should see `G:\Zundamons-kItchen` in your terminal.
-
-7. Type this and press Enter:
-```powershell
+npm install
 code .
 ```
-This opens the project in VS Code. From now on, use THIS VS Code window ✨
+
+You should see `G:\Zundamons-kItchen` in the terminal. Use **this** VS Code window from now on.
 
 ---
 
-## 🌸 Step 3: Install the Last Thing (Node.js)
+## Step 3: Every work session
 
-1. Look at your browser and go to: **https://nodejs.org/**
-2. Click the big green button that says **LTS** (not "Current") ✨
-3. Open the downloaded file, click "Next" until it finishes
-4. **Close VS Code and open it again** (this is important!)
-5. In the terminal (Ctrl+`), paste this and press Enter:
+Run these **every time** you sit down to work:
+
 ```powershell
-npm install
-```
-6. Wait... it might take a minute. You'll see the blinking cursor when it's done ✨
-
----
-
-## 🌸 Step 4: One-Click Setup
-
-Now paste this magic command and press Enter:
-```powershell
+G:
+cd G:\Zundamons-kItchen
+git pull origin main
 npm run rojo:serve
 ```
 
-**Leave this running!** Don't close it or press Ctrl+C. It connects your code to Roblox Studio.
+**Leave `rojo:serve` running.** Do not close that terminal.
+
+### In Roblox Studio
+
+1. Open place **`108617605497926`** from Roblox Creator (your experience → Edit).
+   - **Do not** File → Open the old 48MB `.rbxlx` for daily work.
+2. Plugins → **Rojo** → **Connect** → `localhost:34872` (or `34873` if the terminal shows a different port).
+3. Press **Play**.
+4. In **Output**, look for: `[ROJO SYNC OK] Client — ...`
+
+If you don't see that line, Rojo isn't connected — fix before testing the game.
 
 ---
 
-## 🌸 Step 5: Your Daily Work
+## Step 4: Edit the game
 
-### 🎮 To work on the game:
-1. `cd G:\Zundamons-kItchen` (always start here)
-2. `npm run rojo:serve` (keep this running!)
-3. Open Roblox Studio, go to the **Plugins** tab, click **Rojo**, click **Connect**
-4. Edit files in the `src/` folder — they auto-sync to Studio ✨
+- Change scripts in the **`src/`** folder in VS Code.
+- They sync to Studio automatically while `rojo:serve` runs.
+- **Don't** edit the same scripts only inside Studio — Rojo will overwrite them.
 
-### 💾 To save your work:
-1. In VS Code, click the tree-branch icon on the left sidebar (Source Control) 🌿
-2. Type a message about what you changed
-3. Click the ✓ button (Commit)
-4. Click the ↻ button (Sync) to upload to GitHub
+### If you change the map or place objects in Studio
+
+Use **File → Save to Roblox** so teammates get your world changes. Map changes don't go through git.
 
 ---
 
-## ✨ Quick Reference
+## Step 5: Save your code to GitHub
 
-| What you want to do | Type this |
-|---------------------|-----------|
-| Start syncing to Studio | `npm run rojo:serve` |
-| Check everything is OK | `npm run overnight` |
-| Generate new quests | `npm run generate-quests` |
-| Deploy AI models | `npm run deploy-models` |
-| Validate files | `npm run validate` |
+1. Click the **Source Control** icon on the left (branch icon).
+2. Review changed files under `src/`.
+3. Type a short message (e.g. "fix bread recipe display").
+4. Click **Commit** (✓).
+5. Click **Sync** / **Push** to upload.
+
+**Before your first push on a new task**, ask which branch to use. Usually: create a branch from `main`, don't push straight to `main`.
+
+More detail: [`docs/git-workflow.md`](docs/git-workflow.md).
 
 ---
 
-## 💖 You DID IT! 
+## Quick reference
 
-If something breaks:
-- Close VS Code and open it again
-- Make sure you ran `npm install`
-- Ask in the chat — everyone was new once!
+| I want to… | Command |
+|------------|---------|
+| Start syncing | `npm run rojo:serve` |
+| Get latest code | `git pull origin main` |
+| Check project OK | `npm run validate` |
+| Full audit (optional) | `npm run overnight` |
 
-**Welcome to the team, Electra!** 🎀✨🌸💖
+| Port | What |
+|------|------|
+| **34872** (or 34873) | **Rojo** — you need this |
+| 58741 | Studio MCP — optional, skip if stuck |
+
+---
+
+## If something breaks
+
+| Problem | Try |
+|---------|-----|
+| Rojo won't connect | Close Studio, restart `npm run rojo:serve`, reconnect |
+| Changes don't appear | Wrong place open — use cloud `108617605497926` |
+| Grey screen / double UI | Legacy StarterGui — see migration doc Phase 3 |
+| `git pull` errors | Ask in chat before force-pushing |
+
+---
+
+## Next reads
+
+| Doc | When |
+|-----|------|
+| [`docs/migration-from-legacy-place.md`](docs/migration-from-legacy-place.md) | One-time move from old 48MB file |
+| [`docs/git-workflow.md`](docs/git-workflow.md) | Branches, PRs, what goes in git |
+| [`docs/rojo-workflow.md`](docs/rojo-workflow.md) | Technical Rojo details |
+| [`BUILD.md`](BUILD.md) | Advanced build + mesh pipeline |
+
+Welcome to the team!

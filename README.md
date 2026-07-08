@@ -6,28 +6,36 @@ A cozy cooking RPG for Roblox. Gather ingredients, cook recipes, serve guests, b
 
 ## 🆕 New Here? Start Here
 
-👉 **[GETTING_STARTED.md](GETTING_STARTED.md)** — For people who have NEVER used git, VS Code, or Roblox Studio.
-It assumes you know NOTHING. Follow it step by step.
+| You are… | Read this |
+|----------|-----------|
+| **Electra / new to git** | **[GETTING_STARTED.md](GETTING_STARTED.md)** |
+| **Migrating from old 48MB place** | **[docs/migration-from-legacy-place.md](docs/migration-from-legacy-place.md)** |
+| **Contributor / agent** | **[docs/git-workflow.md](docs/git-workflow.md)** + **[docs/rojo-workflow.md](docs/rojo-workflow.md)** |
 
-## Quick Start (if you know what you're doing)
+## Quick Start (Option C — live sync)
 
-```bash
-# 1. Sync scripts to Studio
+```powershell
+G:
+cd G:\Zundamons-kItchen
+git pull origin main
 npm run rojo:serve
-
-# 2. In Studio: connect Rojo plugin to localhost:34872
-# 3. Press Play to test
 ```
+
+1. Open **cloud place** `108617605497926` in Studio (not a local `.rbxlx`)
+2. Rojo plugin → `localhost:34872` (or `34873`)
+3. Play → confirm `[ROJO SYNC OK]` in Output
+4. Edit `src/` — changes sync live
 
 ## For Contributors
 
 | If you want to... | Read this |
 |-------------------|-----------|
 | Install from scratch | [`GETTING_STARTED.md`](GETTING_STARTED.md) |
-| Build from clone to game | [`BUILD.md`](BUILD.md) |
-| See current tasks | [`AI/WORK_QUEUE.md`](AI/WORK_QUEUE.md) |
-| See asset integration plan | [`AI/ASSET_INTEGRATION_PLAN.md`](AI/ASSET_INTEGRATION_PLAN.md) |
-| See AI agent delegation | [`AI/DELEGATION_PLAN.md`](AI/DELEGATION_PLAN.md) |
+| Migrate off legacy place | [`docs/migration-from-legacy-place.md`](docs/migration-from-legacy-place.md) |
+| Git branches, commits, PRs | [`docs/git-workflow.md`](docs/git-workflow.md) |
+| Rojo live sync | [`docs/rojo-workflow.md`](docs/rojo-workflow.md) |
+| Advanced build + meshes | [`BUILD.md`](BUILD.md) |
+| Current tasks | [`AI/WORK_QUEUE.md`](AI/WORK_QUEUE.md) |
 
 ---
 
@@ -125,14 +133,14 @@ Master plans: `.opencode/plans/zunda-omnibus-toolkit.md`
 ## Repo Layout
 
 ```
-G:\Zundamons-kItchen\          ← Canonical workspace
+G:\Zundamons-kItchen\          ← Canonical workspace (git)
 ├── default.project.json        ← Rojo project config
-├── Zundamons-kItchen.rbxlx     ← Place file (49MB, gitignored)
 ├── src/                        ← Source code (what Rojo syncs)
-├── Assets/                     ← Source meshes (Upload/) and pipeline metadata
-├── scripts/                    ← Build tools, CI, agent orchestrator
-├── reports/                    ← Generated reports (gitignored)
-├── AI/                         ← Architecture, design system, agent docs
-├── docs/                       ← Legacy docs
-└── .github/workflows/          ← CI/CD (nightly build + audit)
+├── Assets/                     ← Mesh uploads + pipeline metadata
+├── scripts/                    ← Build tools, agent orchestrator
+├── docs/                       ← Getting started, git, migration
+├── AI/                         ← Agent coordination
+└── *.rbxlx (local only)        ← Legacy place archive — gitignored, NOT daily driver
 ```
+
+**World container:** Roblox cloud place **`108617605497926`** (Save to Roblox for map changes).

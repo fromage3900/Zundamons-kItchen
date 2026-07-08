@@ -1,36 +1,41 @@
 # Agent Onboarding — Zundamon's Kitchen
 
-You are working on a Roblox game (Zundamon's Kitchen) built with Rojo + Luau + AI agents.
+You are working on a Roblox game built with **Rojo + git + cloud place** (Option C).
 
 ## First: Read These
 
 | File | What it tells you |
 |------|-------------------|
-| `README.md` | Project overview, all commands |
-| `BUILD.md` | Step-by-step build guide |
-| `AI/HANDOFF_QWEN.md` | Issues faced + what NOT to touch |
-| `AI/WORK_QUEUE.md` | Current task board |
-| `default.project.json` | Rojo project map (WHERE scripts sync to) |
+| `docs/migration-from-legacy-place.md` | If team still uses old 48MB `.rbxlx` — migrate first |
+| `docs/git-workflow.md` | Git branches, commits, PRs |
+| `docs/rojo-workflow.md` | Live Rojo sync |
+| `GETTING_STARTED.md` | Electra-friendly daily steps |
+| `AI/HANDOFF_QWEN.md` | What NOT to touch |
+| `AI/WORK_QUEUE.md` | Current tasks |
+| `default.project.json` | Rojo map |
 
-## Project Topology
+## Project topology
 
 ```
-G:\Zundamons-kItchen\     ← ALWAYS work from here
-├── src/                   ← All game code (script changes go here)
-├── Assets/Upload/         ← Drop OBJ/FBX files here for mesh pipeline
-├── scripts/               ← Build tools + AI agent orchestrator
-│   └── agent_orchestrator/ ← Python agent system (Ollama)
-└── AI/                    ← Agent coordination docs
+G:\Zundamons-kItchen\          ← ALWAYS work from here
+├── src/                        ← ALL script changes (git + Rojo)
+├── Assets/Upload/              ← Drop meshes for import pipeline
+├── scripts/                    ← Build tools + agent orchestrator
+└── AI/                         ← Coordination docs
+
+Cloud place 108617605497926     ← World (Studio Save to Roblox)
 ```
 
-## Ground Rules
+## Ground rules
 
-1. `cd G:\Zundamons-kItchen` before running any command
-2. **Never modify `.rbxlx` files** — all code changes go in `src/`
-3. **Never commit `.rbxl` or `.rbxlx`** — they're gitignored
-4. `npm run validate` before pushing
-5. Claim work by updating `AI/WORK_QUEUE.md` before coding
-6. Use `npm run overnight` to verify changes didn't break anything
+1. `cd G:\Zundamons-kItchen` before any command
+2. **Open cloud place `108617605497926`** — not local `.rbxlx` for playtest
+3. `git pull origin main` before coding
+4. **Never commit** `.rbxl` / `.rbxlx`
+5. **Never modify** local `.rbxlx` as source of truth — edit `src/`
+6. `npm run validate` before push
+7. Claim work in `AI/WORK_QUEUE.md`
+8. Rojo must be connected; verify `[ROJO SYNC OK]` on Play
 
 ## Key Architecture
 
